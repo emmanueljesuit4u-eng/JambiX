@@ -3,10 +3,61 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch ? window.fetch.bind(window) : undefined;
+          var customFetch = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            configurable: true,
+            enumerable: true,
+            get: function() {
+              return customFetch;
+            },
+            set: function(newFetch) {
+              customFetch = newFetch;
+            }
+          });
+        } catch (err) {
+          try {
+            var proto = Window.prototype;
+            var protoFetch = proto.fetch ? proto.fetch.bind(window) : undefined;
+            Object.defineProperty(proto, 'fetch', {
+              configurable: true,
+              enumerable: true,
+              get: function() {
+                return protoFetch;
+              },
+              set: function(newFetch) {
+                protoFetch = newFetch;
+              }
+            });
+          } catch (e) {
+            // ignore
+          }
+        }
+
+        window.addEventListener('error', function(event) {
+          if (
+            event &&
+            event.message &&
+            event.message.indexOf('Cannot set property fetch of') !== -1
+          ) {
+            if (typeof event.preventDefault === 'function') {
+              event.preventDefault();
+            }
+            if (typeof event.stopImmediatePropagation === 'function') {
+              event.stopImmediatePropagation();
+            }
+            return true;
+          }
+        }, true);
+      })();
+    </script>
     <title>JAMBix - UTME Preparation</title>
-    <meta name="description" content="Modern Nigerian JAMB/UTME preparation app authentication: Sign Up, Log In, and Forgot Password." />
+    <meta name="description" content="Modern Nigerian JAMB/UTME preparation app: Sign Up, Log In, CBT Simulator, and Student Dashboard." />
     <meta property="og:title" content="JAMBix - UTME Preparation" />
-    <meta property="og:description" content="Modern Nigerian JAMB/UTME preparation app authentication: Sign Up, Log In, and Forgot Password." />
+    <meta property="og:description" content="Modern Nigerian JAMB/UTME preparation app: Sign Up, Log In, CBT Simulator, and Student Dashboard." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
