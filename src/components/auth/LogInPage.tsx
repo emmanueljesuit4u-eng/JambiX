@@ -14,19 +14,16 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
-import { GoogleIcon } from '../common/GoogleIcon';
 
 interface LogInPageProps {
   onNavigateToSignUp: () => void;
   onNavigateToForgotPassword: () => void;
-  onOpenGoogleAuth: () => void;
   onLogInSuccess: (user: { identifier: string }) => void;
 }
 
 export const LogInPage: React.FC<LogInPageProps> = ({
   onNavigateToSignUp,
   onNavigateToForgotPassword,
-  onOpenGoogleAuth,
   onLogInSuccess,
 }) => {
   const formId = useId();
@@ -282,28 +279,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
             </button>
           </div>
         </form>
-
-        {/* Divider: OR */}
-        <div className="relative my-5">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-white px-3 text-slate-400 font-semibold tracking-wider uppercase">
-              OR
-            </span>
-          </div>
-        </div>
-
-        {/* Button: Continue with Google */}
-        <button
-          type="button"
-          onClick={onOpenGoogleAuth}
-          className="w-full h-11 bg-white hover:bg-slate-50 border border-slate-200 active:bg-slate-100 rounded-xl text-slate-700 font-medium text-sm flex items-center justify-center gap-3 transition-colors shadow-2xs cursor-pointer"
-        >
-          <GoogleIcon className="w-5 h-5 shrink-0" />
-          <span>Continue with Google</span>
-        </button>
 
         {/* Don't have an account? Create Account */}
         <div className="mt-6 text-center text-xs text-slate-600">

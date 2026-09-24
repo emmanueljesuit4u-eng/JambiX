@@ -5,37 +5,33 @@
 
 import React, { useState } from 'react';
 import {
-  Sparkles,
   Smartphone,
   Monitor,
   Tablet,
   GraduationCap,
   Award,
   Layers,
-  CheckCircle2,
-  LogOut,
   BookOpen,
+  LayoutDashboard,
 } from 'lucide-react';
 import { SignUpPage } from './SignUpPage';
 import { LogInPage } from './LogInPage';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
 import { TermsModal } from './TermsModal';
-import { GoogleAuthModal } from './GoogleAuthModal';
-import { Logo } from '../brand/Logo';
+import { StudentDashboard } from '../dashboard/StudentDashboard';
 
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
 export type ViewportMode = 'responsive' | 'mobile' | 'tablet';
 
 export const AuthContainer: React.FC = () => {
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('signup');
+  const [currentScreen, setCurrentScreen] = useState<ScreenType>('login');
   const [viewportMode, setViewportMode] = useState<ViewportMode>('responsive');
 
   // Modal dialog states
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [termsTab, setTermsTab] = useState<'terms' | 'privacy'>('terms');
-  const [isGoogleModalOpen, setIsGoogleModalOpen] = useState(false);
 
-  // Authenticated state notification
+  // Authenticated state (When set, transition to StudentDashboard)
   const [authenticatedUser, setAuthenticatedUser] = useState<{
     name?: string;
     email?: string;
@@ -52,22 +48,54 @@ export const AuthContainer: React.FC = () => {
   };
 
   const handleLogInSuccess = (user: { identifier: string }) => {
-    setAuthenticatedUser(user);
+    setAuthenticatedUser({
+      name: user.identifier.includes('@')
+        ? user.identifier.split('@')[0]
+        : user.identifier,
+      email: user.identifier.includes('@') ? user.identifier : `${user.identifier}@student.jambix.ng`,
+      identifier: user.identifier,
+    });
   };
 
-  const handleGoogleSuccess = (user: { name: string; email: string }) => {
-    setAuthenticatedUser(user);
+  const handleLogOut = () => {
+    setAuthenticatedUser(null);
+    setCurrentScreen('login');
   };
+
+  // If the student is authenticated, transition directly to the StudentDashboard!
+  if (authenticatedUser) {
+    return (
+      <div className="relative">
+        {/* Quick Demo Switcher Strip to allow switching back to Auth */}
+        <div className="bg-slate-900 text-white text-[11px] px-4 py-1.5 flex items-center justify-between border-b border-slate-800">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-slate-300">
+              Student Session Active: <strong className="text-white">{authenticatedUser.name || authenticatedUser.identifier}</strong>
+            </span>
+          </div>
+          <button
+            onClick={handleLogOut}
+            className="text-xs text-rose-300 hover:text-white underline font-semibold cursor-pointer"
+          >
+            ← Return to Sign Up / Log In
+          </button>
+        </div>
+
+        <StudentDashboard user={authenticatedUser} onLogOut={handleLogOut} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between text-slate-800 antialiased">
-      {/* Top Utility Bar for Device Preview & Screen Navigation */}
+      {/* Top Utility Bar */}
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-2.5">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
-          {/* Brand Wordmark (Single Text Element per Top Bar Contract) */}
+          {/* Brand Wordmark */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setCurrentScreen('signup')}
+              onClick={() => setCurrentScreen('login')}
               className="text-left cursor-pointer flex items-center gap-2 group"
             >
               <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs group-hover:bg-emerald-800 transition-colors">
@@ -82,30 +110,13 @@ export const AuthContainer: React.FC = () => {
             </span>
           </div>
 
-          {/* Quick Screen Nav Links & Device Switcher */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          {/* Quick Screen Nav Links, Demo Jump & Device Switcher */}
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Screen Tabs */}
             <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-semibold">
               <button
                 type="button"
-                onClick={() => {
-                  setCurrentScreen('signup');
-                  setAuthenticatedUser(null);
-                }}
-                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  currentScreen === 'signup'
-                    ? 'bg-white text-emerald-800 shadow-2xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Sign Up
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setCurrentScreen('login');
-                  setAuthenticatedUser(null);
-                }}
+                onClick={() => setCurrentScreen('login')}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   currentScreen === 'login'
                     ? 'bg-white text-emerald-800 shadow-2xs font-bold'
@@ -116,10 +127,18 @@ export const AuthContainer: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setCurrentScreen('forgot_password');
-                  setAuthenticatedUser(null);
-                }}
+                onClick={() => setCurrentScreen('signup')}
+                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                  currentScreen === 'signup'
+                    ? 'bg-white text-emerald-800 shadow-2xs font-bold'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Sign Up
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentScreen('forgot_password')}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   currentScreen === 'forgot_password'
                     ? 'bg-white text-emerald-800 shadow-2xs font-bold'
@@ -129,6 +148,23 @@ export const AuthContainer: React.FC = () => {
                 Forgot Password
               </button>
             </div>
+
+            {/* Direct Instant Transition to Student Dashboard (for quick testing) */}
+            <button
+              type="button"
+              onClick={() => {
+                setAuthenticatedUser({
+                  name: 'Emmanuel Jesuit',
+                  email: 'emmanueljesuit4u@gmail.com',
+                  identifier: 'emmanueljesuit4u@gmail.com',
+                });
+              }}
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold shadow-2xs transition-colors cursor-pointer"
+              title="Preview Student Dashboard directly"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              <span>Preview Dashboard</span>
+            </button>
 
             {/* Viewport Frame Mode Switcher for Testing */}
             <div className="hidden md:flex items-center bg-slate-100 p-1 rounded-xl text-xs text-slate-600">
@@ -175,7 +211,6 @@ export const AuthContainer: React.FC = () => {
 
       {/* Main Content Area */}
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8">
-        {/* If viewportMode is 'mobile', wrap in simulated phone frame */}
         <div
           className={`w-full transition-all duration-300 ${
             viewportMode === 'mobile'
@@ -185,70 +220,16 @@ export const AuthContainer: React.FC = () => {
               : 'max-w-5xl'
           }`}
         >
-          {/* Simulated Mobile Top Notch / Speaker (when in mobile frame) */}
+          {/* Simulated Mobile Notch */}
           {viewportMode === 'mobile' && (
             <div className="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-4" />
           )}
 
-          {/* Authenticated Confirmation Card (Simulation State) */}
-          {authenticatedUser ? (
-            <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-sm border border-slate-200/90 p-7 text-center animate-in fade-in zoom-in-95">
-              <div className="w-14 h-14 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-center mx-auto text-emerald-600 mb-4 shadow-2xs">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-
-              <h2 className="text-xl font-bold text-slate-900">
-                Welcome to JAMBix, {authenticatedUser.name || 'Candidate'}!
-              </h2>
-
-              <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                Authentication verified for{' '}
-                <span className="font-semibold text-slate-900">
-                  {authenticatedUser.email || authenticatedUser.identifier}
-                </span>
-                .
-              </p>
-
-              <div className="mt-5 p-4 bg-emerald-50/60 border border-emerald-100 rounded-xl text-left text-xs text-emerald-900 space-y-2">
-                <div className="flex items-center gap-2 font-bold text-emerald-800">
-                  <Sparkles className="w-4 h-4 text-emerald-600" />
-                  <span>Authentication Screens Complete</span>
-                </div>
-                <p className="text-[11px] text-emerald-700 leading-relaxed">
-                  Per specifications, only the Sign Up, Log In, and Forgot Password authentication flows are built in this release. CBT exams, subject modules, and student dashboards remain deferred for the next phase.
-                </p>
-              </div>
-
-              <div className="mt-6 flex flex-col gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthenticatedUser(null);
-                    setCurrentScreen('login');
-                  }}
-                  className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  <span>Return to Login Screen</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAuthenticatedUser(null);
-                    setCurrentScreen('signup');
-                  }}
-                  className="w-full py-2 text-slate-600 hover:text-slate-900 text-xs font-medium transition-colors cursor-pointer"
-                >
-                  Switch to Sign Up Screen
-                </button>
-              </div>
-            </div>
-          ) : viewportMode === 'responsive' ? (
+          {viewportMode === 'responsive' ? (
             /* Responsive Desktop Dual-Pane Layout */
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               {/* Left Brand Showcase (Visible on lg screens) */}
-              <div className="hidden lg:flex lg:col-span-5 flex-col justify-between p-8 rounded-3xl bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white relative overflow-hidden shadow-xl min-h-[580px]">
-                {/* Subtle background graphic */}
+              <div className="hidden lg:flex lg:col-span-5 flex-col justify-between p-8 rounded-3xl bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white relative overflow-hidden shadow-xl min-h-[560px]">
                 <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -271,7 +252,7 @@ export const AuthContainer: React.FC = () => {
                     Master the UTME syllabus with Nigeria&apos;s most advanced CBT engine.
                   </h2>
                   <p className="mt-3 text-xs text-emerald-100/70 leading-relaxed">
-                    Designed strictly around the official JAMB guidelines, past trends, and real-time timed test simulations.
+                    Designed strictly around official JAMB guidelines, past trends, and real-time timed test simulations.
                   </p>
 
                   <div className="mt-8 space-y-3.5">
@@ -294,7 +275,7 @@ export const AuthContainer: React.FC = () => {
                       <div>
                         <div className="font-bold text-white">2026/2027 Syllabus Updated</div>
                         <div className="text-emerald-200/60 text-[11px]">
-                          Use of English, Mathematics, Sciences, Arts & Social Science subjects.
+                          Use of English, Mathematics, Sciences, Arts &amp; Social Science subjects.
                         </div>
                       </div>
                     </div>
@@ -313,7 +294,6 @@ export const AuthContainer: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Candidate Testimonial quote */}
                 <div className="mt-8 pt-6 border-t border-white/10 text-xs">
                   <div className="text-emerald-100/90 italic leading-relaxed">
                     &ldquo;JAMBix timed mock tests gave me the speed and composure I needed. Scored 324 in my UTME.&rdquo;
@@ -330,7 +310,6 @@ export const AuthContainer: React.FC = () => {
                   <SignUpPage
                     onNavigateToLogin={() => setCurrentScreen('login')}
                     onOpenTerms={handleOpenTerms}
-                    onOpenGoogleAuth={() => setIsGoogleModalOpen(true)}
                     onSignUpSuccess={handleSignUpSuccess}
                   />
                 )}
@@ -339,7 +318,6 @@ export const AuthContainer: React.FC = () => {
                   <LogInPage
                     onNavigateToSignUp={() => setCurrentScreen('signup')}
                     onNavigateToForgotPassword={() => setCurrentScreen('forgot_password')}
-                    onOpenGoogleAuth={() => setIsGoogleModalOpen(true)}
                     onLogInSuccess={handleLogInSuccess}
                   />
                 )}
@@ -358,7 +336,6 @@ export const AuthContainer: React.FC = () => {
                 <SignUpPage
                   onNavigateToLogin={() => setCurrentScreen('login')}
                   onOpenTerms={handleOpenTerms}
-                  onOpenGoogleAuth={() => setIsGoogleModalOpen(true)}
                   onSignUpSuccess={handleSignUpSuccess}
                 />
               )}
@@ -367,7 +344,6 @@ export const AuthContainer: React.FC = () => {
                 <LogInPage
                   onNavigateToSignUp={() => setCurrentScreen('signup')}
                   onNavigateToForgotPassword={() => setCurrentScreen('forgot_password')}
-                  onOpenGoogleAuth={() => setIsGoogleModalOpen(true)}
                   onLogInSuccess={handleLogInSuccess}
                 />
               )}
@@ -416,13 +392,6 @@ export const AuthContainer: React.FC = () => {
         isOpen={isTermsOpen}
         onClose={() => setIsTermsOpen(false)}
         initialTab={termsTab}
-      />
-
-      {/* Google Authentication Modal */}
-      <GoogleAuthModal
-        isOpen={isGoogleModalOpen}
-        onClose={() => setIsGoogleModalOpen(false)}
-        onSuccess={handleGoogleSuccess}
       />
     </div>
   );
