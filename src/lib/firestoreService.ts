@@ -18,7 +18,7 @@ import {
   increment,
   onSnapshot,
 } from 'firebase/firestore';
-import { db, handleFirestoreError, OperationType } from './firebase';
+import { db, auth, handleFirestoreError, OperationType } from './firebase';
 
 export interface UserProfileData {
   id: string;
@@ -69,13 +69,19 @@ function isOfflineError(error: unknown): boolean {
 
 // 1. User Profile Operations
 export async function saveUserProfile(profile: UserProfileData): Promise<void> {
-  const path = `users/${profile.id}`;
+  if (!auth.currentUser) {
+    console.warn('Firestore saveUserProfile: student not authenticated with Firebase. Preserving locally.');
+    return;
+  }
+  const targetId = auth.currentUser.uid;
+  const path = `users/${targetId}`;
   try {
-    const userRef = doc(db, 'users', profile.id);
+    const userRef = doc(db, 'users', targetId);
     await setDoc(
       userRef,
       {
         ...profile,
+        id: targetId,
         updatedAt: serverTimestamp(),
         createdAt: profile.createdAt || serverTimestamp(),
       },
@@ -91,9 +97,13 @@ export async function saveUserProfile(profile: UserProfileData): Promise<void> {
 }
 
 export async function getUserProfile(userId: string): Promise<UserProfileData | null> {
-  const path = `users/${userId}`;
+  if (!auth.currentUser) {
+    return null;
+  }
+  const targetId = auth.currentUser.uid;
+  const path = `users/${targetId}`;
   try {
-    const userRef = doc(db, 'users', userId);
+    const userRef = doc(db, 'users', targetId);
     const snap = await getDoc(userRef);
     if (!snap.exists()) return null;
     return snap.data() as UserProfileData;
@@ -110,11 +120,19 @@ export async function getUserProfile(userId: string): Promise<UserProfileData | 
 export async function saveTestResult(
   result: Omit<TestResultData, 'createdAt'>
 ): Promise<void> {
-  const path = `testResults/${result.id}`;
+  if (!auth.currentUser) {
+    console.warn('Firestore saveTestResult: student not authenticated with Firebase. Test result preserved in offline storage.');
+    return;
+  }
+  const payload = {
+    ...result,
+    userId: auth.currentUser.uid,
+  };
+  const path = `testResults/${payload.id}`;
   try {
-    const testRef = doc(db, 'testResults', result.id);
+    const testRef = doc(db, 'testResults', payload.id);
     await setDoc(testRef, {
-      ...result,
+      ...payload,
       createdAt: serverTimestamp(),
     });
   } catch (error) {
@@ -127,11 +145,15 @@ export async function saveTestResult(
 }
 
 export async function getUserTestResults(userId: string): Promise<TestResultData[]> {
+  if (!auth.currentUser) {
+    return [];
+  }
+  const targetId = auth.currentUser.uid;
   const path = 'testResults';
   try {
     const q = query(
       collection(db, 'testResults'),
-      where('userId', '==', userId),
+      where('userId', '==', targetId),
       limit(20)
     );
     const snapshot = await getDocs(q);
@@ -149,11 +171,19 @@ export async function getUserTestResults(userId: string): Promise<TestResultData
 export async function createFeedPost(
   post: Omit<FeedPostData, 'createdAt' | 'likesCount' | 'commentsCount'>
 ): Promise<void> {
-  const path = `posts/${post.id}`;
+  if (!auth.currentUser) {
+    console.warn('Firestore createFeedPost: student not authenticated with Firebase. Preserving locally.');
+    return;
+  }
+  const payload = {
+    ...post,
+    authorId: auth.currentUser.uid,
+  };
+  const path = `posts/${payload.id}`;
   try {
-    const postRef = doc(db, 'posts', post.id);
+    const postRef = doc(db, 'posts', payload.id);
     await setDoc(postRef, {
-      ...post,
+      ...payload,
       likesCount: 0,
       commentsCount: 0,
       createdAt: serverTimestamp(),

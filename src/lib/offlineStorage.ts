@@ -189,6 +189,13 @@ export function markLocalPostSynced(postId: string): void {
 
 // 4. Flush and Sync with Firestore
 export async function flushSyncQueue(): Promise<{ syncedCount: number; errorsCount: number }> {
+  // Firestore security rules enforce strict authentication (request.auth != null).
+  // If there is no authenticated user currently active, keep items safely stored locally
+  // and defer syncing until a session is authenticated.
+  if (!auth.currentUser) {
+    return { syncedCount: 0, errorsCount: 0 };
+  }
+
   const queue = getSyncQueue();
   if (queue.length === 0) return { syncedCount: 0, errorsCount: 0 };
 
@@ -196,22 +203,25 @@ export async function flushSyncQueue(): Promise<{ syncedCount: number; errorsCou
   let errorsCount = 0;
 
   for (const item of queue) {
+    // Prune stale queue items that exceeded maximum retries to avoid eternal loops
+    if (item.retryCount >= 5) {
+      console.warn(`Sync queue item ${item.id} exceeded maximum retries. Retaining locally and removing from sync queue.`);
+      removeSyncItem(item.id);
+      continue;
+    }
+
     try {
       if (item.action === 'SAVE_TEST') {
         const payload = item.payload;
-        // If current user is logged in, attach current UID if missing
-        if (auth.currentUser && (!payload.userId || payload.userId === 'offline_candidate')) {
-          payload.userId = auth.currentUser.uid;
-        }
+        // Strictly attach the authenticated user UID for security rules verification
+        payload.userId = auth.currentUser.uid;
         await saveTestResult(payload as Omit<TestResultData, 'createdAt'>);
         markLocalTestSynced(payload.id);
         removeSyncItem(item.id);
         syncedCount++;
       } else if (item.action === 'CREATE_POST') {
         const payload = item.payload;
-        if (auth.currentUser && (!payload.authorId || payload.authorId === 'offline_candidate')) {
-          payload.authorId = auth.currentUser.uid;
-        }
+        payload.authorId = auth.currentUser.uid;
         await createFeedPost(payload);
         markLocalPostSynced(payload.id);
         removeSyncItem(item.id);

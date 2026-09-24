@@ -4,7 +4,14 @@
  */
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut as fbSignOut } from 'firebase/auth';
+import {
+  User,
+  onAuthStateChanged,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut as fbSignOut,
+  signInAnonymously,
+} from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
 import { getUserProfile, saveUserProfile, UserProfileData } from '../lib/firestoreService';
 
@@ -39,8 +46,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (!profile) {
             profile = {
               id: user.uid,
-              email: user.email || 'student@jambix.ng',
-              fullName: user.displayName || 'UTME Candidate',
+              email: user.email || (user.isAnonymous ? 'guest@student.jambix.ng' : 'student@jambix.ng'),
+              fullName: user.displayName || (user.isAnonymous ? 'Candidate (Guest)' : 'UTME Candidate'),
               targetScore: 320,
               preferredInstitution: 'University of Lagos (UNILAG)',
             };
@@ -52,6 +59,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       } else {
         setStudentProfile(null);
+        // Attempt anonymous sign-in so candidate tests have an authorized Firebase UID
+        try {
+          await signInAnonymously(auth);
+          return;
+        } catch (anonErr) {
+          console.info('Anonymous sign-in unavailable or offline. Operating in local mode:', anonErr);
+        }
       }
       setLoading(false);
     });
@@ -89,8 +103,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(null);
   };
 
-  const setLocalStudent = (user: { name: string; email: string; identifier?: string }) => {
+  const setLocalStudent = async (user: { name: string; email: string; identifier?: string }) => {
     setLocalStudentState(user);
+    if (!auth.currentUser) {
+      try {
+        await signInAnonymously(auth);
+      } catch (anonErr) {
+        console.info('Anonymous sign-in unavailable or offline. Operating in local mode:', anonErr);
+      }
+    }
   };
 
   return (

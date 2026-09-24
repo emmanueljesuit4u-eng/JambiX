@@ -38,9 +38,14 @@ import {
   Bookmark,
   Share2,
   HelpCircle,
+  Calendar,
+  BookMarked,
 } from 'lucide-react';
+import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
 import { CreatePostModal } from './CreatePostModal';
+import { UniversityConnectTab } from './UniversityConnectTab';
+import { StudySyllabusTab } from './StudySyllabusTab';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { auth } from '../../lib/firebase';
 import {
@@ -95,7 +100,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isCbtModalOpen, setIsCbtModalOpen] = useState(false);
-  const [activeTest, setActiveTest] = useState({ title: '', type: '' });
+  const [activeTest, setActiveTest] = useState<{ title: string; type: string; subject?: string; year?: number }>({ title: '', type: '' });
+  const [selectedVaultYear, setSelectedVaultYear] = useState<number>(2025);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [feedFilter, setFeedFilter] = useState('All');
@@ -234,8 +240,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     loadStoredData();
   }, [effectiveOnline]);
 
-  const handleLaunchTest = (title: string, type: string) => {
-    setActiveTest({ title, type });
+  const handleLaunchTest = (title: string, type: string, subject?: string, year?: number) => {
+    setActiveTest({ title, type, subject, year });
     setIsCbtModalOpen(true);
   };
 
@@ -360,8 +366,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Home', icon: Home, label: 'Home' },
               { id: 'Study', icon: GraduationCap, label: 'Study' },
               { id: 'Test', icon: Monitor, label: 'Test' },
-              { id: 'Chat', icon: MessageSquare, label: 'Chat' },
-              { id: 'News', icon: BookOpen, label: 'News' },
               { id: 'Connect', icon: Users, label: 'Connect' },
               { id: 'Shop', icon: ShoppingBag, label: 'Shop' },
             ].map((item) => {
@@ -797,23 +801,23 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </div>
                     </div>
 
-                    {/* Card 4: JAMB Past Questions Bank */}
+                    {/* Card 4: JAMB 1978-2025 Past Questions Bank */}
                     <div
-                      onClick={() => handleLaunchTest('JAMB 15-Year Past Questions Bank', 'archive')}
+                      onClick={() => handleLaunchTest('JAMB 1978–2025 Past Questions Bank (48 Years)', 'archive')}
                       className="p-4 rounded-2xl bg-[#f3f9ee] dark:bg-emerald-950/20 border border-[#d6ecce] dark:border-emerald-900/30 hover:border-[#b4e2a6] dark:hover:border-emerald-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
                     >
                       <div className="flex items-start gap-3">
                         <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center shrink-0">
                           <div className="w-7 h-7 rounded-full bg-[#15803d] text-yellow-200 flex items-center justify-center text-[7px] font-black border border-emerald-400 shadow-2xs">
-                            15 YRS
+                            48 YRS
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-bold text-[#14532d] dark:text-emerald-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                            JAMB Past Questions Bank
+                            1978–2025 Past Questions
                           </h4>
                           <p className="mt-1 text-xs text-[#166534] dark:text-emerald-300/80 leading-snug">
-                            Verified UTME past questions from 2010 to 2025 by topic.
+                            48 years of UTME past questions year by year for all 5 subjects.
                           </p>
                           <p className="mt-1.5 text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 flex items-center gap-1">
                             <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -911,7 +915,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       ].map((sub) => (
                         <button
                           key={sub.code}
-                          onClick={() => handleLaunchTest(`100% In-App Offline: ${sub.name}`, 'offline')}
+                          onClick={() => handleLaunchTest(`100% In-App Offline: ${sub.name}`, 'offline', sub.name)}
                           className="p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 transition-all text-left flex items-center justify-between group cursor-pointer bg-white dark:bg-slate-800/40"
                         >
                           <div className="min-w-0">
@@ -1101,74 +1105,12 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </>
             )}
 
-            {/* View: Study Section */}
+            {/* View: Study Section - Full Updated JAMB Syllabus */}
             {activeNav === 'Study' && (
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-6 transition-colors">
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
-                  <div>
-                    <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                      Syllabus Study &amp; Textbook Drills
-                    </h2>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      Topic-by-topic breakdowns aligned with verified textbook chapters. Available 100% offline.
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => handleLaunchTest('Syllabus Mastery Diagnostic', 'jamb')}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                  >
-                    Take Topic Quiz
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      subject: 'Use of English',
-                      topics: ['Comprehension & Summary', 'Lexis and Structure', 'Novel: The Life Changer', 'Oral Forms & Phonetics'],
-                      textbook: 'The Invisible Teacher / The Life Changer (Khadija Abubakar Jalli)',
-                    },
-                    {
-                      subject: 'Mathematics',
-                      topics: ['Algebra & Quadratic Equations', 'Calculus & Limits', 'Trigonometry & Bearing', 'Statistics & Probability'],
-                      textbook: 'New General Mathematics for Senior Secondary Schools (Book 3)',
-                    },
-                    {
-                      subject: 'Physics',
-                      topics: ['Equilibrium of Forces & Mechanics', 'Waves & Optics', 'Current Electricity & Magnetism', 'Nuclear Physics & Quanta'],
-                      textbook: 'Senior Secondary Physics (PN Okeke & MW Anyakoha)',
-                    },
-                    {
-                      subject: 'Chemistry',
-                      topics: ['Atomic Structure & Periodic Table', 'Chemical Energetics & Kinetics', 'Hydrocarbons & Organic Chemistry', 'Acids, Bases & Salts'],
-                      textbook: 'New School Chemistry for Senior Secondary Schools (Osei Yaw Ababio)',
-                    },
-                  ].map((sub) => (
-                    <div
-                      key={sub.subject}
-                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 space-y-2.5 transition-colors"
-                    >
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">{sub.subject}</h4>
-                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">
-                          Syllabus Verified
-                        </span>
-                      </div>
-                      <div className="text-xs text-slate-600 dark:text-slate-300 space-y-1">
-                        {sub.topics.map((t) => (
-                          <div key={t} className="flex items-center gap-1.5 text-[11px]">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
-                            <span>{t}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700/60 text-[10px] text-slate-500 dark:text-slate-400">
-                        <strong>Verified Textbook:</strong> {sub.textbook}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <StudySyllabusTab
+                onLaunchTest={handleLaunchTest}
+                showToast={showToast}
+              />
             )}
 
             {/* View: Test Section */}
@@ -1221,144 +1163,169 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
 
-            {/* View: Chat / Community */}
-            {activeNav === 'Chat' && (
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                  <div>
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                      UTME Study Groups &amp; Peer Discussions
-                    </h2>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                      Connect with students aiming for your target institution. Saves offline.
-                    </p>
+                {/* 1978 - 2025 Year-by-Year Past Questions Explorer */}
+                <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <h3 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-rose-600" />
+                        <span>JAMB UTME Past Questions Year-by-Year Vault (1978 – 2025)</span>
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        Select any year from 1978 to 2025 to take authentic full 180-question UTME CBT or subject-by-subject drills.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => handleLaunchTest(`Full JAMB UTME ${selectedVaultYear} CBT Exam`, 'jamb', undefined, selectedVaultYear)}
+                      className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 shadow-xs"
+                    >
+                      <Zap className="w-3.5 h-3.5 fill-current" />
+                      <span>Launch Full 180 Qs for {selectedVaultYear}</span>
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setIsCreateModalOpen(true)}
-                    className="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Post Question</span>
-                  </button>
-                </div>
 
-                <div className="space-y-3">
-                  {feedPosts.map((post) => (
-                    <div
-                      key={post.id}
-                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40"
-                    >
-                      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
-                        <span className="font-bold text-slate-900 dark:text-white">{post.author}</span>
-                        <span>{post.time}</span>
-                      </div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1">{post.title}</h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-300">{post.content}</p>
-                      <div className="mt-3 flex items-center gap-4 text-xs">
-                        <button
-                          onClick={() => handleLike(post.id)}
-                          className="flex items-center gap-1 text-rose-600 font-semibold cursor-pointer"
-                        >
-                          <ThumbsUp className="w-3.5 h-3.5" />
-                          <span>{post.likes}</span>
-                        </button>
-                        <span className="text-slate-500 dark:text-slate-400">{post.comments} comments</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* View: News Section */}
-            {activeNav === 'News' && (
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
-                <h2 className="text-xl font-black text-slate-900 dark:text-white">
-                  Official JAMB 2026/2027 News Desk
-                </h2>
-                <div className="space-y-3">
-                  {[
-                    {
-                      date: 'September 2026',
-                      title: 'JAMB IBASS Syllabus Verification',
-                      desc: 'Official list of accredited textbooks and examination regulations published for all 23 subject combinations.',
-                    },
-                    {
-                      date: 'August 2026',
-                      title: 'CBT Centre Re-accreditation Concluded',
-                      desc: 'Over 750 high-capacity CBT examination venues confirmed across the 36 states and FCT.',
-                    },
-                    {
-                      date: 'July 2026',
-                      title: 'Profile Code Creation Guidelines via NIN',
-                      desc: 'Step-by-step instructions on generating profile codes via 55019 or 66019 with zero network errors.',
-                    },
-                  ].map((news) => (
-                    <div
-                      key={news.title}
-                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40"
-                    >
-                      <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">
-                        {news.date}
+                  {/* Year Selection Carousel / Grid */}
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                        Active Examination Year: <span className="text-rose-600 dark:text-rose-400 font-black text-sm">UTME {selectedVaultYear}</span>
                       </span>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{news.title}</h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">{news.desc}</p>
+                      <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                        All 48 UTME Years Fully Accessible
+                      </span>
                     </div>
-                  ))}
+
+                    {/* Quick Year Selector Pills */}
+                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+                      {JAMB_YEARS.map((yr) => (
+                        <button
+                          key={yr}
+                          onClick={() => setSelectedVaultYear(yr)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                            selectedVaultYear === yr
+                              ? 'bg-rose-600 text-white shadow-xs scale-105'
+                              : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-100'
+                          }`}
+                        >
+                          {yr}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 5 Subjects Cards for Selected Year */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                    {[
+                      {
+                        name: 'Use of English',
+                        questions: 60,
+                        book: 'A-Z OF ENGLISH',
+                        author: 'B.O. Dele Ashade',
+                        code: 'eng',
+                        badge: 'Compulsory · 60 Qs',
+                      },
+                      {
+                        name: 'Mathematics',
+                        questions: 40,
+                        book: 'HIDDEN FACTS IN MATHEMATICS',
+                        author: 'M.A. Otumudia',
+                        code: 'math',
+                        badge: '40 Questions',
+                      },
+                      {
+                        name: 'Physics',
+                        questions: 40,
+                        book: 'NEW SCHOOL PHYSICS',
+                        author: 'M.W. Anyakoha, Ph.D.',
+                        code: 'phys',
+                        badge: '40 Questions',
+                      },
+                      {
+                        name: 'Chemistry',
+                        questions: 40,
+                        book: 'NEW SCHOOL CHEMISTRY',
+                        author: 'Osei Yaw Ababio',
+                        code: 'chem',
+                        badge: '40 Questions',
+                      },
+                      {
+                        name: 'Biology',
+                        questions: 40,
+                        book: 'MODERN BIOLOGY',
+                        author: 'Sarojini T. Ramalingam, Ph.D.',
+                        code: 'bio',
+                        badge: '40 Questions',
+                      },
+                    ].map((sub) => (
+                      <div
+                        key={sub.name}
+                        className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 flex flex-col justify-between shadow-2xs hover:border-emerald-400 transition-all"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">
+                              {sub.badge}
+                            </span>
+                            <span className="text-[10px] font-bold text-slate-400">
+                              {selectedVaultYear}
+                            </span>
+                          </div>
+                          <h4 className="text-xs font-bold text-slate-900 dark:text-white mt-2">
+                            {sub.name}
+                          </h4>
+                          <div className="mt-1.5 p-1.5 bg-slate-50 dark:bg-slate-900/60 rounded-lg text-[10px] space-y-0.5">
+                            <p className="font-bold text-emerald-800 dark:text-emerald-300 truncate">
+                              Ref: {sub.book}
+                            </p>
+                            <p className="text-slate-500 truncate">{sub.author}</p>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() =>
+                            handleLaunchTest(
+                              `JAMB ${selectedVaultYear} ${sub.name} Practice`,
+                              'archive',
+                              sub.name,
+                              selectedVaultYear
+                            )
+                          }
+                          className="mt-3 w-full py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                        >
+                          Practice {sub.name}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
+
+
 
             {/* View: Connect / Study Groups */}
             {activeNav === 'Connect' && (
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
-                <h2 className="text-xl font-black text-slate-900 dark:text-white">
-                  University Aspirant Study Squads
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {[
-                    { name: 'UNILAG 300+ Aspirants', members: '1,420 Candidates', focus: 'Law, Medicine, Accounting' },
-                    { name: 'UI Premier Scholars Club', members: '980 Candidates', focus: 'Pharmacy, Engineering, Sciences' },
-                    { name: 'OAU Excellence Network', members: '860 Candidates', focus: 'Nursing, Computer Science' },
-                    { name: 'UNIBEN & FUTO STEM Drillers', members: '740 Candidates', focus: 'Engineering, Geology, Math' },
-                  ].map((group) => (
-                    <div
-                      key={group.name}
-                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 flex items-center justify-between"
-                    >
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">{group.name}</h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{group.members} · {group.focus}</p>
-                      </div>
-                      <button
-                        onClick={() => showToast(`Joined ${group.name}! Group notes cached offline.`)}
-                        className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold cursor-pointer"
-                      >
-                        Join
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <UniversityConnectTab showToast={showToast} />
             )}
 
             {/* View: Shop / Materials */}
             {activeNav === 'Shop' && (
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
                 <h2 className="text-xl font-black text-slate-900 dark:text-white">
-                  Recommended UTME Textbooks &amp; Past Packs
+                  Official JAMB Verified Reference Textbooks
                 </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Accurate answers with direct chapter and page references to the accredited curriculum textbooks.
+                </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {[
-                    { title: 'The Invisible Teacher (New Edition)', author: 'Dele Ashade', badge: 'English Compulsory' },
-                    { title: 'New General Mathematics (Book 3)', author: 'Channon, Smith & Head', badge: 'Mathematics' },
-                    { title: 'Senior Secondary Physics', author: 'PN Okeke & Anyakoha', badge: 'Physics' },
-                    { title: 'New School Chemistry', author: 'Osei Yaw Ababio', badge: 'Chemistry' },
-                    { title: 'Modern Biology for SSS', author: 'Sarojini T. Ramalingam', badge: 'Biology' },
-                    { title: '15-Year UTME Past Questions Master Pack', author: 'JambiX Editorial Team', badge: 'All Subjects' },
+                    { title: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', badge: 'English Compulsory · Verified' },
+                    { title: 'HIDDEN FACTS IN MATHEMATICS', author: 'M.A. Otumudia', badge: 'Mathematics · Verified' },
+                    { title: 'NEW SCHOOL PHYSICS', author: 'M.W. Anyakoha, Ph.D.', badge: 'Physics · Verified' },
+                    { title: 'NEW SCHOOL CHEMISTRY', author: 'Osei Yaw Ababio', badge: 'Chemistry · Verified' },
+                    { title: 'MODERN BIOLOGY', author: 'Sarojini T. Ramalingam, Ph.D.', badge: 'Biology · Verified' },
+                    { title: '15-Year UTME Past Questions Master Pack', author: 'Verified Citations from All 5 Textbooks', badge: 'Complete Drill Pack' },
                   ].map((mat) => (
                     <div
                       key={mat.title}
@@ -1395,6 +1362,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         }}
         testTitle={activeTest.title}
         testType={activeTest.type}
+        initialSubject={activeTest.subject}
+        initialYear={activeTest.year}
       />
 
       {/* Create Discussion Modal */}
