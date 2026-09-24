@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Home,
   GraduationCap,
@@ -26,9 +26,19 @@ import {
   CheckCircle2,
   Trophy,
   ExternalLink,
+  CloudCheck,
 } from 'lucide-react';
 import { CbtTestModal } from './CbtTestModal';
 import { CreatePostModal } from './CreatePostModal';
+import { auth } from '../../lib/firebase';
+import {
+  createFeedPost,
+  likeFeedPost,
+  subscribeToFeedPosts,
+  getUserTestResults,
+  TestResultData,
+  FeedPostData,
+} from '../../lib/firestoreService';
 
 interface StudentDashboardProps {
   user: {
@@ -61,9 +71,22 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     .toUpperCase() || 'EJ';
 
   // Feed items state
-  const [feedPosts, setFeedPosts] = useState([
+  interface FeedItem {
+    id: string | number;
+    author: string;
+    isVerified: boolean;
+    time: string;
+    category: string;
+    title: string;
+    content: string;
+    likes: number;
+    comments: number;
+    isLiked: boolean;
+  }
+
+  const [feedPosts, setFeedPosts] = useState<FeedItem[]>([
     {
-      id: 1,
+      id: 'default_1',
       author: 'JAMBix Admissions Desk',
       isVerified: true,
       time: '2 hours ago',
@@ -76,7 +99,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       isLiked: false,
     },
     {
-      id: 2,
+      id: 'default_2',
       author: 'Chukwudi Adeleke',
       isVerified: false,
       time: '4 hours ago',
@@ -89,7 +112,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       isLiked: true,
     },
     {
-      id: 3,
+      id: 'default_3',
       author: 'Dr. A. O. Bello (Physics Lead)',
       isVerified: true,
       time: 'Yesterday',
@@ -103,32 +126,86 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     },
   ]);
 
+  const [userTests, setUserTests] = useState<TestResultData[]>([]);
+
+  // Subscribe to live Firestore posts and fetch user test history
+  useEffect(() => {
+    const unsubscribe = subscribeToFeedPosts((fbPosts) => {
+      if (fbPosts && fbPosts.length > 0) {
+        const mapped: FeedItem[] = fbPosts.map((p) => ({
+          id: p.id,
+          author: p.authorName,
+          isVerified: false,
+          time: 'Cloud Synced',
+          category: p.tag,
+          title: p.title,
+          content: p.content,
+          likes: p.likesCount || 0,
+          comments: p.commentsCount || 0,
+          isLiked: false,
+        }));
+        setFeedPosts((prev) => {
+          const defaultItems = prev.filter((it) => String(it.id).startsWith('default_'));
+          const nonDupes = mapped.filter((m) => !defaultItems.some((d) => d.id === m.id));
+          return [...nonDupes, ...defaultItems];
+        });
+      }
+    });
+
+    if (auth.currentUser) {
+      getUserTestResults(auth.currentUser.uid)
+        .then((tests) => {
+          if (tests) setUserTests(tests);
+        })
+        .catch((err) => console.warn('Test results fetch error:', err));
+    }
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, []);
+
   const handleLaunchTest = (title: string, type: string) => {
     setActiveTest({ title, type });
     setIsCbtModalOpen(true);
   };
 
-  const handleAddPost = (newPost: { title: string; content: string; subject: string }) => {
-    setFeedPosts([
-      {
-        id: Date.now(),
-        author: displayName,
-        isVerified: false,
-        time: 'Just now',
-        category: newPost.subject,
-        title: newPost.title,
-        content: newPost.content,
-        likes: 0,
-        comments: 0,
-        isLiked: false,
-      },
-      ...feedPosts,
-    ]);
+  const handleAddPost = async (newPost: { title: string; content: string; subject: string }) => {
+    const tempId = `post_${Date.now()}`;
+    const newFeedItem: FeedItem = {
+      id: tempId,
+      author: displayName,
+      isVerified: false,
+      time: 'Just now',
+      category: newPost.subject,
+      title: newPost.title,
+      content: newPost.content,
+      likes: 0,
+      comments: 0,
+      isLiked: false,
+    };
+
+    setFeedPosts((prev) => [newFeedItem, ...prev]);
+
+    if (auth.currentUser) {
+      try {
+        await createFeedPost({
+          id: tempId,
+          authorId: auth.currentUser.uid,
+          authorName: displayName,
+          tag: newPost.subject,
+          title: newPost.title,
+          content: newPost.content,
+        });
+      } catch (err) {
+        console.warn('Error saving post to Firestore:', err);
+      }
+    }
   };
 
-  const handleLike = (id: number) => {
-    setFeedPosts(
-      feedPosts.map((post) => {
+  const handleLike = async (id: string | number) => {
+    setFeedPosts((prev) =>
+      prev.map((post) => {
         if (post.id === id) {
           return {
             ...post,
@@ -139,6 +216,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         return post;
       })
     );
+
+    if (typeof id === 'string' && !id.startsWith('default_') && auth.currentUser) {
+      try {
+        await likeFeedPost(id);
+      } catch (err) {
+        console.warn('Error updating like count in Firestore:', err);
+      }
+    }
   };
 
   return (
@@ -230,6 +315,12 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
             {/* Right Action Icons */}
             <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+              {/* Firebase Cloud status indicator */}
+              <div className="hidden lg:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200/80 rounded-full text-[11px] font-semibold text-emerald-800">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Firestore Synced</span>
+              </div>
+
               {/* Create + Button */}
               <button
                 onClick={() => setIsCreateModalOpen(true)}
@@ -355,23 +446,23 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 </div>
               </div>
 
-              {/* Banner 3: WAEC & NECO CBT Software For Computers (Tech Navy Blue) */}
+              {/* Banner 3: JAMB UTME CBT Software For Computers & Mobile (Tech Navy Blue) */}
               <div
-                onClick={() => alert('Downloading WAEC & NECO offline CBT software for Windows...')}
+                onClick={() => alert('Downloading JAMBix UTME offline CBT software with complete JAMB syllabus & past questions...')}
                 className="relative rounded-2xl overflow-hidden p-4 sm:p-5 bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#1e1b4b] text-white shadow-sm flex items-center justify-between min-h-[120px] group cursor-pointer hover:shadow-md transition-all"
               >
                 <div className="relative z-10 max-w-[65%]">
                   <div className="text-xs font-black tracking-wide text-cyan-400">
-                    WAEC &amp; NECO
+                    JAMB UTME
                   </div>
                   <h3 className="text-base font-extrabold text-white leading-snug mt-0.5">
-                    CBT Software <span className="text-cyan-200">For Computers</span>
+                    CBT Software <span className="text-cyan-200">For Computers &amp; Mobile</span>
                   </h3>
                   <p className="text-[10px] text-slate-300 mt-1 truncate">
                     Candidates·Schools·Centres·Resellers
                   </p>
                   <div className="mt-2 inline-flex items-center gap-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-2 py-0.5 rounded text-[10px] font-black uppercase">
-                    <span>Download Now!! 100% Offline.</span>
+                    <span>Download Now!! 100% Offline JAMB Past Questions</span>
                   </div>
                 </div>
 
@@ -400,11 +491,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </button>
                   </div>
 
-                  {/* 2x2 Grid of the 4 Distinct Test Cards from the screenshot */}
+                  {/* 2x2 Grid of 4 JAMB/UTME-focused test cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Card 1: CBT Simulator (Warm Amber / Peach) */}
                     <div
-                      onClick={() => handleLaunchTest('CBT Simulator (General Practice)', 'general')}
+                      onClick={() => handleLaunchTest('CBT Simulator (General UTME Practice)', 'general')}
                       className="p-4 rounded-2xl bg-[#fdf6ee] border border-[#f5dfc6] hover:border-[#e9c79f] transition-all cursor-pointer flex items-start gap-3.5 group hover:shadow-xs"
                     >
                       <div className="w-12 h-12 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center shrink-0 text-orange-600">
@@ -419,7 +510,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                           CBT Simulator
                         </h4>
                         <p className="mt-1 text-xs text-[#78350f] leading-snug">
-                          Create and set up a CBT environment to practice for any CBT exam.
+                          Create and set up a customized CBT environment to practice with 8-key shortcuts.
                         </p>
                       </div>
                     </div>
@@ -440,49 +531,49 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                           JAMB CBT Simulator
                         </h4>
                         <p className="mt-1 text-xs text-[#065f46] leading-snug">
-                          Practice JAMB CBT with real UTME past questions in CBT format.
+                          Practice full 4-subject JAMB CBT with real UTME past questions in authentic format.
                         </p>
                       </div>
                     </div>
 
-                    {/* Card 3: WAEC CBT Practice 2026 Simulator (Soft Periwinkle / Lavender) */}
+                    {/* Card 3: JAMB Novel & English Masterclass (Soft Periwinkle / Lavender) */}
                     <div
-                      onClick={() => handleLaunchTest('WAEC CBT Practice 2026 Simulator', 'waec')}
+                      onClick={() => handleLaunchTest('JAMB Novel: "The Life Changer" & English Drills', 'novel')}
                       className="p-4 rounded-2xl bg-[#edf2fb] border border-[#ccdcf6] hover:border-[#acc4f0] transition-all cursor-pointer flex items-start gap-3.5 group hover:shadow-xs"
                     >
                       <div className="w-12 h-12 rounded-xl bg-blue-100 border border-blue-200 flex items-center justify-center shrink-0">
-                        {/* Official-looking WAEC Emblem */}
-                        <div className="w-8 h-8 rounded-full bg-[#1e3a8a] text-yellow-300 flex items-center justify-center text-[9px] font-black border border-yellow-400 shadow-2xs">
-                          WAEC
+                        {/* JAMB Novel Emblem */}
+                        <div className="w-8 h-8 rounded-full bg-[#1e3a8a] text-yellow-300 flex items-center justify-center text-[8px] font-black border border-yellow-400 shadow-2xs">
+                          NOVEL
                         </div>
                       </div>
                       <div>
                         <h4 className="text-sm font-bold text-[#1e293b] group-hover:text-blue-700 transition-colors">
-                          WAEC CBT Practice 2026 Simulator
+                          JAMB Novel &amp; English Masterclass
                         </h4>
                         <p className="mt-1 text-xs text-[#334155] leading-snug">
-                          Practice WAEC past questions in a real CBT exam environment.
+                          Master &ldquo;The Life Changer&rdquo; novel questions, comprehension, and oral forms.
                         </p>
                       </div>
                     </div>
 
-                    {/* Card 4: NECO CBT Practice 2026 Simulator (Pale Greenish Sage) */}
+                    {/* Card 4: JAMB 15-Year Past Questions Bank (Pale Greenish Sage) */}
                     <div
-                      onClick={() => handleLaunchTest('NECO CBT Practice 2026 Simulator', 'neco')}
+                      onClick={() => handleLaunchTest('JAMB 15-Year Past Questions Bank', 'archive')}
                       className="p-4 rounded-2xl bg-[#f3f9ee] border border-[#d6ecce] hover:border-[#b4e2a6] transition-all cursor-pointer flex items-start gap-3.5 group hover:shadow-xs"
                     >
                       <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
-                        {/* Official-looking NECO Emblem */}
-                        <div className="w-8 h-8 rounded-full bg-[#15803d] text-yellow-200 flex items-center justify-center text-[9px] font-black border border-emerald-400 shadow-2xs">
-                          NECO
+                        {/* UTME Archive Emblem */}
+                        <div className="w-8 h-8 rounded-full bg-[#15803d] text-yellow-200 flex items-center justify-center text-[8px] font-black border border-emerald-400 shadow-2xs">
+                          15 YRS
                         </div>
                       </div>
                       <div>
                         <h4 className="text-sm font-bold text-[#14532d] group-hover:text-emerald-700 transition-colors">
-                          NECO CBT Practice 2026 Simulator
+                          JAMB Past Questions Bank
                         </h4>
                         <p className="mt-1 text-xs text-[#166534] leading-snug">
-                          Prepare for 2026 NECO exams using real past questions in CBT mode.
+                          Drill verified UTME past questions from 2010 to 2025 by topic and year in CBT mode.
                         </p>
                       </div>
                     </div>

@@ -19,11 +19,13 @@ import { LogInPage } from './LogInPage';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
 import { TermsModal } from './TermsModal';
 import { StudentDashboard } from '../dashboard/StudentDashboard';
+import { useAuth } from '../../context/AuthContext';
 
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
 export type ViewportMode = 'responsive' | 'mobile' | 'tablet';
 
 export const AuthContainer: React.FC = () => {
+  const { currentUser, studentProfile, logOut: fbLogOut, localStudent, setLocalStudent } = useAuth();
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('login');
   const [viewportMode, setViewportMode] = useState<ViewportMode>('responsive');
 
@@ -31,24 +33,17 @@ export const AuthContainer: React.FC = () => {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [termsTab, setTermsTab] = useState<'terms' | 'privacy'>('terms');
 
-  // Authenticated state (When set, transition to StudentDashboard)
-  const [authenticatedUser, setAuthenticatedUser] = useState<{
-    name?: string;
-    email?: string;
-    identifier?: string;
-  } | null>(null);
-
   const handleOpenTerms = (tab: 'terms' | 'privacy') => {
     setTermsTab(tab);
     setIsTermsOpen(true);
   };
 
   const handleSignUpSuccess = (user: { name: string; email: string }) => {
-    setAuthenticatedUser(user);
+    setLocalStudent(user);
   };
 
   const handleLogInSuccess = (user: { identifier: string }) => {
-    setAuthenticatedUser({
+    setLocalStudent({
       name: user.identifier.includes('@')
         ? user.identifier.split('@')[0]
         : user.identifier,
@@ -57,13 +52,21 @@ export const AuthContainer: React.FC = () => {
     });
   };
 
-  const handleLogOut = () => {
-    setAuthenticatedUser(null);
+  const handleLogOut = async () => {
+    await fbLogOut();
     setCurrentScreen('login');
   };
 
-  // If the student is authenticated, transition directly to the StudentDashboard!
-  if (authenticatedUser) {
+  const activeUser = currentUser
+    ? {
+        name: studentProfile?.fullName || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'UTME Candidate'),
+        email: currentUser.email || 'student@jambix.ng',
+        identifier: currentUser.email || currentUser.uid,
+      }
+    : localStudent;
+
+  // If the student is authenticated via Firebase or local session, transition directly to the StudentDashboard!
+  if (activeUser) {
     return (
       <div className="relative">
         {/* Quick Demo Switcher Strip to allow switching back to Auth */}
@@ -71,7 +74,8 @@ export const AuthContainer: React.FC = () => {
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-slate-300">
-              Student Session Active: <strong className="text-white">{authenticatedUser.name || authenticatedUser.identifier}</strong>
+              Student Session Active: <strong className="text-white">{activeUser.name || activeUser.identifier}</strong>
+              {currentUser && <span className="ml-2 text-emerald-400 font-semibold">(Firebase Cloud Synced)</span>}
             </span>
           </div>
           <button
@@ -82,7 +86,7 @@ export const AuthContainer: React.FC = () => {
           </button>
         </div>
 
-        <StudentDashboard user={authenticatedUser} onLogOut={handleLogOut} />
+        <StudentDashboard user={activeUser} onLogOut={handleLogOut} />
       </div>
     );
   }
@@ -153,7 +157,7 @@ export const AuthContainer: React.FC = () => {
             <button
               type="button"
               onClick={() => {
-                setAuthenticatedUser({
+                setLocalStudent({
                   name: 'Emmanuel Jesuit',
                   email: 'emmanueljesuit4u@gmail.com',
                   identifier: 'emmanueljesuit4u@gmail.com',

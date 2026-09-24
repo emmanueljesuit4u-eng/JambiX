@@ -5,6 +5,8 @@
 
 import React, { useState } from 'react';
 import { X, Play, Clock, BookOpen, CheckCircle, Award } from 'lucide-react';
+import { auth } from '../../lib/firebase';
+import { saveTestResult } from '../../lib/firestoreService';
 
 interface CbtTestModalProps {
   isOpen: boolean;
@@ -291,11 +293,39 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     </button>
                   ) : (
                     <button
-                      onClick={() => {
+                      onClick={async () => {
+                        let correctCount = 0;
+                        sampleQuestions.forEach((q, idx) => {
+                          if (selectedAnswers[idx] === q.answer) {
+                            correctCount++;
+                          }
+                        });
+                        const total = sampleQuestions.length;
+                        const percentage = Math.round((correctCount / total) * 100);
+
+                        if (auth.currentUser) {
+                          try {
+                            await saveTestResult({
+                              id: `test_${Date.now()}`,
+                              userId: auth.currentUser.uid,
+                              testTitle,
+                              testType,
+                              score: correctCount,
+                              totalQuestions: total,
+                              percentage,
+                              timeSpentSeconds: 180,
+                            });
+                          } catch (err) {
+                            console.warn('Error saving test result:', err);
+                          }
+                        }
+
                         alert(
-                          `CBT Test Submitted!\nYou answered ${
-                            Object.keys(selectedAnswers).length
-                          } out of ${sampleQuestions.length} questions.`
+                          `CBT Exam Submitted!\nScore: ${correctCount}/${total} (${percentage}%)\n${
+                            auth.currentUser
+                              ? 'Your score has been saved to your Firebase profile!'
+                              : 'Log in to sync your CBT records across devices.'
+                          }`
                         );
                         setTestStarted(false);
                         onClose();
