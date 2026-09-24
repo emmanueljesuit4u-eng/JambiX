@@ -5,10 +5,28 @@
 
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
-import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
+import {
+  initializeFirestore,
+  getFirestore,
+  doc,
+  getDocFromServer,
+} from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
+
+// Initialize with auto-detect long polling to ensure reliable connectivity in web sandbox/iframe environments
+try {
+  initializeFirestore(
+    app,
+    {
+      experimentalAutoDetectLongPolling: true,
+    },
+    firebaseConfig.firestoreDatabaseId
+  );
+} catch {
+  // If already initialized, ignore
+}
 
 // CRITICAL: Must pass firebaseConfig.firestoreDatabaseId as the second parameter
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
@@ -81,11 +99,21 @@ export async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
+    if (error instanceof Error) {
+      if (
+        error.message.includes('the client is offline') ||
+        error.message.includes('unavailable') ||
+        (error as { code?: string }).code === 'unavailable'
+      ) {
+        // App is operating in offline mode or waiting for connection
+        console.warn('Firebase connection probe note: client is operating in offline mode or waiting for connection.');
+        return;
+      }
       console.error('Please check your Firebase configuration.');
     }
   }
 }
 
-// Auto-run connection test on boot
-testConnection();
+// Auto-run connection test on boot safely
+testConnection().catch(() => {});
+

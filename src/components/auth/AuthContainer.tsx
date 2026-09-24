@@ -13,12 +13,14 @@ import {
   Layers,
   BookOpen,
   LayoutDashboard,
+  CheckCircle,
 } from 'lucide-react';
 import { SignUpPage } from './SignUpPage';
 import { LogInPage } from './LogInPage';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
 import { TermsModal } from './TermsModal';
 import { StudentDashboard } from '../dashboard/StudentDashboard';
+import { ThemeToggle } from '../common/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
 
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
@@ -78,12 +80,15 @@ export const AuthContainer: React.FC = () => {
               {currentUser && <span className="ml-2 text-emerald-400 font-semibold">(Firebase Cloud Synced)</span>}
             </span>
           </div>
-          <button
-            onClick={handleLogOut}
-            className="text-xs text-rose-300 hover:text-white underline font-semibold cursor-pointer"
-          >
-            ← Return to Sign Up / Log In
-          </button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle className="scale-85 origin-right border-slate-700 bg-slate-800 text-amber-300" />
+            <button
+              onClick={handleLogOut}
+              className="text-xs text-rose-300 hover:text-white underline font-semibold cursor-pointer"
+            >
+              ← Return to Sign Up / Log In
+            </button>
+          </div>
         </div>
 
         <StudentDashboard user={activeUser} onLogOut={handleLogOut} />
@@ -92,9 +97,9 @@ export const AuthContainer: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between text-slate-800 antialiased">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-between text-slate-800 dark:text-slate-100 transition-colors duration-200 antialiased">
       {/* Top Utility Bar */}
-      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-2.5">
+      <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 py-2.5 transition-colors">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
           {/* Brand Wordmark */}
           <div className="flex items-center gap-3">
@@ -105,26 +110,26 @@ export const AuthContainer: React.FC = () => {
               <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs group-hover:bg-emerald-800 transition-colors">
                 J
               </div>
-              <span className="font-extrabold text-slate-900 tracking-tight text-lg">
-                JAMB<span className="text-emerald-600">ix</span>
+              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight text-lg">
+                Jambi<span className="text-emerald-600 dark:text-emerald-400">X</span>
               </span>
             </button>
-            <span className="hidden sm:inline-block text-xs text-slate-400 font-medium border-l border-slate-200 pl-3">
+            <span className="hidden sm:inline-block text-xs text-slate-400 dark:text-slate-500 font-medium border-l border-slate-200 dark:border-slate-700 pl-3">
               UTME Prep Engine
             </span>
           </div>
 
-          {/* Quick Screen Nav Links, Demo Jump & Device Switcher */}
+          {/* Quick Screen Nav Links, Demo Jump, Device Switcher & Top Right Light/Dark Toggle */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Screen Tabs */}
-            <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800/90 border border-transparent dark:border-slate-700/80 p-1 rounded-xl text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => setCurrentScreen('login')}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   currentScreen === 'login'
-                    ? 'bg-white text-emerald-800 shadow-2xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Log In
@@ -134,8 +139,8 @@ export const AuthContainer: React.FC = () => {
                 onClick={() => setCurrentScreen('signup')}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   currentScreen === 'signup'
-                    ? 'bg-white text-emerald-800 shadow-2xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Sign Up
@@ -145,8 +150,8 @@ export const AuthContainer: React.FC = () => {
                 onClick={() => setCurrentScreen('forgot_password')}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   currentScreen === 'forgot_password'
-                    ? 'bg-white text-emerald-800 shadow-2xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Forgot Password
@@ -171,15 +176,15 @@ export const AuthContainer: React.FC = () => {
             </button>
 
             {/* Viewport Frame Mode Switcher for Testing */}
-            <div className="hidden md:flex items-center bg-slate-100 p-1 rounded-xl text-xs text-slate-600">
+            <div className="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 border border-transparent dark:border-slate-700/80 p-1 rounded-xl text-xs text-slate-600 dark:text-slate-300">
               <button
                 type="button"
                 title="Fluid Responsive View"
                 onClick={() => setViewportMode('responsive')}
                 className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   viewportMode === 'responsive'
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                 }`}
               >
                 <Monitor className="w-3.5 h-3.5" />
@@ -190,8 +195,8 @@ export const AuthContainer: React.FC = () => {
                 onClick={() => setViewportMode('tablet')}
                 className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   viewportMode === 'tablet'
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                 }`}
               >
                 <Tablet className="w-3.5 h-3.5" />
@@ -202,13 +207,16 @@ export const AuthContainer: React.FC = () => {
                 onClick={() => setViewportMode('mobile')}
                 className={`p-1.5 rounded-lg transition-all cursor-pointer ${
                   viewportMode === 'mobile'
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs'
+                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white'
                 }`}
               >
                 <Smartphone className="w-3.5 h-3.5" />
               </button>
             </div>
+
+            {/* Toggle for Light and Dark Mode on the first page at the top right hand side corner */}
+            <ThemeToggle />
           </div>
         </div>
       </header>
@@ -244,7 +252,7 @@ export const AuthContainer: React.FC = () => {
                     </div>
                     <div>
                       <div className="text-xl font-extrabold tracking-tight">
-                        JAMB<span className="text-emerald-400">ix</span>
+                        Jambi<span className="text-emerald-400">X</span>
                       </div>
                       <div className="text-[11px] text-emerald-200/80 font-medium">
                         Prepare smarter. Perform better.
@@ -295,12 +303,24 @@ export const AuthContainer: React.FC = () => {
                         </div>
                       </div>
                     </div>
+
+                    <div className="flex items-start gap-3 text-xs">
+                      <div className="w-6 h-6 rounded-lg bg-emerald-800/80 border border-emerald-600/40 flex items-center justify-center shrink-0 mt-0.5 text-emerald-300">
+                        <CheckCircle className="w-3.5 h-3.5" />
+                      </div>
+                      <div>
+                        <div className="font-bold text-white">Verified Textbook References</div>
+                        <div className="text-emerald-200/60 text-[11px]">
+                          Accurate answers with reference to the appropriate verified textbook pages.
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-white/10 text-xs">
                   <div className="text-emerald-100/90 italic leading-relaxed">
-                    &ldquo;JAMBix timed mock tests gave me the speed and composure I needed. Scored 324 in my UTME.&rdquo;
+                    &ldquo;JambiX timed mock tests gave me the speed and composure I needed. Scored 324 in my UTME.&rdquo;
                   </div>
                   <div className="mt-2 text-[11px] font-semibold text-emerald-400">
                     Oluwaseun A. · UNILAG Law Aspirant
@@ -363,30 +383,30 @@ export const AuthContainer: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200/80 bg-white py-4 px-4 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 py-4 px-4 text-center text-xs text-slate-500 dark:text-slate-400 transition-colors">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 text-xs">
-            <span className="font-bold text-slate-800">JAMBix</span>
+            <span className="font-bold text-slate-800 dark:text-white">JambiX</span>
             <span>·</span>
             <span>Prepare smarter. Perform better.</span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-slate-500">
+          <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
             <button
               type="button"
               onClick={() => handleOpenTerms('terms')}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer"
             >
               Terms of Service
             </button>
             <button
               type="button"
               onClick={() => handleOpenTerms('privacy')}
-              className="hover:text-emerald-700 transition-colors cursor-pointer"
+              className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer"
             >
               Privacy Policy
             </button>
-            <span>© {new Date().getFullYear()} JAMBix Nigeria</span>
+            <span>© {new Date().getFullYear()} JambiX Nigeria</span>
           </div>
         </div>
       </footer>

@@ -63,15 +63,15 @@ export const Logo: React.FC<LogoProps> = ({
 
         {/* Brand Text */}
         <div className="flex flex-col leading-none">
-          <div className={`font-extrabold tracking-tight text-slate-900 ${textClasses[size]} flex items-baseline`}>
-            <span>JAMB</span>
-            <span className="text-emerald-600 font-black">ix</span>
+          <div className={`font-extrabold tracking-tight text-slate-900 dark:text-white ${textClasses[size]} flex items-baseline`}>
+            <span>Jambi</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-black">X</span>
           </div>
         </div>
       </div>
 
       {showTagline && (
-        <p className="mt-1.5 text-xs font-medium text-slate-500 tracking-wide text-center">
+        <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wide text-center">
           Prepare smarter. Perform better.
         </p>
       )}

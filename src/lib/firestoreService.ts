@@ -55,6 +55,18 @@ export interface FeedPostData {
   createdAt?: unknown;
 }
 
+function isOfflineError(error: unknown): boolean {
+  if (!error) return false;
+  const str = String(error).toLowerCase();
+  const code = (error as { code?: string })?.code;
+  return (
+    code === 'unavailable' ||
+    str.includes('unavailable') ||
+    str.includes('the client is offline') ||
+    str.includes('failed-precondition')
+  );
+}
+
 // 1. User Profile Operations
 export async function saveUserProfile(profile: UserProfileData): Promise<void> {
   const path = `users/${profile.id}`;
@@ -70,6 +82,10 @@ export async function saveUserProfile(profile: UserProfileData): Promise<void> {
       { merge: true }
     );
   } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore saveUserProfile: cached locally while offline.');
+      return;
+    }
     handleFirestoreError(error, OperationType.WRITE, path);
   }
 }
@@ -82,6 +98,10 @@ export async function getUserProfile(userId: string): Promise<UserProfileData | 
     if (!snap.exists()) return null;
     return snap.data() as UserProfileData;
   } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore getUserProfile: offline mode active.');
+      return null;
+    }
     handleFirestoreError(error, OperationType.GET, path);
   }
 }
@@ -98,6 +118,10 @@ export async function saveTestResult(
       createdAt: serverTimestamp(),
     });
   } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore saveTestResult: cached locally while offline.');
+      return;
+    }
     handleFirestoreError(error, OperationType.WRITE, path);
   }
 }
@@ -113,6 +137,10 @@ export async function getUserTestResults(userId: string): Promise<TestResultData
     const snapshot = await getDocs(q);
     return snapshot.docs.map((docSnap) => docSnap.data() as TestResultData);
   } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore getUserTestResults: offline mode active.');
+      return [];
+    }
     handleFirestoreError(error, OperationType.LIST, path);
   }
 }
@@ -131,6 +159,10 @@ export async function createFeedPost(
       createdAt: serverTimestamp(),
     });
   } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore createFeedPost: queued offline.');
+      return;
+    }
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
@@ -151,10 +183,17 @@ export function subscribeToFeedPosts(
         onUpdate(posts);
       },
       (error) => {
+        if (isOfflineError(error)) {
+          console.warn('Firestore subscribeToFeedPosts: offline mode.');
+          return;
+        }
         handleFirestoreError(error, OperationType.LIST, path);
       }
     );
   } catch (error) {
+    if (isOfflineError(error)) {
+      return () => {};
+    }
     handleFirestoreError(error, OperationType.LIST, path);
   }
 }
@@ -167,6 +206,10 @@ export async function likeFeedPost(postId: string): Promise<void> {
       likesCount: increment(1),
     });
   } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore likeFeedPost: queued offline.');
+      return;
+    }
     handleFirestoreError(error, OperationType.UPDATE, path);
   }
 }
