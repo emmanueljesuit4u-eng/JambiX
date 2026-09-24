@@ -1,0 +1,6 @@
+{
+  "name": "JAMBix - UTME Preparation",
+  "description": "Modern Nigerian JAMB/UTME preparation app authentication: Sign Up, Log In, and Forgot Password.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
