@@ -127,7 +127,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
       const citations = [
         'A-Z OF ENGLISH (Dele Ashade) · Chapter 7: Comprehension & Summary Techniques (Pages 198 - 232)',
         'A-Z OF ENGLISH (Dele Ashade) · Chapters 1, 3 & 5: Concord, Lexis & Prepositional Idioms (Pages 12 - 176)',
-        'The Life Changer (Prescribed Novel) · Official JAMB Prescribed Campus Text',
+        'The Lekki Headmaster (2025 UTME) & The Life Changer · Official Prescribed UTME Novels',
         'A-Z OF ENGLISH (Dele Ashade) · Chapters 9 & 11: Vowel Contrasts & Primary Stress (Pages 255 - 350)',
       ];
       return citations[modIdx] || 'A-Z OF ENGLISH (B.O. Dele Ashade)';

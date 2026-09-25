@@ -74,7 +74,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [selectedYear, setSelectedYear] = useState<number | 'random'>(
     initialYear || 2025
   );
-  const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint'>('full');
+  const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint' | 'novel'>('full');
   const [duration, setDuration] = useState<number>(120);
   const [seenCount, setSeenCount] = useState<number>(0);
 
@@ -103,7 +103,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const titleLower = (testTitle || '').toLowerCase();
     const initLower = (initialSubject || '').toLowerCase();
 
-    if (initLower.includes('phys') || titleLower.includes('phys')) {
+    if (testType === 'novel' || titleLower.includes('novel')) {
+      setSelectedSubjects(['Use of English']);
+      setExamMode('novel');
+      setDuration(25);
+    } else if (initLower.includes('phys') || titleLower.includes('phys')) {
       setSelectedSubjects(['Physics']);
       setExamMode('single');
     } else if (initLower.includes('chem') || titleLower.includes('chem')) {
@@ -115,7 +119,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     } else if (initLower.includes('math') || titleLower.includes('math')) {
       setSelectedSubjects(['Mathematics']);
       setExamMode('single');
-    } else if (initLower.includes('eng') || titleLower.includes('eng') || titleLower.includes('novel')) {
+    } else if (initLower.includes('eng') || titleLower.includes('eng')) {
       setSelectedSubjects(['Use of English']);
       setExamMode('single');
     } else {
@@ -165,7 +169,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       subjects: selectedSubjects,
       year: selectedYear,
       mode: examMode,
-      customQuestionCount: examMode === 'sprint' ? 20 : undefined,
+      customQuestionCount: examMode === 'sprint' ? 20 : examMode === 'novel' ? 10 : undefined,
     });
 
     setActiveQuestions(questions);

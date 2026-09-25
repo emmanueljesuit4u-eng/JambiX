@@ -590,14 +590,14 @@ export const UniversityConnectTab: React.FC<UniversityConnectTabProps> = ({ show
 
               <button
                 onClick={() => {
-                  const generalHubUrl = 'https://chat.whatsapp.com/JambiXGeneralUTMEHub2026';
-                  showToast('Opening General UTME 2026/2027 Aspirants Hub...');
-                  window.open(generalHubUrl, '_blank', 'noopener,noreferrer');
+                  const channelUrl = 'https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06';
+                  showToast('Opening Official JAMB WhatsApp Channel...');
+                  window.open(channelUrl, '_blank', 'noopener,noreferrer');
                 }}
                 className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>Join General National UTME Aspirants Hub</span>
+                <MessageCircle className="w-4 h-4 fill-white" />
+                <span>Join Official JAMB WhatsApp Channel for Updates</span>
               </button>
 
               {/* Admin / Contributor link fix button */}

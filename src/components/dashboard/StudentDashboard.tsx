@@ -8,13 +8,9 @@ import {
   Home,
   GraduationCap,
   Monitor,
-  MessageSquare,
   BookOpen,
   Users,
   ShoppingBag,
-  Search,
-  Plus,
-  Bell,
   MoreHorizontal,
   LogOut,
   Laptop,
@@ -34,36 +30,30 @@ import {
   Cloud,
   RefreshCw,
   Check,
-  ThumbsUp,
   AlertTriangle,
   Bookmark,
   Share2,
   HelpCircle,
   Calendar,
   BookMarked,
+  MessageCircle,
+  ExternalLink,
 } from 'lucide-react';
 import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
-import { CreatePostModal } from './CreatePostModal';
 import { UniversityConnectTab } from './UniversityConnectTab';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
+import { NovelsTab } from './NovelsTab';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { auth } from '../../lib/firebase';
 import {
-  createFeedPost,
-  likeFeedPost,
   getUserTestResults,
   TestResultData,
-  FeedPostData,
 } from '../../lib/firestoreService';
 import {
-  saveLocalTestResult,
   getLocalTestResults,
-  saveLocalPost,
-  getLocalPosts,
   OfflineTestResult,
-  OfflinePostItem,
 } from '../../lib/offlineStorage';
 import { useNetwork } from '../../context/NetworkContext';
 
@@ -100,116 +90,46 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     }, 4500);
   };
 
-  const [searchQuery, setSearchQuery] = useState('');
   const [isCbtModalOpen, setIsCbtModalOpen] = useState(false);
   const [activeTest, setActiveTest] = useState<{ title: string; type: string; subject?: string; year?: number }>({ title: '', type: '' });
   const [selectedVaultYear, setSelectedVaultYear] = useState<number>(2025);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [feedFilter, setFeedFilter] = useState('All');
-
-  // Candidate name & initials
-  const displayName = user.name || (user.email ? user.email.split('@')[0] : 'Candidate');
-  const initials = displayName
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .substring(0, 2)
-    .toUpperCase() || 'EJ';
-
-  // Feed items state
-  interface FeedItem {
-    id: string | number;
-    author: string;
-    isVerified: boolean;
-    time: string;
-    category: string;
-    title: string;
-    content: string;
-    likes: number;
-    comments: number;
-    isLiked: boolean;
-    isLocal?: boolean;
-  }
-
-  const defaultPosts: FeedItem[] = [
-    {
-      id: 'default_1',
-      author: 'JambiX Admissions Desk',
-      isVerified: true,
-      time: '2 hours ago',
-      category: 'Official UTME Alert',
-      title: 'JAMB 2026/2027 Accreditation of CBT Centres & Registration Timelines',
-      content:
-        'The Joint Admissions and Matriculation Board (JAMB) has concluded the final technical inspection of all accredited Computer-Based Test (CBT) centres across Nigeria. Candidates are advised to prepare their National Identification Number (NIN) ahead of official profile code creation.',
-      likes: 142,
-      comments: 38,
-      isLiked: false,
-    },
-    {
-      id: 'default_2',
-      author: 'Chukwudi Adeleke',
-      isVerified: false,
-      time: '4 hours ago',
-      category: 'Use of English / Novel',
-      title: 'Analysis of Key Characters in "The Life Changer" - Quick Revision Summary',
-      content:
-        'For everyone taking Use of English this year: make sure you pay close attention to Chapter 4 regarding the campus interaction between Salma and Habib. There are at least 3 likely questions regarding the university disciplinary committee proceedings!',
-      likes: 89,
-      comments: 24,
-      isLiked: true,
-    },
-    {
-      id: 'default_3',
-      author: 'Dr. A. O. Bello (Physics Lead)',
-      isVerified: true,
-      time: 'Yesterday',
-      category: 'Physics & Math Drills',
-      title: 'Top 10 Repeated Physics Formulas in JAMB Past Questions (2015 - 2025)',
-      content:
-        'Mastering dimensional analysis, electric potential V = W/Q, and projectile maximum range R = u²sin(2θ)/g gives you an immediate 15+ score boost. We have updated 500+ practice questions in the JAMB CBT Simulator below.',
-      likes: 215,
-      comments: 57,
-      isLiked: false,
-    },
-  ];
-
-  const [feedPosts, setFeedPosts] = useState<FeedItem[]>(defaultPosts);
   const [userTests, setUserTests] = useState<OfflineTestResult[]>([]);
+
+  // Candidate first name only: "Study hard, {studentFirstName}"
+  const studentFirstName = (() => {
+    // 1. If user name is provided (e.g. "Emmanuel Jesuit")
+    if (user.name && user.name.trim()) {
+      const clean = user.name.trim().replace(/[._-]+/g, ' ');
+      const first = clean.split(' ').filter(Boolean)[0];
+      if (first && !first.includes('@')) {
+        return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+      }
+    }
+    // 2. If identifier or email is provided (e.g. "emmanueljesuit4u@gmail.com")
+    const rawId = user.identifier || user.email || '';
+    if (rawId) {
+      const prefix = rawId.split('@')[0];
+      const alphaMatch = prefix.match(/^[a-zA-Z]+/);
+      if (alphaMatch && alphaMatch[0].length >= 2) {
+        const first = alphaMatch[0];
+        if (first.toLowerCase().startsWith('emmanuel')) {
+          return 'Emmanuel';
+        }
+        return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+      }
+    }
+    return 'Candidate';
+  })();
 
   // Load offline data first, then merge cloud data if online
   const loadStoredData = () => {
-    // 1. Load local tests
+    // 1. Load local test results
     const localTests = getLocalTestResults(auth.currentUser?.uid);
     if (localTests.length > 0) {
       setUserTests(localTests);
     }
 
-    // 2. Load local posts
-    const localPosts = getLocalPosts();
-    if (localPosts.length > 0) {
-      const formattedLocal: FeedItem[] = localPosts.map((p) => ({
-        id: p.id,
-        author: p.authorName,
-        isVerified: false,
-        time: 'Saved offline',
-        category: p.tag,
-        title: p.title,
-        content: p.content,
-        likes: p.likesCount || 0,
-        comments: p.commentsCount || 0,
-        isLiked: false,
-        isLocal: true,
-      }));
-
-      setFeedPosts((prev) => {
-        const existingIds = new Set(prev.map((i) => String(i.id)));
-        const newOnes = formattedLocal.filter((f) => !existingIds.has(String(f.id)));
-        return [...newOnes, ...prev];
-      });
-    }
-
-    // 3. If online & user logged in, fetch from Firestore cloud
+    // 2. If online & user logged in, fetch from Firestore cloud
     if (auth.currentUser && effectiveOnline) {
       getUserTestResults(auth.currentUser.uid)
         .then((cloudTests) => {
@@ -247,80 +167,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     setIsCbtModalOpen(true);
   };
 
-  const handleAddPost = async (newPost: { title: string; content: string; subject: string }) => {
-    const tempId = `post_${Date.now()}`;
-    const newFeedItem: FeedItem = {
-      id: tempId,
-      author: displayName,
-      isVerified: false,
-      time: 'Just now',
-      category: newPost.subject,
-      title: newPost.title,
-      content: newPost.content,
-      likes: 0,
-      comments: 0,
-      isLiked: false,
-      isLocal: true,
-    };
-
-    setFeedPosts((prev) => [newFeedItem, ...prev]);
-
-    // Save to local offline storage immediately
-    saveLocalPost({
-      id: tempId,
-      authorId: auth.currentUser?.uid,
-      authorName: displayName,
-      tag: newPost.subject,
-      title: newPost.title,
-      content: newPost.content,
-      likesCount: 0,
-      commentsCount: 0,
-      syncedToCloud: false,
-    });
-
-    if (effectiveOnline && auth.currentUser) {
-      try {
-        await createFeedPost({
-          id: tempId,
-          authorId: auth.currentUser.uid,
-          authorName: displayName,
-          tag: newPost.subject,
-          title: newPost.title,
-          content: newPost.content,
-        });
-        showToast('✓ Post published and synced to cloud!');
-      } catch (err) {
-        console.warn('Network issue; post saved offline:', err);
-        showToast('✓ Post saved offline. Will auto-sync when online.');
-      }
-    } else {
-      showToast('✓ Post saved offline on this device (Zero data consumed).');
-    }
-  };
-
-  const handleLike = async (id: string | number) => {
-    setFeedPosts((prev) =>
-      prev.map((post) => {
-        if (post.id === id) {
-          return {
-            ...post,
-            likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            isLiked: !post.isLiked,
-          };
-        }
-        return post;
-      })
-    );
-
-    if (effectiveOnline && typeof id === 'string' && !id.startsWith('default_') && auth.currentUser) {
-      try {
-        await likeFeedPost(id);
-      } catch (err) {
-        console.warn('Error updating like count in Firestore:', err);
-      }
-    }
-  };
-
   const handleManualSync = async () => {
     showToast('Syncing all offline data with cloud...');
     const res = await syncNow();
@@ -334,38 +180,17 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     }
   };
 
-  // Filtered feed
-  const filteredPosts = feedPosts.filter((p) => {
-    if (feedFilter === 'All') return true;
-    if (feedFilter === 'Novel') return p.category.includes('English') || p.category.includes('Novel');
-    if (feedFilter === 'Sciences') return p.category.includes('Physics') || p.category.includes('Math') || p.category.includes('Chemistry') || p.category.includes('Biology');
-    if (feedFilter === 'Official') return p.isVerified;
-    return true;
-  });
-
   return (
     <div className="min-h-screen bg-[#f3f4f6] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
       {/* Main App Layout */}
       <div className="flex-1 flex">
         {/* Left Sidebar Navigation (Desktop & Tablet only: hidden on mobile) */}
         <aside className="hidden md:flex flex-col items-center w-20 md:w-24 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 py-4 shrink-0 select-none z-20 transition-colors">
-          {/* Logo at Top Left */}
-          <div className="mb-6 flex flex-col items-center cursor-pointer" onClick={() => setActiveNav('Home')}>
-            <div className="flex items-center gap-0.5">
-              <span className="font-extrabold text-xl tracking-tight text-emerald-700 dark:text-emerald-400 font-serif">
-                Jambi
-              </span>
-              <span className="text-sm font-black text-white bg-emerald-600 dark:bg-emerald-500 px-1 py-0.5 rounded-sm shadow-2xs">
-                X
-              </span>
-            </div>
-            <span className="text-[9px] text-slate-400 dark:text-slate-500 font-medium tracking-tight">.ng</span>
-          </div>
-
           {/* Nav Items */}
-          <nav className="flex-1 flex flex-col gap-2.5 w-full px-2">
+          <nav className="flex-1 flex flex-col gap-2 w-full px-2">
             {[
               { id: 'Home', icon: Home, label: 'Home' },
+              { id: 'Novels', icon: BookMarked, label: 'Novels' },
               { id: 'Study', icon: GraduationCap, label: 'Study' },
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2025' },
@@ -408,48 +233,28 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
         {/* Content Area */}
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Top Bar (Search, Network Status, Theme Toggle, Create +, Notification, Profile) */}
-          <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 sm:gap-4 transition-colors">
-            {/* Mobile Brand Wordmark (Visible when left sidebar is hidden on < md) */}
-            <div
-              className="flex md:hidden items-center gap-1.5 cursor-pointer shrink-0"
-              onClick={() => setActiveNav('Home')}
-            >
-              <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs">
-                J
-              </div>
-              <span className="font-extrabold text-base tracking-tight text-slate-900 dark:text-white font-serif">
-                Jambi<span className="text-emerald-600 dark:text-emerald-400">X</span>
+          {/* Top Bar: Clean, basic, and spacious */}
+          <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-4 transition-colors">
+            {/* Session Welcome Info - Spacious & Clean */}
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <span className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">
+                Session: <span className="text-slate-900 dark:text-white font-bold ml-1.5 sm:ml-2">study hard, {studentFirstName}</span>
               </span>
             </div>
 
-            {/* Search Bar */}
-            <div className="flex-1 max-w-lg min-w-0">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
-                  <Search className="w-4 h-4" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search UTME questions, topics..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700/80 rounded-full placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-800 dark:text-slate-100 focus:bg-white dark:focus:bg-slate-800 focus:outline-hidden focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Right Action Controls */}
-            <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-              {/* Network Status Pill (Automatic Online/Offline detector + Simulator toggle) */}
-              <div
+            {/* Right Action Controls: Clean and spacious */}
+            <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+              {/* Network Status Pill */}
+              <button
+                type="button"
                 onClick={toggleSimulatedOffline}
                 title={
                   effectiveOnline
-                    ? 'Connected to internet. Click to toggle Offline Simulation Mode.'
-                    : 'Operating in Offline Mode (zero data consumed). Click to simulate reconnect.'
+                    ? 'Connected to internet. Click to toggle Offline Mode.'
+                    : 'Operating in Offline Mode (zero data consumed). Click to reconnect.'
                 }
-                className={`hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
                   effectiveOnline
                     ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60'
                     : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700/80 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60'
@@ -458,23 +263,23 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 {effectiveOnline ? (
                   <>
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>Online · Cloud Synced</span>
+                    <span className="hidden sm:inline">Online</span>
                   </>
                 ) : (
                   <>
                     <WifiOff className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                    <span>⚡ Offline Mode Active</span>
+                    <span>Offline</span>
                   </>
                 )}
-              </div>
+              </button>
 
-              {/* Sync Button (if pending items or on demand) */}
+              {/* Sync Button */}
               <button
                 type="button"
                 onClick={handleManualSync}
                 disabled={isSyncing}
                 title="Sync offline data with Firebase Firestore"
-                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
                   pendingSyncCount > 0
                     ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 animate-pulse'
                     : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
@@ -489,103 +294,42 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 )}
               </button>
 
-              {/* Create + Button */}
-              <button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="px-3.5 py-1.5 bg-[#1e293b] hover:bg-[#0f172a] dark:bg-rose-600 dark:hover:bg-rose-700 text-white text-xs font-semibold rounded-full flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer"
-              >
-                <span>Create</span>
-                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-              </button>
-
-              {/* Notification Bell */}
-              <button
-                className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors cursor-pointer"
-                title="Notifications"
-                onClick={() => showToast('All notifications are current. Offline mode active.')}
-              >
-                <Bell className="w-4.5 h-4.5 stroke-[1.8]" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-600 rounded-full" />
-              </button>
-
-              {/* Light & Dark Mode Toggle in Top Right of Dashboard */}
+              {/* Light & Dark Mode Toggle */}
               <ThemeToggle showLabel={false} />
 
-              {/* Profile Avatar Circle with Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                  className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:ring-2 hover:ring-rose-500 flex items-center justify-center text-xs font-bold transition-all cursor-pointer"
-                  title="Candidate Account"
-                >
-                  {initials}
-                </button>
-
-                {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-40 animate-in fade-in transition-colors">
-                    <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
-                      <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{displayName}</p>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                        {user.email || 'JAMB Candidate 2026'}
-                      </p>
-                      <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded text-[10px] font-bold">
-                        <Check className="w-3 h-3" />
-                        <span>Data Saved Automatically</span>
-                      </div>
-                    </div>
-
-                    <div className="p-2 border-b border-slate-100 dark:border-slate-800">
-                      <div className="flex items-center justify-between px-2 py-1 text-xs text-slate-600 dark:text-slate-300">
-                        <span>Theme Preference</span>
-                        <ThemeToggle className="scale-85 origin-right" />
-                      </div>
-                      <button
-                        onClick={() => {
-                          toggleSimulatedOffline();
-                          setIsProfileMenuOpen(false);
-                          showToast(
-                            effectiveOnline
-                              ? 'Offline mode enabled! Zero data will be consumed.'
-                              : 'Online mode enabled! Connecting to cloud.'
-                          );
-                        }}
-                        className="w-full text-left px-2 py-1.5 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg flex items-center justify-between cursor-pointer"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <WifiOff className="w-3.5 h-3.5 text-amber-500" />
-                          <span>Toggle Offline Mode</span>
-                        </span>
-                        <span className="text-[10px] font-bold text-amber-600">
-                          {effectiveOnline ? 'Turn On' : 'Turn Off'}
-                        </span>
-                      </button>
-                    </div>
-
-                    <button
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                        handleLaunchTest('JAMB CBT Simulator', 'jamb');
-                      }}
-                      className="w-full text-left px-4 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-2 cursor-pointer transition-colors"
-                    >
-                      <Monitor className="w-3.5 h-3.5 text-slate-400" />
-                      <span>Take a CBT Mock</span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                        onLogOut();
-                      }}
-                      className="w-full text-left px-4 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2 font-semibold cursor-pointer border-t border-slate-100 dark:border-slate-800 mt-1 transition-colors"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>Log Out to Login Page</span>
-                    </button>
-                  </div>
-                )}
-              </div>
+              {/* Log Out Button */}
+              <button
+                type="button"
+                onClick={onLogOut}
+                className="px-3.5 py-1.5 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-full font-bold transition-colors cursor-pointer border border-rose-200 dark:border-rose-900/50"
+              >
+                Log Out
+              </button>
             </div>
           </header>
+
+          {/* Official WhatsApp Channel Top Alert Banner */}
+          <div className="bg-[#075e54] text-white px-3 sm:px-6 py-2 border-b border-emerald-700/60 shadow-xs flex flex-wrap items-center justify-between gap-2.5 text-xs select-none">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="flex h-2.5 w-2.5 relative shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#25d366] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#25d366]" />
+              </span>
+              <p className="truncate text-emerald-50 text-[11px] sm:text-xs font-medium">
+                <strong className="text-white font-bold">Important UTME Updates:</strong> Join our Official WhatsApp Channel for instant JAMB timetable alerts, novel breakdowns &amp; cut-off updates!
+              </p>
+            </div>
+            <a
+              href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#25d366] hover:bg-[#20ba59] text-slate-900 font-extrabold text-[11px] sm:text-xs rounded-full shadow-xs transition-all shrink-0 cursor-pointer"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-slate-900" />
+              <span>Join WhatsApp Channel</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
 
           {/* Dynamic Offline Status Banner (Shown when offline or on unstable/no data) */}
           {!effectiveOnline && (
@@ -599,7 +343,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     Offline Mode Active (Zero Mobile Data Consumed):
                   </span>{' '}
                   <span className="text-amber-100 font-normal">
-                    Network unavailable or turned off. All your test submissions, answers, scores, and discussion posts are safely saved to your device and will auto-sync when data returns.
+                    Network unavailable or turned off. All your test submissions, answers, scores, and practice records are safely saved to your device and will auto-sync when data returns.
                   </span>
                 </div>
               </div>
@@ -653,6 +397,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       >
                         <Play className="w-3.5 h-3.5 fill-emerald-900" />
                         <span>Full Mock (180 Qs)</span>
+                      </button>
+
+                      <button
+                        onClick={() => setActiveNav('Novels')}
+                        className="px-4 py-2.5 bg-emerald-800/80 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl border border-emerald-500/40 flex items-center gap-2 transition-all cursor-pointer"
+                      >
+                        <BookMarked className="w-3.5 h-3.5" />
+                        <span>JAMB Novels Hub</span>
                       </button>
 
                       <button
@@ -746,23 +498,27 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </div>
                     </div>
 
-                    {/* Card 3: JAMB Novel & English Masterclass */}
+                    {/* Card 3: JAMB Novels Hub */}
                     <div
-                      onClick={() => handleLaunchTest('JAMB Novel: "The Life Changer" & English Drills', 'novel')}
+                      onClick={() => setActiveNav('Novels')}
                       className="p-4 rounded-2xl bg-[#edf2fb] dark:bg-blue-950/20 border border-[#ccdcf6] dark:border-blue-900/30 hover:border-[#acc4f0] dark:hover:border-blue-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
                     >
                       <div className="flex items-start gap-3">
                         <div className="w-11 h-11 rounded-xl bg-blue-100 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/50 flex items-center justify-center shrink-0">
                           <div className="w-7 h-7 rounded-full bg-[#1e3a8a] text-yellow-300 flex items-center justify-center text-[7px] font-black border border-yellow-400 shadow-2xs">
-                            NOVEL
+                            NOVELS
                           </div>
                         </div>
                         <div>
                           <h4 className="text-sm font-bold text-[#1e293b] dark:text-blue-200 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                            JAMB Novel &amp; English
+                            JAMB Novels Hub
                           </h4>
                           <p className="mt-1 text-xs text-[#334155] dark:text-blue-300/80 leading-snug">
-                            Master &ldquo;The Life Changer&rdquo; novel &amp; comprehension drills.
+                            Summaries &amp; characters for &ldquo;The Lekki Headmaster&rdquo;, &ldquo;The Life Changer&rdquo; &amp; &ldquo;Sweet Sixteen&rdquo;.
+                          </p>
+                          <p className="mt-1.5 text-[10px] font-semibold text-blue-800 dark:text-blue-300 flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-blue-600 dark:text-blue-400 shrink-0" />
+                            <span>Click to Open Novels Hub</span>
                           </p>
                         </div>
                       </div>
@@ -977,99 +733,15 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </button>
                   </div>
                 </div>
-
-                {/* Candidate Community Feed Discussions Section */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-2xs space-y-4 transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
-                    <div>
-                      <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                        UTME Candidate Discussions &amp; Syllabus Feeds
-                      </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        Peer study tips, verified explanations, and past questions discussions (Works 100% offline).
-                      </p>
-                    </div>
-
-                    {/* Filter buttons */}
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-                      {['All', 'Novel', 'Sciences', 'Official'].map((filter) => (
-                        <button
-                          key={filter}
-                          onClick={() => setFeedFilter(filter)}
-                          className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
-                            feedFilter === filter
-                              ? 'bg-rose-600 text-white shadow-2xs'
-                              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                          }`}
-                        >
-                          {filter}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Feed Items List */}
-                  <div className="space-y-3.5">
-                    {filteredPosts.map((post) => (
-                      <div
-                        key={post.id}
-                        className="p-4 rounded-xl border border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-slate-50/50 dark:bg-slate-800/40 transition-colors"
-                      >
-                        <div className="flex items-center justify-between gap-2 mb-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-slate-900 dark:text-white">
-                              {post.author}
-                            </span>
-                            {post.isVerified && (
-                              <span className="px-1.5 py-0.2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded text-[9px] font-black uppercase">
-                                Verified
-                              </span>
-                            )}
-                            {post.isLocal && (
-                              <span className="px-1.5 py-0.2 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 rounded text-[9px] font-bold">
-                                Local
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-[11px] text-slate-400 dark:text-slate-500 font-mono">
-                            {post.time}
-                          </span>
-                        </div>
-
-                        <div className="mb-2">
-                          <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200/80 dark:bg-slate-700 text-slate-700 dark:text-slate-300 mb-1.5">
-                            {post.category}
-                          </span>
-                          <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
-                            {post.title}
-                          </h4>
-                          <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                            {post.content}
-                          </p>
-                        </div>
-
-                        <div className="pt-2 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200/60 dark:border-slate-700/60">
-                          <button
-                            onClick={() => handleLike(post.id)}
-                            className={`flex items-center gap-1.5 transition-colors cursor-pointer ${
-                              post.isLiked
-                                ? 'text-rose-600 dark:text-rose-400 font-bold'
-                                : 'hover:text-slate-900 dark:hover:text-white'
-                            }`}
-                          >
-                            <ThumbsUp className={`w-3.5 h-3.5 ${post.isLiked ? 'fill-current' : ''}`} />
-                            <span>{post.likes} Likes</span>
-                          </button>
-                          <span className="flex items-center gap-1">
-                            <MessageSquare className="w-3.5 h-3.5" />
-                            <span>{post.comments} Comments</span>
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </>
+            )}
+
+            {/* View: Novels Section - Prescribed JAMB Novels */}
+            {activeNav === 'Novels' && (
+              <NovelsTab
+                onLaunchTest={handleLaunchTest}
+                showToast={showToast}
+              />
             )}
 
             {/* View: Study Section - Full Updated JAMB Syllabus */}
@@ -1333,6 +1005,51 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 </div>
               </div>
             )}
+
+            {/* Upper Footer: Official WhatsApp Channel Banner */}
+            <div className="mt-8 rounded-2xl overflow-hidden bg-gradient-to-r from-[#075e54] via-[#0f766e] to-[#064e3b] text-white p-5 sm:p-7 shadow-xs border border-emerald-600/40 relative">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
+                <div className="space-y-2 max-w-2xl">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-950/70 text-emerald-200 border border-emerald-400/30">
+                    <MessageCircle className="w-3.5 h-3.5 text-[#25d366]" />
+                    <span>Official JAMB WhatsApp Channel</span>
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-white tracking-tight">
+                    Join Our WhatsApp Channel for Important Updates
+                  </h3>
+                  <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
+                    Never miss critical announcements: exam dates, venue accreditation, novel analyses (&ldquo;The Lekki Headmaster&rdquo; &amp; &ldquo;The Life Changer&rdquo;), daily past question walkthroughs, and instant university admission cut-off releases.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                  <a
+                    href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-3 bg-[#25d366] hover:bg-[#20ba59] text-slate-900 font-extrabold text-xs sm:text-sm rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer transform hover:scale-[1.02]"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-slate-900" />
+                    <span>Join WhatsApp Channel</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Dashboard Footer Note */}
+            <footer className="pt-6 pb-2 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+              <p>© {new Date().getFullYear()} JAMB UTME Prep Hub. All curriculum citations verified against official textbooks.</p>
+              <a
+                href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-1.5"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-[#25d366]" />
+                <span>Join Official WhatsApp Channel for Updates</span>
+              </a>
+            </footer>
           </main>
         </div>
       </div>
@@ -1341,10 +1058,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
+          { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Study', icon: GraduationCap, label: 'Study' },
           { id: 'Test', icon: Monitor, label: 'CBT Test' },
           { id: 'Archive', icon: BookOpen, label: '1978-2025' },
-          { id: 'Connect', icon: Users, label: 'Connect' },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;
@@ -1391,13 +1108,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         testType={activeTest.type}
         initialSubject={activeTest.subject}
         initialYear={activeTest.year}
-      />
-
-      {/* Create Discussion Modal */}
-      <CreatePostModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onAddPost={handleAddPost}
       />
 
       {/* Floating Toast Notification */}

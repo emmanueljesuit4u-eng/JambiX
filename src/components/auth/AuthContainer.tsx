@@ -69,33 +69,7 @@ export const AuthContainer: React.FC = () => {
 
   // If the student is authenticated via Firebase or local session, transition directly to the StudentDashboard!
   if (activeUser) {
-    return (
-      <div className="relative min-h-screen flex flex-col overflow-x-hidden">
-        {/* Quick Demo Switcher Strip to allow switching back to Auth */}
-        <div className="bg-slate-900 text-white text-[11px] px-3 sm:px-4 py-1.5 flex items-center justify-between gap-2 border-b border-slate-800">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-            <span className="text-slate-300 truncate">
-              Session: <strong className="text-white">{activeUser.name || activeUser.identifier}</strong>
-              {currentUser && <span className="ml-1 text-emerald-400 font-semibold hidden sm:inline">(Synced)</span>}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <ThemeToggle className="scale-85 origin-right border-slate-700 bg-slate-800 text-amber-300" />
-            <button
-              onClick={handleLogOut}
-              className="text-xs text-rose-300 hover:text-white underline font-semibold cursor-pointer shrink-0"
-            >
-              Log Out
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1">
-          <StudentDashboard user={activeUser} onLogOut={handleLogOut} />
-        </div>
-      </div>
-    );
+    return <StudentDashboard user={activeUser} onLogOut={handleLogOut} />;
   }
 
   return (
@@ -383,6 +357,14 @@ export const AuthContainer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <a
+              href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-1"
+            >
+              <span>WhatsApp Channel</span>
+            </a>
             <button
               type="button"
               onClick={() => handleOpenTerms('terms')}

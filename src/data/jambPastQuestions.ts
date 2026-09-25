@@ -12,6 +12,8 @@
  * 5. A-Z OF ENGLISH — B.O. Dele Ashade
  */
 
+import { NOVEL_EXAM_QUESTIONS } from './jambNovelsData';
+
 export type SubjectKey = 'english' | 'mathematics' | 'physics' | 'chemistry' | 'biology';
 
 export interface VerifiedQuestion {
@@ -34,7 +36,10 @@ export interface VerifiedQuestion {
     | 'NEW SCHOOL CHEMISTRY'
     | 'MODERN BIOLOGY'
     | 'HIDDEN FACTS IN MATHEMATICS'
-    | 'A-Z OF ENGLISH';
+    | 'A-Z OF ENGLISH'
+    | 'The Life Changer'
+    | 'Sweet Sixteen'
+    | string;
   author: string;
   chapter?: number;
   page?: number;
@@ -1207,6 +1212,38 @@ export function generateQuestionForYear(
   year: number,
   qIndex: number
 ): VerifiedQuestion {
+  // Exactly like JAMB does in UTME: Questions 11 to 20 (qIndex 10-19) are strictly drawn
+  // from the prescribed compulsory novels used last year and the year before ("The Life Changer" & "Sweet Sixteen")
+  if (subjectKey === 'english' && qIndex >= 10 && qIndex < 20) {
+    const novelIdx = (qIndex - 10 + (year * 3)) % NOVEL_EXAM_QUESTIONS.length;
+    const novelQ = NOVEL_EXAM_QUESTIONS[novelIdx];
+    const qNum = qIndex + 1;
+    const subCode = 100000;
+    const id = subCode + (year * 100) + qNum;
+
+    const authorName =
+      novelQ.novel === 'The Life Changer'
+        ? 'Khadija Abubakar Jalli'
+        : novelQ.novel === 'The Lekki Headmaster'
+          ? 'Kabir Alabi Garba'
+          : 'Bolaji Abdullahi';
+
+    return {
+      id,
+      year,
+      questionNumber: qNum,
+      subject: 'Use of English',
+      topic: `Prescribed Novel: "${novelQ.novel}" (Chapter ${novelQ.chapter})`,
+      text: `[JAMB UTME ${year} Q${qNum} · Prescribed Novel: "${novelQ.novel}"] ${novelQ.question}`,
+      options: novelQ.options,
+      answer: novelQ.answer,
+      explanation: `${novelQ.explanation} (Reference: "${novelQ.novel}" by ${authorName}, Chapter ${novelQ.chapter}).`,
+      bookTitle: novelQ.novel,
+      author: authorName,
+      textbookRef: `Topic: Prescribed Novel ("${novelQ.novel}") in Accredited UTME Literature Syllabus`,
+    };
+  }
+
   const config = SUBJECT_CONFIGS[subjectKey];
   const templates = TEMPLATE_MAP[subjectKey];
   
@@ -1320,7 +1357,7 @@ export function getSeenQuestionsCount(): number {
 export interface AssembleTestOptions {
   subjects?: string[];
   year?: number | 'random';
-  mode?: 'full' | 'single' | 'sprint';
+  mode?: 'full' | 'single' | 'sprint' | 'novel';
   customQuestionCount?: number;
   excludeQuestionIds?: Set<number> | number[];
 }
@@ -1328,6 +1365,36 @@ export interface AssembleTestOptions {
 export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQuestion[] {
   const { subjects = ['Use of English', 'Mathematics', 'Physics', 'Chemistry'], year = 'random', mode = 'full' } = options;
   
+  // Dedicated Novel Test Mode (like JAMB novel section practice)
+  if (mode === 'novel') {
+    const novelCount = options.customQuestionCount || 10;
+    const chosenYear = typeof year === 'number' ? year : 2025;
+    return NOVEL_EXAM_QUESTIONS.slice(0, novelCount).map((nq, i) => {
+      const qNum = i + 1;
+      const authorName =
+        nq.novel === 'The Life Changer'
+          ? 'Khadija Abubakar Jalli'
+          : nq.novel === 'The Lekki Headmaster'
+            ? 'Kabir Alabi Garba'
+            : 'Bolaji Abdullahi';
+
+      return {
+        id: 950000 + (chosenYear * 10) + qNum,
+        year: chosenYear,
+        questionNumber: qNum,
+        subject: 'Use of English',
+        topic: `Prescribed Novel: "${nq.novel}" (Chapter ${nq.chapter})`,
+        text: `[JAMB UTME Novel Practice Q${qNum} · "${nq.novel}"] ${nq.question}`,
+        options: nq.options,
+        answer: nq.answer,
+        explanation: `${nq.explanation} (Accredited Prescribed Novel: "${nq.novel}" by ${authorName}).`,
+        bookTitle: nq.novel,
+        author: authorName,
+        textbookRef: `Topic: Prescribed Novel ("${nq.novel}") in Accredited UTME Literature Syllabus`,
+      };
+    });
+  }
+
   // Normalize subject keys
   const chosenKeys: SubjectKey[] = Array.from(new Set(subjects.map(normalizeSubjectKey)));
 
