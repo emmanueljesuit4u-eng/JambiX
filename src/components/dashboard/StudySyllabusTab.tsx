@@ -273,7 +273,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
                   className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1 cursor-pointer"
                 >
                   <Layers className="w-3 h-3" />
-                  <span>Page Index</span>
+                  <span>Topics Guide</span>
                 </button>
                 <button
                   type="button"
@@ -477,7 +477,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
                                 {verifiedBook.bookTitle} — <span className="font-semibold text-slate-600 dark:text-slate-300">{verifiedBook.author}</span>
                               </h4>
                               <p className="text-xs text-emerald-800 dark:text-emerald-300 mt-0.5">
-                                Primary accredited syllabus reference. All exam simulations cite chapters and pages from this book.
+                                Primary accredited syllabus reference. All exam simulations refer to verified topics in this book.
                               </p>
                             </div>
                           </div>
@@ -487,7 +487,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
                             className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs shrink-0 self-stretch sm:self-auto justify-center"
                           >
                             <Layers className="w-3.5 h-3.5" />
-                            <span>View Chapters &amp; Page Index</span>
+                            <span>View Accredited Topics</span>
                           </button>
                         </div>
                       );
@@ -695,7 +695,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
                 <div className="space-y-0.5">
                   <span className="font-bold">Official JAMB UTME Accredited Reference Book:</span>
                   <p className="text-emerald-900/90 dark:text-emerald-300/90 leading-relaxed font-normal">
-                    This textbook is the primary standard authority for {selectedBookForModal.subjectName}. All CBT practice drill questions and explanations cite the chapters and page ranges listed below.
+                    This textbook is the primary standard authority for {selectedBookForModal.subjectName}. All CBT practice drill questions and explanations refer directly to the accredited topics listed below.
                   </p>
                 </div>
               </div>
@@ -703,27 +703,24 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
               <div className="space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                  <span>Core Chapters &amp; Page References ({selectedBookForModal.coreChapters.length} Chapters)</span>
+                  <span>Accredited Curriculum Topics</span>
                 </h4>
 
                 <div className="space-y-2.5">
-                  {selectedBookForModal.coreChapters.map((ch) => (
+                  {selectedBookForModal.coreChapters.map((ch, chIdx) => (
                     <div
-                      key={ch.chapter}
+                      key={ch.chapter || chIdx}
                       className="p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 space-y-2"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                         <div className="flex items-center gap-2">
                           <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300">
-                            Chapter {ch.chapter}
+                            Topic Area
                           </span>
                           <h5 className="text-xs font-bold text-slate-900 dark:text-white">
                             {ch.title}
                           </h5>
                         </div>
-                        <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400 shrink-0">
-                          {ch.pageRange}
-                        </span>
                       </div>
 
                       <div className="flex flex-wrap gap-1.5 pt-1">

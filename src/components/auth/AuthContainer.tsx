@@ -70,47 +70,49 @@ export const AuthContainer: React.FC = () => {
   // If the student is authenticated via Firebase or local session, transition directly to the StudentDashboard!
   if (activeUser) {
     return (
-      <div className="relative">
+      <div className="relative min-h-screen flex flex-col overflow-x-hidden">
         {/* Quick Demo Switcher Strip to allow switching back to Auth */}
-        <div className="bg-slate-900 text-white text-[11px] px-4 py-1.5 flex items-center justify-between border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-slate-300">
-              Student Session Active: <strong className="text-white">{activeUser.name || activeUser.identifier}</strong>
-              {currentUser && <span className="ml-2 text-emerald-400 font-semibold">(Firebase Cloud Synced)</span>}
+        <div className="bg-slate-900 text-white text-[11px] px-3 sm:px-4 py-1.5 flex items-center justify-between gap-2 border-b border-slate-800">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+            <span className="text-slate-300 truncate">
+              Session: <strong className="text-white">{activeUser.name || activeUser.identifier}</strong>
+              {currentUser && <span className="ml-1 text-emerald-400 font-semibold hidden sm:inline">(Synced)</span>}
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 shrink-0">
             <ThemeToggle className="scale-85 origin-right border-slate-700 bg-slate-800 text-amber-300" />
             <button
               onClick={handleLogOut}
-              className="text-xs text-rose-300 hover:text-white underline font-semibold cursor-pointer"
+              className="text-xs text-rose-300 hover:text-white underline font-semibold cursor-pointer shrink-0"
             >
-              ← Return to Sign Up / Log In
+              Log Out
             </button>
           </div>
         </div>
 
-        <StudentDashboard user={activeUser} onLogOut={handleLogOut} />
+        <div className="flex-1">
+          <StudentDashboard user={activeUser} onLogOut={handleLogOut} />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-between text-slate-800 dark:text-slate-100 transition-colors duration-200 antialiased">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-between text-slate-800 dark:text-slate-100 transition-colors duration-200 antialiased overflow-x-hidden">
       {/* Top Utility Bar */}
-      <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 py-2.5 transition-colors">
-        <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-3 sm:px-6 py-2.5 transition-colors">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4 flex-nowrap">
           {/* Brand Wordmark */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               onClick={() => setCurrentScreen('login')}
               className="text-left cursor-pointer flex items-center gap-2 group"
             >
-              <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs group-hover:bg-emerald-800 transition-colors">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs group-hover:bg-emerald-800 transition-colors">
                 J
               </div>
-              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight text-lg">
+              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight text-base sm:text-lg">
                 Jambi<span className="text-emerald-600 dark:text-emerald-400">X</span>
               </span>
             </button>
@@ -120,13 +122,13 @@ export const AuthContainer: React.FC = () => {
           </div>
 
           {/* Quick Screen Nav Links, Demo Jump, Device Switcher & Top Right Light/Dark Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Screen Tabs */}
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800/90 border border-transparent dark:border-slate-700/80 p-1 rounded-xl text-xs font-semibold">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Screen Tabs (Clean 2-tab switch for Log In / Sign Up) */}
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800/90 border border-slate-200/60 dark:border-slate-700/80 p-0.5 sm:p-1 rounded-xl text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => setCurrentScreen('login')}
-                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-xs ${
                   currentScreen === 'login'
                     ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
@@ -137,24 +139,13 @@ export const AuthContainer: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCurrentScreen('signup')}
-                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-xs ${
                   currentScreen === 'signup'
                     ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Sign Up
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrentScreen('forgot_password')}
-                className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  currentScreen === 'forgot_password'
-                    ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                Forgot Password
               </button>
             </div>
 
@@ -309,9 +300,9 @@ export const AuthContainer: React.FC = () => {
                         <CheckCircle className="w-3.5 h-3.5" />
                       </div>
                       <div>
-                        <div className="font-bold text-white">Verified Textbook References</div>
+                        <div className="font-bold text-white">Verified Textbook Topics</div>
                         <div className="text-emerald-200/60 text-[11px]">
-                          Accurate answers with reference to the appropriate verified textbook pages.
+                          Accurate answers referred directly to topics in accredited textbooks.
                         </div>
                       </div>
                     </div>

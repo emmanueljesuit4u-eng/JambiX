@@ -322,12 +322,10 @@ export function getVerifiedCitation(
   } else if (norm.includes('eng') || norm.includes('lexis')) {
     book = VERIFIED_TEXTBOOKS.english;
   } else {
-    return `${topic} — Verified JAMB Standard Reference`;
+    return `Topic: ${topic} — Verified JAMB Standard Reference`;
   }
 
-  const chapterPart = chapter ? `Chapter ${chapter}, ` : '';
-  const pagePart = page ? `Page ${page}` : book.coreChapters[0]?.pageRange || 'Accredited Chapter';
-  return `${book.bookTitle} (${book.author}), ${chapterPart}${pagePart} · [${topic}]`;
+  return `Topic: ${topic} in ${book.bookTitle} by ${book.author}`;
 }
 
 export function getVerifiedBookForSubject(subjectOrCode: string): VerifiedTextbook | undefined {
@@ -364,7 +362,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 3,
     page: 84,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 3: Lexis, Structure & Vocabulary in Context, Page 84',
+    textbookRef: 'Topic: Lexis, Structure & Vocabulary in Context in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 102,
@@ -383,7 +381,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 1,
     page: 31,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 1: Grammatical Concord & Proximity Agreement, Page 31',
+    textbookRef: 'Topic: Grammatical Concord & Proximity Agreement in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 103,
@@ -402,7 +400,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 1,
     page: 42,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 1: The Mandative Subjunctive & Verbal Concord, Page 42',
+    textbookRef: 'Topic: The Mandative Subjunctive & Verbal Concord in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 104,
@@ -421,7 +419,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 3,
     page: 96,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 3: Antonyms in Context & Lexical Contrasts, Page 96',
+    textbookRef: 'Topic: Antonyms in Context & Lexical Contrasts in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 105,
@@ -440,7 +438,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 5,
     page: 144,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 5: Prepositional Collocations & Phrasal Idioms, Page 144',
+    textbookRef: 'Topic: Prepositional Collocations & Phrasal Idioms in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 106,
@@ -459,7 +457,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 9,
     page: 262,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 9: Pure Vowels, Long Monophthongs & Sound Matching, Page 262',
+    textbookRef: 'Topic: Pure Vowels, Long Monophthongs & Sound Matching in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 107,
@@ -478,7 +476,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 11,
     page: 324,
-    textbookRef: 'A-Z OF ENGLISH (B.O. Dele Ashade), Chapter 11: Noun-Verb Stress Shift & Syllable Weight, Page 324',
+    textbookRef: 'Topic: Noun-Verb Stress Shift & Syllable Weight in A-Z OF ENGLISH by B.O. Dele Ashade',
   },
 
   // ==========================================
@@ -501,7 +499,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 1,
     page: 22,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 1: Laws of Indices & Logarithms, Page 22',
+    textbookRef: 'Topic: Laws of Indices & Logarithms in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 202,
@@ -520,7 +518,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 3,
     page: 61,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 3: Formation of Quadratic Equations & Roots, Page 61',
+    textbookRef: 'Topic: Formation of Quadratic Equations & Roots in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 203,
@@ -539,7 +537,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 5,
     page: 134,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 5: Arithmetic Progressions & Sum Formulas, Page 134',
+    textbookRef: 'Topic: Arithmetic Progressions & Sum Formulas in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 204,
@@ -558,7 +556,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 11,
     page: 309,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 11: Differential Calculus & Stationary Points, Page 309',
+    textbookRef: 'Topic: Differential Calculus & Stationary Points in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 205,
@@ -577,7 +575,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 12,
     page: 347,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 12: Definite Integrals & Fundamental Theorem of Calculus, Page 347',
+    textbookRef: 'Topic: Definite Integrals & Fundamental Theorem of Calculus in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 206,
@@ -596,7 +594,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 9,
     page: 248,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 9: Trigonometric Ratios & Acute Angles, Page 248',
+    textbookRef: 'Topic: Trigonometric Ratios & Acute Angles in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 207,
@@ -615,7 +613,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 14,
     page: 415,
-    textbookRef: 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia), Chapter 14: Permutations with Repeated Items, Page 415',
+    textbookRef: 'Topic: Permutations with Repeated Items in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
 
   // ==========================================
@@ -638,7 +636,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 2,
     page: 31,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 2: Equations of Uniformly Accelerated Motion, Page 31',
+    textbookRef: 'Topic: Equations of Uniformly Accelerated Motion in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 302,
@@ -657,7 +655,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 3,
     page: 54,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 3: Projectiles & Curved Trajectories, Page 54',
+    textbookRef: 'Topic: Projectiles & Curved Trajectories in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 303,
@@ -676,7 +674,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 1,
     page: 14,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 1: Units and Dimensions, Page 14',
+    textbookRef: 'Topic: Units and Dimensions in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 304,
@@ -695,7 +693,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 8,
     page: 172,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 8: Quantity of Heat & Calorimetry, Page 172',
+    textbookRef: 'Topic: Quantity of Heat & Calorimetry in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 305,
@@ -714,7 +712,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 12,
     page: 278,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 12: Sound Waves & Resonance in Pipes, Page 278',
+    textbookRef: 'Topic: Sound Waves & Resonance in Pipes in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 306,
@@ -733,7 +731,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 16,
     page: 382,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 16: Current Electricity & Internal Resistance, Page 382',
+    textbookRef: 'Topic: Current Electricity & Internal Resistance in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 307,
@@ -752,7 +750,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 20,
     page: 495,
-    textbookRef: 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.), Chapter 20: Radioactivity & Half-life Decay, Page 495',
+    textbookRef: 'Topic: Radioactivity & Half-life Decay in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
 
   // ==========================================
@@ -775,7 +773,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 14,
     page: 276,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 14: Nitrogen Compounds & Production of Ammonia, Page 276',
+    textbookRef: 'Topic: Nitrogen Compounds & Production of Ammonia in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 402,
@@ -794,7 +792,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 12,
     page: 238,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 12: Electrolysis, Electrode Reactions & Faraday’s Laws, Page 238',
+    textbookRef: 'Topic: Electrolysis, Electrode Reactions & Faraday’s Laws in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 403,
@@ -813,7 +811,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 6,
     page: 112,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 6: Stoichiometry & Chemical Equations, Page 112',
+    textbookRef: 'Topic: Stoichiometry & Chemical Equations in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 404,
@@ -832,7 +830,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 4,
     page: 56,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 4: Atomic Structure & Electronic Configuration, Page 56',
+    textbookRef: 'Topic: Atomic Structure & Electronic Configuration in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 405,
@@ -851,7 +849,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 9,
     page: 178,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 9: Acids, Bases and Salts, Page 178',
+    textbookRef: 'Topic: Acids, Bases and Salts in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 406,
@@ -870,7 +868,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 18,
     page: 394,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 18: Organic Chemistry & Esters, Page 394',
+    textbookRef: 'Topic: Organic Chemistry & Esters in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 407,
@@ -889,7 +887,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 8,
     page: 152,
-    textbookRef: 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio), Chapter 8: Rates of Reaction and Chemical Equilibrium, Page 152',
+    textbookRef: 'Topic: Rates of Reaction and Chemical Equilibrium in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
 
   // ==========================================
@@ -912,7 +910,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 8,
     page: 174,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 8: Transport in Mammals & The Circulatory System, Page 174',
+    textbookRef: 'Topic: Transport in Mammals & The Circulatory System in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 502,
@@ -931,7 +929,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 18,
     page: 422,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 18: Heredity, Monohybrid Crosses & Gene Interaction, Page 422',
+    textbookRef: 'Topic: Heredity, Monohybrid Crosses & Gene Interaction in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 503,
@@ -950,7 +948,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 2,
     page: 33,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 2: Cell Ultrastructure & Organelles, Page 33',
+    textbookRef: 'Topic: Cell Ultrastructure & Organelles in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 504,
@@ -969,7 +967,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 11,
     page: 241,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 11: Excretion & The Kidney Nephron, Page 241',
+    textbookRef: 'Topic: Excretion & The Kidney Nephron in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 505,
@@ -988,7 +986,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 14,
     page: 308,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 14: Nervous Coordination & The Brain, Page 308',
+    textbookRef: 'Topic: Nervous Coordination & The Brain in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 506,
@@ -1007,7 +1005,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 18,
     page: 436,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 18: Heredity & Blood Group Inheritance, Page 436',
+    textbookRef: 'Topic: Heredity & Blood Group Inheritance in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 507,
@@ -1026,7 +1024,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 21,
     page: 490,
-    textbookRef: 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.), Chapter 21: Ecology & Pyramids of Energy, Page 490',
+    textbookRef: 'Topic: Ecology & Pyramids of Energy in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
 ];
 
@@ -1062,6 +1060,10 @@ export {
   generateQuestionForYear,
   getSubjectQuestionsForYear,
   normalizeSubjectKey,
+  getSeenQuestionIds,
+  markQuestionsSeen,
+  clearSeenQuestions,
+  getSeenQuestionsCount,
 } from './jambPastQuestions';
 export type {
   SubjectKey,

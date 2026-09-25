@@ -40,6 +40,9 @@ import {
   JambGradingResult,
   SubjectKey,
   normalizeSubjectKey,
+  getSeenQuestionsCount,
+  markQuestionsSeen,
+  clearSeenQuestions,
 } from '../../data/verifiedTextbooks';
 
 interface CbtTestModalProps {
@@ -73,6 +76,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   );
   const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint'>('full');
   const [duration, setDuration] = useState<number>(120);
+  const [seenCount, setSeenCount] = useState<number>(0);
 
   // Active Test State
   const [testStarted, setTestStarted] = useState(false);
@@ -122,6 +126,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     if (initialYear && initialYear >= 1978 && initialYear <= 2025) {
       setSelectedYear(initialYear);
     }
+    setSeenCount(getSeenQuestionsCount());
   }, [testTitle, initialSubject, initialYear, isOpen]);
 
   // Available subjects for UTME
@@ -169,6 +174,10 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setTimeLeftSeconds(duration * 60);
     setTestCompleted(null);
     setTestStarted(true);
+
+    // Record question IDs as seen to guarantee zero repetition in future random tests
+    markQuestionsSeen(questions.map((q) => q.id));
+    setSeenCount(getSeenQuestionsCount());
   };
 
   // Timer countdown
@@ -673,6 +682,28 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                ======================================================== */
             <div className="space-y-5">
               {/* Exam Mode Toggle */}
+              {/* Zero-Repeat Protection Notice */}
+              {selectedYear === 'random' && seenCount > 0 && (
+                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-center justify-between text-xs transition-all">
+                  <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
+                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>
+                      <strong>Zero-Repeat CBT Guarantee:</strong> {seenCount} questions already practiced in your previous tests are automatically excluded. You will get 100% fresh questions.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      clearSeenQuestions();
+                      setSeenCount(0);
+                    }}
+                    className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 underline hover:text-emerald-950 dark:hover:text-emerald-200 cursor-pointer shrink-0 ml-2"
+                  >
+                    Reset History
+                  </button>
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                   1. Select Examination Mode

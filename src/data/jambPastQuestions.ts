@@ -36,8 +36,8 @@ export interface VerifiedQuestion {
     | 'HIDDEN FACTS IN MATHEMATICS'
     | 'A-Z OF ENGLISH';
   author: string;
-  chapter: number;
-  page: number;
+  chapter?: number;
+  page?: number;
   textbookRef: string;
 }
 
@@ -1216,10 +1216,8 @@ export function generateQuestionForYear(
   const qNum = qIndex + 1;
 
   const generated = tmpl.generate(year, qNum);
-  const chapterDef = config.standardChapters[tmpl.chapterIndex % config.standardChapters.length];
-  const pageNum = chapterDef.startPage + tmpl.pageOffset + (qIndex % 8);
 
-  const textbookRef = `${config.bookTitle} (${config.author}), Chapter ${chapterDef.chapter}: ${chapterDef.title}, Page ${pageNum}`;
+  const textbookRef = `Topic: ${tmpl.topic} in ${config.bookTitle} by ${config.author}`;
 
   // Unique deterministic ID based on subject, year and question index
   const subCode = subjectKey === 'english' ? 100000 : subjectKey === 'mathematics' ? 200000 : subjectKey === 'physics' ? 300000 : subjectKey === 'chemistry' ? 400000 : 500000;
@@ -1237,8 +1235,6 @@ export function generateQuestionForYear(
     explanation: generated.explanation,
     bookTitle: config.bookTitle,
     author: config.author,
-    chapter: chapterDef.chapter,
-    page: pageNum,
     textbookRef,
   };
 }
@@ -1275,17 +1271,58 @@ export function normalizeSubjectKey(raw: string): SubjectKey {
   return 'english';
 }
 
+export const SEEN_QUESTIONS_STORAGE_KEY = 'jambix_seen_question_ids_v1';
+
+export function getSeenQuestionIds(): Set<number> {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(SEEN_QUESTIONS_STORAGE_KEY);
+    if (!raw) return new Set();
+    const arr = JSON.parse(raw);
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch {
+    return new Set();
+  }
+}
+
+export function markQuestionsSeen(questionIds: number[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    const seen = getSeenQuestionIds();
+    questionIds.forEach((id) => seen.add(id));
+    localStorage.setItem(SEEN_QUESTIONS_STORAGE_KEY, JSON.stringify(Array.from(seen)));
+  } catch (err) {
+    console.warn('Error saving seen questions:', err);
+  }
+}
+
+export function clearSeenQuestions(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(SEEN_QUESTIONS_STORAGE_KEY);
+  } catch (err) {
+    console.warn('Error clearing seen questions:', err);
+  }
+}
+
+export function getSeenQuestionsCount(): number {
+  return getSeenQuestionIds().size;
+}
+
 /**
  * UTME Test Assembler
  * Meets User Requirement:
  * "when a student takes a test, either a fullcbt test of 180 questions or any other mode.
- * the system should automatically/randomly bring out 60 questions from english and 40 from the three other subjects."
+ * the system should automatically/randomly bring out 60 questions from english and 40 from the three other subjects.
+ * students should be able to get questions from all the years during cbt test-like randomly each time
+ * but do not repeat a particular question from the previous test taken in the new one the person will take."
  */
 export interface AssembleTestOptions {
   subjects?: string[];
   year?: number | 'random';
   mode?: 'full' | 'single' | 'sprint';
   customQuestionCount?: number;
+  excludeQuestionIds?: Set<number> | number[];
 }
 
 export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQuestion[] {
@@ -1299,12 +1336,57 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     chosenKeys.unshift('english');
   }
 
+  // Load seen questions to avoid repeating questions from previous tests
+  const excludeSet: Set<number> = options.excludeQuestionIds
+    ? options.excludeQuestionIds instanceof Set
+      ? options.excludeQuestionIds
+      : new Set(options.excludeQuestionIds)
+    : getSeenQuestionIds();
+
   // If single subject mode (or only 1 subject specified)
   if (mode === 'single' || chosenKeys.length === 1) {
     const singleKey = chosenKeys[0] || 'english';
-    const examYear = typeof year === 'number' ? year : 2025 - Math.floor(Math.random() * (2025 - 1978 + 1));
     const count = options.customQuestionCount || (singleKey === 'english' ? 60 : 40);
-    return getSubjectQuestionsForYear(singleKey, examYear, count);
+    const maxQIndex = singleKey === 'english' ? 60 : 40;
+
+    if (typeof year === 'number') {
+      return getSubjectQuestionsForYear(singleKey, year, count);
+    } else {
+      // Randomly select across all 48 years (1978 - 2025) avoiding previously seen question IDs
+      const picked: VerifiedQuestion[] = [];
+      const currentTestIds = new Set<number>();
+      let attempts = 0;
+      const maxAttempts = count * 60;
+
+      while (picked.length < count && attempts < maxAttempts) {
+        attempts++;
+        const randomYear = 1978 + Math.floor(Math.random() * (2025 - 1978 + 1));
+        const randomQIndex = Math.floor(Math.random() * maxQIndex);
+        const q = generateQuestionForYear(singleKey, randomYear, randomQIndex);
+
+        if (!currentTestIds.has(q.id) && !excludeSet.has(q.id)) {
+          currentTestIds.add(q.id);
+          picked.push(q);
+        }
+      }
+
+      // If pool of unseen questions is exhausted, fill remaining with any unique question
+      if (picked.length < count) {
+        let fallbackAttempts = 0;
+        while (picked.length < count && fallbackAttempts < 2000) {
+          fallbackAttempts++;
+          const randomYear = 1978 + Math.floor(Math.random() * (2025 - 1978 + 1));
+          const randomQIndex = Math.floor(Math.random() * maxQIndex);
+          const q = generateQuestionForYear(singleKey, randomYear, randomQIndex);
+          if (!currentTestIds.has(q.id)) {
+            currentTestIds.add(q.id);
+            picked.push(q);
+          }
+        }
+      }
+
+      return picked;
+    }
   }
 
   // Multi-subject Full CBT Test (180 questions):
@@ -1325,17 +1407,47 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
 
   selectedFour.forEach((subKey) => {
     const count = subKey === 'english' ? 60 : 40;
+    const maxQIndex = subKey === 'english' ? 60 : 40;
     
     if (typeof year === 'number') {
       // Exactly from the chosen year
       const subQuestions = getSubjectQuestionsForYear(subKey, year, count);
       assembled.push(...subQuestions);
     } else {
-      // Randomly distributed across JAMB years 1978 - 2025
-      for (let i = 0; i < count; i++) {
+      // Randomly distributed across JAMB years 1978 - 2025, avoiding questions from previous tests
+      const subPicked: VerifiedQuestion[] = [];
+      const currentTestIds = new Set<number>();
+      let attempts = 0;
+      const maxAttempts = count * 60;
+
+      while (subPicked.length < count && attempts < maxAttempts) {
+        attempts++;
         const randomYear = 1978 + Math.floor(Math.random() * (2025 - 1978 + 1));
-        assembled.push(generateQuestionForYear(subKey, randomYear, i));
+        const randomQIndex = Math.floor(Math.random() * maxQIndex);
+        const q = generateQuestionForYear(subKey, randomYear, randomQIndex);
+
+        if (!currentTestIds.has(q.id) && !excludeSet.has(q.id)) {
+          currentTestIds.add(q.id);
+          subPicked.push(q);
+        }
       }
+
+      // If user has exhausted almost all unseen questions for this subject, fill remaining uniquely
+      if (subPicked.length < count) {
+        let fallbackAttempts = 0;
+        while (subPicked.length < count && fallbackAttempts < 2000) {
+          fallbackAttempts++;
+          const randomYear = 1978 + Math.floor(Math.random() * (2025 - 1978 + 1));
+          const randomQIndex = Math.floor(Math.random() * maxQIndex);
+          const q = generateQuestionForYear(subKey, randomYear, randomQIndex);
+          if (!currentTestIds.has(q.id)) {
+            currentTestIds.add(q.id);
+            subPicked.push(q);
+          }
+        }
+      }
+
+      assembled.push(...subPicked);
     }
   });
 
