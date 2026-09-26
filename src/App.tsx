@@ -6,6 +6,7 @@
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { NetworkProvider } from './context/NetworkContext';
+import { ActivationProvider } from './context/ActivationContext';
 import { AuthContainer } from './components/auth/AuthContainer';
 
 export default function App() {
@@ -13,7 +14,9 @@ export default function App() {
     <ThemeProvider>
       <NetworkProvider>
         <AuthProvider>
-          <AuthContainer />
+          <ActivationProvider>
+            <AuthContainer />
+          </ActivationProvider>
         </AuthProvider>
       </NetworkProvider>
     </ThemeProvider>

@@ -11,9 +11,13 @@
  * 5. A-Z OF ENGLISH - Dele Ashade
  */
 
+import { SubjectKey, normalizeSubjectKey, assembleUtmeTest, VerifiedQuestion, scatterQuestionOptions } from './jambPastQuestions';
+export type { VerifiedQuestion };
+
 export interface VerifiedTextbook {
-  subjectKey: 'physics' | 'chemistry' | 'biology' | 'mathematics' | 'english';
+  subjectKey: SubjectKey;
   subjectName: string;
+  category?: 'Sciences' | 'Commercial' | 'Arts';
   bookTitle: string;
   author: string;
   edition: string;
@@ -297,51 +301,406 @@ export const VERIFIED_TEXTBOOKS: Record<string, VerifiedTextbook> = {
       },
     ],
   },
+
+  economics: {
+    subjectKey: 'economics',
+    subjectName: 'Economics',
+    category: 'Commercial',
+    bookTitle: 'COMPREHENSIVE ECONOMICS FOR SENIOR SECONDARY SCHOOLS',
+    author: 'J.U. Anyaele',
+    edition: 'Revised Senior Secondary Edition',
+    publisher: 'Johnson Publishers Ltd',
+    badge: 'Economics Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Scarcity, Choice, Scale of Preference & Opportunity Cost', pageRange: 'Pages 1 - 27', topics: ['Basic concepts', 'Production possibility curve'] },
+      { chapter: 2, title: 'Theory of Consumer Demand & Elasticity of Demand', pageRange: 'Pages 28 - 54', topics: ['Price elasticity', 'Cross and income elasticity'] },
+      { chapter: 5, title: 'Market Structures: Perfect Competition & Monopoly', pageRange: 'Pages 112 - 144', topics: ['Short-run vs long-run equilibrium', 'Price discrimination'] },
+      { chapter: 6, title: 'National Income Accounting & The Multiplier', pageRange: 'Pages 145 - 177', topics: ['GDP, GNP, NNP calculations', 'Investment multiplier'] },
+      { chapter: 7, title: 'Money, Commercial Banking & Central Bank Monetary Policies', pageRange: 'Pages 178 - 209', topics: ['Monetary policy instruments (MPR, CRR)', 'Inflation control'] },
+    ],
+  },
+
+  government: {
+    subjectKey: 'government',
+    subjectName: 'Government',
+    category: 'Arts',
+    bookTitle: 'ESSENTIAL GOVERNMENT FOR SENIOR SECONDARY SCHOOLS',
+    author: 'C.C. Dibie',
+    edition: 'Comprehensive SSCE/UTME Edition',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'Government Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Concepts of the State, Sovereignty & Rule of Law', pageRange: 'Pages 1 - 44', topics: ['Sovereignty types', 'Separation of powers', 'Human rights'] },
+      { chapter: 4, title: 'Forms and Arms of Government in Democratic Systems', pageRange: 'Pages 70 - 124', topics: ['Federal vs Unitary systems', 'Legislature, Executive & Judiciary'] },
+      { chapter: 7, title: 'Pre-Colonial Political Systems in Nigeria', pageRange: 'Pages 158 - 187', topics: ['Old Oyo Empire (Oyomesi)', 'Hausa-Fulani (Emirates)', 'Igbo Republicanism'] },
+      { chapter: 9, title: 'Constitutional Developments in Colonial Nigeria', pageRange: 'Pages 218 - 253', topics: ['Clifford (1922)', 'Richards (1946)', 'Macpherson (1951)', 'Lyttelton (1954)'] },
+      { chapter: 10, title: 'Post-Independence Constitutions (1960, 1963, 1979, 1999)', pageRange: 'Pages 254 - 291', topics: ['Exclusive vs Concurrent lists', 'Federal Character Principle'] },
+    ],
+  },
+
+  literature: {
+    subjectKey: 'literature',
+    subjectName: 'Literature in English',
+    category: 'Arts',
+    bookTitle: 'EXAM FOCUS: LITERATURE IN ENGLISH FOR UTME & WASSCE',
+    author: 'J.O.J. Nwachukwu-Agbada et al.',
+    edition: 'National UTME Syllabus Series',
+    publisher: 'University Press PLC',
+    badge: 'Literature Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Literary Appreciation: Figures of Speech & Poetic Devices', pageRange: 'Pages 1 - 33', topics: ['Metaphor, Personification, Metonymy', 'Dramatic irony, Catharsis'] },
+      { chapter: 3, title: 'Elements of Poetry: Stanza Forms, Rhyme & Meter', pageRange: 'Pages 68 - 101', topics: ['Sonnet structures', 'Ballad, Elegy, Ode & Epic forms'] },
+      { chapter: 5, title: 'Prescribed African Drama & Thematic Analysis', pageRange: 'Pages 135 - 174', topics: ['The Lion and the Jewel (Wole Soyinka)', 'The Blood of a Stranger'] },
+      { chapter: 7, title: 'Prescribed African Prose Fiction Analysis', pageRange: 'Pages 215 - 257', topics: ['Second Class Citizen (Buchi Emecheta)', 'Unexpected Joy at Dawn'] },
+      { chapter: 9, title: 'Prescribed African & Non-African Poetry Analysis', pageRange: 'Pages 296 - 370', topics: ['Black Woman (Senghor)', 'The Journey of the Magi (T.S. Eliot)'] },
+    ],
+  },
+
+  commerce: {
+    subjectKey: 'commerce',
+    subjectName: 'Commerce',
+    category: 'Commercial',
+    bookTitle: 'ESSENTIAL COMMERCE FOR SENIOR SECONDARY SCHOOLS',
+    author: 'O.A. Longe',
+    edition: 'Comprehensive Edition',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'Commerce Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Home Trade: Wholesale Trade, Retail & Documents in Trade', pageRange: 'Pages 26 - 57', topics: ['Channels of distribution', 'Trade documents (Invoices, Debit notes)'] },
+      { chapter: 3, title: 'Foreign Trade: Export, Import & Maritime Documents', pageRange: 'Pages 58 - 91', topics: ['Bill of Lading', 'Consular Invoice', 'Exchange control'] },
+      { chapter: 4, title: 'Aids to Trade: Banking, Warehousing & Insurance Principles', pageRange: 'Pages 92 - 129', topics: ['Indemnity', 'Insurable interest', 'Subrogation'] },
+      { chapter: 6, title: 'Business Organizations: Limited Liability Companies', pageRange: 'Pages 162 - 203', topics: ['Private vs Public Limited Companies', 'Shares & Debentures'] },
+      { chapter: 8, title: 'The Capital Market, Stock Exchange & Commodity Exchange', pageRange: 'Pages 238 - 271', topics: ['Primary vs Secondary markets', 'SEC statutory functions'] },
+    ],
+  },
+
+  accounts: {
+    subjectKey: 'accounts',
+    subjectName: 'Principles of Accounts',
+    category: 'Commercial',
+    bookTitle: 'ESSENTIAL FINANCIAL ACCOUNTING FOR SENIOR SECONDARY SCHOOLS',
+    author: 'O.A. Longe & R.A. Kazeem',
+    edition: 'Modern Accounting Series',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'Accounting Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Books of Original Entry & Trial Balance Extraction', pageRange: 'Pages 30 - 63', topics: ['Subsidiary books', 'Double entry posting'] },
+      { chapter: 3, title: 'Correction of Errors & The Suspense Account', pageRange: 'Pages 64 - 97', topics: ['Error of Principle', 'Compensating errors', 'Error of Commission'] },
+      { chapter: 4, title: 'The Cash Book & Bank Reconciliation Statements', pageRange: 'Pages 98 - 131', topics: ['Unpresented cheques', 'Uncredited lodgements', 'Bank charges'] },
+      { chapter: 5, title: 'End-of-Year Adjustments: Depreciation of Fixed Assets', pageRange: 'Pages 132 - 167', topics: ['Straight line method', 'Reducing balance method'] },
+      { chapter: 7, title: 'Partnership Accounts: Appropriation & Capital Accounts', pageRange: 'Pages 206 - 247', topics: ['Profit-sharing ratios', 'Goodwill on admission'] },
+      { chapter: 9, title: 'Accounting Ratios & Financial Statement Analysis', pageRange: 'Pages 288 - 325', topics: ['Current ratio', 'Acid test / quick ratio', 'Stock turnover'] },
+    ],
+  },
+
+  crs: {
+    subjectKey: 'crs',
+    subjectName: 'Christian Religious Studies',
+    category: 'Arts',
+    bookTitle: 'ESSENTIAL CHRISTIAN RELIGIOUS KNOWLEDGE FOR SENIOR SECONDARY SCHOOLS',
+    author: 'Edmond, U.O.',
+    edition: 'Revised Edition',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'CRS Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Leadership Roles: Joseph, Moses, Joshua & Deborah', pageRange: 'Pages 32 - 64', topics: ['Call of Moses (Exodus 3)', 'Faith and courage in the wilderness'] },
+      { chapter: 4, title: 'The Call and Reign of the Kings: Saul, David & Solomon', pageRange: 'Pages 92 - 127', topics: ['David’s submission to God’s will', 'Solomon’s wisdom and apostasy'] },
+      { chapter: 7, title: 'The Miracles and Parables of Jesus Christ', pageRange: 'Pages 202 - 241', topics: ['Parable of the Sower', 'The Good Samaritan', 'Nature miracles'] },
+      { chapter: 9, title: 'The Early Church: Pentecost & Ministry of the Apostles', pageRange: 'Pages 278 - 313', topics: ['Day of Pentecost (Acts 2)', 'Martyrdom of Stephen', 'Paul’s conversion'] },
+      { chapter: 10, title: 'Paul’s Missionary Journeys & Epistles (1 Corinthians 13)', pageRange: 'Pages 314 - 348', topics: ['Justification by faith', 'The greatest virtue: Love (Agape)'] },
+    ],
+  },
+
+  irs: {
+    subjectKey: 'irs',
+    subjectName: 'Islamic Religious Studies',
+    category: 'Arts',
+    bookTitle: 'ISLAMIC STUDIES FOR SENIOR SECONDARY SCHOOLS',
+    author: 'B.A. Lemu',
+    edition: 'National Islamic Education Board Edition',
+    publisher: 'Islamic Education Trust',
+    badge: 'IRS Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Tawheed: Faith in One God, Shirk & Attributes of Allah', pageRange: 'Pages 1 - 34', topics: ['Tawheed al-Rububiyyah & Uluhiyyah', 'Avoidance of Shirk'] },
+      { chapter: 2, title: 'The Holy Qur’an: Revelation, Standardization & Codification', pageRange: 'Pages 35 - 69', topics: ['Uthmanic codex (Zayd ibn Thabit)', 'Preservation of the text'] },
+      { chapter: 4, title: 'Hadith: Classification (Sahih, Hasan, Da’if) & An-Nawawi', pageRange: 'Pages 108 - 144', topics: ['Isnad and Matn criticism', 'Six canonical Hadith collections'] },
+      { chapter: 5, title: 'The Pillars of Islam: Salah, Zakah, Sawm & Hajj', pageRange: 'Pages 145 - 214', topics: ['Conditions of valid prayer', 'Calculation of Zakah (Nisab)', 'Hajj rites'] },
+      { chapter: 9, title: 'The Khulafa’ur-Rashidun & Early Islamic History', pageRange: 'Pages 295 - 331', topics: ['Abu Bakr, Umar, Uthman & Ali (RA)', 'Expansion of the Caliphate'] },
+    ],
+  },
+
+  geography: {
+    subjectKey: 'geography',
+    subjectName: 'Geography',
+    category: 'Commercial',
+    bookTitle: 'ESSENTIAL GEOGRAPHY FOR SENIOR SECONDARY SCHOOLS',
+    author: 'O.A. Iwena',
+    edition: 'Comprehensive Geography Series',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'Geography Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Latitude, Longitude, Time Calculation & Great Circles', pageRange: 'Pages 28 - 57', topics: ['15° per hour rotation rule', 'International Date Line (180°)'] },
+      { chapter: 3, title: 'Rocks, Vulcanicity, Earthquakes & Fold Mountains', pageRange: 'Pages 58 - 89', topics: ['Plutonic igneous (Granite)', 'Extrusive rocks (Basalt)', 'Sedimentary and metamorphic'] },
+      { chapter: 5, title: 'Weather, Atmospheric Pressure, Winds & Köppen System', pageRange: 'Pages 125 - 164', topics: ['Planetary wind belts', 'Tropical wet vs dry climates'] },
+      { chapter: 7, title: 'Map Reading: Contours, Relief & Gradient Calculations', pageRange: 'Pages 198 - 239', topics: ['Contour patterns for landforms', 'Vertical exaggeration and slope'] },
+      { chapter: 8, title: 'Regional Geography of Nigeria: Drainage, Minerals & Agriculture', pageRange: 'Pages 240 - 281', topics: ['Niger-Benue river system', 'Mineral belts (Crude oil, Coal, Tin)'] },
+    ],
+  },
+
+  agricultural_science: {
+    subjectKey: 'agricultural_science',
+    subjectName: 'Agricultural Science',
+    category: 'Sciences',
+    bookTitle: 'ESSENTIAL AGRICULTURAL SCIENCE FOR SENIOR SECONDARY SCHOOLS',
+    author: 'O.A. Iwena',
+    edition: 'Comprehensive Agricultural Series',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'Agric Science Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Land Tenure Systems & Land Availability in Nigeria', pageRange: 'Pages 24 - 51', topics: ['Communal tenure', 'Land Use Act of 1978'] },
+      { chapter: 5, title: 'Soil Science: Soil Texture, Profile, pH & Plant Nutrients', pageRange: 'Pages 115 - 153', topics: ['Macro-nutrients (N, P, K)', 'Soil acidity and liming'] },
+      { chapter: 6, title: 'Crop Production & Crop Protection against Pests/Weeds', pageRange: 'Pages 154 - 237', topics: ['Agronomy of cereals and legumes', 'Insect pests and chemical control'] },
+      { chapter: 8, title: 'Animal Science: Anatomy, Physiology & Digestion in Ruminants', pageRange: 'Pages 238 - 277', topics: ['Rumen, Reticulum, Omasum, Abomasum', 'True enzymatic stomach'] },
+      { chapter: 10, title: 'Agricultural Economics: Farm Records, Accounting & Marketing', pageRange: 'Pages 320 - 355', topics: ['Profit and loss accounts', 'Agricultural extension methods'] },
+    ],
+  },
+
+  computer_studies: {
+    subjectKey: 'computer_studies',
+    subjectName: 'Computer Studies',
+    category: 'Sciences',
+    bookTitle: 'COMPUTER STUDIES FOR SENIOR SECONDARY SCHOOLS',
+    author: 'Hi-Tech Publishers / O.A. Adedoyin',
+    edition: 'Modern ICT/CBT Edition',
+    publisher: 'Hi-Tech Publications',
+    badge: 'ICT & Computing Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Computer Hardware: CPU Architecture, Memory & Peripherals', pageRange: 'Pages 28 - 59', topics: ['ALU, Control Unit, Registers', 'RAM vs ROM volatileness'] },
+      { chapter: 3, title: 'Logic Circuits: AND, OR, NOT, NAND, NOR & XOR Truth Tables', pageRange: 'Pages 60 - 87', topics: ['Boolean algebra simplification', 'Universal logic gates'] },
+      { chapter: 4, title: 'Data Representation: Binary, Octal, Hexadecimal & ASCII', pageRange: 'Pages 88 - 117', topics: ['Radix conversions', 'Two’s complement representation'] },
+      { chapter: 7, title: 'Computer Networking Topologies & The OSI Reference Model', pageRange: 'Pages 188 - 225', topics: ['Star, Bus, Ring and Mesh', 'Physical to Application layers'] },
+      { chapter: 8, title: 'Database Management Systems (DBMS) & SQL Foundations', pageRange: 'Pages 226 - 259', topics: ['Relational tables, Primary & Foreign keys', 'SQL queries'] },
+    ],
+  },
+
+  civic_education: {
+    subjectKey: 'civic_education',
+    subjectName: 'Civic Education',
+    category: 'Arts',
+    bookTitle: 'ESSENTIAL CIVIC EDUCATION FOR SENIOR SECONDARY SCHOOLS',
+    author: 'R.W. Okunloye',
+    edition: 'National Values Curriculum',
+    publisher: 'Tonad Publishers Ltd',
+    badge: 'Civics Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Citizenship: Rights, Duties, Obligations & Franchise', pageRange: 'Pages 25 - 53', topics: ['Section 77(2) Voting franchise', 'Acquiring Nigerian citizenship'] },
+      { chapter: 4, title: 'Human Rights: Universal Declaration of Human Rights (UDHR)', pageRange: 'Pages 86 - 117', topics: ['Fundamental freedoms', 'Limitation of rights in emergencies'] },
+      { chapter: 5, title: 'Democracy, Rule of Law & Pillars of Good Governance', pageRange: 'Pages 118 - 147', topics: ['Independence of the judiciary', 'Separation of powers'] },
+      { chapter: 6, title: 'Electoral Process & Electoral Malpractice in Nigeria', pageRange: 'Pages 148 - 177', topics: ['INEC constitutional mandates', 'Free and fair election criteria'] },
+      { chapter: 7, title: 'Public Service & Anti-Corruption Law Enforcement Agencies', pageRange: 'Pages 178 - 209', topics: ['EFCC, ICPC, Code of Conduct Bureau', 'Whistleblowing and transparency'] },
+    ],
+  },
+
+  history: {
+    subjectKey: 'history',
+    subjectName: 'History',
+    category: 'Arts',
+    bookTitle: 'GROUNDWORK OF NIGERIAN HISTORY',
+    author: 'Obaro Ikime',
+    edition: 'Historical Society of Nigeria Edition',
+    publisher: 'Heinemann Educational Books',
+    badge: 'History Verified Authority',
+    coreChapters: [
+      { chapter: 2, title: 'Pre-Colonial State Systems: Kanem-Borno & Mai Idris Alooma', pageRange: 'Pages 32 - 67', topics: ['Turkish musketeers and Borno army', 'Trans-Saharan trade'] },
+      { chapter: 4, title: 'The Oyo Empire: Political Structure, Oyomesi & Collapse', pageRange: 'Pages 105 - 141', topics: ['Checks and balances (Bashorun)', '19th century Yoruba wars'] },
+      { chapter: 6, title: 'The 19th Century Sokoto Caliphate & Usman Dan Fodio', pageRange: 'Pages 184 - 219', topics: ['1804 Jihad causes and outcomes', 'Emirate administrative system'] },
+      { chapter: 8, title: 'British Conquest, Resistance & The 1914 Amalgamation', pageRange: 'Pages 260 - 299', topics: ['Lord Lugard January 1, 1914 amalgamation', 'Indirect rule mechanisms'] },
+      { chapter: 9, title: 'Nationalist Movements, Decolonization & Independence 1960', pageRange: 'Pages 300 - 340', topics: ['NCNC, AG, NPC leaders', 'October 1, 1960 independence'] },
+    ],
+  },
+
+  french: {
+    subjectKey: 'french',
+    subjectName: 'French',
+    category: 'Arts',
+    bookTitle: 'LE NOUVEAU SANS FRONTIÈRES / MODERN FRENCH FOR WEST AFRICA',
+    author: 'M. Brench & P. Philippe',
+    edition: 'Francophone Pedagogical Series',
+    publisher: 'CLE International',
+    badge: 'French Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Grammaire: Les Articles, Noms et Adjectifs Démonstratifs', pageRange: 'Pages 1 - 27', topics: ['Articles définis et indéfinis', 'Ce, cet, cette, ces'] },
+      { chapter: 3, title: 'Conjugaison: Le Passé Composé et L’Imparfait', pageRange: 'Pages 60 - 91', topics: ['Auxiliaires avoir et être', 'Accord du participe passé'] },
+      { chapter: 5, title: 'Les Pronoms Personnels Objets Directs et Indirects (COD/COI)', pageRange: 'Pages 125 - 157', topics: ['Pronom lui, leur, en, y', 'Place des pronoms dans la phrase'] },
+      { chapter: 7, title: 'Vocabulaire Thématique, Les Métiers et Les Voyages', pageRange: 'Pages 190 - 223', topics: ['Expressions idiomatiques courantes', 'Vie quotidienne et culture'] },
+    ],
+  },
+
+  phe: {
+    subjectKey: 'phe',
+    subjectName: 'Physical and Health Education (PHE)',
+    category: 'Sciences',
+    bookTitle: 'ESSENTIAL PHYSICAL AND HEALTH EDUCATION FOR SENIOR SECONDARY SCHOOLS',
+    author: 'M.O. Ojeme & P.B. Ikulayo',
+    edition: 'Sports Science & Health Series',
+    publisher: 'Africana First Publishers',
+    badge: 'PHE Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Principles of Physical Fitness, Conditioning & Body Somatotypes', pageRange: 'Pages 1 - 27', topics: ['Cardiovascular endurance', 'Ectomorph, Mesomorph, Endomorph'] },
+      { chapter: 2, title: 'Track & Field Athletics: Sprints, Relays & High Jump Flop', pageRange: 'Pages 28 - 64', topics: ['Fosbury Flop biomechanics', 'Baton change techniques'] },
+      { chapter: 3, title: 'Ball Games: Football, Basketball & Volleyball Officiating', pageRange: 'Pages 65 - 101', topics: ['Offside rule in association football', 'Fouls and court specifications'] },
+      { chapter: 6, title: 'Sports Injuries, First Aid & The R.I.C.E. Management Technique', pageRange: 'Pages 170 - 204', topics: ['Rest, Ice, Compression, Elevation', 'Fracture immobilization'] },
+      { chapter: 7, title: 'Community Health, Communicable Diseases & Substance Abuse', pageRange: 'Pages 205 - 240', topics: ['Waterborne pathogens', 'Doping and stimulants in sports'] },
+    ],
+  },
+
+  music: {
+    subjectKey: 'music',
+    subjectName: 'Music',
+    category: 'Arts',
+    bookTitle: 'BASIC MUSIC THEORY & AFRICAN MUSIC FOR SECONDARY SCHOOLS',
+    author: 'M.N. Nzewi & F.C. King',
+    edition: 'African & Western Theory Guide',
+    publisher: 'Africana First Publishers',
+    badge: 'Music Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Rudiments of Music: Staff, Clefs, Notes & Time Signatures', pageRange: 'Pages 1 - 31', topics: ['Treble and bass clefs', 'Simple vs compound time'] },
+      { chapter: 2, title: 'Scales, Intervals, Key Signatures & Transposition', pageRange: 'Pages 32 - 67', topics: ['Circle of fifths (G Major 1 sharp)', 'Major and minor triads'] },
+      { chapter: 4, title: 'African Music: Hornbostel-Sachs Classification & Rhythms', pageRange: 'Pages 104 - 141', topics: ['Idiophones (Ekwe, Ogene)', 'Membranophones, Polyrhythms'] },
+      { chapter: 6, title: 'Nigerian Art, Highlife, Juju and Afrobeat Pioneers', pageRange: 'Pages 180 - 215', topics: ['Fela Kuti, Fela Sowande, Osita Osadebe', 'Call-and-response form'] },
+    ],
+  },
+
+  visual_arts: {
+    subjectKey: 'visual_arts',
+    subjectName: 'Visual Arts (Fine Art)',
+    category: 'Arts',
+    bookTitle: 'CULTURAL AND CREATIVE ARTS & VISUAL ARTS FOR SENIOR SECONDARY SCHOOLS',
+    author: 'C.O. Egonwa & S.I. Wangboje',
+    edition: 'Visual & Studio Arts Guide',
+    publisher: 'Evans Brothers Nigeria Ltd',
+    badge: 'Fine Art Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Elements and Principles of Visual Design & Color Theory', pageRange: 'Pages 1 - 29', topics: ['Complementary colors', 'Linear and atmospheric perspective'] },
+      { chapter: 2, title: 'Drawing & Painting: Chiaroscuro, Impasto & Media', pageRange: 'Pages 30 - 67', topics: ['Tonal gradation', 'Watercolor and oil techniques'] },
+      { chapter: 4, title: 'Sculpture, Ceramic Pottery & Kiln Firing Technology', pageRange: 'Pages 105 - 141', topics: ['Clay coiling and pinching', 'Bisque and glaze firing'] },
+      { chapter: 5, title: 'Traditional Nigerian Art: Nok, Igbo-Ukwu, Ife & Benin', pageRange: 'Pages 142 - 184', topics: ['Nok pierced terracotta pupils', 'Lost-wax bronze casting'] },
+      { chapter: 6, title: 'Modern Nigerian Masters: Zaria Rebels & Contemporary Art', pageRange: 'Pages 185 - 220', topics: ['Ben Enwonwu, Bruce Onobrakpeya', 'Natural Synthesis doctrine'] },
+    ],
+  },
+
+  home_economics: {
+    subjectKey: 'home_economics',
+    subjectName: 'Home Economics',
+    category: 'Commercial',
+    bookTitle: 'ESSENTIAL HOME ECONOMICS FOR SENIOR SECONDARY SCHOOLS',
+    author: 'Elizabeth Anyakoha, Ph.D.',
+    edition: 'Comprehensive Foods, Textiles & Home Management',
+    publisher: 'Africana First Publishers',
+    badge: 'Home Economics Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Food Nutrients, Balanced Diets & Deficiency Diseases', pageRange: 'Pages 1 - 34', topics: ['Kwashiorkor protein deficiency', 'Vitamins and minerals functions'] },
+      { chapter: 3, title: 'Food Preservation, Storage & Spoilage Prevention', pageRange: 'Pages 72 - 107', topics: ['Pasteurization, Canning, Dehydration', 'Microbial food poisoning'] },
+      { chapter: 4, title: 'Textile Fibres, Fabric Construction & Laundry Methods', pageRange: 'Pages 108 - 144', topics: ['Warp and weft weave structures', 'Natural vs synthetic fibres'] },
+      { chapter: 5, title: 'Garment Construction: Pattern Drafting & Sewing Stitches', pageRange: 'Pages 145 - 181', topics: ['Seams, Darts, Facings, Hems', 'Sewing machine maintenance'] },
+      { chapter: 6, title: 'Home Management, Family Budgeting & Consumer Rights', pageRange: 'Pages 182 - 215', topics: ['Scale of preference in household expenditure', 'Consumer protection'] },
+    ],
+  },
+
+  hausa: {
+    subjectKey: 'hausa',
+    subjectName: 'Hausa',
+    category: 'Arts',
+    bookTitle: 'TSARIN HARSHEN HAUSA DA LITATTAFAN HAUSA NA UTME',
+    author: 'I.Y. Yahaya & M.K.M. Galadanci',
+    edition: 'Northern Language Board Edition',
+    publisher: 'University Press PLC',
+    badge: 'Hausa Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Nahawun Hausa: Kalmomin Hausa da Rabe-raben Kalmomi', pageRange: 'Pages 1 - 29', topics: ['Aikatau (Verbs)', 'Suna (Nouns)', 'Sifa (Adjectives)'] },
+      { chapter: 2, title: 'Tsarin Sauti: Bakake, Wasula da Karin Sauti a Hausa', pageRange: 'Pages 30 - 64', topics: ['Wasula dogaye da gajeru', 'Tagwayen bakake'] },
+      { chapter: 3, title: 'Al’adu da Zamantakewar Hausawa: Aure, Sarauta da Sana’o’i', pageRange: 'Pages 65 - 101', topics: ['Bikin aure da na haihuwa', 'Tsarukan sarautar gargajiya'] },
+      { chapter: 5, title: 'Rubutaccen Adabi: Zube, Waka da Fitattun Littattafai', pageRange: 'Pages 140 - 180', topics: ['Magana Jari Ce (Abubakar Imam)', 'Ruwan Bagaja'] },
+    ],
+  },
+
+  yoruba: {
+    subjectKey: 'yoruba',
+    subjectName: 'Yoruba',
+    category: 'Arts',
+    bookTitle: 'EDE YORUBA ODE ONI & AKOJOPO EWI ALOHUN YORUBA',
+    author: 'B. Awobuluyi & O. Olatunji',
+    edition: 'Yoruba Studies Association Guide',
+    publisher: 'Macmillan Nigeria Publishers',
+    badge: 'Yoruba Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Giramà Yoruba: Awon Faweli, Konsonanti ati Ami Ohun', pageRange: 'Pages 1 - 31', topics: ['Ami Oke, Ami Aarin, Ami Isale', 'Faweli aranmu ati konsonanti'] },
+      { chapter: 2, title: 'Ihùwàsi Oro: Oro-Oruko, Oro-Ise ati Isopo Gbolohun', pageRange: 'Pages 32 - 67', topics: ['Aroko Yoruba', 'Ihun gbolohun gbfe'] },
+      { chapter: 3, title: 'Asa ati Ise Yoruba: Igbeyawo, Isomoloruko ati Oye Jije', pageRange: 'Pages 68 - 104', topics: ['Eto Idana ninu igbeyawo', 'Eto isomoloruko ojo kejo'] },
+      { chapter: 5, title: 'Litireso Apileko: Ewi, Ere Onise ati Iwe Itan Aroso', pageRange: 'Pages 145 - 185', topics: ['Ogboju Ode Ninu Igbo Irunmole (D.O. Fagunwa)', 'Ewi alantete'] },
+    ],
+  },
+
+  igbo: {
+    subjectKey: 'igbo',
+    subjectName: 'Igbo',
+    category: 'Arts',
+    bookTitle: 'UTOASUSU IGBO MAKA NDI SINIO SEKONDIRI',
+    author: 'E.N. Emenanjo & F.C. Ogbalu',
+    edition: 'Society for Promoting Igbo Language and Culture Edition',
+    publisher: 'University Publishing Company',
+    badge: 'Igbo Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'Utoasusu: Udaume Mfe na Udaume Aro, Akara Uda', pageRange: 'Pages 1 - 33', topics: ['Onwu Orthography (1961)', 'Ndakorita udaume'] },
+      { chapter: 2, title: 'Nkejiasusu: Ngwaa, Nkowa, Nnochiaha na Njiko', pageRange: 'Pages 34 - 69', topics: ['Ahiriokwu mfe na nke ukwu', 'Nsuda akara uda'] },
+      { chapter: 3, title: 'Omenala na Ebumputaala Igbo: Iri Ji Ohuru na Ichi Ozo', pageRange: 'Pages 70 - 107', topics: ['Emume Iwa Ji / Iri Ji Ohuru', 'Alumdi na nwunye n’ala Igbo'] },
+      { chapter: 5, title: 'Agumagu Ederede: Ejije, Abu na Akwukwo Ogugu', pageRange: 'Pages 148 - 185', topics: ['Omenuko (Pita Nwana)', 'Juo Obinna'] },
+    ],
+  },
+
+  arabic: {
+    subjectKey: 'arabic',
+    subjectName: 'Arabic',
+    category: 'Arts',
+    bookTitle: 'DURUS AL-LUGHAH AL-ARABIYYAH & AL-MUKHTASAR FI ADAB AL-ARABI',
+    author: 'Dr. V. Abdur Rahim & Sheikh Abubakar Gumi',
+    edition: 'Arabic Studies for Senior Secondary Schools',
+    publisher: 'Islamic Publications Bureau',
+    badge: 'Arabic Verified Authority',
+    coreChapters: [
+      { chapter: 1, title: 'An-Nahw (Grammar): Al-Jumla al-Ismiyyah wal Fi’liyyah', pageRange: 'Pages 1 - 34', topics: ['Al-Mubtada’ wal Khabar', 'Al-Fa’il wal Maf’ul bihi'] },
+      { chapter: 2, title: 'As-Sarf (Morphology): Al-Awzan wa Ismul Fa’il/Maf’ul', pageRange: 'Pages 35 - 69', topics: ['Awzan al-af’al al-mujarradah', 'Ism al-faa’il wa ism al-maf’ool'] },
+      { chapter: 3, title: 'Al-Balaghah (Rhetoric): At-Tashbeeh wal Isti’aarah', pageRange: 'Pages 70 - 104', topics: ['Arkan at-tashbeeh', 'Al-Isti’aarah at-tasreehiyyah wal makniyyah'] },
+      { chapter: 4, title: 'History of Arabic Literature & Islamic Classical Works', pageRange: 'Pages 105 - 139', topics: ['Arabic scholarship in Nigeria (Dan Fodio works)', 'Classical pre-Islamic & Umayyad poetry'] },
+    ],
+  },
 };
 
 /**
- * Returns the verified citation string for a given subject and topic/chapter
+ * Returns the verified citation string for a given subject (strictly the textbook reference)
  */
 export function getVerifiedCitation(
   subject: string,
-  topic: string,
-  chapter?: number,
-  page?: number | string
+  _topic?: string,
+  _chapter?: number,
+  _page?: number | string
 ): string {
-  const norm = subject.toLowerCase().trim();
-  let book: VerifiedTextbook;
+  const normKey = normalizeSubjectKey(subject);
+  const book = VERIFIED_TEXTBOOKS[normKey];
 
-  if (norm.includes('phys')) {
-    book = VERIFIED_TEXTBOOKS.physics;
-  } else if (norm.includes('chem')) {
-    book = VERIFIED_TEXTBOOKS.chemistry;
-  } else if (norm.includes('bio')) {
-    book = VERIFIED_TEXTBOOKS.biology;
-  } else if (norm.includes('math')) {
-    book = VERIFIED_TEXTBOOKS.mathematics;
-  } else if (norm.includes('eng') || norm.includes('lexis')) {
-    book = VERIFIED_TEXTBOOKS.english;
-  } else {
-    return `Topic: ${topic} — Verified JAMB Standard Reference`;
+  if (!book) {
+    return 'Verified JAMB Standard Reference';
   }
 
-  return `Topic: ${topic} in ${book.bookTitle} by ${book.author}`;
+  return `${book.bookTitle} by ${book.author}`;
 }
 
 export function getVerifiedBookForSubject(subjectOrCode: string): VerifiedTextbook | undefined {
-  const norm = subjectOrCode.toLowerCase().trim();
-  if (norm.includes('phys')) return VERIFIED_TEXTBOOKS.physics;
-  if (norm.includes('chem')) return VERIFIED_TEXTBOOKS.chemistry;
-  if (norm.includes('bio')) return VERIFIED_TEXTBOOKS.biology;
-  if (norm.includes('math')) return VERIFIED_TEXTBOOKS.mathematics;
-  if (norm.includes('eng') || norm.includes('lexis')) return VERIFIED_TEXTBOOKS.english;
-  return undefined;
+  const normKey = normalizeSubjectKey(subjectOrCode);
+  return VERIFIED_TEXTBOOKS[normKey];
 }
 
-import { VerifiedQuestion } from './jambPastQuestions';
-export type { VerifiedQuestion };
-
-export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
+const RAW_VERIFIED_QUESTIONS: VerifiedQuestion[] = [
   // ==========================================
   // 1. USE OF ENGLISH — A-Z OF ENGLISH (Dele Ashade)
   // ==========================================
@@ -362,7 +721,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 3,
     page: 84,
-    textbookRef: 'Topic: Lexis, Structure & Vocabulary in Context in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 102,
@@ -381,7 +740,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 1,
     page: 31,
-    textbookRef: 'Topic: Grammatical Concord & Proximity Agreement in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 103,
@@ -400,7 +759,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 1,
     page: 42,
-    textbookRef: 'Topic: The Mandative Subjunctive & Verbal Concord in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 104,
@@ -419,7 +778,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 3,
     page: 96,
-    textbookRef: 'Topic: Antonyms in Context & Lexical Contrasts in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 105,
@@ -438,7 +797,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 5,
     page: 144,
-    textbookRef: 'Topic: Prepositional Collocations & Phrasal Idioms in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 106,
@@ -457,7 +816,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 9,
     page: 262,
-    textbookRef: 'Topic: Pure Vowels, Long Monophthongs & Sound Matching in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
   {
     id: 107,
@@ -476,7 +835,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'B.O. Dele Ashade',
     chapter: 11,
     page: 324,
-    textbookRef: 'Topic: Noun-Verb Stress Shift & Syllable Weight in A-Z OF ENGLISH by B.O. Dele Ashade',
+    textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade',
   },
 
   // ==========================================
@@ -499,7 +858,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 1,
     page: 22,
-    textbookRef: 'Topic: Laws of Indices & Logarithms in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 202,
@@ -518,7 +877,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 3,
     page: 61,
-    textbookRef: 'Topic: Formation of Quadratic Equations & Roots in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 203,
@@ -537,7 +896,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 5,
     page: 134,
-    textbookRef: 'Topic: Arithmetic Progressions & Sum Formulas in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 204,
@@ -556,7 +915,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 11,
     page: 309,
-    textbookRef: 'Topic: Differential Calculus & Stationary Points in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 205,
@@ -575,7 +934,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 12,
     page: 347,
-    textbookRef: 'Topic: Definite Integrals & Fundamental Theorem of Calculus in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 206,
@@ -594,7 +953,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 9,
     page: 248,
-    textbookRef: 'Topic: Trigonometric Ratios & Acute Angles in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
   {
     id: 207,
@@ -613,7 +972,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.A. Otumudia',
     chapter: 14,
     page: 415,
-    textbookRef: 'Topic: Permutations with Repeated Items in HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
+    textbookRef: 'HIDDEN FACTS IN MATHEMATICS by M.A. Otumudia',
   },
 
   // ==========================================
@@ -636,7 +995,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 2,
     page: 31,
-    textbookRef: 'Topic: Equations of Uniformly Accelerated Motion in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 302,
@@ -655,7 +1014,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 3,
     page: 54,
-    textbookRef: 'Topic: Projectiles & Curved Trajectories in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 303,
@@ -674,7 +1033,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 1,
     page: 14,
-    textbookRef: 'Topic: Units and Dimensions in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 304,
@@ -693,7 +1052,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 8,
     page: 172,
-    textbookRef: 'Topic: Quantity of Heat & Calorimetry in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 305,
@@ -712,7 +1071,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 12,
     page: 278,
-    textbookRef: 'Topic: Sound Waves & Resonance in Pipes in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 306,
@@ -731,7 +1090,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 16,
     page: 382,
-    textbookRef: 'Topic: Current Electricity & Internal Resistance in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
   {
     id: 307,
@@ -750,7 +1109,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'M.W. Anyakoha, Ph.D.',
     chapter: 20,
     page: 495,
-    textbookRef: 'Topic: Radioactivity & Half-life Decay in NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
+    textbookRef: 'NEW SCHOOL PHYSICS by M.W. Anyakoha, Ph.D.',
   },
 
   // ==========================================
@@ -773,7 +1132,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 14,
     page: 276,
-    textbookRef: 'Topic: Nitrogen Compounds & Production of Ammonia in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 402,
@@ -792,7 +1151,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 12,
     page: 238,
-    textbookRef: 'Topic: Electrolysis, Electrode Reactions & Faraday’s Laws in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 403,
@@ -811,7 +1170,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 6,
     page: 112,
-    textbookRef: 'Topic: Stoichiometry & Chemical Equations in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 404,
@@ -830,7 +1189,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 4,
     page: 56,
-    textbookRef: 'Topic: Atomic Structure & Electronic Configuration in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 405,
@@ -849,7 +1208,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 9,
     page: 178,
-    textbookRef: 'Topic: Acids, Bases and Salts in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 406,
@@ -868,7 +1227,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 18,
     page: 394,
-    textbookRef: 'Topic: Organic Chemistry & Esters in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
   {
     id: 407,
@@ -887,7 +1246,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Osei Yaw Ababio',
     chapter: 8,
     page: 152,
-    textbookRef: 'Topic: Rates of Reaction and Chemical Equilibrium in NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
+    textbookRef: 'NEW SCHOOL CHEMISTRY by Osei Yaw Ababio',
   },
 
   // ==========================================
@@ -910,7 +1269,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 8,
     page: 174,
-    textbookRef: 'Topic: Transport in Mammals & The Circulatory System in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 502,
@@ -929,7 +1288,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 18,
     page: 422,
-    textbookRef: 'Topic: Heredity, Monohybrid Crosses & Gene Interaction in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 503,
@@ -948,7 +1307,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 2,
     page: 33,
-    textbookRef: 'Topic: Cell Ultrastructure & Organelles in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 504,
@@ -967,7 +1326,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 11,
     page: 241,
-    textbookRef: 'Topic: Excretion & The Kidney Nephron in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 505,
@@ -986,7 +1345,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 14,
     page: 308,
-    textbookRef: 'Topic: Nervous Coordination & The Brain in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 506,
@@ -1005,7 +1364,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 18,
     page: 436,
-    textbookRef: 'Topic: Heredity & Blood Group Inheritance in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
   {
     id: 507,
@@ -1024,31 +1383,38 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
     author: 'Sarojini T. Ramalingam, Ph.D.',
     chapter: 21,
     page: 490,
-    textbookRef: 'Topic: Ecology & Pyramids of Energy in MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
+    textbookRef: 'MODERN BIOLOGY by Sarojini T. Ramalingam, Ph.D.',
   },
 ];
+
+// Scatter options uniformly so correct answers are evenly spread across A, B, C, and D
+export const VERIFIED_QUESTIONS: VerifiedQuestion[] = RAW_VERIFIED_QUESTIONS.map((q, idx) =>
+  scatterQuestionOptions(q, q.id + idx * 7)
+);
 
 /**
  * Filter questions based on selected subjects
  */
 export function getQuestionsForSubjects(subjects: string[], count?: number): VerifiedQuestion[] {
-  const normSubs = subjects.map((s) => s.toLowerCase());
+  const normKeys = subjects.map(normalizeSubjectKey);
 
   const matched = VERIFIED_QUESTIONS.filter((q) => {
-    const qSub = q.subject.toLowerCase();
-    return normSubs.some((s) => {
-      if (s.includes('eng') && qSub.includes('eng')) return true;
-      if (s.includes('math') && qSub.includes('math')) return true;
-      if (s.includes('phys') && qSub.includes('phys')) return true;
-      if (s.includes('chem') && qSub.includes('chem')) return true;
-      if (s.includes('bio') && qSub.includes('bio')) return true;
-      return false;
-    });
+    const qKey = normalizeSubjectKey(q.subject);
+    return normKeys.includes(qKey);
   });
 
-  const pool = matched.length > 0 ? matched : VERIFIED_QUESTIONS;
-  if (!count || count >= pool.length) return pool;
-  return pool.slice(0, count);
+  if (matched.length > 0 && (!count || matched.length >= count)) {
+    return count ? matched.slice(0, count) : matched;
+  }
+
+  // Draw authentic questions for all requested subjects
+  const generated = assembleUtmeTest({
+    subjects,
+    mode: subjects.length === 1 ? 'single' : 'full',
+    customQuestionCount: count || (subjects.length === 1 ? 40 : 180),
+  });
+
+  return generated;
 }
 
 // Re-export 1978-2025 JAMB UTME Past Questions Engine
@@ -1064,6 +1430,7 @@ export {
   markQuestionsSeen,
   clearSeenQuestions,
   getSeenQuestionsCount,
+  scatterQuestionOptions,
 } from './jambPastQuestions';
 export type {
   SubjectKey,

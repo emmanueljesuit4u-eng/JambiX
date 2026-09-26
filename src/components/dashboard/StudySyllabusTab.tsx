@@ -81,56 +81,11 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
     }
   };
 
-  // Helper to get module chapter citation
-  const getModuleCitation = (subjectId: string, modIdx: number): string | null => {
-    if (subjectId === 'physics') {
-      const citations = [
-        'NEW SCHOOL PHYSICS (M.W. Anyakoha) · Chapters 1, 2, 3 & 5 (Pages 1 - 120)',
-        'NEW SCHOOL PHYSICS (M.W. Anyakoha) · Chapter 8: Thermal Expansion & Gas Laws (Pages 160 - 204)',
-        'NEW SCHOOL PHYSICS (M.W. Anyakoha) · Chapter 12: Waves, Sound & Optics (Pages 250 - 310)',
-        'NEW SCHOOL PHYSICS (M.W. Anyakoha) · Chapter 16: Current Electricity & EMF (Pages 360 - 412)',
-        'NEW SCHOOL PHYSICS (M.W. Anyakoha) · Chapter 20: AC Circuits & Nuclear Energy (Pages 450 - 510)',
-      ];
-      return citations[modIdx] || 'NEW SCHOOL PHYSICS (M.W. Anyakoha, Ph.D.)';
-    }
-    if (subjectId === 'chemistry') {
-      const citations = [
-        'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio) · Chapters 2 & 4: Separation & Atomic Orbitals (Pages 18 - 82)',
-        'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio) · Chapter 6: Stoichiometry & Mole Calculations (Pages 105 - 138)',
-        'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio) · Chapters 9 & 12: Acids, Bases, Salts & Electrolysis (Pages 165 - 256)',
-        'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio) · Chapter 14: Nitrogen, Ammonia & Non-Metals (Pages 270 - 302)',
-        'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio) · Chapter 18: Organic Hydrocarbons, Alkanols & Polymers (Pages 380 - 450)',
-      ];
-      return citations[modIdx] || 'NEW SCHOOL CHEMISTRY (Osei Yaw Ababio)';
-    }
-    if (subjectId === 'biology') {
-      const citations = [
-        'MODERN BIOLOGY (Sarojini T. Ramalingam) · Chapter 2: Cell Ultrastructure & Organelles (Pages 20 - 44)',
-        'MODERN BIOLOGY (Sarojini T. Ramalingam) · Chapters 5 & 8: Plant Nutrition & Mammalian Circulation (Pages 88 - 198)',
-        'MODERN BIOLOGY (Sarojini T. Ramalingam) · Chapters 11 & 14: Kidney Nephron & Nervous Coordination (Pages 230 - 340)',
-        'MODERN BIOLOGY (Sarojini T. Ramalingam) · Chapter 18: Mendelian Heredity & Genetics (Pages 410 - 465)',
-        'MODERN BIOLOGY (Sarojini T. Ramalingam) · Chapter 21: Ecology, Food Webs & Pyramids of Energy (Pages 480 - 520)',
-      ];
-      return citations[modIdx] || 'MODERN BIOLOGY (Sarojini T. Ramalingam, Ph.D.)';
-    }
-    if (subjectId === 'mathematics') {
-      const citations = [
-        'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia) · Chapter 1: Number Bases, Indices & Logarithms (Pages 1 - 32)',
-        'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia) · Chapters 3 & 5: Quadratic Equations, AP & GP (Pages 54 - 154)',
-        'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia) · Chapters 7 & 9: Coordinate Geometry & Trigonometry (Pages 178 - 275)',
-        'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia) · Chapters 11 & 12: Differential & Integral Calculus (Pages 295 - 370)',
-        'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia) · Chapter 14: Permutations, Combinations & Probability (Pages 405 - 460)',
-      ];
-      return citations[modIdx] || 'HIDDEN FACTS IN MATHEMATICS (M.A. Otumudia)';
-    }
-    if (subjectId === 'english') {
-      const citations = [
-        'A-Z OF ENGLISH (Dele Ashade) · Chapter 7: Comprehension & Summary Techniques (Pages 198 - 232)',
-        'A-Z OF ENGLISH (Dele Ashade) · Chapters 1, 3 & 5: Concord, Lexis & Prepositional Idioms (Pages 12 - 176)',
-        'The Lekki Headmaster (2025 UTME) & The Life Changer · Official Prescribed UTME Novels',
-        'A-Z OF ENGLISH (Dele Ashade) · Chapters 9 & 11: Vowel Contrasts & Primary Stress (Pages 255 - 350)',
-      ];
-      return citations[modIdx] || 'A-Z OF ENGLISH (B.O. Dele Ashade)';
+  // Helper to get module verified textbook citation (strictly textbook reference)
+  const getModuleCitation = (subjectId: string, _modIdx: number): string | null => {
+    const book = getVerifiedBookForSubject(subjectId);
+    if (book) {
+      return `${book.bookTitle} by ${book.author}`;
     }
     return null;
   };
@@ -168,13 +123,13 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
   const totalMasteredCount = Object.values(masteredTopics).filter(Boolean).length;
   const overallPercentage = Math.round((totalMasteredCount / (totalTopicsCount || 1)) * 100);
 
-  const primaryBooks = [
-    VERIFIED_TEXTBOOKS.physics,
-    VERIFIED_TEXTBOOKS.chemistry,
-    VERIFIED_TEXTBOOKS.biology,
-    VERIFIED_TEXTBOOKS.mathematics,
-    VERIFIED_TEXTBOOKS.english,
-  ];
+  const [bookCategory, setBookCategory] = useState<'All' | 'Sciences' | 'Commercial' | 'Arts'>('All');
+
+  const displayBooks = useMemo(() => {
+    const allBooks = Object.values(VERIFIED_TEXTBOOKS);
+    if (bookCategory === 'All') return allBooks;
+    return allBooks.filter((b) => b.category === bookCategory);
+  }, [bookCategory]);
 
   return (
     <div className="space-y-6">
@@ -217,7 +172,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
         </div>
       </div>
 
-      {/* 5 Verified Standard Authority Textbooks Showcase */}
+      {/* Verified Standard Authority Textbooks Showcase */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xs space-y-3.5 transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
           <div>
@@ -230,7 +185,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
               </h2>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              All question explanations, chapter maps, and citations strictly ground in these 5 reference books.
+              All question explanations and citations strictly ground in official JAMB accredited textbooks across Sciences, Commercial, and Arts &amp; Languages.
             </p>
           </div>
           <span className="text-[11px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/80 px-2.5 py-1 rounded-lg self-start sm:self-auto">
@@ -238,8 +193,26 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {primaryBooks.map((book) => (
+        {/* Textbook Category Filters */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+          {(['All', 'Sciences', 'Commercial', 'Arts'] as const).map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setBookCategory(cat)}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                bookCategory === cat
+                  ? 'bg-emerald-700 text-white shadow-xs'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+              }`}
+            >
+              {cat === 'All' ? `All Textbooks (${Object.keys(VERIFIED_TEXTBOOKS).length})` : cat === 'Sciences' ? '🔬 Science Textbooks' : cat === 'Commercial' ? '📊 Commercial Textbooks' : '🎭 Arts & Language Books'}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+          {displayBooks.map((book) => (
             <div
               key={book.subjectKey}
               className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 bg-slate-50/70 dark:bg-slate-800/40 flex flex-col justify-between transition-all group shadow-2xs"
@@ -260,7 +233,7 @@ export const StudySyllabusTab: React.FC<StudySyllabusTabProps> = ({
                   {book.author}
                 </p>
                 <div className="text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-0.5">
-                  {book.coreChapters.length} Core Chapters Indexed
+                  {book.coreChapters.length} Curriculum Modules Covered
                 </div>
               </div>
 

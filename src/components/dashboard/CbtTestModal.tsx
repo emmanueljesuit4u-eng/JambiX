@@ -44,6 +44,7 @@ import {
   markQuestionsSeen,
   clearSeenQuestions,
 } from '../../data/verifiedTextbooks';
+import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 
 interface CbtTestModalProps {
   isOpen: boolean;
@@ -72,7 +73,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     'Chemistry',
   ]);
   const [selectedYear, setSelectedYear] = useState<number | 'random'>(
-    initialYear || 2025
+    initialYear || 2026
   );
   const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint' | 'novel'>('full');
   const [duration, setDuration] = useState<number>(120);
@@ -107,40 +108,53 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       setSelectedSubjects(['Use of English']);
       setExamMode('novel');
       setDuration(25);
-    } else if (initLower.includes('phys') || titleLower.includes('phys')) {
-      setSelectedSubjects(['Physics']);
-      setExamMode('single');
-    } else if (initLower.includes('chem') || titleLower.includes('chem')) {
-      setSelectedSubjects(['Chemistry']);
-      setExamMode('single');
-    } else if (initLower.includes('bio') || titleLower.includes('bio')) {
-      setSelectedSubjects(['Biology']);
-      setExamMode('single');
-    } else if (initLower.includes('math') || titleLower.includes('math')) {
-      setSelectedSubjects(['Mathematics']);
-      setExamMode('single');
-    } else if (initLower.includes('eng') || titleLower.includes('eng')) {
-      setSelectedSubjects(['Use of English']);
-      setExamMode('single');
+    } else if (initialSubject) {
+      const key = normalizeSubjectKey(initialSubject);
+      const conf = SUBJECT_CONFIGS[key];
+      if (conf) {
+        setSelectedSubjects([conf.name]);
+        setExamMode('single');
+      }
+    } else if (testTitle && !titleLower.includes('full') && !titleLower.includes('180')) {
+      const key = normalizeSubjectKey(testTitle);
+      const conf = SUBJECT_CONFIGS[key];
+      if (conf && titleLower.includes(conf.name.toLowerCase())) {
+        setSelectedSubjects([conf.name]);
+        setExamMode('single');
+      }
     } else {
       setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
       setExamMode('full');
     }
 
-    if (initialYear && initialYear >= 1978 && initialYear <= 2025) {
+    if (initialYear && initialYear >= 1978 && initialYear <= 2026) {
       setSelectedYear(initialYear);
     }
     setSeenCount(getSeenQuestionsCount());
   }, [testTitle, initialSubject, initialYear, isOpen]);
 
-  // Available subjects for UTME
-  const availableSubjects = [
-    { name: 'Use of English', compulsory: true, book: 'A-Z OF ENGLISH' },
-    { name: 'Mathematics', compulsory: false, book: 'HIDDEN FACTS IN MATHEMATICS' },
-    { name: 'Physics', compulsory: false, book: 'NEW SCHOOL PHYSICS' },
-    { name: 'Chemistry', compulsory: false, book: 'NEW SCHOOL CHEMISTRY' },
-    { name: 'Biology', compulsory: false, book: 'MODERN BIOLOGY' },
-  ];
+  // Subject category filter state in setup
+  const [setupCategory, setSetupCategory] = useState<'All' | 'Sciences' | 'Commercial' | 'Arts'>('All');
+
+  // Available subjects for UTME (dynamically mapped across all 18 accredited subjects)
+  const availableSubjects = useMemo(() => {
+    return (Object.keys(SUBJECT_CONFIGS) as SubjectKey[]).map((key) => {
+      const cfg = SUBJECT_CONFIGS[key];
+      return {
+        key,
+        name: cfg.name,
+        category: cfg.category || 'Sciences',
+        compulsory: key === 'english',
+        book: cfg.bookTitle,
+        author: cfg.author,
+      };
+    });
+  }, []);
+
+  const filteredAvailableSubjects = useMemo(() => {
+    if (setupCategory === 'All') return availableSubjects;
+    return availableSubjects.filter((s) => s.category === setupCategory);
+  }, [availableSubjects, setupCategory]);
 
   const toggleSubject = (subName: string) => {
     if (examMode === 'single') {
@@ -158,6 +172,20 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       if (selectedSubjects.length < 4) {
         setSelectedSubjects([...selectedSubjects, subName]);
       }
+    }
+  };
+
+  const applyPreset = (preset: 'science' | 'medicine' | 'commercial' | 'arts_law' | 'arts_islam') => {
+    if (preset === 'science') {
+      setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
+    } else if (preset === 'medicine') {
+      setSelectedSubjects(['Use of English', 'Biology', 'Chemistry', 'Physics']);
+    } else if (preset === 'commercial') {
+      setSelectedSubjects(['Use of English', 'Economics', 'Commerce', 'Principles of Accounts']);
+    } else if (preset === 'arts_law') {
+      setSelectedSubjects(['Use of English', 'Government', 'Literature in English', 'Christian Religious Studies']);
+    } else if (preset === 'arts_islam') {
+      setSelectedSubjects(['Use of English', 'Government', 'Literature in English', 'Islamic Religious Studies']);
     }
   };
 
@@ -291,10 +319,10 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           userId: auth.currentUser.uid,
           testTitle:
             selectedYear === 'random'
-              ? `${testTitle} (1978-2025 Cross-Year Mix)`
+              ? `${testTitle} (1978-2026 Cross-Year Mix)`
               : `${testTitle} (${selectedYear} UTME)`,
           testType,
-          score: grade.totalJambScore, // Scored over 400 (JAMB Standard)
+          score: grade.totalRawCorrect, // Conforms strictly to score <= totalQuestions rule
           totalQuestions: grade.totalQuestions,
           percentage: grade.overallPercentage,
           timeSpentSeconds: timeSpent > 0 ? timeSpent : 180,
@@ -310,15 +338,19 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       userId: auth.currentUser?.uid,
       testTitle:
         selectedYear === 'random'
-          ? `${testTitle} (1978-2025 Cross-Year Mix)`
+          ? `${testTitle} (1978-2026 Cross-Year Mix)`
           : `${testTitle} (${selectedYear} UTME)`,
       testType,
-      score: grade.totalJambScore,
+      score: grade.totalRawCorrect,
+      jambScore: grade.totalJambScore,
+      totalRawCorrect: grade.totalRawCorrect,
       totalQuestions: grade.totalQuestions,
       percentage: grade.overallPercentage,
       timeSpentSeconds: timeSpent > 0 ? timeSpent : 180,
       subjects: selectedSubjects,
       syncedToCloud: synced,
+      questions: activeQuestions,
+      selectedAnswers: selectedAnswers,
     });
 
     setTestCompleted({
@@ -348,47 +380,32 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       role="dialog"
       aria-modal="true"
     >
-      <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[95vh] transition-colors">
-        {/* Header */}
-        <div className="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/90">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-black text-xs shadow-xs">
-              UTME
+      <div className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[96vh] sm:max-h-[92vh] transition-colors">
+        {/* Header - Streamlined for mobile */}
+        <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/90">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-black text-xs shrink-0">
+              CBT
             </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-xs">
                   {testTitle}
                 </h3>
-                {selectedYear !== 'random' ? (
-                  <span className="px-2 py-0.5 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 rounded text-[11px] font-black border border-rose-300 dark:border-rose-800">
-                    JAMB {selectedYear}
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 rounded text-[11px] font-black border border-purple-300 dark:border-purple-800">
-                    1978 – 2025 Archive
-                  </span>
-                )}
-                {!effectiveOnline ? (
-                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 rounded text-[10px] font-bold flex items-center gap-1">
-                    <WifiOff className="w-3 h-3" />
-                    <span>Offline Safe</span>
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 rounded text-[10px] font-bold flex items-center gap-1">
-                    <Cloud className="w-3 h-3" />
-                    <span>Cloud Ready</span>
+                {selectedYear !== 'random' && (
+                  <span className="hidden sm:inline-block px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 rounded text-[10px] font-bold">
+                    UTME {selectedYear}
                   </span>
                 )}
               </div>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Official JAMB CBT Simulator · Verified References from 5 Standard Textbooks
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                {testStarted && !testCompleted ? 'Exam in progress' : 'Official CBT Simulator'}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer shrink-0"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -447,7 +464,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   </div>
                   <div>
                     <span className="text-lg font-black text-teal-600 dark:text-teal-400">
-                      {selectedYear === 'random' ? '1978–2025' : `${selectedYear}`}
+                      {selectedYear === 'random' ? '1978–2026' : `${selectedYear}`}
                     </span>
                     <p className="text-[10px] text-slate-500 uppercase font-semibold">Exam Year</p>
                   </div>
@@ -604,6 +621,17 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                           <p className="font-semibold text-slate-800 dark:text-slate-100 leading-relaxed text-xs">
                             {q.text}
                           </p>
+
+                          {/* Question Image / Visual Diagram in Review */}
+                          {(q.imageSvg || q.imageUrl) && (
+                            <QuestionImageDisplay
+                              imageSvg={q.imageSvg}
+                              imageUrl={q.imageUrl}
+                              caption={q.imageCaption}
+                              alt={q.imageAlt}
+                              className="my-2"
+                            />
+                          )}
 
                           {/* Options grid */}
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-[11px]">
@@ -785,15 +813,15 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 </div>
               </div>
 
-              {/* Year Selector (1978 to 2025) */}
+              {/* Year Selector (1978 to 2026) */}
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-emerald-600" />
-                    <span>2. Select UTME Past Questions Year (1978 – 2025)</span>
+                    <span>2. Select UTME Past Questions Year (1978 – 2026)</span>
                   </label>
                   <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
-                    48 Examination Years Indexed
+                    49 Examination Years Indexed
                   </span>
                 </div>
 
@@ -807,9 +835,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       }}
                       className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs"
                     >
-                      <option value="random">🌟 Random Cross-Year UTME Mix (1978 – 2025)</option>
-                      <optgroup label="Recent UTME Years (2020 - 2025)">
-                        {[2025, 2024, 2023, 2022, 2021, 2020].map((y) => (
+                      <option value="random">🌟 Random Cross-Year UTME Mix (1978 – 2026)</option>
+                      <optgroup label="Recent UTME Years (2020 - 2026)">
+                        {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((y) => (
                           <option key={y} value={y}>
                             JAMB UTME {y} (Official Authentic Paper)
                           </option>
@@ -841,7 +869,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
                   {/* Quick Year Shortcuts */}
                   <div className="flex items-center gap-1.5 flex-wrap w-full sm:w-1/2">
-                    {[2025, 2024, 2023, 2020, 2015, 2000, 1978].map((yr) => (
+                    {[2026, 2025, 2024, 2023, 2020, 2015, 2000, 1978].map((yr) => (
                       <button
                         key={yr}
                         type="button"
@@ -859,9 +887,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 </div>
               </div>
 
-              {/* Subject Selection */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
+              {/* Subject Selection & Field Presets */}
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                     3. Select UTME Subjects ({selectedSubjects.length}{' '}
                     {examMode === 'full' ? '/ 4 Required' : 'Selected'})
@@ -873,8 +901,71 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                  {availableSubjects.map((sub) => {
+                {/* Field Combination Presets */}
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                    ⚡ Quick 4-Subject Combinations by Field:
+                  </span>
+                  <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                    <button
+                      type="button"
+                      onClick={() => applyPreset('science')}
+                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
+                    >
+                      🔬 Engineering / Science (Eng + Math + Phys + Chem)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => applyPreset('medicine')}
+                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
+                    >
+                      🩺 Medicine / Health (Eng + Bio + Chem + Phys)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => applyPreset('commercial')}
+                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
+                    >
+                      📊 Commercial / Social (Eng + Econ + Comm + Acc)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => applyPreset('arts_law')}
+                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
+                    >
+                      🎭 Arts &amp; Law (Eng + Gov + Lit + CRS)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => applyPreset('arts_islam')}
+                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
+                    >
+                      🕌 Arts &amp; Islamic (Eng + Gov + Lit + IRS)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Category Filter Pills */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                  {(['All', 'Sciences', 'Commercial', 'Arts'] as const).map((cat) => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setSetupCategory(cat)}
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                        setupCategory === cat
+                          ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-2xs'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      {cat === 'All' ? 'All Subjects (18)' : cat === 'Sciences' ? '🔬 Sciences' : cat === 'Commercial' ? '📊 Commercial' : '🎭 Arts & Humanities'}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Subject Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[300px] overflow-y-auto pr-1">
+                  {filteredAvailableSubjects.map((sub) => {
                     const isSelected = selectedSubjects.includes(sub.name);
                     return (
                       <button
@@ -980,53 +1071,47 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 })}
               </div>
 
-              {/* Question Metadata & Timer Bar */}
+              {/* Question Metadata & Timer Bar - Clean and Uncluttered */}
               <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-2.5 py-0.5 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 rounded font-black text-xs">
+                  <span className="px-2.5 py-1 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 rounded-lg font-black text-xs">
                     {activeQuestions[currentQuestionIndex]?.subject}
                   </span>
-                  <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 rounded font-bold text-xs">
-                    JAMB {activeQuestions[currentQuestionIndex]?.year}
-                  </span>
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-slate-500 font-bold">
                     Question {currentQuestionIndex + 1} of {activeQuestions.length}
                   </span>
+                  {(activeQuestions[currentQuestionIndex]?.imageSvg || activeQuestions[currentQuestionIndex]?.imageUrl) && (
+                    <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 rounded font-black text-[10px] flex items-center gap-1">
+                      <span>📊</span> Diagram
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60">
-                    <Clock className="w-4 h-4 animate-pulse" />
-                    <span>{formattedTime}</span>
-                  </div>
+                <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60">
+                  <Clock className="w-4 h-4 animate-pulse" />
+                  <span>{formattedTime}</span>
                 </div>
               </div>
 
-              {/* Question Card */}
-              <div className="p-4 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700">
-                <p className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-relaxed">
-                  {activeQuestions[currentQuestionIndex]?.text}
+              {/* Question Card - Clean, readable, with redundant tags stripped */}
+              <div className="p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
+                <p className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100 leading-relaxed">
+                  {(activeQuestions[currentQuestionIndex]?.text || '').replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}
                 </p>
+
+                {/* Question Image/Diagram if present */}
+                {(activeQuestions[currentQuestionIndex]?.imageSvg || activeQuestions[currentQuestionIndex]?.imageUrl) && (
+                  <QuestionImageDisplay
+                    imageSvg={activeQuestions[currentQuestionIndex]?.imageSvg}
+                    imageUrl={activeQuestions[currentQuestionIndex]?.imageUrl}
+                    caption={activeQuestions[currentQuestionIndex]?.imageCaption}
+                    alt={activeQuestions[currentQuestionIndex]?.imageAlt}
+                  />
+                )}
               </div>
 
-              {/* Verified Authority Badge for Current Question */}
-              <div className="p-3 bg-emerald-50/90 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/60 rounded-xl text-xs flex items-center justify-between gap-2 shadow-2xs">
-                <div className="flex items-center gap-2">
-                  <BookMarked className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span className="font-bold text-emerald-900 dark:text-emerald-200">
-                    Verified Source:
-                  </span>
-                  <span className="font-mono text-emerald-800 dark:text-emerald-300 truncate max-w-sm">
-                    {activeQuestions[currentQuestionIndex]?.textbookRef}
-                  </span>
-                </div>
-                <span className="px-2 py-0.5 bg-emerald-200/80 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-200 rounded text-[10px] font-black uppercase shrink-0">
-                  Accredited
-                </span>
-              </div>
-
-              {/* Options */}
-              <div className="space-y-2">
+              {/* Options - Spacious, touch-friendly, without distracting badges during live test */}
+              <div className="space-y-2.5">
                 {activeQuestions[currentQuestionIndex] &&
                   Object.entries(activeQuestions[currentQuestionIndex].options).map(([key, val]) => {
                     const isChecked = selectedAnswers[currentQuestionIndex] === key;
@@ -1041,26 +1126,26 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         }
                         className={`w-full p-3.5 rounded-xl border text-left text-xs sm:text-sm flex items-center gap-3 transition-all cursor-pointer ${
                           isChecked
-                            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 font-semibold shadow-2xs ring-1 ring-rose-500/40'
+                            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 font-semibold shadow-2xs ring-2 ring-rose-500/40'
                             : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60'
                         }`}
                       >
                         <span
                           className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
                             isChecked
-                              ? 'bg-rose-600 text-white'
+                              ? 'bg-rose-600 text-white shadow-xs'
                               : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600'
                           }`}
                         >
                           {key}
                         </span>
-                        <span>{val}</span>
+                        <span className="leading-snug">{val}</span>
                       </button>
                     );
                   })}
               </div>
 
-              {/* Navigation Controls */}
+              {/* Navigation Controls - Clean and mobile friendly */}
               <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   disabled={currentQuestionIndex === 0}
@@ -1068,7 +1153,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center gap-1"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  <span>Previous (P)</span>
+                  <span>Previous</span>
                 </button>
 
                 <div className="flex items-center gap-2">
@@ -1080,7 +1165,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     }}
                     className="px-3 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:hover:text-white cursor-pointer transition-colors"
                   >
-                    Clear (R)
+                    Clear
                   </button>
 
                   {currentQuestionIndex < activeQuestions.length - 1 ? (
@@ -1088,7 +1173,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       onClick={() => setCurrentQuestionIndex((prev) => prev + 1)}
                       className="px-5 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1"
                     >
-                      <span>Next (N)</span>
+                      <span>Next</span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   ) : (
@@ -1097,7 +1182,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold cursor-pointer flex items-center gap-1.5 shadow-xs transition-colors"
                     >
                       <Award className="w-4 h-4" />
-                      <span>Submit Exam (S)</span>
+                      <span>Submit Exam</span>
                     </button>
                   )}
                 </div>

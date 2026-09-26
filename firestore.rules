@@ -39,13 +39,19 @@ service cloud.firestore {
     // Validation Blueprints
     function isValidUserProfile(data) {
       return data.keys().hasAll(['id', 'email', 'fullName']) &&
-             data.keys().hasOnly(['id', 'email', 'fullName', 'phoneNumber', 'targetScore', 'preferredInstitution', 'createdAt', 'updatedAt']) &&
+             data.keys().hasOnly(['id', 'email', 'fullName', 'phoneNumber', 'targetScore', 'preferredInstitution', 'registeredAt', 'isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified', 'createdAt', 'updatedAt']) &&
              data.id is string && data.id == request.auth.uid &&
              data.email is string && data.email.size() <= 100 &&
              data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100 &&
              (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 20)) &&
              (!('targetScore' in data) || (data.targetScore is number && data.targetScore >= 0 && data.targetScore <= 400)) &&
-             (!('preferredInstitution' in data) || (data.preferredInstitution is string && data.preferredInstitution.size() <= 100));
+             (!('preferredInstitution' in data) || (data.preferredInstitution is string && data.preferredInstitution.size() <= 100)) &&
+             (!('registeredAt' in data) || (data.registeredAt is number)) &&
+             (!('isActivated' in data) || (data.isActivated is bool)) &&
+             (!('activatedAt' in data) || (data.activatedAt is string || data.activatedAt is number)) &&
+             (!('paymentReference' in data) || (data.paymentReference is string && data.paymentReference.size() <= 100)) &&
+             (!('opayAccount' in data) || (data.opayAccount is string && data.opayAccount.size() <= 100)) &&
+             (!('isEmailVerified' in data) || (data.isEmailVerified is bool));
     }
 
     function isValidTestResult(data) {
@@ -69,6 +75,19 @@ service cloud.firestore {
              data.tag is string && data.tag.size() <= 50 &&
              data.title is string && data.title.size() > 0 && data.title.size() <= 150 &&
              data.content is string && data.content.size() > 0 && data.content.size() <= 2000;
+    }
+
+    function isValidAccountActivation(data) {
+      return data.keys().hasAll(['id', 'email', 'registeredAt', 'isActivated']) &&
+             data.keys().hasOnly(['id', 'email', 'registeredAt', 'isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified']) &&
+             data.id is string && isValidId(data.id) &&
+             data.email is string && data.email.size() <= 100 &&
+             data.registeredAt is number &&
+             data.isActivated is bool &&
+             (!('activatedAt' in data) || (data.activatedAt is number)) &&
+             (!('paymentReference' in data) || (data.paymentReference is string && data.paymentReference.size() <= 100)) &&
+             (!('opayAccount' in data) || (data.opayAccount is string && data.opayAccount.size() <= 100)) &&
+             (!('isEmailVerified' in data) || (data.isEmailVerified is bool));
     }
 
     // Health check / connection test doc
@@ -112,6 +131,18 @@ service cloud.firestore {
     match /admins/{adminId} {
       allow read: if isSignedIn();
       allow write: if isAdmin();
+    }
+
+    // Cross-device account activations registry
+    match /accountActivations/{activationId} {
+      allow get: if isSignedIn();
+      allow list: if isAdmin();
+      allow create: if isSignedIn() && isValidId(activationId) && isValidAccountActivation(incoming()) && incoming().id == activationId;
+      allow update: if isSignedIn() && isValidId(activationId) && isValidAccountActivation(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().registeredAt == existing().registeredAt &&
+                       (isAdmin() || incoming().diff(existing()).affectedKeys().hasOnly(['isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified']));
+      allow delete: if isAdmin();
     }
   }
 }

@@ -5,6 +5,7 @@
 
 import { saveTestResult, createFeedPost, likeFeedPost, TestResultData, FeedPostData } from './firestoreService';
 import { auth } from './firebase';
+import type { VerifiedQuestion } from '../data/verifiedTextbooks';
 
 export interface OfflineTestResult {
   id: string;
@@ -18,6 +19,10 @@ export interface OfflineTestResult {
   subjects?: string[];
   createdAt: string;
   syncedToCloud: boolean;
+  jambScore?: number;
+  totalRawCorrect?: number;
+  questions?: VerifiedQuestion[];
+  selectedAnswers?: Record<number, string>;
 }
 
 export interface OfflinePostItem {

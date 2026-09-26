@@ -13,7 +13,12 @@ import {
   signInAnonymously,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
-import { getUserProfile, saveUserProfile, UserProfileData } from '../lib/firestoreService';
+import {
+  getUserProfile,
+  saveUserProfile,
+  UserProfileData,
+  getOrCreateAccountActivation,
+} from '../lib/firestoreService';
 
 interface AuthContextType {
   currentUser: User | null;
@@ -44,12 +49,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           let profile = await getUserProfile(user.uid);
           if (!profile) {
+            const targetEmail = user.email || (user.isAnonymous ? 'guest@student.jambix.ng' : 'student@jambix.ng');
+            const cloudAct = user.email ? await getOrCreateAccountActivation(targetEmail) : null;
             profile = {
               id: user.uid,
-              email: user.email || (user.isAnonymous ? 'guest@student.jambix.ng' : 'student@jambix.ng'),
+              email: targetEmail,
               fullName: user.displayName || (user.isAnonymous ? 'Candidate (Guest)' : 'UTME Candidate'),
               targetScore: 320,
               preferredInstitution: 'University of Lagos (UNILAG)',
+              registeredAt: cloudAct?.registeredAt || Date.now(),
+              isActivated: Boolean(cloudAct?.isActivated),
             };
             await saveUserProfile(profile);
           }
@@ -77,12 +86,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+      const cloudAct = user.email ? await getOrCreateAccountActivation(user.email) : null;
+      let existingProfile = await getUserProfile(user.uid);
       const profile: UserProfileData = {
         id: user.uid,
         email: user.email || '',
         fullName: user.displayName || 'UTME Scholar',
-        targetScore: 320,
-        preferredInstitution: 'University of Lagos (UNILAG)',
+        targetScore: existingProfile?.targetScore || 320,
+        preferredInstitution: existingProfile?.preferredInstitution || 'University of Lagos (UNILAG)',
+        registeredAt: existingProfile?.registeredAt || cloudAct?.registeredAt || Date.now(),
+        isActivated: Boolean(existingProfile?.isActivated || cloudAct?.isActivated),
+        paymentReference: existingProfile?.paymentReference || cloudAct?.paymentReference,
+        opayAccount: existingProfile?.opayAccount || cloudAct?.opayAccount,
       };
       await saveUserProfile(profile);
       setStudentProfile(profile);

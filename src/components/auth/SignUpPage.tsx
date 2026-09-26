@@ -18,11 +18,15 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
+import { saveActivationRecord } from '../../lib/activationStorage';
+import { getOrCreateAccountActivation } from '../../lib/firestoreService';
+import { sendEmailVerificationCode } from '../../lib/emailVerificationService';
 
 interface SignUpPageProps {
   onNavigateToLogin: () => void;
   onOpenTerms: (tab: 'terms' | 'privacy') => void;
   onSignUpSuccess: (user: { name: string; email: string }) => void;
+  onRequireEmailVerification?: (email: string) => void;
 }
 
 interface FormErrors {
@@ -37,6 +41,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   onNavigateToLogin,
   onOpenTerms,
   onSignUpSuccess,
+  onRequireEmailVerification,
 }) => {
   const formId = useId();
 
@@ -181,10 +186,28 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
       setIsSubmitting(false);
       setSubmissionFeedback('Account created successfully! Welcome to JambiX.');
       setTimeout(() => {
-        onSignUpSuccess({
-          name: fullName.trim(),
-          email: email.trim(),
+        const cleanEmail = email.trim();
+        // Dispatch 6-digit confirmation code to student's email address
+        sendEmailVerificationCode(cleanEmail).catch((err) =>
+          console.warn('Initial email verification dispatch error:', err)
+        );
+        getOrCreateAccountActivation(cleanEmail).catch((err) =>
+          console.warn('Initial cloud activation registration sync:', err)
+        );
+        saveActivationRecord({
+          userEmail: cleanEmail,
+          registeredAt: Date.now(),
+          isActivated: false,
         });
+
+        if (onRequireEmailVerification) {
+          onRequireEmailVerification(cleanEmail);
+        } else {
+          onSignUpSuccess({
+            name: fullName.trim(),
+            email: cleanEmail,
+          });
+        }
       }, 1000);
     }, 1200);
   };

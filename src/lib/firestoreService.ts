@@ -27,6 +27,11 @@ export interface UserProfileData {
   phoneNumber?: string;
   targetScore?: number;
   preferredInstitution?: string;
+  registeredAt?: number;
+  isActivated?: boolean;
+  activatedAt?: string | number;
+  paymentReference?: string;
+  opayAccount?: string;
   createdAt?: unknown;
   updatedAt?: unknown;
 }
@@ -241,5 +246,127 @@ export async function likeFeedPost(postId: string): Promise<void> {
       return;
     }
     handleFirestoreError(error, OperationType.UPDATE, path);
+  }
+}
+
+// 4. Cross-Device Account Activation & 1-Hour Countdown Operations
+export interface AccountActivationData {
+  id: string;
+  email: string;
+  registeredAt: number;
+  isActivated: boolean;
+  activatedAt?: number;
+  paymentReference?: string;
+  opayAccount?: string;
+}
+
+export function sanitizeActivationId(email: string): string {
+  return email
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-zA-Z0-9_\-]/g, '_')
+    .slice(0, 120);
+}
+
+/**
+ * Loads or initializes the authoritative cross-device activation record for a student email.
+ * If this is the student's first time registering on ANY device, sets registeredAt = Date.now().
+ * If already registered on another device, returns the original registeredAt so countdown continues seamlessly!
+ */
+export async function getOrCreateAccountActivation(
+  email: string
+): Promise<AccountActivationData | null> {
+  if (!email) return null;
+  const cleanEmail = email.toLowerCase().trim();
+  const activationId = sanitizeActivationId(cleanEmail);
+
+  try {
+    const actRef = doc(db, 'accountActivations', activationId);
+    const snap = await getDoc(actRef);
+
+    if (snap.exists()) {
+      return snap.data() as AccountActivationData;
+    }
+
+    // New registration! Create authoritative cloud record
+    const newRecord: AccountActivationData = {
+      id: activationId,
+      email: cleanEmail,
+      registeredAt: Date.now(),
+      isActivated: false,
+    };
+
+    await setDoc(actRef, newRecord);
+    return newRecord;
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore getOrCreateAccountActivation: offline, operating with local state');
+      return null;
+    }
+    console.warn('AccountActivation cloud sync note:', error);
+    return null;
+  }
+}
+
+/**
+ * Updates activation status to activated across all devices once OPay payment is verified.
+ */
+export async function updateAccountActivation(
+  email: string,
+  updates: {
+    isActivated: boolean;
+    paymentReference: string;
+    opayAccount: string;
+    activatedAt: number;
+  }
+): Promise<void> {
+  if (!email) return;
+  const activationId = sanitizeActivationId(email);
+
+  try {
+    const actRef = doc(db, 'accountActivations', activationId);
+    await updateDoc(actRef, {
+      isActivated: updates.isActivated,
+      paymentReference: updates.paymentReference,
+      opayAccount: updates.opayAccount,
+      activatedAt: updates.activatedAt,
+    });
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('Firestore updateAccountActivation: offline, cached locally');
+      return;
+    }
+    console.warn('updateAccountActivation error:', error);
+  }
+}
+
+/**
+ * Real-time listener for cross-device activation updates.
+ * If a user completes payment on mobile, their desktop dashboard unlocks immediately!
+ */
+export function subscribeToAccountActivation(
+  email: string,
+  onUpdate: (data: AccountActivationData) => void
+): () => void {
+  if (!email) return () => {};
+  const activationId = sanitizeActivationId(email);
+
+  try {
+    const actRef = doc(db, 'accountActivations', activationId);
+    return onSnapshot(
+      actRef,
+      (snap) => {
+        if (snap.exists()) {
+          onUpdate(snap.data() as AccountActivationData);
+        }
+      },
+      (error) => {
+        if (!isOfflineError(error)) {
+          console.warn('subscribeToAccountActivation error:', error);
+        }
+      }
+    );
+  } catch (err) {
+    return () => {};
   }
 }

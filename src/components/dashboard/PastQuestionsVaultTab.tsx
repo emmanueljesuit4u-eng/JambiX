@@ -37,6 +37,7 @@ import {
   VerifiedQuestion,
   getSubjectQuestionsForYear,
 } from '../../data/verifiedTextbooks';
+import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 
 interface PastQuestionsVaultTabProps {
   onLaunchTest: (title: string, type: string, subject?: string, year?: number) => void;
@@ -48,28 +49,41 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
   showToast,
 }) => {
   const [selectedSubjectKey, setSelectedSubjectKey] = useState<SubjectKey>('mathematics');
-  const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const [selectedCategory, setSelectedCategory] = useState<'All' | 'Sciences' | 'Commercial' | 'Arts'>('All');
+  const [selectedYear, setSelectedYear] = useState<number>(2026);
   const [searchQuery, setSearchQuery] = useState('');
+  const [onlyImages, setOnlyImages] = useState(false);
   const [revealedQuestionIds, setRevealedQuestionIds] = useState<Record<number, boolean>>({});
   const [revealAll, setRevealAll] = useState(false);
 
-  // Load questions for the selected subject and year (40 questions for Math/Phys/Chem/Bio, 60 for English)
+  // Available subjects filtered by category
+  const visibleSubjectKeys = useMemo(() => {
+    const allKeys = Object.keys(SUBJECT_CONFIGS) as SubjectKey[];
+    if (selectedCategory === 'All') return allKeys;
+    return allKeys.filter((k) => SUBJECT_CONFIGS[k]?.category === selectedCategory);
+  }, [selectedCategory]);
+
+  // Load questions for the selected subject and year
   const currentQuestions: VerifiedQuestion[] = useMemo(() => {
     return getSubjectQuestionsForYear(selectedSubjectKey, selectedYear);
   }, [selectedSubjectKey, selectedYear]);
 
-  // Search filter
+  // Search and visual diagram filter
   const filteredQuestions = useMemo(() => {
-    if (!searchQuery.trim()) return currentQuestions;
+    let list = currentQuestions;
+    if (onlyImages) {
+      list = list.filter((q) => q.hasImage || q.imageSvg || q.imageUrl);
+    }
+    if (!searchQuery.trim()) return list;
     const qLower = searchQuery.toLowerCase();
-    return currentQuestions.filter(
+    return list.filter(
       (q) =>
         q.text.toLowerCase().includes(qLower) ||
         q.topic.toLowerCase().includes(qLower) ||
         q.explanation.toLowerCase().includes(qLower) ||
         Object.values(q.options).some((opt) => opt.toLowerCase().includes(qLower))
     );
-  }, [currentQuestions, searchQuery]);
+  }, [currentQuestions, searchQuery, onlyImages]);
 
   const toggleReveal = (id: number) => {
     setRevealedQuestionIds((prev) => ({
@@ -103,13 +117,13 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
           <div className="max-w-2xl space-y-2">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-600 text-white rounded-full text-xs font-black uppercase tracking-wider shadow-xs">
               <Calendar className="w-3.5 h-3.5" />
-              <span>1978 – 2025 Complete UTME Archive (48 Years)</span>
+              <span>1978 – 2026 Complete UTME Archive (49 Years)</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
               JAMB Past Questions &amp; Verified Explanations Bank
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-              Study authentic past examination questions year by year for all 5 accredited UTME subjects.
+              Study authentic past examination questions from 1978 to 2026 for all accredited UTME subjects across Sciences, Commercial, and Arts &amp; Humanities.
               Every answer includes step-by-step solutions with citations from standard textbooks.
             </p>
           </div>
@@ -179,10 +193,29 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
         </button>
       </div>
 
+      {/* Category Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+        {(['All', 'Sciences', 'Commercial', 'Arts'] as const).map((cat) => (
+          <button
+            key={cat}
+            type="button"
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+              selectedCategory === cat
+                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xs'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+            }`}
+          >
+            {cat === 'All' ? `All Subjects (${Object.keys(SUBJECT_CONFIGS).length})` : cat === 'Sciences' ? '🔬 Sciences' : cat === 'Commercial' ? '📊 Commercial / Social' : '🎭 Arts & Humanities'}
+          </button>
+        ))}
+      </div>
+
       {/* Subject Selector Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        {(['english', 'mathematics', 'physics', 'chemistry', 'biology'] as SubjectKey[]).map((key) => {
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+        {visibleSubjectKeys.map((key) => {
           const cfg = SUBJECT_CONFIGS[key];
+          if (!cfg) return null;
           const isSelected = selectedSubjectKey === key;
           return (
             <button
@@ -192,17 +225,17 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
                 setRevealAll(false);
                 setRevealedQuestionIds({});
               }}
-              className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+              className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                 isSelected
                   ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-100 shadow-xs ring-1 ring-rose-500/50'
                   : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'
               }`}
             >
               <div>
-                <span className="text-[10px] font-black uppercase text-slate-400 block">
-                  {key === 'english' ? 'Compulsory' : 'Science / Core'}
+                <span className="text-[9px] font-black uppercase text-slate-400 block tracking-wider">
+                  {key === 'english' ? 'Compulsory' : cfg.category || 'General'}
                 </span>
-                <h4 className="text-xs sm:text-sm font-bold mt-0.5">{cfg.name}</h4>
+                <h4 className="text-xs font-bold mt-0.5 truncate">{cfg.name}</h4>
               </div>
               <div className="mt-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
                 Ref: {cfg.bookTitle}
@@ -230,8 +263,8 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
               }}
               className="p-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
             >
-              <optgroup label="Recent Years (2020 - 2025)">
-                {[2025, 2024, 2023, 2022, 2021, 2020].map((yr) => (
+              <optgroup label="Recent Years (2020 - 2026)">
+                {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((yr) => (
                   <option key={yr} value={yr}>
                     JAMB UTME {yr}
                   </option>
@@ -261,6 +294,28 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
             </select>
           </div>
 
+          {/* Quick Year Shortcuts */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {[2026, 2025, 2024, 2020, 2015, 2000, 1978].map((yr) => (
+              <button
+                key={yr}
+                type="button"
+                onClick={() => {
+                  setSelectedYear(yr);
+                  setRevealAll(false);
+                  setRevealedQuestionIds({});
+                }}
+                className={`px-2 py-1 text-xs rounded-lg font-bold transition-colors cursor-pointer ${
+                  selectedYear === yr
+                    ? 'bg-rose-600 text-white shadow-2xs'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
+                }`}
+              >
+                {yr}
+              </button>
+            ))}
+          </div>
+
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -280,6 +335,20 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
               </button>
             )}
           </div>
+
+          {/* Visual Diagrams Only Filter Button */}
+          <button
+            type="button"
+            onClick={() => setOnlyImages(!onlyImages)}
+            className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
+              onlyImages
+                ? 'bg-indigo-600 text-white shadow-xs'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+            }`}
+          >
+            <span>📊</span>
+            <span>{onlyImages ? 'Diagrams Only (Active)' : 'Diagram Questions'}</span>
+          </button>
         </div>
 
         {/* Quick Year Pill Selector */}
@@ -345,6 +414,11 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
                     <span className="text-slate-500 text-xs font-medium">
                       [{q.topic}]
                     </span>
+                    {(q.hasImage || q.imageSvg || q.imageUrl) && (
+                      <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 rounded font-black text-[10px] flex items-center gap-1">
+                        <span>📊</span> Illustrated
+                      </span>
+                    )}
                   </div>
 
                   <button
@@ -369,6 +443,16 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
                 <p className="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">
                   {q.text}
                 </p>
+
+                {/* Visual Diagram if present */}
+                {(q.imageSvg || q.imageUrl) && (
+                  <QuestionImageDisplay
+                    imageSvg={q.imageSvg}
+                    imageUrl={q.imageUrl}
+                    caption={q.imageCaption}
+                    alt={q.imageAlt}
+                  />
+                )}
 
                 {/* Options Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">

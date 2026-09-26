@@ -38,6 +38,14 @@ import {
   BookMarked,
   MessageCircle,
   ExternalLink,
+  Lock,
+  Unlock,
+  ShieldCheck,
+  XCircle,
+  ChevronRight,
+  ChevronLeft,
+  RotateCcw,
+  Filter,
 } from 'lucide-react';
 import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
@@ -45,7 +53,9 @@ import { UniversityConnectTab } from './UniversityConnectTab';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
+import { ActivationPaywallModal } from './ActivationPaywallModal';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { auth } from '../../lib/firebase';
 import {
   getUserTestResults,
@@ -92,8 +102,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   const [isCbtModalOpen, setIsCbtModalOpen] = useState(false);
   const [activeTest, setActiveTest] = useState<{ title: string; type: string; subject?: string; year?: number }>({ title: '', type: '' });
-  const [selectedVaultYear, setSelectedVaultYear] = useState<number>(2025);
+  const [selectedVaultYear, setSelectedVaultYear] = useState<number>(2026);
   const [userTests, setUserTests] = useState<OfflineTestResult[]>([]);
+
+  // Test History Review State
+  const [reviewingTest, setReviewingTest] = useState<OfflineTestResult | null>(null);
+  const [historyReviewStatus, setHistoryReviewStatus] = useState<'All' | 'Correct' | 'Incorrect' | 'Unattempted'>('All');
+  const [historyReviewSubject, setHistoryReviewSubject] = useState<string>('All');
+
+  const handleNavClick = (navId: string) => {
+    setActiveNav(navId);
+    setReviewingTest(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Candidate first name only: "Study hard, {studentFirstName}"
   const studentFirstName = (() => {
@@ -193,18 +214,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Novels', icon: BookMarked, label: 'Novels' },
               { id: 'Study', icon: GraduationCap, label: 'Study' },
               { id: 'Test', icon: Monitor, label: 'Test' },
-              { id: 'Archive', icon: BookOpen, label: '1978-2025' },
+              { id: 'Archive', icon: BookOpen, label: '1978-2026' },
+              { id: 'History', icon: Clock, label: 'History' },
               { id: 'Connect', icon: Users, label: 'Connect' },
-              { id: 'Shop', icon: ShoppingBag, label: 'Shop' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => {
-                    setActiveNav(item.id);
-                  }}
+                  onClick={() => handleNavClick(item.id)}
                   className={`w-full py-2 flex flex-col items-center justify-center rounded-xl transition-all cursor-pointer ${
                     isActive
                       ? 'text-rose-600 dark:text-rose-400 font-bold bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200/70 dark:border-rose-900/50 shadow-2xs'
@@ -244,7 +263,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             </div>
 
             {/* Right Action Controls: Clean and spacious */}
-            <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Free Access Badge */}
+              <div
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
+                title="100% Free JAMB Preparation Portal"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Free Access</span>
+              </div>
+
               {/* Network Status Pill */}
               <button
                 type="button"
@@ -380,13 +408,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     <div className="space-y-1.5 max-w-2xl">
                       <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-900/60 text-emerald-200 border border-emerald-500/30">
                         <BookOpen className="w-3.5 h-3.5" />
-                        <span>JAMB UTME CBT Center · 1978–2025 Archive</span>
+                        <span>JAMB UTME CBT Center · 1978–2026 Archive</span>
                       </div>
                       <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
                         Authentic Past Questions &amp; Solutions
                       </h2>
                       <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
-                        Practice 48 years of past examination questions referred directly to accredited textbook topics. Available online or 100% offline with zero data consumption.
+                        Practice 49 years of past examination questions across Sciences, Commercial, and Arts referred directly to accredited textbook topics. Available online or 100% offline with zero data consumption.
                       </p>
                     </div>
 
@@ -400,7 +428,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </button>
 
                       <button
-                        onClick={() => setActiveNav('Novels')}
+                        onClick={() => handleNavClick('Novels')}
                         className="px-4 py-2.5 bg-emerald-800/80 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl border border-emerald-500/40 flex items-center gap-2 transition-all cursor-pointer"
                       >
                         <BookMarked className="w-3.5 h-3.5" />
@@ -408,11 +436,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </button>
 
                       <button
-                        onClick={() => setActiveNav('Archive')}
+                        onClick={() => handleNavClick('Archive')}
                         className="px-4 py-2.5 bg-emerald-900/80 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl border border-emerald-500/40 flex items-center gap-2 transition-all cursor-pointer"
                       >
                         <BookOpen className="w-3.5 h-3.5" />
-                        <span>1978–2025 Questions</span>
+                        <span>1978–2026 Questions</span>
                       </button>
 
                       <button
@@ -500,7 +528,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
                     {/* Card 3: JAMB Novels Hub */}
                     <div
-                      onClick={() => setActiveNav('Novels')}
+                      onClick={() => handleNavClick('Novels')}
                       className="p-4 rounded-2xl bg-[#edf2fb] dark:bg-blue-950/20 border border-[#ccdcf6] dark:border-blue-900/30 hover:border-[#acc4f0] dark:hover:border-blue-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
                     >
                       <div className="flex items-start gap-3">
@@ -524,23 +552,23 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </div>
                     </div>
 
-                    {/* Card 4: JAMB 1978-2025 Past Questions Bank */}
+                    {/* Card 4: JAMB 1978-2026 Past Questions Bank */}
                     <div
-                      onClick={() => setActiveNav('Archive')}
+                      onClick={() => handleNavClick('Archive')}
                       className="p-4 rounded-2xl bg-[#f3f9ee] dark:bg-emerald-950/20 border border-[#d6ecce] dark:border-emerald-900/30 hover:border-[#b4e2a6] dark:hover:border-emerald-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
                     >
                       <div className="flex items-start gap-3">
                         <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center shrink-0">
                           <div className="w-7 h-7 rounded-full bg-[#15803d] text-yellow-200 flex items-center justify-center text-[7px] font-black border border-emerald-400 shadow-2xs">
-                            48 YRS
+                            49 YRS
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-bold text-[#14532d] dark:text-emerald-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                            1978–2025 Past Questions
+                            1978–2026 Past Questions
                           </h4>
                           <p className="mt-1 text-xs text-[#166534] dark:text-emerald-300/80 leading-snug">
-                            Browse questions, answers &amp; explanations year by year for all 5 subjects.
+                            Browse questions, answers &amp; explanations year by year for all accredited subjects across Sciences, Commercial &amp; Arts.
                           </p>
                           <p className="mt-1.5 text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 flex items-center gap-1">
                             <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -602,7 +630,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       <div>
                         <h4 className="text-xs font-bold text-slate-900 dark:text-white">Verified Textbook References</h4>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                          Accurate answers with reference to the appropriate verified textbook pages.
+                          Accurate answers with direct reference to the official accredited textbooks.
                         </p>
                       </div>
                     </div>
@@ -721,15 +749,22 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </h4>
                       <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                         {userTests.length > 0
-                          ? `Latest score: ${userTests[0].score}/${userTests[0].totalQuestions} (${userTests[0].percentage}%) - Saved locally.`
-                          : 'Take your first in-app offline practice test to evaluate your baseline score.'}
+                          ? `Latest score: ${userTests[0].jambScore || userTests[0].score}/${userTests[0].totalQuestions} (${userTests[0].percentage}%) - Click to review all questions and step-by-step explanations.`
+                          : 'Take your first in-app practice test to evaluate your baseline score and build test history.'}
                       </p>
                     </div>
                     <button
-                      onClick={() => handleLaunchTest('JAMB 15-Year Past Questions Bank', 'archive')}
-                      className="mt-3 w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                      onClick={() => {
+                        if (userTests.length > 0) {
+                          setActiveNav('History');
+                          setReviewingTest(userTests[0]);
+                        } else {
+                          handleLaunchTest('JAMB CBT Simulator', 'jamb');
+                        }
+                      }}
+                      className="mt-3 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
                     >
-                      {userTests.length > 0 ? 'Review & Practice Again' : 'Take Diagnostic Test'}
+                      {userTests.length > 0 ? 'Review Questions & Explanations' : 'Take Diagnostic Test'}
                     </button>
                   </div>
                 </div>
@@ -960,6 +995,312 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               />
             )}
 
+            {/* View: Test History & Detailed Question-by-Question Review */}
+            {activeNav === 'History' && (
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-2xs space-y-6 transition-colors">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 gap-3">
+                  <div>
+                    <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                      <Clock className="w-5 h-5 text-rose-600" />
+                      <span>Test &amp; Exam History</span>
+                    </h2>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      Every submitted test is saved here. Click any test to inspect questions, your selected answers, correct answers, and textbook references.
+                    </p>
+                  </div>
+                  {userTests.length > 0 && !reviewingTest && (
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-xl self-start sm:self-auto">
+                      {userTests.length} Total Saved Exam{userTests.length === 1 ? '' : 's'}
+                    </span>
+                  )}
+                </div>
+
+                {/* If reviewing a specific test */}
+                {reviewingTest ? (
+                  <div className="space-y-5">
+                    {/* Review Header */}
+                    <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div>
+                        <button
+                          onClick={() => setReviewingTest(null)}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline mb-2 cursor-pointer"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                          <span>Back to all test submissions</span>
+                        </button>
+                        <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                          {reviewingTest.testTitle}
+                        </h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                          Submitted on {new Date(reviewingTest.createdAt).toLocaleString()} · {reviewingTest.totalQuestions} Questions
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <div className="text-right">
+                          <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Final Score</p>
+                          <p className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400">
+                            {reviewingTest.jambScore || reviewingTest.score}
+                            <span className="text-xs font-semibold text-slate-500"> / {reviewingTest.totalQuestions > 100 ? 400 : reviewingTest.totalQuestions}</span>
+                          </p>
+                        </div>
+                        <div className="px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-sm border border-emerald-200 dark:border-emerald-800">
+                          {reviewingTest.percentage}%
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Filter controls if questions are available */}
+                    {reviewingTest.questions && reviewingTest.questions.length > 0 ? (
+                      <>
+                        <div className="flex flex-wrap items-center justify-between gap-2.5 pb-2">
+                          {/* Status Filter */}
+                          <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                            {(['All', 'Correct', 'Incorrect', 'Unattempted'] as const).map((filterStatus) => (
+                              <button
+                                key={filterStatus}
+                                onClick={() => setHistoryReviewStatus(filterStatus)}
+                                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                  historyReviewStatus === filterStatus
+                                    ? 'bg-slate-900 dark:bg-rose-600 text-white shadow-xs'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                                }`}
+                              >
+                                {filterStatus}
+                              </button>
+                            ))}
+                          </div>
+
+                          <span className="text-xs text-slate-500 font-medium">
+                            Showing questions from this test attempt
+                          </span>
+                        </div>
+
+                        {/* Questions List */}
+                        <div className="space-y-4">
+                          {reviewingTest.questions
+                            .filter((q, idx) => {
+                              const studentAns = (reviewingTest.selectedAnswers || {})[idx];
+                              const isCorrect = studentAns === q.answer;
+                              const isUnattempted = !studentAns;
+
+                              if (historyReviewStatus === 'Correct') return isCorrect;
+                              if (historyReviewStatus === 'Incorrect') return !isCorrect && !isUnattempted;
+                              if (historyReviewStatus === 'Unattempted') return isUnattempted;
+                              return true;
+                            })
+                            .map((q, filteredIdx) => {
+                              // Find original index in reviewingTest.questions
+                              const origIdx = reviewingTest.questions!.indexOf(q);
+                              const studentAns = (reviewingTest.selectedAnswers || {})[origIdx];
+                              const isCorrect = studentAns === q.answer;
+                              const isUnattempted = !studentAns;
+
+                              return (
+                                <div
+                                  key={q.id || origIdx}
+                                  className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 shadow-2xs space-y-3"
+                                >
+                                  {/* Question Header */}
+                                  <div className="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-xs font-black px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200">
+                                        Q{origIdx + 1}
+                                      </span>
+                                      <span className="text-xs font-bold text-rose-600 dark:text-rose-400">
+                                        {q.subject}
+                                      </span>
+                                      {q.year && (
+                                        <span className="text-xs text-slate-400 font-medium">
+                                          · UTME {q.year}
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {/* Student Status Badge */}
+                                    {isCorrect && (
+                                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                        Correct (+1)
+                                      </span>
+                                    )}
+                                    {!isCorrect && !isUnattempted && (
+                                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-0.5 rounded-full border border-rose-200 dark:border-rose-800">
+                                        <XCircle className="w-3.5 h-3.5" />
+                                        Your Choice: Option {studentAns} (Incorrect)
+                                      </span>
+                                    )}
+                                    {isUnattempted && (
+                                      <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-0.5 rounded-full border border-amber-200 dark:border-amber-800">
+                                        Omitted / Skipped
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  {/* Question Text */}
+                                  <p className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100 leading-relaxed">
+                                    {(q.text || '').replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}
+                                  </p>
+
+                                  {/* Question Image/Diagram if present */}
+                                  {(q.imageSvg || q.imageUrl) && (
+                                    <QuestionImageDisplay
+                                      imageSvg={q.imageSvg}
+                                      imageUrl={q.imageUrl}
+                                      caption={q.imageCaption}
+                                      alt={q.imageAlt}
+                                    />
+                                  )}
+
+                                  {/* Multiple Choice Options */}
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                                    {Object.entries(q.options).map(([optKey, optVal]) => {
+                                      const isStudentChoice = studentAns === optKey;
+                                      const isRightAnswer = q.answer === optKey;
+
+                                      let optStyle = 'border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/40 text-slate-700 dark:text-slate-300';
+                                      if (isRightAnswer) {
+                                        optStyle = 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 font-semibold ring-1 ring-emerald-500';
+                                      } else if (isStudentChoice && !isRightAnswer) {
+                                        optStyle = 'border-rose-400 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200 font-semibold';
+                                      }
+
+                                      return (
+                                        <div
+                                          key={optKey}
+                                          className={`p-3 rounded-xl border text-xs sm:text-sm flex items-start gap-2.5 ${optStyle}`}
+                                        >
+                                          <span
+                                            className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${
+                                              isRightAnswer
+                                                ? 'bg-emerald-600 text-white'
+                                                : isStudentChoice
+                                                ? 'bg-rose-600 text-white'
+                                                : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                                            }`}
+                                          >
+                                            {optKey}
+                                          </span>
+                                          <span className="leading-snug">{optVal}</span>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+
+                                  {/* Explanation & Verified Textbook Reference */}
+                                  <div className="p-3 bg-emerald-50/70 dark:bg-emerald-950/40 rounded-xl border border-emerald-200/70 dark:border-emerald-900/50 space-y-1">
+                                    <p className="text-xs font-bold text-emerald-900 dark:text-emerald-300">
+                                      Correct Answer: Option {q.answer}
+                                    </p>
+                                    {q.explanation && (
+                                      <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                                        {q.explanation}
+                                      </p>
+                                    )}
+                                    {q.textbookRef && (
+                                      <p className="text-[11px] font-bold text-emerald-800 dark:text-emerald-400 pt-0.5">
+                                        Verified Textbook: {q.textbookRef}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </>
+                    ) : (
+                      <div className="p-8 text-center bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3">
+                        <FileText className="w-10 h-10 text-slate-400 mx-auto" />
+                        <h4 className="text-base font-bold text-slate-800 dark:text-slate-200">
+                          Summary Score Saved
+                        </h4>
+                        <p className="text-xs text-slate-500 max-w-md mx-auto">
+                          This test result was saved in summary mode ({reviewingTest.score}/{reviewingTest.totalQuestions} questions, {reviewingTest.percentage}%). All future test submissions now record full questions and answers for question-by-question review!
+                        </p>
+                        <button
+                          onClick={() => handleLaunchTest('JAMB CBT Simulator', 'jamb')}
+                          className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors"
+                        >
+                          Take a New CBT Test
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : userTests.length === 0 ? (
+                  /* Empty state */
+                  <div className="p-10 text-center bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3">
+                    <Clock className="w-12 h-12 text-slate-400 mx-auto" />
+                    <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">
+                      No Test Submissions Yet
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+                      Once you finish and submit a CBT test or past question drill, it will automatically be recorded here so you can review your answers and understand the solutions.
+                    </p>
+                    <button
+                      onClick={() => handleLaunchTest('JAMB CBT Full Simulation', 'jamb')}
+                      className="mt-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
+                    >
+                      Start a Practice Test
+                    </button>
+                  </div>
+                ) : (
+                  /* List of all test submissions */
+                  <div className="space-y-3">
+                    {userTests.map((t) => (
+                      <div
+                        key={t.id}
+                        className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 hover:border-rose-400 dark:hover:border-rose-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all shadow-2xs"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded">
+                              {t.testType.toUpperCase()}
+                            </span>
+                            <span className="text-xs text-slate-400">
+                              {new Date(t.createdAt).toLocaleDateString(undefined, {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </span>
+                          </div>
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                            {t.testTitle}
+                          </h4>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Raw Score: {t.score} / {t.totalQuestions} ({t.percentage}%) · UTME Projected: {t.jambScore || t.score} / 400
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-3 self-end sm:self-center">
+                          <div className="text-right">
+                            <span className="text-sm font-black text-rose-600 dark:text-rose-400">
+                              {t.percentage}%
+                            </span>
+                            <p className="text-[10px] text-slate-400 font-medium">
+                              {t.score >= t.totalQuestions / 2 ? 'Passed' : 'Needs Practice'}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              setReviewingTest(t);
+                              setHistoryReviewStatus('All');
+                            }}
+                            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                          >
+                            <span>Review Questions</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* View: Connect / Study Groups */}
             {activeNav === 'Connect' && (
               <UniversityConnectTab showToast={showToast} />
@@ -1055,23 +1396,20 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       </div>
 
       {/* Native Mobile Bottom Navigation Bar (Visible only on mobile devices < md) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-2 py-1.5 flex items-center justify-around shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 py-1.5 flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
           { id: 'Novels', icon: BookMarked, label: 'Novels' },
-          { id: 'Study', icon: GraduationCap, label: 'Study' },
-          { id: 'Test', icon: Monitor, label: 'CBT Test' },
-          { id: 'Archive', icon: BookOpen, label: '1978-2025' },
+          { id: 'Test', icon: Monitor, label: 'CBT' },
+          { id: 'Archive', icon: BookOpen, label: '1978-2026' },
+          { id: 'History', icon: Clock, label: 'History' },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;
           return (
             <button
               key={item.id}
-              onClick={() => {
-                setActiveNav(item.id);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onClick={() => handleNavClick(item.id)}
               className={`flex-1 py-1 flex flex-col items-center justify-center transition-all cursor-pointer ${
                 isActive
                   ? 'text-rose-600 dark:text-rose-400 font-bold'
@@ -1109,6 +1447,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         initialSubject={activeTest.subject}
         initialYear={activeTest.year}
       />
+
+      {/* OPay Activation Paywall Modal */}
+      <ActivationPaywallModal showToast={showToast} />
 
       {/* Floating Toast Notification */}
       {toastMessage && (
