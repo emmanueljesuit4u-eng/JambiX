@@ -12,6 +12,8 @@ import {
   CheckCircle2,
   Send,
 } from 'lucide-react';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../lib/firebase';
 import { Logo } from '../brand/Logo';
 
 interface ForgotPasswordPageProps {
@@ -52,7 +54,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
     return '';
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(true);
 
@@ -61,22 +63,31 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordPageProps> = ({
     if (err) return;
 
     setIsSubmitting(true);
+    const cleanEmail = email.trim();
 
-    // Simulate sending reset link
-    setTimeout(() => {
+    try {
+      await sendPasswordResetEmail(auth, cleanEmail);
+    } catch (firebaseErr: any) {
+      console.info('Password reset dispatch note:', firebaseErr?.code || firebaseErr);
+    } finally {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setResendCooldown(30);
-    }, 1000);
+    }
   };
 
-  const handleResend = () => {
-    if (resendCooldown > 0) return;
+  const handleResend = async () => {
+    if (resendCooldown > 0 || isSubmitting) return;
     setIsSubmitting(true);
-    setTimeout(() => {
+    const cleanEmail = email.trim();
+    try {
+      await sendPasswordResetEmail(auth, cleanEmail);
+    } catch (firebaseErr) {
+      console.info('Password reset resend note:', firebaseErr);
+    } finally {
       setIsSubmitting(false);
       setResendCooldown(45);
-    }, 800);
+    }
   };
 
   return (

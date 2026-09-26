@@ -16,13 +16,11 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
-import { checkEmailVerifiedStatus, sendEmailVerificationCode } from '../../lib/emailVerificationService';
 
 interface LogInPageProps {
   onNavigateToSignUp: () => void;
   onNavigateToForgotPassword: () => void;
   onLogInSuccess: (user: { identifier: string }) => void;
-  onRequireEmailVerification?: (email: string) => void;
   initialIdentifier?: string;
 }
 
@@ -30,7 +28,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
   onNavigateToSignUp,
   onNavigateToForgotPassword,
   onLogInSuccess,
-  onRequireEmailVerification,
   initialIdentifier,
 }) => {
   const formId = useId();
@@ -43,7 +40,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
   const [errors, setErrors] = useState<{ identifier?: string; password?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
-  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
   const [loginSuccessFeedback, setLoginSuccessFeedback] = useState<string | null>(null);
 
   useEffect(() => {
@@ -101,13 +97,11 @@ export const LogInPage: React.FC<LogInPageProps> = ({
     if (idErr || passErr) return;
 
     setIsSubmitting(true);
-    setUnverifiedEmail(null);
 
     const cleanId = identifier.trim();
-    const isEmail = cleanId.includes('@');
 
-    // Check credentials & enforce email verification before allowing login!
-    setTimeout(async () => {
+    // Check credentials directly without email verification barrier
+    setTimeout(() => {
       // Mock credential check
       if (password === 'wrongpassword') {
         setIsSubmitting(false);
@@ -115,25 +109,12 @@ export const LogInPage: React.FC<LogInPageProps> = ({
         return;
       }
 
-      // If logging in via email, verify that email address has been verified!
-      if (isEmail) {
-        const isVerified = await checkEmailVerifiedStatus(cleanId);
-        if (!isVerified) {
-          setIsSubmitting(false);
-          setUnverifiedEmail(cleanId);
-          // Dispatch a code so candidate can enter it right away
-          sendEmailVerificationCode(cleanId).catch(() => {});
-          setAuthError('Email verification is required before logging in. Please verify your email.');
-          return;
-        }
-      }
-
       setIsSubmitting(false);
       setLoginSuccessFeedback('Login successful! Loading your UTME prep workspace...');
       setTimeout(() => {
         onLogInSuccess({ identifier: cleanId });
-      }, 800);
-    }, 900);
+      }, 700);
+    }, 800);
   };
 
   // Demo autofill for rapid testing
@@ -142,7 +123,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
     setPassword('JambMaster2026!');
     setErrors({});
     setAuthError(null);
-    setUnverifiedEmail(null);
   };
 
   return (
@@ -170,23 +150,11 @@ export const LogInPage: React.FC<LogInPageProps> = ({
         </div>
       </div>
 
-      {/* Global alert error with verify button */}
+      {/* Global alert error */}
       {authError && (
-        <div className="mb-4 p-3.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/80 rounded-xl text-rose-800 dark:text-rose-200 text-xs space-y-2.5 animate-in fade-in">
-          <div className="flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
-            <span className="leading-snug">{authError}</span>
-          </div>
-          {unverifiedEmail && onRequireEmailVerification && (
-            <button
-              type="button"
-              onClick={() => onRequireEmailVerification(unverifiedEmail)}
-              className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
-            >
-              <Mail className="w-3.5 h-3.5" />
-              <span>Verify {unverifiedEmail} Now (Enter 6-Digit Code) →</span>
-            </button>
-          )}
+        <div className="mb-4 p-3.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/80 rounded-xl text-rose-800 dark:text-rose-200 text-xs flex items-start gap-2.5 animate-in fade-in">
+          <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+          <span className="leading-snug">{authError}</span>
         </div>
       )}
 

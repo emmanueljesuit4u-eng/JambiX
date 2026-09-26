@@ -18,20 +18,18 @@ import {
 import { SignUpPage } from './SignUpPage';
 import { LogInPage } from './LogInPage';
 import { ForgotPasswordPage } from './ForgotPasswordPage';
-import { VerifyEmailPage } from './VerifyEmailPage';
 import { TermsModal } from './TermsModal';
 import { StudentDashboard } from '../dashboard/StudentDashboard';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
 
-export type ScreenType = 'signup' | 'login' | 'forgot_password' | 'verify_email';
+export type ScreenType = 'signup' | 'login' | 'forgot_password';
 export type ViewportMode = 'responsive' | 'mobile' | 'tablet';
 
 export const AuthContainer: React.FC = () => {
   const { currentUser, studentProfile, logOut: fbLogOut, localStudent, setLocalStudent } = useAuth();
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('login');
   const [viewportMode, setViewportMode] = useState<ViewportMode>('responsive');
-  const [pendingVerifyEmail, setPendingVerifyEmail] = useState<string>('');
   const [prefilledLoginEmail, setPrefilledLoginEmail] = useState<string>('');
 
   // Modal dialog states
@@ -303,25 +301,6 @@ export const AuthContainer: React.FC = () => {
                     onNavigateToLogin={() => setCurrentScreen('login')}
                     onOpenTerms={handleOpenTerms}
                     onSignUpSuccess={handleSignUpSuccess}
-                    onRequireEmailVerification={(em) => {
-                      setPendingVerifyEmail(em);
-                      setCurrentScreen('verify_email');
-                    }}
-                  />
-                )}
-
-                {currentScreen === 'verify_email' && (
-                  <VerifyEmailPage
-                    email={pendingVerifyEmail}
-                    onVerificationSuccess={(verifiedEmail) => {
-                      setPrefilledLoginEmail(verifiedEmail);
-                      setCurrentScreen('login');
-                    }}
-                    onNavigateToLogin={(em) => {
-                      if (em) setPrefilledLoginEmail(em);
-                      setCurrentScreen('login');
-                    }}
-                    onNavigateToSignUp={() => setCurrentScreen('signup')}
                   />
                 )}
 
@@ -331,10 +310,6 @@ export const AuthContainer: React.FC = () => {
                     onNavigateToForgotPassword={() => setCurrentScreen('forgot_password')}
                     onLogInSuccess={handleLogInSuccess}
                     initialIdentifier={prefilledLoginEmail}
-                    onRequireEmailVerification={(em) => {
-                      setPendingVerifyEmail(em);
-                      setCurrentScreen('verify_email');
-                    }}
                   />
                 )}
 
@@ -353,25 +328,6 @@ export const AuthContainer: React.FC = () => {
                   onNavigateToLogin={() => setCurrentScreen('login')}
                   onOpenTerms={handleOpenTerms}
                   onSignUpSuccess={handleSignUpSuccess}
-                  onRequireEmailVerification={(em) => {
-                    setPendingVerifyEmail(em);
-                    setCurrentScreen('verify_email');
-                  }}
-                />
-              )}
-
-              {currentScreen === 'verify_email' && (
-                <VerifyEmailPage
-                  email={pendingVerifyEmail}
-                  onVerificationSuccess={(verifiedEmail) => {
-                    setPrefilledLoginEmail(verifiedEmail);
-                    setCurrentScreen('login');
-                  }}
-                  onNavigateToLogin={(em) => {
-                    if (em) setPrefilledLoginEmail(em);
-                    setCurrentScreen('login');
-                  }}
-                  onNavigateToSignUp={() => setCurrentScreen('signup')}
                 />
               )}
 
@@ -381,10 +337,6 @@ export const AuthContainer: React.FC = () => {
                   onNavigateToForgotPassword={() => setCurrentScreen('forgot_password')}
                   onLogInSuccess={handleLogInSuccess}
                   initialIdentifier={prefilledLoginEmail}
-                  onRequireEmailVerification={(em) => {
-                    setPendingVerifyEmail(em);
-                    setCurrentScreen('verify_email');
-                  }}
                 />
               )}
 

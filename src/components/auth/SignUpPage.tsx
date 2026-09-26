@@ -20,13 +20,11 @@ import {
 import { Logo } from '../brand/Logo';
 import { saveActivationRecord } from '../../lib/activationStorage';
 import { getOrCreateAccountActivation } from '../../lib/firestoreService';
-import { sendEmailVerificationCode } from '../../lib/emailVerificationService';
 
 interface SignUpPageProps {
   onNavigateToLogin: () => void;
   onOpenTerms: (tab: 'terms' | 'privacy') => void;
   onSignUpSuccess: (user: { name: string; email: string }) => void;
-  onRequireEmailVerification?: (email: string) => void;
 }
 
 interface FormErrors {
@@ -41,7 +39,6 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   onNavigateToLogin,
   onOpenTerms,
   onSignUpSuccess,
-  onRequireEmailVerification,
 }) => {
   const formId = useId();
 
@@ -187,10 +184,6 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
       setSubmissionFeedback('Account created successfully! Welcome to JambiX.');
       setTimeout(() => {
         const cleanEmail = email.trim();
-        // Dispatch 6-digit confirmation code to student's email address
-        sendEmailVerificationCode(cleanEmail).catch((err) =>
-          console.warn('Initial email verification dispatch error:', err)
-        );
         getOrCreateAccountActivation(cleanEmail).catch((err) =>
           console.warn('Initial cloud activation registration sync:', err)
         );
@@ -200,16 +193,13 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
           isActivated: false,
         });
 
-        if (onRequireEmailVerification) {
-          onRequireEmailVerification(cleanEmail);
-        } else {
-          onSignUpSuccess({
-            name: fullName.trim(),
-            email: cleanEmail,
-          });
-        }
-      }, 1000);
-    }, 1200);
+        // Directly sign in candidate without stressful email verification
+        onSignUpSuccess({
+          name: fullName.trim(),
+          email: cleanEmail,
+        });
+      }, 700);
+    }, 1000);
   };
 
   // Demo autofill for rapid testing
