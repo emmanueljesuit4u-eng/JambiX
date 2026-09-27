@@ -273,24 +273,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 <span>Free Access</span>
               </div>
 
-              {/* Master Admin Portal Direct Shortcut */}
-              {user?.email &&
-                (user.email.toLowerCase() === 'cligragh3@gmail.com' ||
-                  user.email.toLowerCase() === 'emmanueljesuit4u@gmail.com') && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    window.history.pushState({}, '', '/admin');
-                    window.dispatchEvent(new PopStateEvent('popstate'));
-                  }}
-                  className="px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/70 dark:hover:bg-amber-900/80 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
-                  title="Open Master /admin Dashboard"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                  <span>Admin Console</span>
-                </button>
-              )}
-
               {/* Network Status Pill */}
               <div
                 title={
