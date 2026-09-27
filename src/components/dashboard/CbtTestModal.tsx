@@ -26,6 +26,7 @@ import {
   CheckCircle2,
   XCircle,
   HelpCircle,
+  Calculator,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import { saveTestResult } from '../../lib/firestoreService';
@@ -45,6 +46,7 @@ import {
   clearSeenQuestions,
 } from '../../data/verifiedTextbooks';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
+import { JambCalculator } from '../common/JambCalculator';
 
 interface CbtTestModalProps {
   isOpen: boolean;
@@ -85,6 +87,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(120 * 60);
+  const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   // Completed Test State
   const [testCompleted, setTestCompleted] = useState<{
@@ -403,13 +406,34 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer shrink-0"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            {testStarted && !testCompleted && (
+              <button
+                type="button"
+                onClick={() => setIsCalculatorOpen((prev) => !prev)}
+                className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
+                  isCalculatorOpen
+                    ? 'bg-amber-500 text-slate-950 font-black ring-2 ring-amber-400/50'
+                    : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700'
+                }`}
+                title="Toggle JAMB CBT On-Screen Calculator"
+              >
+                <Calculator className="w-3.5 h-3.5 text-amber-500" />
+                <span className="hidden sm:inline">JAMB Calculator</span>
+                <span className="sm:hidden">Calc</span>
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setIsCalculatorOpen(false);
+                onClose();
+              }}
+              className="p-1.5 text-slate-400 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer shrink-0"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Modal Body */}
@@ -1087,9 +1111,25 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   )}
                 </div>
 
-                <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60">
-                  <Clock className="w-4 h-4 animate-pulse" />
-                  <span>{formattedTime}</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsCalculatorOpen((prev) => !prev)}
+                    className={`flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-xl transition-all cursor-pointer border ${
+                      isCalculatorOpen
+                        ? 'bg-amber-500 text-slate-950 border-amber-600 font-black shadow-xs ring-2 ring-amber-400/50'
+                        : 'bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700'
+                    }`}
+                    title="JAMB CBT On-Screen Calculator"
+                  >
+                    <Calculator className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Calculator</span>
+                  </button>
+
+                  <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60">
+                    <Clock className="w-4 h-4 animate-pulse" />
+                    <span>{formattedTime}</span>
+                  </div>
                 </div>
               </div>
 
@@ -1215,6 +1255,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           </div>
         )}
       </div>
+
+      {/* Official Draggable JAMB CBT On-Screen Calculator */}
+      <JambCalculator
+        isOpen={isCalculatorOpen}
+        onClose={() => setIsCalculatorOpen(false)}
+      />
     </div>
   );
 };
