@@ -46,6 +46,8 @@ export interface TestResultData {
   totalQuestions: number;
   percentage: number;
   timeSpentSeconds: number;
+  candidateName?: string;
+  userEmail?: string;
   createdAt?: unknown;
 }
 
@@ -408,6 +410,64 @@ export async function ensureAdminDocument(uid: string, email: string): Promise<v
 }
 
 /**
+ * Real-time stream of all registered student profiles for live Admin Dashboard counter & directory
+ */
+export function subscribeToAllUsers(
+  onUpdate: (users: UserProfileData[]) => void
+): () => void {
+  const path = 'users';
+  try {
+    const q = query(collection(db, 'users'), limit(500));
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const users = snapshot.docs.map((d) => d.data() as UserProfileData);
+        onUpdate(users);
+      },
+      (error) => {
+        if (isOfflineError(error)) {
+          console.warn('subscribeToAllUsers offline mode');
+          return;
+        }
+        console.warn('subscribeToAllUsers error:', error);
+      }
+    );
+  } catch (error) {
+    console.warn('subscribeToAllUsers catch:', error);
+    return () => {};
+  }
+}
+
+/**
+ * Real-time stream of all cross-device activations for live Admin metrics
+ */
+export function subscribeToAllAccountActivations(
+  onUpdate: (activations: AccountActivationData[]) => void
+): () => void {
+  const path = 'accountActivations';
+  try {
+    const q = query(collection(db, 'accountActivations'), limit(500));
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const activations = snapshot.docs.map((d) => d.data() as AccountActivationData);
+        onUpdate(activations);
+      },
+      (error) => {
+        if (isOfflineError(error)) {
+          console.warn('subscribeToAllAccountActivations offline');
+          return;
+        }
+        console.warn('subscribeToAllAccountActivations error:', error);
+      }
+    );
+  } catch (error) {
+    console.warn('subscribeToAllAccountActivations catch:', error);
+    return () => {};
+  }
+}
+
+/**
  * Fetches all registered student profiles for the Admin Dashboard
  */
 export async function getAllUsers(): Promise<UserProfileData[]> {
@@ -473,6 +533,38 @@ export async function adminToggleActivation(
       return;
     }
     handleFirestoreError(error, OperationType.WRITE, path);
+  }
+}
+
+/**
+ * Real-time stream of all CBT exam & test sessions across all students for Live Leaderboard
+ */
+export function subscribeToAllTestResults(
+  onUpdate: (results: TestResultData[]) => void
+): () => void {
+  const path = 'testResults';
+  try {
+    const q = query(collection(db, 'testResults'), limit(300));
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const results = snapshot.docs.map((d) => ({
+          ...d.data(),
+          id: d.id,
+        })) as TestResultData[];
+        onUpdate(results);
+      },
+      (error) => {
+        if (isOfflineError(error)) {
+          console.warn('subscribeToAllTestResults offline');
+          return;
+        }
+        console.warn('subscribeToAllTestResults error:', error);
+      }
+    );
+  } catch (error) {
+    console.warn('subscribeToAllTestResults catch:', error);
+    return () => {};
   }
 }
 

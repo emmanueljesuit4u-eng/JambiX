@@ -44,6 +44,10 @@ import {
   EyeOff,
   KeyRound,
   Mail,
+  Trophy,
+  Flame,
+  Zap,
+  Medal,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import {
@@ -69,6 +73,9 @@ import {
   TestResultData,
   FeedPostData,
   subscribeToFeedPosts,
+  subscribeToAllUsers,
+  subscribeToAllAccountActivations,
+  subscribeToAllTestResults,
 } from '../../lib/firestoreService';
 import {
   SUBJECT_CONFIGS,
@@ -89,7 +96,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
 
   // Active Admin Tabs
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'students' | 'tests' | 'questions' | 'feed' | 'security'
+    'overview' | 'leaderboard' | 'students' | 'tests' | 'questions' | 'feed' | 'security'
   >('overview');
 
   // Data states
@@ -103,6 +110,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
   // Search & filter states
   const [searchStudent, setSearchStudent] = useState('');
   const [studentFilter, setStudentFilter] = useState<'all' | 'activated' | 'trial'>('all');
+  const [leaderboardFilter, setLeaderboardFilter] = useState<'all' | '2hr' | 'high_scorers'>('all');
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [isManualAdding, setIsManualAdding] = useState(false);
 
@@ -228,7 +236,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
     setTimeout(() => setCopiedLink(false), 2500);
   };
 
-  // Load admin data when authorized
+  // Real-Time Live Stream Subscriptions (Signups, Activations, Test Results, Leaderboard)
+  useEffect(() => {
+    if (!isAuthorizedAdmin) return;
+    setIsLoadingData(true);
+
+    // 1. Live Signups Stream
+    const unsubUsers = subscribeToAllUsers((usersData) => {
+      setStudents(usersData);
+      setIsLoadingData(false);
+    });
+
+    // 2. Live Account Activations Stream
+    const unsubActivations = subscribeToAllAccountActivations((activationsData) => {
+      setActivations(activationsData);
+    });
+
+    // 3. Live CBT & 2-Hour Test Results Stream
+    const unsubTests = subscribeToAllTestResults((testsData) => {
+      setTestResults(testsData);
+    });
+
+    // 4. Live Community Feed Stream
+    const unsubFeed = subscribeToFeedPosts((posts) => {
+      setFeedPosts(posts);
+    });
+
+    return () => {
+      unsubUsers();
+      unsubActivations();
+      unsubTests();
+      unsubFeed();
+    };
+  }, [isAuthorizedAdmin]);
+
+  // Fallback manual refresh trigger
   const loadAdminData = async () => {
     if (!isAuthorizedAdmin) return;
     setIsLoadingData(true);
@@ -242,26 +284,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
       setActivations(activationsData);
       setTestResults(testsData);
     } catch (err) {
-      console.warn('Error loading admin dataset:', err);
+      console.warn('Manual refresh note:', err);
     } finally {
       setIsLoadingData(false);
     }
   };
-
-  useEffect(() => {
-    if (isAuthorizedAdmin) {
-      loadAdminData();
-    }
-  }, [isAuthorizedAdmin]);
-
-  // Subscribe to community posts
-  useEffect(() => {
-    if (!isAuthorizedAdmin) return;
-    const unsub = subscribeToFeedPosts((posts) => {
-      setFeedPosts(posts);
-    });
-    return () => unsub();
-  }, [isAuthorizedAdmin]);
 
   // Load preview questions for curriculum inspector
   useEffect(() => {
@@ -351,6 +378,67 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
       return true;
     });
   }, [mergedStudents, studentFilter, searchStudent]);
+
+  // Computed Live Leaderboard
+  const leaderboardEntries = useMemo(() => {
+    return testResults
+      .map((t) => {
+        const scaledScore = Math.round((t.score / (t.totalQuestions || 1)) * 400);
+        const isTwoHourExam =
+          t.totalQuestions >= 180 ||
+          t.testType === 'full' ||
+          t.timeSpentSeconds >= 3600 ||
+          t.testTitle.toLowerCase().includes('2-hr') ||
+          t.testTitle.toLowerCase().includes('mock') ||
+          t.testTitle.toLowerCase().includes('180');
+
+        const matchedStudent = students.find(
+          (s) =>
+            s.id === t.userId ||
+            (s.email && t.userEmail && s.email.toLowerCase() === t.userEmail.toLowerCase())
+        );
+
+        const displayName =
+          t.candidateName ||
+          matchedStudent?.fullName ||
+          (t.userEmail ? t.userEmail.split('@')[0] : `Candidate #${t.userId.slice(0, 6)}`);
+
+        return {
+          ...t,
+          scaledScore,
+          isTwoHourExam,
+          displayName,
+          displayEmail: t.userEmail || matchedStudent?.email || 'Registered Candidate',
+          targetScore: matchedStudent?.targetScore || 320,
+        };
+      })
+      .sort((a, b) => {
+        if (b.scaledScore !== a.scaledScore) {
+          return b.scaledScore - a.scaledScore;
+        }
+        if (b.isTwoHourExam !== a.isTwoHourExam) {
+          return b.isTwoHourExam ? 1 : -1;
+        }
+        return a.timeSpentSeconds - b.timeSpentSeconds;
+      });
+  }, [testResults, students]);
+
+  // Filtered leaderboard entries
+  const filteredLeaderboard = useMemo(() => {
+    return leaderboardEntries.filter((item) => {
+      if (leaderboardFilter === '2hr' && !item.isTwoHourExam) return false;
+      if (leaderboardFilter === 'high_scorers' && item.scaledScore < 300) return false;
+      return true;
+    });
+  }, [leaderboardEntries, leaderboardFilter]);
+
+  const twoHourCount = useMemo(() => {
+    return leaderboardEntries.filter((t) => t.isTwoHourExam).length;
+  }, [leaderboardEntries]);
+
+  const highScorerCount = useMemo(() => {
+    return leaderboardEntries.filter((t) => t.scaledScore >= 300).length;
+  }, [leaderboardEntries]);
 
   // Key KPI stats
   const totalStudentsCount = mergedStudents.length;
@@ -813,13 +901,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
           <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-1">
             <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
               <span className="text-[11px] font-bold uppercase tracking-wider">Total Students</span>
-              <Users className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live stream active" />
+                <Users className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-              {totalStudentsCount}
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <span>{totalStudentsCount}</span>
+              <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                Live
+              </span>
             </div>
             <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
-              <TrendingUp className="w-3 h-3" /> All candidates registered
+              <TrendingUp className="w-3 h-3" /> Real-time signups streaming
             </span>
           </div>
 
@@ -855,13 +949,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
           <div className="p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-1">
             <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
               <span className="text-[11px] font-bold uppercase tracking-wider">CBT Sessions</span>
-              <Award className="w-4 h-4 text-purple-600" />
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" title="Live stream active" />
+                <Award className="w-4 h-4 text-purple-600" />
+              </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-              {totalTestsCount}
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+              <span>{totalTestsCount}</span>
+              <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
+                Live
+              </span>
             </div>
             <span className="text-[11px] text-slate-500">
-              Avg score: <strong className="text-emerald-600">{averageScore}/400</strong>
+              {twoHourCount} full 2-hr mocks · Avg: <strong className="text-emerald-600">{averageScore}/400</strong>
             </span>
           </div>
 
@@ -884,6 +984,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
         <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-slate-200 dark:border-slate-800">
           {[
             { id: 'overview', label: 'Overview & Metrics', icon: BarChart3 },
+            { id: 'leaderboard', label: `Live Leaderboard & 2-Hr Tests (${testResults.length})`, icon: Trophy },
             { id: 'students', label: `Students & Licensing (${totalStudentsCount})`, icon: Users },
             { id: 'tests', label: `CBT Test Logs (${totalTestsCount})`, icon: Award },
             { id: 'questions', label: 'Curriculum & Question Bank', icon: BookOpen },
@@ -1000,6 +1101,80 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
               </div>
             </div>
 
+            {/* Live Leaderboard Highlights Sneak-Peek */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-amber-50 dark:bg-amber-950/60 text-amber-500 rounded-xl">
+                    <Trophy className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <span>Live UTME Leaderboard Leaders</span>
+                      <span className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                        Live
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Top performers across timed 2-hour mock exams &amp; practice drills.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('leaderboard')}
+                  className="text-xs font-bold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Open Full Leaderboard</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {leaderboardEntries.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {leaderboardEntries.slice(0, 3).map((item, idx) => (
+                    <div
+                      key={item.id || idx}
+                      className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-black text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                          {idx === 0 ? '🥇 1st' : idx === 1 ? '🥈 2nd' : '🥉 3rd'}
+                        </span>
+                        {item.isTwoHourExam && (
+                          <span className="px-1.5 py-0.5 bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 rounded text-[9px] font-bold">
+                            ⭐ 2-Hr Mock
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <span className="font-bold text-slate-900 dark:text-white text-xs block truncate">
+                          {item.displayName}
+                        </span>
+                        <span className="text-[10px] text-slate-500 truncate block font-mono">
+                          {item.displayEmail}
+                        </span>
+                      </div>
+                      <div className="flex items-baseline justify-between pt-1 border-t border-slate-200 dark:border-slate-700">
+                        <span className="text-base font-black text-emerald-600 dark:text-emerald-400">
+                          {item.scaledScore} <span className="text-[10px] text-slate-400 font-normal">/ 400</span>
+                        </span>
+                        <span className="text-[11px] text-slate-500 font-medium">
+                          {item.score}/{item.totalQuestions} ({item.percentage}%)
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-6 text-center text-xs text-slate-400">
+                  No exam results recorded yet. When students submit tests, top scores appear here live!
+                </div>
+              )}
+            </div>
+
             {/* Recent Registrations Table Sneak-Peek */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 space-y-4">
               <div className="flex items-center justify-between">
@@ -1063,6 +1238,347 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
                         </td>
                       </tr>
                     ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB: LIVE LEADERBOARD & 2-HOUR TEST RESULTS */}
+        {activeTab === 'leaderboard' && (
+          <div className="space-y-6">
+            {/* Live Streaming Alert & Stats Strip */}
+            <div className="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-emerald-700/50 space-y-4 relative overflow-hidden">
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/20 border border-emerald-400/40 rounded-full text-xs font-black tracking-wide text-emerald-300">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                    <span>🟢 LIVE FIRESTORE STREAM ACTIVE</span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
+                    <Trophy className="w-6 h-6 text-amber-400" />
+                    <span>National UTME CBT Exam Leaderboard</span>
+                  </h2>
+                  <p className="text-xs text-emerald-200/80 max-w-2xl leading-relaxed">
+                    All full 2-hour 180-question mock exams and practice drills synchronize here live from candidate devices with verified textbook grading out of 400 marks.
+                  </p>
+                </div>
+
+                {/* Filter Selector */}
+                <div className="flex items-center gap-2 bg-slate-950/60 p-1.5 rounded-2xl border border-slate-700/80 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setLeaderboardFilter('all')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                      leaderboardFilter === 'all'
+                        ? 'bg-emerald-600 text-white shadow-xs'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    All ({leaderboardEntries.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLeaderboardFilter('2hr')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                      leaderboardFilter === '2hr'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <Trophy className="w-3.5 h-3.5" />
+                    <span>2-Hr Mocks ({twoHourCount})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLeaderboardFilter('high_scorers')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                      leaderboardFilter === 'high_scorers'
+                        ? 'bg-purple-600 text-white shadow-xs'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>300+ Scorers ({highScorerCount})</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* KPI Strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-white/10">
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+                  <span className="text-[10px] text-emerald-200/70 uppercase font-bold tracking-wider block">Tested Candidates</span>
+                  <span className="text-xl sm:text-2xl font-black text-white">{leaderboardEntries.length}</span>
+                </div>
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+                  <span className="text-[10px] text-amber-200/70 uppercase font-bold tracking-wider block">Full 2-Hr Mocks (180 Qs)</span>
+                  <span className="text-xl sm:text-2xl font-black text-amber-300">{twoHourCount}</span>
+                </div>
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+                  <span className="text-[10px] text-purple-200/70 uppercase font-bold tracking-wider block">300+ UTME Aspirants</span>
+                  <span className="text-xl sm:text-2xl font-black text-purple-300">{highScorerCount}</span>
+                </div>
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+                  <span className="text-[10px] text-emerald-200/70 uppercase font-bold tracking-wider block">National Average</span>
+                  <span className="text-xl sm:text-2xl font-black text-emerald-300">{averageScore} <span className="text-xs text-emerald-100 font-normal">/ 400</span></span>
+                </div>
+              </div>
+            </div>
+
+            {/* TOP 3 PODIUM (If there are entries) */}
+            {filteredLeaderboard.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* 1st Place - Gold */}
+                {filteredLeaderboard[0] && (
+                  <div className="p-5 rounded-2xl bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-transparent border-2 border-amber-500/40 relative shadow-sm space-y-3 order-1 md:order-2">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-1 bg-amber-500 text-slate-950 font-black rounded-lg text-xs uppercase flex items-center gap-1 shadow-xs">
+                        <Trophy className="w-3.5 h-3.5" /> 1st Place (Gold)
+                      </span>
+                      {filteredLeaderboard[0].isTwoHourExam && (
+                        <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 rounded text-[10px] font-bold">
+                          ⭐ 2-Hr Full Mock
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="text-base font-black text-slate-900 dark:text-white truncate">
+                        {filteredLeaderboard[0].displayName}
+                      </h4>
+                      <p className="text-xs text-slate-500 font-mono truncate">{filteredLeaderboard[0].displayEmail}</p>
+                    </div>
+                    <div className="flex items-baseline justify-between pt-1 border-t border-amber-500/20">
+                      <div>
+                        <span className="text-3xl font-black text-amber-600 dark:text-amber-400">
+                          {filteredLeaderboard[0].scaledScore}
+                        </span>
+                        <span className="text-xs text-slate-400"> / 400</span>
+                      </div>
+                      <div className="text-right text-xs text-slate-500">
+                        <div className="font-bold text-slate-700 dark:text-slate-300">
+                          {filteredLeaderboard[0].score}/{filteredLeaderboard[0].totalQuestions} ({filteredLeaderboard[0].percentage}%)
+                        </div>
+                        <div className="text-[11px]">
+                          {Math.floor(filteredLeaderboard[0].timeSpentSeconds / 60)}m {filteredLeaderboard[0].timeSpentSeconds % 60}s
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 2nd Place - Silver */}
+                {filteredLeaderboard[1] && (
+                  <div className="p-5 rounded-2xl bg-gradient-to-b from-slate-300/20 via-slate-300/5 to-transparent border-2 border-slate-300 dark:border-slate-700 relative shadow-sm space-y-3 order-2 md:order-1">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-1 bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-white font-black rounded-lg text-xs uppercase flex items-center gap-1 shadow-xs">
+                        <Medal className="w-3.5 h-3.5" /> 2nd Place (Silver)
+                      </span>
+                      {filteredLeaderboard[1].isTwoHourExam && (
+                        <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 rounded text-[10px] font-bold">
+                          ⭐ 2-Hr Full Mock
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="text-base font-black text-slate-900 dark:text-white truncate">
+                        {filteredLeaderboard[1].displayName}
+                      </h4>
+                      <p className="text-xs text-slate-500 font-mono truncate">{filteredLeaderboard[1].displayEmail}</p>
+                    </div>
+                    <div className="flex items-baseline justify-between pt-1 border-t border-slate-200 dark:border-slate-800">
+                      <div>
+                        <span className="text-3xl font-black text-slate-700 dark:text-slate-300">
+                          {filteredLeaderboard[1].scaledScore}
+                        </span>
+                        <span className="text-xs text-slate-400"> / 400</span>
+                      </div>
+                      <div className="text-right text-xs text-slate-500">
+                        <div className="font-bold text-slate-700 dark:text-slate-300">
+                          {filteredLeaderboard[1].score}/{filteredLeaderboard[1].totalQuestions} ({filteredLeaderboard[1].percentage}%)
+                        </div>
+                        <div className="text-[11px]">
+                          {Math.floor(filteredLeaderboard[1].timeSpentSeconds / 60)}m {filteredLeaderboard[1].timeSpentSeconds % 60}s
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 3rd Place - Bronze */}
+                {filteredLeaderboard[2] && (
+                  <div className="p-5 rounded-2xl bg-gradient-to-b from-orange-400/10 via-orange-400/5 to-transparent border-2 border-orange-400/30 relative shadow-sm space-y-3 order-3">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-1 bg-orange-400 text-slate-950 font-black rounded-lg text-xs uppercase flex items-center gap-1 shadow-xs">
+                        <Medal className="w-3.5 h-3.5" /> 3rd Place (Bronze)
+                      </span>
+                      {filteredLeaderboard[2].isTwoHourExam && (
+                        <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 rounded text-[10px] font-bold">
+                          ⭐ 2-Hr Full Mock
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="text-base font-black text-slate-900 dark:text-white truncate">
+                        {filteredLeaderboard[2].displayName}
+                      </h4>
+                      <p className="text-xs text-slate-500 font-mono truncate">{filteredLeaderboard[2].displayEmail}</p>
+                    </div>
+                    <div className="flex items-baseline justify-between pt-1 border-t border-orange-400/20">
+                      <div>
+                        <span className="text-3xl font-black text-orange-600 dark:text-orange-400">
+                          {filteredLeaderboard[2].scaledScore}
+                        </span>
+                        <span className="text-xs text-slate-400"> / 400</span>
+                      </div>
+                      <div className="text-right text-xs text-slate-500">
+                        <div className="font-bold text-slate-700 dark:text-slate-300">
+                          {filteredLeaderboard[2].score}/{filteredLeaderboard[2].totalQuestions} ({filteredLeaderboard[2].percentage}%)
+                        </div>
+                        <div className="text-[11px]">
+                          {Math.floor(filteredLeaderboard[2].timeSpentSeconds / 60)}m {filteredLeaderboard[2].timeSpentSeconds % 60}s
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* FULL REAL-TIME LEADERBOARD TABLE */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-amber-500" />
+                    <span>Real-Time Scaled Rankings (Over 400 Marks)</span>
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Live updates stream automatically as students complete exams.
+                  </p>
+                </div>
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>Streaming Active</span>
+                </span>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                    <tr>
+                      <th className="py-3 px-3 font-semibold text-center w-14">Rank</th>
+                      <th className="py-3 px-3 font-semibold">Candidate Information</th>
+                      <th className="py-3 px-3 font-semibold">Exam Title &amp; Mode</th>
+                      <th className="py-3 px-3 font-semibold">Scaled UTME (/400)</th>
+                      <th className="py-3 px-3 font-semibold">Raw Score &amp; %</th>
+                      <th className="py-3 px-3 font-semibold">Time Spent</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                    {filteredLeaderboard.map((item, idx) => {
+                      const rank = idx + 1;
+                      const isGold = rank === 1;
+                      const isSilver = rank === 2;
+                      const isBronze = rank === 3;
+
+                      return (
+                        <tr
+                          key={item.id || idx}
+                          className={`hover:bg-slate-50/70 dark:hover:bg-slate-800/50 transition-colors ${
+                            isGold
+                              ? 'bg-amber-50/40 dark:bg-amber-950/20'
+                              : isSilver
+                              ? 'bg-slate-50/40 dark:bg-slate-800/20'
+                              : isBronze
+                              ? 'bg-orange-50/40 dark:bg-orange-950/20'
+                              : ''
+                          }`}
+                        >
+                          {/* Rank Badge */}
+                          <td className="py-3 px-3 text-center">
+                            {isGold ? (
+                              <span className="w-7 h-7 rounded-xl bg-amber-500 text-slate-950 font-black text-xs inline-flex items-center justify-center shadow-xs">
+                                🥇
+                              </span>
+                            ) : isSilver ? (
+                              <span className="w-7 h-7 rounded-xl bg-slate-300 dark:bg-slate-700 text-slate-900 dark:text-white font-black text-xs inline-flex items-center justify-center shadow-xs">
+                                🥈
+                              </span>
+                            ) : isBronze ? (
+                              <span className="w-7 h-7 rounded-xl bg-orange-400 text-slate-950 font-black text-xs inline-flex items-center justify-center shadow-xs">
+                                🥉
+                              </span>
+                            ) : (
+                              <span className="w-7 h-7 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-xs inline-flex items-center justify-center">
+                                #{rank}
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Candidate info */}
+                          <td className="py-3 px-3">
+                            <span className="font-bold text-slate-900 dark:text-white block">{item.displayName}</span>
+                            <span className="text-[11px] text-slate-500 font-mono">{item.displayEmail}</span>
+                          </td>
+
+                          {/* Exam Title & Badge */}
+                          <td className="py-3 px-3">
+                            <span className="font-semibold text-slate-900 dark:text-white block truncate max-w-xs">
+                              {item.testTitle}
+                            </span>
+                            {item.isTwoHourExam ? (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300">
+                                ⭐ 2-Hour Full Mock (180 Qs)
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                                ⚡ {item.totalQuestions}-Q Drill
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Scaled Score /400 */}
+                          <td className="py-3 px-3">
+                            <span
+                              className={`font-black text-base ${
+                                item.scaledScore >= 300
+                                  ? 'text-emerald-600 dark:text-emerald-400'
+                                  : item.scaledScore >= 250
+                                  ? 'text-teal-600 dark:text-teal-400'
+                                  : 'text-amber-600'
+                              }`}
+                            >
+                              {item.scaledScore}
+                            </span>
+                            <span className="text-[10px] text-slate-400"> / 400</span>
+                          </td>
+
+                          {/* Raw Correct */}
+                          <td className="py-3 px-3 text-slate-700 dark:text-slate-300">
+                            <span className="font-bold">{item.score}</span> / {item.totalQuestions}
+                            <span className="text-slate-400 text-[11px] ml-1">({item.percentage}%)</span>
+                          </td>
+
+                          {/* Time Spent */}
+                          <td className="py-3 px-3 text-slate-500 font-mono text-[11px]">
+                            {Math.floor(item.timeSpentSeconds / 60)}m {item.timeSpentSeconds % 60}s
+                          </td>
+                        </tr>
+                      );
+                    })}
+
+                    {filteredLeaderboard.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="py-12 text-center text-slate-400 text-xs">
+                          <Trophy className="w-8 h-8 text-slate-300 dark:text-slate-700 mx-auto mb-2" />
+                          <p className="font-bold text-slate-700 dark:text-slate-300">No test results matching filter yet.</p>
+                          <p className="text-slate-500 mt-1">When students submit 2-hour full mocks or practice drills, they will rank here in real time!</p>
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

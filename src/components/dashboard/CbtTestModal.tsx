@@ -317,6 +317,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     let synced = false;
     if (auth.currentUser && effectiveOnline) {
       try {
+        const candidateName =
+          auth.currentUser.displayName ||
+          auth.currentUser.email?.split('@')[0] ||
+          'UTME Candidate';
+        const userEmail = auth.currentUser.email || '';
+
         await saveTestResult({
           id: testId,
           userId: auth.currentUser.uid,
@@ -329,6 +335,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           totalQuestions: grade.totalQuestions,
           percentage: grade.overallPercentage,
           timeSpentSeconds: timeSpent > 0 ? timeSpent : 180,
+          candidateName,
+          userEmail,
         });
         synced = true;
       } catch (err) {

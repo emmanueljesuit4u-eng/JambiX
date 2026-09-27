@@ -56,14 +56,16 @@ service cloud.firestore {
 
     function isValidTestResult(data) {
       return data.keys().hasAll(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions']) &&
-             data.keys().hasOnly(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions', 'percentage', 'timeSpentSeconds', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions', 'percentage', 'timeSpentSeconds', 'createdAt', 'candidateName', 'userEmail']) &&
              data.id is string && isValidId(data.id) &&
              data.userId is string && data.userId == request.auth.uid &&
              data.testTitle is string && data.testTitle.size() <= 120 &&
              data.testType is string && data.testType.size() <= 50 &&
              data.score is number && data.score >= 0 &&
              data.totalQuestions is number && data.totalQuestions > 0 &&
-             data.score <= data.totalQuestions;
+             data.score <= data.totalQuestions &&
+             (!('candidateName' in data) || (data.candidateName is string && data.candidateName.size() <= 100)) &&
+             (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 100));
     }
 
     function isValidFeedPost(data) {
@@ -109,8 +111,8 @@ service cloud.firestore {
 
     // Test results
     match /testResults/{resultId} {
-      allow get: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
-      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
       allow create: if isSignedIn() && isValidId(resultId) && isValidTestResult(incoming());
       allow update: if isAdmin();
       allow delete: if isAdmin() || (isSignedIn() && existing().userId == request.auth.uid);
