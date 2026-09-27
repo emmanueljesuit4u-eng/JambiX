@@ -273,8 +273,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 <span>Free Access</span>
               </div>
 
-              {/* Master Admin Portal Direct Shortcut (For Emmanuel Only) */}
-              {user?.email && user.email.toLowerCase() === 'emmanueljesuit4u@gmail.com' && (
+              {/* Master Admin Portal Direct Shortcut */}
+              {user?.email &&
+                (user.email.toLowerCase() === 'cligragh3@gmail.com' ||
+                  user.email.toLowerCase() === 'emmanueljesuit4u@gmail.com') && (
                 <button
                   type="button"
                   onClick={() => {

@@ -376,13 +376,19 @@ export function subscribeToAccountActivation(
 // 5. Exclusive Admin Operations
 // ==========================================
 
-export const ADMIN_EMAIL = 'emmanueljesuit4u@gmail.com';
+export const ADMIN_EMAIL = 'cligragh3@gmail.com';
+export const ALLOWED_ADMIN_EMAILS = ['cligragh3@gmail.com', 'emmanueljesuit4u@gmail.com'];
+
+export function isAllowedAdminEmail(email?: string | null): boolean {
+  if (!email) return false;
+  return ALLOWED_ADMIN_EMAILS.includes(email.toLowerCase().trim());
+}
 
 /**
  * Ensures the administrator record exists in the /admins collection in Firestore
  */
 export async function ensureAdminDocument(uid: string, email: string): Promise<void> {
-  if (!uid || email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) return;
+  if (!uid || !isAllowedAdminEmail(email)) return;
   const path = `admins/${uid}`;
   try {
     const adminRef = doc(db, 'admins', uid);

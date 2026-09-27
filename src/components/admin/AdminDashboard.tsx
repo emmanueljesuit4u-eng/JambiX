@@ -39,11 +39,24 @@ import {
   X,
   HelpCircle,
   Clock,
+  Copy,
+  Eye,
+  EyeOff,
+  KeyRound,
+  Mail,
 } from 'lucide-react';
+import { auth } from '../../lib/firebase';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../common/ThemeToggle';
 import {
   ADMIN_EMAIL,
+  ALLOWED_ADMIN_EMAILS,
+  isAllowedAdminEmail,
   getAllUsers,
   getAllAccountActivations,
   adminToggleActivation,
@@ -104,9 +117,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
   const [broadcastContent, setBroadcastContent] = useState('');
   const [isBroadcasting, setIsBroadcasting] = useState(false);
 
-  // Security check: strictly emmanueljesuit4u@gmail.com
+  // Admin Auth Portal state
+  const [adminAuthMode, setAdminAuthMode] = useState<'signup' | 'login'>(
+    window.location.pathname.includes('signup') ? 'signup' : 'login'
+  );
+  const [adminEmail, setAdminEmail] = useState(ADMIN_EMAIL);
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminConfirmPassword, setAdminConfirmPassword] = useState('');
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [adminAuthError, setAdminAuthError] = useState<string | null>(null);
+  const [adminAuthSuccess, setAdminAuthSuccess] = useState<string | null>(null);
+  const [isAdminAuthLoading, setIsAdminAuthLoading] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // Security check: strictly cligragh3@gmail.com (and emmanueljesuit4u@gmail.com)
   const isAuthorizedAdmin =
-    Boolean(currentUser?.email && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
+    Boolean(currentUser?.email && isAllowedAdminEmail(currentUser.email));
 
   // Bootstrap admin record upon authorized sign in
   useEffect(() => {
@@ -114,6 +140,93 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
       ensureAdminDocument(currentUser.uid, currentUser.email || ADMIN_EMAIL);
     }
   }, [isAuthorizedAdmin, currentUser]);
+
+  const handleAdminEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdminAuthError(null);
+    setAdminAuthSuccess(null);
+
+    const cleanEmail = adminEmail.trim().toLowerCase();
+
+    if (!isAllowedAdminEmail(cleanEmail)) {
+      setAdminAuthError(`Access Denied: Only ${ADMIN_EMAIL} is authorized to sign up or log in as Administrator.`);
+      return;
+    }
+
+    if (adminPassword.length < 6) {
+      setAdminAuthError('Master password must be at least 6 characters.');
+      return;
+    }
+
+    setIsAdminAuthLoading(true);
+
+    if (adminAuthMode === 'signup') {
+      if (adminPassword !== adminConfirmPassword) {
+        setIsAdminAuthLoading(false);
+        setAdminAuthError('Passwords do not match. Please re-enter.');
+        return;
+      }
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, cleanEmail, adminPassword);
+        await ensureAdminDocument(cred.user.uid, cleanEmail);
+        setAdminAuthSuccess('Admin account created successfully! Accessing Master Dashboard...');
+      } catch (err: any) {
+        if (err.code === 'auth/email-already-in-use') {
+          // If already registered, attempt login
+          try {
+            const cred = await signInWithEmailAndPassword(auth, cleanEmail, adminPassword);
+            await ensureAdminDocument(cred.user.uid, cleanEmail);
+            setAdminAuthSuccess('Welcome back! Logging into Admin Dashboard...');
+          } catch {
+            setAdminAuthError(`An admin account for ${cleanEmail} already exists. Please switch to "Admin Log In" or use the correct password.`);
+          }
+        } else {
+          setAdminAuthError(err.message || 'Failed to create admin credentials.');
+        }
+      } finally {
+        setIsAdminAuthLoading(false);
+      }
+    } else {
+      // Login mode
+      try {
+        const cred = await signInWithEmailAndPassword(auth, cleanEmail, adminPassword);
+        await ensureAdminDocument(cred.user.uid, cleanEmail);
+        setAdminAuthSuccess('Authentication successful! Loading Master Console...');
+      } catch (err: any) {
+        if (err.code === 'auth/user-not-found') {
+          setAdminAuthError('No admin credentials found yet. Please switch to "Admin Sign Up" to set your password.');
+        } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+          setAdminAuthError('Incorrect master password. If you forgot your password, click "Forgot Password" to receive a reset link.');
+        } else {
+          setAdminAuthError(err.message || 'Failed to authenticate admin.');
+        }
+      } finally {
+        setIsAdminAuthLoading(false);
+      }
+    }
+  };
+
+  const handleAdminResetPassword = async () => {
+    setAdminAuthError(null);
+    setIsAdminAuthLoading(true);
+    const cleanEmail = adminEmail.trim().toLowerCase();
+    try {
+      await sendPasswordResetEmail(auth, cleanEmail);
+      setAdminAuthSuccess(`Password reset link dispatched to ${cleanEmail}. Please check your inbox.`);
+    } catch (err: any) {
+      setAdminAuthError(err.message || 'Failed to send password reset email.');
+    } finally {
+      setIsAdminAuthLoading(false);
+    }
+  };
+
+  const handleCopyLink = (path: string = '/admin') => {
+    const fullUrl = `${window.location.origin}${path}`;
+    navigator.clipboard.writeText(fullUrl);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2500);
+  };
 
   // Load admin data when authorized
   const loadAdminData = async () => {
@@ -314,94 +427,305 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
   // ACCESS CONTROL GATE (If not authorized)
   // ==========================================
   if (!isAuthorizedAdmin) {
+    const adminPathUrl = typeof window !== 'undefined' ? `${window.location.origin}/admin` : '/admin';
+    const adminSignupPathUrl = typeof window !== 'undefined' ? `${window.location.origin}/admin/signup` : '/admin/signup';
+
     return (
       <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col justify-between p-4 sm:p-6 transition-colors">
         {/* Top brand header */}
-        <div className="max-w-md w-full mx-auto flex items-center justify-between py-2">
+        <div className="max-w-lg w-full mx-auto flex items-center justify-between py-2">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center font-black text-xs">
+            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-black text-xs">
               J
             </div>
             <span className="font-extrabold text-white tracking-tight">
-              Jambi<span className="text-emerald-400">X</span> Admin
+              Jambi<span className="text-emerald-400">X</span> Master Admin
             </span>
           </div>
           <ThemeToggle />
         </div>
 
-        {/* Lock Gate Card */}
-        <div className="max-w-md w-full mx-auto bg-slate-800/90 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-500 flex items-center justify-center mx-auto shadow-inner">
-            <Lock className="w-8 h-8" />
-          </div>
+        {/* Lock & Auth Card */}
+        <div className="max-w-lg w-full mx-auto bg-slate-800/90 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+          {/* Header Badge */}
+          <div className="text-center space-y-2">
+            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto shadow-inner">
+              <ShieldCheck className="w-7 h-7" />
+            </div>
 
-          <div className="space-y-2">
-            <span className="px-2.5 py-1 bg-rose-950 text-rose-300 border border-rose-800/80 rounded-full text-[10px] font-black uppercase tracking-wider">
-              Restricted Access Gate
-            </span>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-950/80 text-amber-300 border border-amber-800/80 rounded-full text-[11px] font-black uppercase tracking-wider">
+              <span>Executive Access Portal</span>
+            </div>
+
             <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-              Master Admin Dashboard
+              Admin Console &amp; Signup
             </h1>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              This path is exclusively reserved for the platform administrator. Access requires verified administrative credentials.
+            <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+              Exclusive administrative portal reserved for <strong className="text-emerald-400 font-mono">{ADMIN_EMAIL}</strong>.
             </p>
           </div>
 
-          {/* User state alert */}
-          {currentUser ? (
-            <div className="p-3.5 bg-slate-900/90 rounded-xl border border-rose-900/40 text-left space-y-1.5 text-xs">
+          {/* Dedicated Link Box with Copy Action */}
+          <div className="p-3.5 bg-slate-950/80 rounded-2xl border border-slate-700/80 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-slate-300 flex items-center gap-1.5">
+                <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Your Direct Admin URL:</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => handleCopyLink(adminAuthMode === 'signup' ? '/admin/signup' : '/admin')}
+                className="text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 cursor-pointer transition-colors"
+              >
+                {copiedLink ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Link</span>
+                  </>
+                )}
+              </button>
+            </div>
+            <div className="px-3 py-2 bg-slate-900 rounded-xl border border-slate-800 font-mono text-[11px] text-emerald-300 select-all truncate">
+              {adminAuthMode === 'signup' ? adminSignupPathUrl : adminPathUrl}
+            </div>
+            <div className="flex items-center gap-2 pt-1">
+              <span className="text-[10px] text-slate-500">Quick paths:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setAdminAuthMode('signup');
+                  window.history.pushState({}, '', '/admin/signup');
+                }}
+                className={`text-[10px] font-semibold underline cursor-pointer ${
+                  adminAuthMode === 'signup' ? 'text-amber-400' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                /admin/signup
+              </button>
+              <span className="text-slate-600">·</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setAdminAuthMode('login');
+                  window.history.pushState({}, '', '/admin');
+                }}
+                className={`text-[10px] font-semibold underline cursor-pointer ${
+                  adminAuthMode === 'login' ? 'text-amber-400' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                /admin (Dashboard Login)
+              </button>
+            </div>
+          </div>
+
+          {/* User state alert if signed in with wrong account */}
+          {currentUser && (
+            <div className="p-3.5 bg-rose-950/40 rounded-xl border border-rose-900/60 text-left space-y-1.5 text-xs">
               <div className="flex items-center gap-1.5 text-rose-400 font-bold">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
-                <span>Unauthorized Account</span>
+                <span>Currently Active Session: Non-Admin</span>
               </div>
               <p className="text-slate-300">
                 You are currently signed in as:
-                <strong className="block text-white font-mono break-all mt-0.5">{currentUser.email || 'Anonymous / Guest'}</strong>
+                <strong className="block text-white font-mono break-all mt-0.5">{currentUser.email || 'Candidate / Guest'}</strong>
               </p>
-              <p className="text-[11px] text-slate-500">
-                Authorized super administrator is: <strong className="text-emerald-400">{ADMIN_EMAIL}</strong>
-              </p>
-            </div>
-          ) : (
-            <div className="p-3 bg-slate-900/80 rounded-xl border border-slate-700/60 text-xs text-slate-400 text-left space-y-1">
-              <span className="font-semibold text-slate-300 block">Required Authorization:</span>
-              <span>Sign in with Google using <strong className="text-emerald-400">{ADMIN_EMAIL}</strong> to unlock this console.</span>
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={logOut}
+                  className="px-3 py-1 bg-rose-900/80 hover:bg-rose-800 text-rose-200 rounded-lg text-[11px] font-bold transition-colors cursor-pointer"
+                >
+                  Sign Out of Current Session to Continue
+                </button>
+              </div>
             </div>
           )}
 
-          {/* Action buttons */}
-          <div className="space-y-3 pt-2">
+          {/* Auth Tab Switcher */}
+          <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-700/80">
             <button
-              onClick={loginWithGoogle}
-              disabled={authLoading}
-              className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              type="button"
+              onClick={() => {
+                setAdminAuthMode('signup');
+                setAdminAuthError(null);
+                setAdminAuthSuccess(null);
+              }}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                adminAuthMode === 'signup'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-white'
+              }`}
             >
-              <ShieldCheck className="w-4 h-4" />
-              <span>Sign In with Google ({ADMIN_EMAIL})</span>
+              Admin Sign Up
             </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAdminAuthMode('login');
+                setAdminAuthError(null);
+                setAdminAuthSuccess(null);
+              }}
+              className={`py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                adminAuthMode === 'login'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Admin Log In
+            </button>
+          </div>
 
-            {currentUser && (
-              <button
-                onClick={logOut}
-                className="w-full py-2.5 px-4 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
-              >
-                Switch Account / Sign Out
-              </button>
+          {/* Feedback & Error Alerts */}
+          {adminAuthError && (
+            <div className="p-3 bg-rose-950/60 border border-rose-800 text-rose-200 text-xs rounded-xl flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <span>{adminAuthError}</span>
+            </div>
+          )}
+
+          {adminAuthSuccess && (
+            <div className="p-3 bg-emerald-950/60 border border-emerald-800 text-emerald-200 text-xs rounded-xl flex items-start gap-2">
+              <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <span>{adminAuthSuccess}</span>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleAdminEmailSubmit} className="space-y-3.5">
+            {/* Admin Email */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                Authorized Admin Email Address
+              </label>
+              <div className="relative">
+                <Mail className="w-4 h-4 absolute left-3.5 top-3 text-emerald-400" />
+                <input
+                  type="email"
+                  required
+                  value={adminEmail}
+                  onChange={(e) => setAdminEmail(e.target.value)}
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl text-xs font-mono text-white focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <span className="text-[10px] text-emerald-400/90 mt-1 block">
+                ✓ Locked to your master super admin address ({ADMIN_EMAIL})
+              </span>
+            </div>
+
+            {/* Master Password */}
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
+                {adminAuthMode === 'signup' ? 'Create Master Admin Password' : 'Enter Master Password'}
+              </label>
+              <div className="relative">
+                <KeyRound className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                <input
+                  type={showAdminPassword ? 'text' : 'password'}
+                  required
+                  placeholder="••••••••••••"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  className="w-full pl-10 pr-10 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowAdminPassword(!showAdminPassword)}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-white cursor-pointer"
+                >
+                  {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm Password (only on signup) */}
+            {adminAuthMode === 'signup' && (
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Confirm Master Password
+                </label>
+                <div className="relative">
+                  <KeyRound className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+                  <input
+                    type={showAdminPassword ? 'text' : 'password'}
+                    required
+                    placeholder="••••••••••••"
+                    value={adminConfirmPassword}
+                    onChange={(e) => setAdminConfirmPassword(e.target.value)}
+                    className="w-full pl-10 pr-3.5 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </div>
             )}
 
+            {/* Forgot password shortcut */}
+            {adminAuthMode === 'login' && (
+              <div className="text-right">
+                <button
+                  type="button"
+                  onClick={handleAdminResetPassword}
+                  disabled={isAdminAuthLoading}
+                  className="text-[11px] text-amber-400 hover:text-amber-300 underline cursor-pointer"
+                >
+                  Forgot master password? Send reset link
+                </button>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isAdminAuthLoading}
+              className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>
+                {isAdminAuthLoading
+                  ? 'Verifying...'
+                  : adminAuthMode === 'signup'
+                    ? 'Register & Set Admin Password'
+                    : 'Log In to Admin Dashboard'}
+              </span>
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="relative flex items-center justify-center">
+            <div className="border-t border-slate-700 w-full" />
+            <span className="bg-slate-800 px-3 text-[11px] text-slate-400 uppercase font-bold shrink-0">
+              Or 1-Click Google Access
+            </span>
+            <div className="border-t border-slate-700 w-full" />
+          </div>
+
+          {/* 1-Click Google Sign In */}
+          <button
+            onClick={loginWithGoogle}
+            disabled={authLoading || isAdminAuthLoading}
+            className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-700/80 text-white border border-slate-700 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Google 1-Click ({ADMIN_EMAIL})</span>
+          </button>
+
+          {/* Navigation link back to student site */}
+          <div className="pt-1 text-center">
             <button
               onClick={onNavigateHome}
-              className="w-full py-2.5 px-4 border border-slate-700 hover:bg-slate-750 text-slate-400 hover:text-slate-200 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="text-xs text-slate-400 hover:text-slate-200 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back to Student Portal</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Return to Student CBT Simulator</span>
             </button>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="text-center text-[11px] text-slate-500">
-          JambiX UTME Intelligence Engine · Administrative Portal
+        <div className="text-center text-[11px] text-slate-500 py-2">
+          JambiX UTME Intelligence Engine · Master Admin Portal ({ADMIN_EMAIL})
         </div>
       </div>
     );
@@ -437,7 +761,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
 
             <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 rounded-lg text-amber-900 dark:text-amber-300 text-xs font-bold">
               <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>Super Admin: {ADMIN_EMAIL}</span>
+              <span>Super Admin: {currentUser?.email || ADMIN_EMAIL}</span>
             </div>
           </div>
 
