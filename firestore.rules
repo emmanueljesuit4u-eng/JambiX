@@ -137,9 +137,9 @@ service cloud.firestore {
 
     // Cross-device account activations registry
     match /accountActivations/{activationId} {
-      allow get: if isSignedIn();
+      allow get: if true;
       allow list: if isAdmin();
-      allow create: if isSignedIn() && isValidId(activationId) && isValidAccountActivation(incoming()) && incoming().id == activationId;
+      allow create: if isValidId(activationId) && isValidAccountActivation(incoming()) && incoming().id == activationId;
       allow update: if isSignedIn() && isValidId(activationId) && isValidAccountActivation(incoming()) &&
                        incoming().id == existing().id &&
                        incoming().registeredAt == existing().registeredAt &&

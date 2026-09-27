@@ -18,8 +18,17 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
+import { auth } from '../../lib/firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 import { saveActivationRecord } from '../../lib/activationStorage';
-import { getOrCreateAccountActivation } from '../../lib/firestoreService';
+import {
+  getOrCreateAccountActivation,
+  saveUserProfile,
+} from '../../lib/firestoreService';
 
 interface SignUpPageProps {
   onNavigateToLogin: () => void;
@@ -178,28 +187,75 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
     setIsSubmitting(true);
     setSubmissionFeedback(null);
 
-    // Simulate account creation
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmissionFeedback('Account created successfully! Welcome to JambiX.');
-      setTimeout(() => {
-        const cleanEmail = email.trim();
-        getOrCreateAccountActivation(cleanEmail).catch((err) =>
-          console.warn('Initial cloud activation registration sync:', err)
-        );
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = fullName.trim();
+    const cleanPhone = phoneNumber.trim();
+
+    // 1. Instantly register in cloud activation registry so Admin Dashboard catches it live
+    getOrCreateAccountActivation(cleanEmail).catch((err) =>
+      console.warn('Initial cloud activation registration sync:', err)
+    );
+
+    // 2. Real Firebase Auth Account Creation
+    (async () => {
+      try {
+        let userCred;
+        try {
+          userCred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+        } catch (err: any) {
+          if (err.code === 'auth/email-already-in-use') {
+            userCred = await signInWithEmailAndPassword(auth, cleanEmail, password);
+          } else {
+            throw err;
+          }
+        }
+
+        const user = userCred.user;
+        await updateProfile(user, { displayName: cleanName }).catch(() => {});
+
+        // Save authoritative Firestore User Profile
+        await saveUserProfile({
+          id: user.uid,
+          email: cleanEmail,
+          fullName: cleanName,
+          phoneNumber: cleanPhone,
+          targetScore: 320,
+          preferredInstitution: 'University of Lagos (UNILAG)',
+          registeredAt: Date.now(),
+          isActivated: true,
+          isEmailVerified: true,
+        });
+
         saveActivationRecord({
           userEmail: cleanEmail,
           registeredAt: Date.now(),
-          isActivated: false,
+          isActivated: true,
         });
 
-        // Directly sign in candidate without stressful email verification
-        onSignUpSuccess({
-          name: fullName.trim(),
-          email: cleanEmail,
-        });
-      }, 700);
-    }, 1000);
+        setIsSubmitting(false);
+        setSubmissionFeedback('Account created successfully! Welcome to JambiX.');
+
+        setTimeout(() => {
+          onSignUpSuccess({
+            name: cleanName,
+            email: cleanEmail,
+          });
+        }, 500);
+      } catch (err: any) {
+        setIsSubmitting(false);
+        let errorMsg = 'Failed to create account. Please check your network and try again.';
+        if (err.code === 'auth/weak-password') {
+          errorMsg = 'Password must be at least 6 characters.';
+        } else if (err.code === 'auth/invalid-email') {
+          errorMsg = 'Please enter a valid email address.';
+        } else if (err.code === 'auth/wrong-password') {
+          errorMsg = 'An account with this email exists, but the password was incorrect.';
+        } else if (err.message) {
+          errorMsg = err.message;
+        }
+        setErrors((prev) => ({ ...prev, email: errorMsg }));
+      }
+    })();
   };
 
   // Demo autofill for rapid testing

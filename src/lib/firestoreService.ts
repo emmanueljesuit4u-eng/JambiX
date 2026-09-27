@@ -33,6 +33,7 @@ export interface UserProfileData {
   activatedAt?: string | number;
   paymentReference?: string;
   opayAccount?: string;
+  isEmailVerified?: boolean;
   createdAt?: unknown;
   updatedAt?: unknown;
 }

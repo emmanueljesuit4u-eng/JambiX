@@ -55,7 +55,7 @@ export const AuthContainer: React.FC = () => {
     setCurrentScreen('login');
   };
 
-  const activeUser = currentUser
+  const activeUser = (currentUser && !currentUser.isAnonymous)
     ? {
         name: studentProfile?.fullName || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'UTME Candidate'),
         email: currentUser.email || 'student@jambix.ng',

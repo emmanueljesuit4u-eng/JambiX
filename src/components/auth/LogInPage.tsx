@@ -16,6 +16,14 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
+import { auth } from '../../lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getUserProfile,
+  saveUserProfile,
+  getOrCreateAccountActivation,
+  UserProfileData,
+} from '../../lib/firestoreService';
 
 interface LogInPageProps {
   onNavigateToSignUp: () => void;
@@ -97,24 +105,52 @@ export const LogInPage: React.FC<LogInPageProps> = ({
     if (idErr || passErr) return;
 
     setIsSubmitting(true);
+    setAuthError(null);
 
-    const cleanId = identifier.trim();
+    const cleanId = identifier.trim().toLowerCase();
 
-    // Check credentials directly without email verification barrier
-    setTimeout(() => {
-      // Mock credential check
-      if (password === 'wrongpassword') {
+    (async () => {
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, cleanId, password);
+        const user = userCred.user;
+
+        // Ensure user profile exists in Firestore so Admin Dashboard tracks it
+        const existingProfile = await getUserProfile(user.uid);
+        if (!existingProfile) {
+          const cloudAct = await getOrCreateAccountActivation(cleanId);
+          const newProfile: UserProfileData = {
+            id: user.uid,
+            email: cleanId,
+            fullName: user.displayName || cleanId.split('@')[0],
+            targetScore: 320,
+            preferredInstitution: 'University of Lagos (UNILAG)',
+            registeredAt: cloudAct?.registeredAt || Date.now(),
+            isActivated: true,
+            isEmailVerified: true,
+          };
+          await saveUserProfile(newProfile);
+        }
+
         setIsSubmitting(false);
-        setAuthError('Invalid credentials. Please verify your password or use Forgot Password.');
-        return;
+        setLoginSuccessFeedback('Login successful! Loading your UTME prep workspace...');
+        setTimeout(() => {
+          onLogInSuccess({ identifier: cleanId });
+        }, 500);
+      } catch (err: any) {
+        setIsSubmitting(false);
+        let msg = 'Invalid credentials. Please verify your email and password.';
+        if (err.code === 'auth/user-not-found') {
+          msg = 'No candidate account found with this email. Please sign up first.';
+        } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+          msg = 'Incorrect password. Click Forgot Password to reset it.';
+        } else if (err.code === 'auth/invalid-email') {
+          msg = 'Please enter a valid email address.';
+        } else if (err.message) {
+          msg = err.message;
+        }
+        setAuthError(msg);
       }
-
-      setIsSubmitting(false);
-      setLoginSuccessFeedback('Login successful! Loading your UTME prep workspace...');
-      setTimeout(() => {
-        onLogInSuccess({ identifier: cleanId });
-      }, 700);
-    }, 800);
+    })();
   };
 
   // Demo autofill for rapid testing
