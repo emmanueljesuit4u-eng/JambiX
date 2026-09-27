@@ -15,6 +15,7 @@ import {
   limit,
   serverTimestamp,
   updateDoc,
+  deleteDoc,
   increment,
   onSnapshot,
 } from 'firebase/firestore';
@@ -368,5 +369,164 @@ export function subscribeToAccountActivation(
     );
   } catch (err) {
     return () => {};
+  }
+}
+
+// ==========================================
+// 5. Exclusive Admin Operations
+// ==========================================
+
+export const ADMIN_EMAIL = 'emmanueljesuit4u@gmail.com';
+
+/**
+ * Ensures the administrator record exists in the /admins collection in Firestore
+ */
+export async function ensureAdminDocument(uid: string, email: string): Promise<void> {
+  if (!uid || email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) return;
+  const path = `admins/${uid}`;
+  try {
+    const adminRef = doc(db, 'admins', uid);
+    await setDoc(
+      adminRef,
+      {
+        id: uid,
+        email: email.toLowerCase(),
+        role: 'super_admin',
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
+  } catch (err) {
+    console.warn('ensureAdminDocument sync note:', err);
+  }
+}
+
+/**
+ * Fetches all registered student profiles for the Admin Dashboard
+ */
+export async function getAllUsers(): Promise<UserProfileData[]> {
+  const path = 'users';
+  try {
+    const q = query(collection(db, 'users'), limit(300));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => d.data() as UserProfileData);
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('getAllUsers: offline mode');
+      return [];
+    }
+    handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+
+/**
+ * Fetches all cross-device account activations for the Admin Dashboard
+ */
+export async function getAllAccountActivations(): Promise<AccountActivationData[]> {
+  const path = 'accountActivations';
+  try {
+    const q = query(collection(db, 'accountActivations'), limit(300));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => d.data() as AccountActivationData);
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('getAllAccountActivations: offline mode');
+      return [];
+    }
+    handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+
+/**
+ * Admin override to toggle activation status for any student
+ */
+export async function adminToggleActivation(
+  email: string,
+  isActivated: boolean,
+  paymentReference: string = 'MANUAL-ADMIN-OVERRIDE'
+): Promise<void> {
+  const activationId = sanitizeActivationId(email);
+  const path = `accountActivations/${activationId}`;
+  try {
+    const actRef = doc(db, 'accountActivations', activationId);
+    await setDoc(
+      actRef,
+      {
+        id: activationId,
+        email: email.toLowerCase().trim(),
+        isActivated,
+        activatedAt: isActivated ? Date.now() : 0,
+        paymentReference: isActivated ? paymentReference : 'DEACTIVATED-BY-ADMIN',
+        opayAccount: 'ADMIN_MANUAL',
+      },
+      { merge: true }
+    );
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('adminToggleActivation offline note');
+      return;
+    }
+    handleFirestoreError(error, OperationType.WRITE, path);
+  }
+}
+
+/**
+ * Fetches all recent CBT test sessions across all students
+ */
+export async function getAllTestResults(): Promise<TestResultData[]> {
+  const path = 'testResults';
+  try {
+    const q = query(collection(db, 'testResults'), limit(200));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => d.data() as TestResultData);
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('getAllTestResults: offline mode');
+      return [];
+    }
+    handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+
+/**
+ * Admin can delete an inappropriate or spam community post
+ */
+export async function deleteFeedPost(postId: string): Promise<void> {
+  const path = `posts/${postId}`;
+  try {
+    const postRef = doc(db, 'posts', postId);
+    await deleteDoc(postRef);
+  } catch (error) {
+    if (isOfflineError(error)) {
+      return;
+    }
+    handleFirestoreError(error, OperationType.DELETE, path);
+  }
+}
+
+/**
+ * Admin can broadcast an official announcement post to all students
+ */
+export async function createAdminAnnouncement(title: string, content: string): Promise<void> {
+  const postId = `admin_broadcast_${Date.now()}`;
+  const path = `posts/${postId}`;
+  try {
+    const postRef = doc(db, 'posts', postId);
+    await setDoc(postRef, {
+      id: postId,
+      authorId: auth.currentUser?.uid || 'super_admin_id',
+      authorName: 'JambiX Executive Office (Admin)',
+      tag: 'Official JAMB News',
+      title,
+      content,
+      likesCount: 0,
+      commentsCount: 0,
+      createdAt: serverTimestamp(),
+    });
+  } catch (error) {
+    if (isOfflineError(error)) {
+      return;
+    }
+    handleFirestoreError(error, OperationType.CREATE, path);
   }
 }

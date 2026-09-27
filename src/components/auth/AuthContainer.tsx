@@ -14,6 +14,7 @@ import {
   BookOpen,
   LayoutDashboard,
   CheckCircle,
+  ShieldCheck,
 } from 'lucide-react';
 import { SignUpPage } from './SignUpPage';
 import { LogInPage } from './LogInPage';
@@ -123,6 +124,20 @@ export const AuthContainer: React.FC = () => {
                 Sign Up
               </button>
             </div>
+
+            {/* Dedicated /admin Portal Link */}
+            <button
+              type="button"
+              onClick={() => {
+                window.history.pushState({}, '', '/admin');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              }}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+              title="Access Master Admin Portal (/admin)"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>Admin</span>
+            </button>
 
             {/* Direct Instant Transition to Student Dashboard (for quick testing) */}
             <button
