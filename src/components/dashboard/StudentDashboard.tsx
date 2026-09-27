@@ -292,18 +292,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               )}
 
               {/* Network Status Pill */}
-              <button
-                type="button"
-                onClick={toggleSimulatedOffline}
+              <div
                 title={
                   effectiveOnline
-                    ? 'Connected to internet. Click to toggle Offline Mode.'
-                    : 'Operating in Offline Mode (zero data consumed). Click to reconnect.'
+                    ? 'Connected to internet. Real-time Firestore synchronization active.'
+                    : 'Operating in Offline Mode. Tests & questions are saved locally.'
                 }
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border select-none ${
                   effectiveOnline
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/60'
-                    : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700/80 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/60'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300'
+                    : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700/80 text-amber-800 dark:text-amber-300'
                 }`}
               >
                 {effectiveOnline ? (
@@ -317,7 +315,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     <span>Offline</span>
                   </>
                 )}
-              </button>
+              </div>
 
               {/* Sync Button */}
               <button

@@ -1,0 +1,18 @@
+{
+  "name": "JAMBix - UTME Preparation Engine",
+  "short_name": "JAMBix CBT",
+  "description": "Modern Nigerian JAMB/UTME preparation app: Sign Up, Log In, CBT Simulator, and Student Dashboard.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#022c22",
+  "theme_color": "#059669",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64 128x128 256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
