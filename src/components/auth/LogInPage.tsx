@@ -365,6 +365,10 @@ export const LogInPage: React.FC<LogInPageProps> = ({
             Create Account
           </button>
         </div>
+
+        <p className="mt-5 text-xs text-center text-slate-500 dark:text-slate-400 font-medium">
+          By Jp classixs group
+        </p>
       </div>
     </div>
   );

@@ -279,21 +279,7 @@ export const AuthContainer: React.FC = () => {
             >
               <span>WhatsApp Channel</span>
             </a>
-            <button
-              type="button"
-              onClick={() => handleOpenTerms('terms')}
-              className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer"
-            >
-              Terms of Service
-            </button>
-            <button
-              type="button"
-              onClick={() => handleOpenTerms('privacy')}
-              className="hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer"
-            >
-              Privacy Policy
-            </button>
-            <span>© {new Date().getFullYear()} JambiX Nigeria</span>
+            <span className="font-medium text-slate-700 dark:text-slate-300">By Jp classixs group</span>
           </div>
         </div>
       </footer>

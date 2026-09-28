@@ -702,25 +702,8 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
           </button>
         </div>
 
-        {/* Terms of Service & Privacy Policy Acknowledgement */}
-        <p className="mt-5 text-[11px] text-center text-slate-400 dark:text-slate-500 leading-relaxed">
-          By creating an account, you agree to JambiX&apos;s{' '}
-          <button
-            type="button"
-            onClick={() => onOpenTerms('terms')}
-            className="text-slate-600 dark:text-slate-300 underline hover:text-emerald-700 dark:hover:text-emerald-400 cursor-pointer font-medium"
-          >
-            Terms of Service
-          </button>{' '}
-          and{' '}
-          <button
-            type="button"
-            onClick={() => onOpenTerms('privacy')}
-            className="text-slate-600 dark:text-slate-300 underline hover:text-emerald-700 dark:hover:text-emerald-400 cursor-pointer font-medium"
-          >
-            Privacy Policy
-          </button>
-          .
+        <p className="mt-5 text-xs text-center text-slate-500 dark:text-slate-400 font-medium">
+          By Jp classixs group
         </p>
       </div>
     </div>
