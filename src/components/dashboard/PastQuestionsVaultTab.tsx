@@ -294,28 +294,6 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
             </select>
           </div>
 
-          {/* Quick Year Shortcuts */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {[2026, 2025, 2024, 2020, 2015, 2000, 1978].map((yr) => (
-              <button
-                key={yr}
-                type="button"
-                onClick={() => {
-                  setSelectedYear(yr);
-                  setRevealAll(false);
-                  setRevealedQuestionIds({});
-                }}
-                className={`px-2 py-1 text-xs rounded-lg font-bold transition-colors cursor-pointer ${
-                  selectedYear === yr
-                    ? 'bg-rose-600 text-white shadow-2xs'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
-                }`}
-              >
-                {yr}
-              </button>
-            ))}
-          </div>
-
           {/* Search Box */}
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />

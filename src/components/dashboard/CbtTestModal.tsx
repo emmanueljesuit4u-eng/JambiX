@@ -1072,35 +1072,39 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                3. ACTIVE CBT EXAM SIMULATION (WITH SUBJECT QUICK JUMP)
                ======================================================== */
             <div className="space-y-4">
-              {/* Subject Tabs Bar (Authentic JAMB CBT Navigation) */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 dark:border-slate-800">
-                {subjectPartitions.map((part) => {
-                  const isCurrent =
-                    currentQuestionIndex >= part.startIndex &&
-                    currentQuestionIndex < part.startIndex + part.count;
-                  return (
-                    <button
-                      key={part.subject}
-                      onClick={() => setCurrentQuestionIndex(part.startIndex)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 transition-all cursor-pointer ${
-                        isCurrent
-                          ? 'bg-rose-600 text-white shadow-xs'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                      }`}
-                    >
-                      <span>{part.subject}</span>
-                      <span
-                        className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                          isCurrent
-                            ? 'bg-rose-700 text-rose-100'
-                            : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
-                        }`}
-                      >
-                        {part.answeredCount}/{part.count}
-                      </span>
-                    </button>
-                  );
-                })}
+              {/* Subject Dropdown Menu During Test (Clean, Uncongested Navigation) */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <label htmlFor="cbt-active-subject-select" className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5 shrink-0 cursor-pointer">
+                    <BookOpen className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                    <span>Subject:</span>
+                  </label>
+                  <select
+                    id="cbt-active-subject-select"
+                    value={activeQuestions[currentQuestionIndex]?.subject || ''}
+                    onChange={(e) => {
+                      const targetSub = e.target.value;
+                      const part = subjectPartitions.find((p) => p.subject === targetSub);
+                      if (part) {
+                        setCurrentQuestionIndex(part.startIndex);
+                      }
+                    }}
+                    className="w-full sm:max-w-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                  >
+                    {subjectPartitions.map((part) => (
+                      <option key={part.subject} value={part.subject}>
+                        {part.subject} ({part.answeredCount}/{part.count} Answered)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 shrink-0">
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Current Subject:</span>
+                  <span className="font-bold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-md border border-rose-200 dark:border-rose-900/60 text-xs">
+                    {subjectPartitions.find((p) => p.subject === activeQuestions[currentQuestionIndex]?.subject)?.answeredCount || 0} of {subjectPartitions.find((p) => p.subject === activeQuestions[currentQuestionIndex]?.subject)?.count || 0} Answered
+                  </span>
+                </div>
               </div>
 
               {/* Question Metadata & Timer Bar - Clean and Uncluttered */}

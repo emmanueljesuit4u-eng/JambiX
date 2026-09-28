@@ -849,32 +849,58 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </div>
                   </div>
 
-                  {/* Year Selection Carousel / Grid */}
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-                        Active Examination Year: <span className="text-rose-600 dark:text-rose-400 font-black text-sm">UTME {selectedVaultYear}</span>
-                      </span>
-                      <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
-                        All 48 UTME Years Fully Accessible
-                      </span>
+                  {/* Year Selection Dropdown Menu (Clean, Uncongested) */}
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+                        <Calendar className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <label htmlFor="dashboard-year-select" className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider block cursor-pointer">
+                          Select Examination Year:
+                        </label>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                          Active: <strong className="text-rose-600 dark:text-rose-400">UTME {selectedVaultYear}</strong> (49 Years from 1978 to 2026)
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Quick Year Selector Pills */}
-                    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
-                      {JAMB_YEARS.map((yr) => (
-                        <button
-                          key={yr}
-                          onClick={() => setSelectedVaultYear(yr)}
-                          className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-all cursor-pointer ${
-                            selectedVaultYear === yr
-                              ? 'bg-rose-600 text-white shadow-xs scale-105'
-                              : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-100'
-                          }`}
-                        >
-                          {yr}
-                        </button>
-                      ))}
+                    <div className="flex items-center gap-2.5 flex-1 sm:justify-end">
+                      <select
+                        id="dashboard-year-select"
+                        value={selectedVaultYear}
+                        onChange={(e) => setSelectedVaultYear(parseInt(e.target.value, 10))}
+                        className="w-full sm:w-auto min-w-[200px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                      >
+                        <optgroup label="Recent UTME Years (2020 – 2026)">
+                          {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((yr) => (
+                            <option key={yr} value={yr}>
+                              JAMB UTME {yr}
+                            </option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="2010 – 2019 Past Questions">
+                          {[2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map((yr) => (
+                            <option key={yr} value={yr}>
+                              JAMB UTME {yr}
+                            </option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="2000 – 2009 Past Questions">
+                          {[2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000].map((yr) => (
+                            <option key={yr} value={yr}>
+                              JAMB UTME {yr}
+                            </option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="1978 – 1999 Classic Archive">
+                          {JAMB_YEARS.filter((y) => y < 2000).map((yr) => (
+                            <option key={yr} value={yr}>
+                              JAMB UTME {yr}
+                            </option>
+                          ))}
+                        </optgroup>
+                      </select>
                     </div>
                   </div>
 
