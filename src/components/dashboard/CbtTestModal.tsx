@@ -952,45 +952,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   </div>
                 )}
               </div>
-
-              {/* Duration and 8-Key Instructions */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-800 dark:text-slate-200">Timer Duration</span>
-                    <div className="flex gap-1.5 font-bold">
-                      {[30, 60, 120].map((mins) => (
-                        <button
-                          key={mins}
-                          type="button"
-                          onClick={() => setDuration(mins)}
-                          className={`px-2 py-0.5 rounded text-xs cursor-pointer ${
-                            duration === mins
-                              ? 'bg-rose-600 text-white'
-                              : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600'
-                          }`}
-                        >
-                          {mins}m
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5">
-                    Official JAMB time limit is 120 minutes for the full 180-question test.
-                  </p>
-                </div>
-
-                <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
-                  <span className="font-bold text-slate-800 dark:text-slate-200 block">
-                    Authentic 8-Key CBT Navigation:
-                  </span>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                    Press <strong>A, B, C, D</strong> for choices · <strong>N</strong> (Next) ·{' '}
-                    <strong>P</strong> (Previous) · <strong>R</strong> (Clear) · <strong>S</strong>{' '}
-                    (Submit).
-                  </p>
-                </div>
-              </div>
             </div>
           ) : (
             /* ========================================================
@@ -1170,25 +1131,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
         {/* Modal Footer (Setup Mode) */}
         {!testStarted && !testCompleted && (
-          <div className="px-5 py-3.5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex items-center justify-between gap-3">
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              Shortcut keys: A, B, C, D (Options) · N (Next) · P (Prev) · S (Submit)
-            </span>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleStartExam}
-                className="px-6 py-2 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-xs font-bold rounded-xl shadow-xs flex items-center gap-2 transition-all cursor-pointer"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                <span>Start {examMode === 'full' ? '180-Question Exam' : 'Practice Drill'}</span>
-              </button>
-            </div>
+          <div className="px-5 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex items-center justify-end">
+            <button
+              onClick={handleStartExam}
+              className="w-full sm:w-auto px-8 py-3 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-sm font-black tracking-wide rounded-xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <Play className="w-4 h-4 fill-current" />
+              <span>START EXAM NOW</span>
+            </button>
           </div>
         )}
       </div>
