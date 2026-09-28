@@ -136,10 +136,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setSeenCount(getSeenQuestionsCount());
   }, [testTitle, initialSubject, initialYear, isOpen]);
 
-  // Subject category filter state in setup
-  const [setupCategory, setSetupCategory] = useState<'All' | 'Sciences' | 'Commercial' | 'Arts'>('All');
-
-  // Available subjects for UTME (dynamically mapped across all 18 accredited subjects)
+  // Available subjects for UTME (all 18 accredited subjects)
   const availableSubjects = useMemo(() => {
     return (Object.keys(SUBJECT_CONFIGS) as SubjectKey[]).map((key) => {
       const cfg = SUBJECT_CONFIGS[key];
@@ -154,41 +151,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     });
   }, []);
 
-  const filteredAvailableSubjects = useMemo(() => {
-    if (setupCategory === 'All') return availableSubjects;
-    return availableSubjects.filter((s) => s.category === setupCategory);
-  }, [availableSubjects, setupCategory]);
-
-  const toggleSubject = (subName: string) => {
-    if (examMode === 'single') {
-      setSelectedSubjects([subName]);
-      return;
-    }
-
-    if (subName === 'Use of English') return; // English is compulsory in full CBT mode
-
-    if (selectedSubjects.includes(subName)) {
-      if (selectedSubjects.length > 2) {
-        setSelectedSubjects(selectedSubjects.filter((s) => s !== subName));
-      }
+  const handleSlotSubjectChange = (slotIndex: number, subjectName: string) => {
+    const updated = [...selectedSubjects];
+    if (examMode === 'full') {
+      updated[0] = 'Use of English'; // Compulsory
+      updated[slotIndex] = subjectName;
+      setSelectedSubjects(updated.slice(0, 4));
     } else {
-      if (selectedSubjects.length < 4) {
-        setSelectedSubjects([...selectedSubjects, subName]);
-      }
-    }
-  };
-
-  const applyPreset = (preset: 'science' | 'medicine' | 'commercial' | 'arts_law' | 'arts_islam') => {
-    if (preset === 'science') {
-      setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
-    } else if (preset === 'medicine') {
-      setSelectedSubjects(['Use of English', 'Biology', 'Chemistry', 'Physics']);
-    } else if (preset === 'commercial') {
-      setSelectedSubjects(['Use of English', 'Economics', 'Commerce', 'Principles of Accounts']);
-    } else if (preset === 'arts_law') {
-      setSelectedSubjects(['Use of English', 'Government', 'Literature in English', 'Christian Religious Studies']);
-    } else if (preset === 'arts_islam') {
-      setSelectedSubjects(['Use of English', 'Government', 'Literature in English', 'Islamic Religious Studies']);
+      setSelectedSubjects([subjectName]);
     }
   };
 
@@ -772,7 +742,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                   1. Select Examination Mode
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => {
@@ -793,7 +763,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                      60 English + 40 each for 3 subjects. Graded over 400.
+                      60 English + 40 each for 3 other subjects. Graded over 400.
                     </p>
                   </button>
 
@@ -819,213 +789,168 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       Focus on 1 specific subject. Graded over 100 &amp; 400.
                     </p>
                   </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setExamMode('sprint');
-                      setDuration(25);
-                    }}
-                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                      examMode === 'sprint'
-                        ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 shadow-2xs'
-                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs">Speed Sprint</span>
-                      <span className="text-[10px] font-black px-1.5 py-0.5 bg-amber-600 text-white rounded">
-                        20 Qs
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                      Fast 20-question blitz test with instant explanations.
-                    </p>
-                  </button>
                 </div>
               </div>
 
               {/* Year Selector (1978 to 2026) */}
               <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <label htmlFor="cbt-modal-year-select" className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer">
                     <Calendar className="w-4 h-4 text-emerald-600" />
                     <span>2. Select UTME Past Questions Year (1978 – 2026)</span>
                   </label>
                   <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
-                    49 Examination Years Indexed
+                    49 Examination Years
                   </span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-3">
-                  <div className="w-full sm:w-1/2">
-                    <select
-                      value={selectedYear}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setSelectedYear(val === 'random' ? 'random' : parseInt(val, 10));
-                      }}
-                      className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs"
-                    >
-                      <option value="random">🌟 Random Cross-Year UTME Mix (1978 – 2026)</option>
-                      <optgroup label="Recent UTME Years (2020 - 2026)">
-                        {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((y) => (
-                          <option key={y} value={y}>
-                            JAMB UTME {y} (Official Authentic Paper)
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label="2010 - 2019 Past Questions">
-                        {[2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map((y) => (
-                          <option key={y} value={y}>
-                            JAMB UTME {y}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label="2000 - 2009 Past Questions">
-                        {[2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000].map((y) => (
-                          <option key={y} value={y}>
-                            JAMB UTME {y}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label="1978 - 1999 Classic Archive">
-                        {JAMB_YEARS.filter((y) => y < 2000).map((y) => (
-                          <option key={y} value={y}>
-                            JAMB UTME {y} Classic
-                          </option>
-                        ))}
-                      </optgroup>
-                    </select>
-                  </div>
-
-                  {/* Quick Year Shortcuts */}
-                  <div className="flex items-center gap-1.5 flex-wrap w-full sm:w-1/2">
-                    {[2026, 2025, 2024, 2023, 2020, 2015, 2000, 1978].map((yr) => (
-                      <button
-                        key={yr}
-                        type="button"
-                        onClick={() => setSelectedYear(yr)}
-                        className={`px-2.5 py-1 text-xs rounded-lg font-bold transition-colors cursor-pointer ${
-                          selectedYear === yr
-                            ? 'bg-emerald-600 text-white shadow-2xs'
-                            : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 hover:bg-slate-100'
-                        }`}
-                      >
-                        {yr}
-                      </button>
-                    ))}
-                  </div>
+                <div>
+                  <select
+                    id="cbt-modal-year-select"
+                    value={selectedYear}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setSelectedYear(val === 'random' ? 'random' : parseInt(val, 10));
+                    }}
+                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                  >
+                    <option value="random">🌟 Random Cross-Year UTME Mix (1978 – 2026)</option>
+                    <optgroup label="Recent UTME Years (2020 – 2026)">
+                      {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((y) => (
+                        <option key={y} value={y}>
+                          JAMB UTME {y} (Official Authentic Paper)
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="2010 – 2019 Past Questions">
+                      {[2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map((y) => (
+                        <option key={y} value={y}>
+                          JAMB UTME {y}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="2000 – 2009 Past Questions">
+                      {[2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000].map((y) => (
+                        <option key={y} value={y}>
+                          JAMB UTME {y}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="1978 – 1999 Classic Archive">
+                      {JAMB_YEARS.filter((y) => y < 2000).map((y) => (
+                        <option key={y} value={y}>
+                          JAMB UTME {y} Classic
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
                 </div>
               </div>
 
-              {/* Subject Selection & Field Presets */}
-              <div className="space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    3. Select UTME Subjects ({selectedSubjects.length}{' '}
-                    {examMode === 'full' ? '/ 4 Required' : 'Selected'})
+              {/* Subject Selection Dropdown Menus */}
+              <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-emerald-600" />
+                    <span>3. Select Subjects</span>
                   </label>
-                  <span className="text-[11px] text-slate-500">
-                    {examMode === 'full'
-                      ? '60 Qs (English) + 40 Qs each (3 others) = 180 Qs'
-                      : 'Subject-specific drill'}
+                  <span className="px-2.5 py-1 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600 rounded-full text-[11px] font-bold shadow-2xs">
+                    All Subjects (18)
                   </span>
                 </div>
 
-                {/* Field Combination Presets */}
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
-                    ⚡ Quick 4-Subject Combinations by Field:
-                  </span>
-                  <div className="flex items-center gap-2 overflow-x-auto pb-1">
-                    <button
-                      type="button"
-                      onClick={() => applyPreset('science')}
-                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
+                {examMode === 'single' ? (
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1.5">
+                      Select Subject to Practice:
+                    </label>
+                    <select
+                      value={selectedSubjects[0] || 'Use of English'}
+                      onChange={(e) => setSelectedSubjects([e.target.value])}
+                      className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
                     >
-                      🔬 Engineering / Science (Eng + Math + Phys + Chem)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => applyPreset('medicine')}
-                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
-                    >
-                      🩺 Medicine / Health (Eng + Bio + Chem + Phys)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => applyPreset('commercial')}
-                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
-                    >
-                      📊 Commercial / Social (Eng + Econ + Comm + Acc)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => applyPreset('arts_law')}
-                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
-                    >
-                      🎭 Arts &amp; Law (Eng + Gov + Lit + CRS)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => applyPreset('arts_islam')}
-                      className="px-3 py-1 bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-600 rounded-lg text-xs font-bold cursor-pointer transition-colors shrink-0 shadow-2xs"
-                    >
-                      🕌 Arts &amp; Islamic (Eng + Gov + Lit + IRS)
-                    </button>
+                      {availableSubjects.map((sub) => (
+                        <option key={sub.name} value={sub.name}>
+                          {sub.name} ({sub.name === 'Use of English' ? '60 Qs' : '40 Qs'}) — Ref: {sub.book}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                </div>
-
-                {/* Category Filter Pills */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-                  {(['All', 'Sciences', 'Commercial', 'Arts'] as const).map((cat) => (
-                    <button
-                      key={cat}
-                      type="button"
-                      onClick={() => setSetupCategory(cat)}
-                      className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                        setupCategory === cat
-                          ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-2xs'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                      }`}
-                    >
-                      {cat === 'All' ? 'All Subjects (18)' : cat === 'Sciences' ? '🔬 Sciences' : cat === 'Commercial' ? '📊 Commercial' : '🎭 Arts & Humanities'}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Subject Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-[300px] overflow-y-auto pr-1">
-                  {filteredAvailableSubjects.map((sub) => {
-                    const isSelected = selectedSubjects.includes(sub.name);
-                    return (
-                      <button
-                        key={sub.name}
-                        type="button"
-                        onClick={() => toggleSubject(sub.name)}
-                        className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-950 dark:text-emerald-200 shadow-2xs'
-                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs">{sub.name}</span>
-                          {isSelected && <Check className="w-4 h-4 text-emerald-600" />}
-                        </div>
-                        <div className="mt-1 flex items-center justify-between text-[10px]">
-                          <span className="text-slate-500 dark:text-slate-400 truncate max-w-[70%]">
-                            Ref: {sub.book}
+                ) : (
+                  <div className="space-y-2">
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Use the dropdown menus below to select your 4 examination subjects:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {/* Slot 1: Use of English (Compulsory) */}
+                      <div className="p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-slate-900 flex items-center justify-between shadow-2xs">
+                        <div>
+                          <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 block tracking-wider">
+                            Subject 1 · Compulsory
                           </span>
-                          <span className="font-bold text-emerald-700 dark:text-emerald-400">
-                            {sub.name === 'Use of English' ? '60 Qs' : '40 Qs'}
-                          </span>
+                          <span className="text-xs font-bold text-slate-900 dark:text-white">Use of English</span>
                         </div>
-                      </button>
-                    );
-                  })}
-                </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md">
+                          60 Qs
+                        </span>
+                      </div>
+
+                      {/* Slot 2: Dropdown */}
+                      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                        <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                          Subject 2 (40 Questions)
+                        </label>
+                        <select
+                          value={selectedSubjects[1] || 'Mathematics'}
+                          onChange={(e) => handleSlotSubjectChange(1, e.target.value)}
+                          className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                        >
+                          {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                            <option key={sub.name} value={sub.name}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Slot 3: Dropdown */}
+                      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                        <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                          Subject 3 (40 Questions)
+                        </label>
+                        <select
+                          value={selectedSubjects[2] || 'Physics'}
+                          onChange={(e) => handleSlotSubjectChange(2, e.target.value)}
+                          className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                        >
+                          {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                            <option key={sub.name} value={sub.name}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* Slot 4: Dropdown */}
+                      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                        <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                          Subject 4 (40 Questions)
+                        </label>
+                        <select
+                          value={selectedSubjects[3] || 'Chemistry'}
+                          onChange={(e) => handleSlotSubjectChange(3, e.target.value)}
+                          className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                        >
+                          {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                            <option key={sub.name} value={sub.name}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Duration and 8-Key Instructions */}

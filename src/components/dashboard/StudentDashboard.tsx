@@ -628,47 +628,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </div>
                     </div>
                   </div>
-
-                  {/* Quick Subject Practice Launcher */}
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2.5">
-                      Select a Subject to Practice Offline In-App:
-                    </h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
-                      {[
-                        { name: 'Use of English', code: 'ENG', badge: 'Compulsory' },
-                        { name: 'Mathematics', code: 'MTH' },
-                        { name: 'Physics', code: 'PHY' },
-                        { name: 'Chemistry', code: 'CHM' },
-                        { name: 'Biology', code: 'BIO' },
-                        { name: 'Economics', code: 'ECO' },
-                        { name: 'Government', code: 'GOV' },
-                        { name: 'Literature in English', code: 'LIT' },
-                      ].map((sub) => (
-                        <button
-                          key={sub.code}
-                          onClick={() => handleLaunchTest(`100% In-App Offline: ${sub.name}`, 'offline', sub.name)}
-                          className="p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 transition-all text-left flex items-center justify-between group cursor-pointer bg-white dark:bg-slate-800/40"
-                        >
-                          <div className="min-w-0">
-                            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-emerald-800 dark:group-hover:text-emerald-300 transition-colors block truncate">
-                              {sub.name}
-                            </span>
-                            <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">
-                              {sub.code} · Offline Mode
-                            </span>
-                          </div>
-                          {sub.badge ? (
-                            <span className="text-[9px] bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 font-bold px-1.5 py-0.5 rounded-sm">
-                              {sub.badge}
-                            </span>
-                          ) : (
-                            <Zap className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </div>
 
                 {/* Candidate Readiness & Recent Activity Section */}
