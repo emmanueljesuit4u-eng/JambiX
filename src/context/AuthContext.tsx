@@ -45,36 +45,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
-      if (user) {
+      if (user && !user.isAnonymous) {
         try {
-          let profile = await getUserProfile(user.uid);
-          if (!profile) {
-            const targetEmail = user.email || (user.isAnonymous ? 'guest@student.jambix.ng' : 'student@jambix.ng');
+          const profile = await getUserProfile(user.uid);
+          if (profile) {
+            setStudentProfile(profile);
+          } else {
+            const targetEmail = user.email || 'student@jambix.ng';
             const cloudAct = user.email ? await getOrCreateAccountActivation(targetEmail) : null;
-            profile = {
+            const newProfile: UserProfileData = {
               id: user.uid,
               email: targetEmail,
-              fullName: user.displayName || (user.isAnonymous ? 'Candidate (Guest)' : 'UTME Candidate'),
+              fullName: user.displayName || targetEmail.split('@')[0],
               targetScore: 320,
               preferredInstitution: 'University of Lagos (UNILAG)',
               registeredAt: cloudAct?.registeredAt || Date.now(),
-              isActivated: Boolean(cloudAct?.isActivated),
+              isActivated: true,
+              isEmailVerified: true,
             };
-            await saveUserProfile(profile);
+            saveUserProfile(newProfile).catch(() => {});
+            setStudentProfile(newProfile);
           }
-          setStudentProfile(profile);
         } catch (err) {
-          console.warn('Profile load warning:', err);
+          console.warn('Profile load note:', err);
         }
       } else {
         setStudentProfile(null);
-        // Attempt anonymous sign-in so candidate tests have an authorized Firebase UID
-        try {
-          await signInAnonymously(auth);
-          return;
-        } catch (anonErr) {
-          console.info('Anonymous sign-in unavailable or offline. Operating in local mode:', anonErr);
-        }
       }
       setLoading(false);
     });
@@ -118,15 +114,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(null);
   };
 
-  const setLocalStudent = async (user: { name: string; email: string; identifier?: string }) => {
+  const setLocalStudent = (user: { name: string; email: string; identifier?: string }) => {
     setLocalStudentState(user);
-    if (!auth.currentUser) {
-      try {
-        await signInAnonymously(auth);
-      } catch (anonErr) {
-        console.info('Anonymous sign-in unavailable or offline. Operating in local mode:', anonErr);
-      }
-    }
   };
 
   return (

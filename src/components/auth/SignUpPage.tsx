@@ -235,12 +235,10 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
         setIsSubmitting(false);
         setSubmissionFeedback('Account created successfully! Welcome to JambiX.');
 
-        setTimeout(() => {
-          onSignUpSuccess({
-            name: cleanName,
-            email: cleanEmail,
-          });
-        }, 500);
+        onSignUpSuccess({
+          name: cleanName,
+          email: cleanEmail,
+        });
       } catch (err: any) {
         setIsSubmitting(false);
         let errorMsg = 'Failed to create account. Please check your network and try again.';

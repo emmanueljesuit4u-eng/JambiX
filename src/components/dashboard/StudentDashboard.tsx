@@ -53,6 +53,7 @@ import { UniversityConnectTab } from './UniversityConnectTab';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
+import { LiveLeaderboardTab } from './LiveLeaderboardTab';
 import { ActivationPaywallModal } from './ActivationPaywallModal';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
@@ -211,6 +212,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
           <nav className="flex-1 flex flex-col gap-2 w-full px-2">
             {[
               { id: 'Home', icon: Home, label: 'Home' },
+              { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
               { id: 'Novels', icon: BookMarked, label: 'Novels' },
               { id: 'Study', icon: GraduationCap, label: 'Study' },
               { id: 'Test', icon: Monitor, label: 'Test' },
@@ -400,56 +402,37 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View Render Based on Active Nav */}
             {activeNav === 'Home' && (
               <>
-                {/* Single Long Horizontal Green Tab: JAMB UTME Prep Center */}
-                <div className="relative rounded-2xl overflow-hidden p-5 sm:p-6 bg-gradient-to-r from-[#047857] via-[#059669] to-[#065f46] text-white shadow-sm border border-emerald-600/40">
-                  <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
-                    <div className="space-y-1.5 max-w-2xl">
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-900/60 text-emerald-200 border border-emerald-500/30">
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>JAMB UTME CBT Center · 1978–2026 Archive</span>
+                {/* Live National Leaderboard Quick Banner */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/5 border border-amber-400/40 dark:border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xl shadow-xs shrink-0">
+                      🏆
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm sm:text-base font-black text-slate-900 dark:text-white">
+                          Live National UTME Leaderboard
+                        </h3>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                          Live Stream
+                        </span>
                       </div>
-                      <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight">
-                        Authentic Past Questions &amp; Solutions
-                      </h2>
-                      <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
-                        Practice 49 years of past examination questions across Sciences, Commercial, and Arts referred directly to accredited textbook topics. Available online or 100% offline with zero data consumption.
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">
+                        Check who is leading the national 2-hour mock exam right now across Nigeria! Compare your scores with candidates nationwide.
                       </p>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-                      <button
-                        onClick={() => handleLaunchTest('JAMB UTME Comprehensive 180 Qs CBT Mock', 'jamb')}
-                        className="px-4 py-2.5 bg-white text-emerald-900 hover:bg-emerald-50 font-bold text-xs rounded-xl shadow-xs flex items-center gap-2 transition-all cursor-pointer"
-                      >
-                        <Play className="w-3.5 h-3.5 fill-emerald-900" />
-                        <span>Full Mock (180 Qs)</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleNavClick('Novels')}
-                        className="px-4 py-2.5 bg-emerald-800/80 hover:bg-emerald-800 text-white font-bold text-xs rounded-xl border border-emerald-500/40 flex items-center gap-2 transition-all cursor-pointer"
-                      >
-                        <BookMarked className="w-3.5 h-3.5" />
-                        <span>JAMB Novels Hub</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleNavClick('Archive')}
-                        className="px-4 py-2.5 bg-emerald-900/80 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl border border-emerald-500/40 flex items-center gap-2 transition-all cursor-pointer"
-                      >
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>1978–2026 Questions</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleLaunchTest('100% Offline In-App UTME CBT Practice', 'offline')}
-                        className="px-4 py-2.5 bg-emerald-950/70 hover:bg-emerald-950 text-emerald-200 font-bold text-xs rounded-xl border border-emerald-600/40 flex items-center gap-2 transition-all cursor-pointer"
-                      >
-                        <WifiOff className="w-3.5 h-3.5" />
-                        <span>Offline Practice</span>
-                      </button>
-                    </div>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleNavClick('Leaderboard')}
+                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer shrink-0"
+                  >
+                    <Trophy className="w-3.5 h-3.5" />
+                    <span>View Live Rankings</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
 
                 {/* Take a Test Section */}
@@ -985,7 +968,33 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
 
 
-            {/* View: Connect / Study Groups */}
+            {/* View: Live National UTME Leaderboard */}
+            {activeNav === 'Leaderboard' && (
+              <LiveLeaderboardTab
+                onLaunchExam={() => handleLaunchTest('JAMB UTME Comprehensive 180 Qs CBT Mock', 'jamb')}
+                currentUserId={auth.currentUser?.uid}
+                currentUserEmail={user?.email}
+                currentUserName={user?.name}
+              />
+            )}
+
+            {/* View: JAMB Novels Hub */}
+            {activeNav === 'Novels' && (
+              <NovelsTab
+                onLaunchTest={handleLaunchTest}
+                showToast={showToast}
+              />
+            )}
+
+            {/* View: Study Syllabus & Textbooks */}
+            {activeNav === 'Study' && (
+              <StudySyllabusTab
+                onLaunchTest={handleLaunchTest}
+                showToast={showToast}
+              />
+            )}
+
+            {/* View: 1978-2026 Past Questions Archive */}
             {activeNav === 'Archive' && (
               <PastQuestionsVaultTab
                 onLaunchTest={handleLaunchTest}
@@ -1397,9 +1406,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 py-1.5 flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
+          { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
           { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
-          { id: 'Archive', icon: BookOpen, label: '1978-2026' },
           { id: 'History', icon: Clock, label: 'History' },
         ].map((item) => {
           const Icon = item.icon;

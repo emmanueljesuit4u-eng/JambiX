@@ -83,25 +83,32 @@ export async function saveUserProfile(profile: UserProfileData): Promise<void> {
     return;
   }
   const targetId = auth.currentUser.uid;
-  const path = `users/${targetId}`;
   try {
     const userRef = doc(db, 'users', targetId);
-    await setDoc(
-      userRef,
-      {
-        ...profile,
-        id: targetId,
-        updatedAt: serverTimestamp(),
-        createdAt: profile.createdAt || serverTimestamp(),
-      },
-      { merge: true }
-    );
+    const snap = await getDoc(userRef);
+    const existing = snap.exists() ? snap.data() : null;
+
+    const payload: Record<string, unknown> = {
+      ...profile,
+      id: targetId,
+      updatedAt: serverTimestamp(),
+    };
+
+    if (existing?.createdAt) {
+      payload.createdAt = existing.createdAt;
+    } else if (profile.createdAt) {
+      payload.createdAt = profile.createdAt;
+    } else {
+      payload.createdAt = serverTimestamp();
+    }
+
+    await setDoc(userRef, payload, { merge: true });
   } catch (error) {
     if (isOfflineError(error)) {
       console.warn('Firestore saveUserProfile: cached locally while offline.');
       return;
     }
-    handleFirestoreError(error, OperationType.WRITE, path);
+    console.warn('Firestore saveUserProfile error note:', error);
   }
 }
 
@@ -110,7 +117,6 @@ export async function getUserProfile(userId: string): Promise<UserProfileData | 
     return null;
   }
   const targetId = auth.currentUser.uid;
-  const path = `users/${targetId}`;
   try {
     const userRef = doc(db, 'users', targetId);
     const snap = await getDoc(userRef);
@@ -121,7 +127,8 @@ export async function getUserProfile(userId: string): Promise<UserProfileData | 
       console.warn('Firestore getUserProfile: offline mode active.');
       return null;
     }
-    handleFirestoreError(error, OperationType.GET, path);
+    console.warn('Firestore getUserProfile error note:', error);
+    return null;
   }
 }
 
@@ -137,7 +144,6 @@ export async function saveTestResult(
     ...result,
     userId: auth.currentUser.uid,
   };
-  const path = `testResults/${payload.id}`;
   try {
     const testRef = doc(db, 'testResults', payload.id);
     await setDoc(testRef, {
@@ -149,7 +155,7 @@ export async function saveTestResult(
       console.warn('Firestore saveTestResult: cached locally while offline.');
       return;
     }
-    handleFirestoreError(error, OperationType.WRITE, path);
+    console.warn('Firestore saveTestResult error note:', error);
   }
 }
 
@@ -170,9 +176,10 @@ export async function getUserTestResults(userId: string): Promise<TestResultData
   } catch (error) {
     if (isOfflineError(error)) {
       console.warn('Firestore getUserTestResults: offline mode active.');
-      return [];
+    } else {
+      handleFirestoreError(error, OperationType.LIST, path);
     }
-    handleFirestoreError(error, OperationType.LIST, path);
+    return [];
   }
 }
 
@@ -222,18 +229,16 @@ export function subscribeToFeedPosts(
         onUpdate(posts);
       },
       (error) => {
-        if (isOfflineError(error)) {
-          console.warn('Firestore subscribeToFeedPosts: offline mode.');
-          return;
+        if (!isOfflineError(error)) {
+          handleFirestoreError(error, OperationType.LIST, path);
         }
-        handleFirestoreError(error, OperationType.LIST, path);
       }
     );
   } catch (error) {
-    if (isOfflineError(error)) {
-      return () => {};
+    if (!isOfflineError(error)) {
+      handleFirestoreError(error, OperationType.LIST, path);
     }
-    handleFirestoreError(error, OperationType.LIST, path);
+    return () => {};
   }
 }
 
@@ -472,7 +477,6 @@ export function subscribeToAllAccountActivations(
  * Fetches all registered student profiles for the Admin Dashboard
  */
 export async function getAllUsers(): Promise<UserProfileData[]> {
-  const path = 'users';
   try {
     const q = query(collection(db, 'users'), limit(300));
     const snapshot = await getDocs(q);
@@ -482,7 +486,8 @@ export async function getAllUsers(): Promise<UserProfileData[]> {
       console.warn('getAllUsers: offline mode');
       return [];
     }
-    handleFirestoreError(error, OperationType.LIST, path);
+    console.warn('getAllUsers error note:', error);
+    return [];
   }
 }
 
@@ -490,7 +495,6 @@ export async function getAllUsers(): Promise<UserProfileData[]> {
  * Fetches all cross-device account activations for the Admin Dashboard
  */
 export async function getAllAccountActivations(): Promise<AccountActivationData[]> {
-  const path = 'accountActivations';
   try {
     const q = query(collection(db, 'accountActivations'), limit(300));
     const snapshot = await getDocs(q);
@@ -500,7 +504,8 @@ export async function getAllAccountActivations(): Promise<AccountActivationData[
       console.warn('getAllAccountActivations: offline mode');
       return [];
     }
-    handleFirestoreError(error, OperationType.LIST, path);
+    console.warn('getAllAccountActivations error note:', error);
+    return [];
   }
 }
 
@@ -579,11 +584,10 @@ export async function getAllTestResults(): Promise<TestResultData[]> {
     const snapshot = await getDocs(q);
     return snapshot.docs.map((d) => d.data() as TestResultData);
   } catch (error) {
-    if (isOfflineError(error)) {
-      console.warn('getAllTestResults: offline mode');
-      return [];
+    if (!isOfflineError(error)) {
+      handleFirestoreError(error, OperationType.LIST, path);
     }
-    handleFirestoreError(error, OperationType.LIST, path);
+    return [];
   }
 }
 

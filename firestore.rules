@@ -31,7 +31,7 @@ service cloud.firestore {
 
     function isAdmin() {
       return isSignedIn() && (
-        request.auth.token.email in ['cligragh3@gmail.com', 'emmanueljesuit4u@gmail.com'] ||
+        ('email' in request.auth.token && request.auth.token.email.lower() in ['cligragh3@gmail.com', 'emmanueljesuit4u@gmail.com']) ||
         exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       );
     }
@@ -41,16 +41,16 @@ service cloud.firestore {
       return data.keys().hasAll(['id', 'email', 'fullName']) &&
              data.keys().hasOnly(['id', 'email', 'fullName', 'phoneNumber', 'targetScore', 'preferredInstitution', 'registeredAt', 'isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified', 'createdAt', 'updatedAt']) &&
              data.id is string && data.id == request.auth.uid &&
-             data.email is string && data.email.size() <= 100 &&
-             data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100 &&
-             (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 20)) &&
+             data.email is string && data.email.size() <= 120 &&
+             data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 120 &&
+             (!('phoneNumber' in data) || (data.phoneNumber is string && data.phoneNumber.size() <= 30)) &&
              (!('targetScore' in data) || (data.targetScore is number && data.targetScore >= 0 && data.targetScore <= 400)) &&
-             (!('preferredInstitution' in data) || (data.preferredInstitution is string && data.preferredInstitution.size() <= 100)) &&
+             (!('preferredInstitution' in data) || (data.preferredInstitution is string && data.preferredInstitution.size() <= 120)) &&
              (!('registeredAt' in data) || (data.registeredAt is number)) &&
              (!('isActivated' in data) || (data.isActivated is bool)) &&
              (!('activatedAt' in data) || (data.activatedAt is string || data.activatedAt is number)) &&
-             (!('paymentReference' in data) || (data.paymentReference is string && data.paymentReference.size() <= 100)) &&
-             (!('opayAccount' in data) || (data.opayAccount is string && data.opayAccount.size() <= 100)) &&
+             (!('paymentReference' in data) || (data.paymentReference is string && data.paymentReference.size() <= 120)) &&
+             (!('opayAccount' in data) || (data.opayAccount is string && data.opayAccount.size() <= 120)) &&
              (!('isEmailVerified' in data) || (data.isEmailVerified is bool));
     }
 
@@ -59,13 +59,13 @@ service cloud.firestore {
              data.keys().hasOnly(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions', 'percentage', 'timeSpentSeconds', 'createdAt', 'candidateName', 'userEmail']) &&
              data.id is string && isValidId(data.id) &&
              data.userId is string && data.userId == request.auth.uid &&
-             data.testTitle is string && data.testTitle.size() <= 120 &&
+             data.testTitle is string && data.testTitle.size() <= 250 &&
              data.testType is string && data.testType.size() <= 50 &&
              data.score is number && data.score >= 0 &&
              data.totalQuestions is number && data.totalQuestions > 0 &&
              data.score <= data.totalQuestions &&
-             (!('candidateName' in data) || (data.candidateName is string && data.candidateName.size() <= 100)) &&
-             (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 100));
+             (!('candidateName' in data) || (data.candidateName is string && data.candidateName.size() <= 120)) &&
+             (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 120));
     }
 
     function isValidFeedPost(data) {
@@ -104,15 +104,14 @@ service cloud.firestore {
       allow create: if isOwner(userId) && isValidUserProfile(incoming());
       allow update: if (isOwner(userId) || isAdmin()) &&
                        isValidUserProfile(incoming()) &&
-                       incoming().id == existing().id &&
-                       (!('createdAt' in existing()) || incoming().createdAt == existing().createdAt);
+                       incoming().id == existing().id;
       allow delete: if isAdmin();
     }
 
-    // Test results
+    // Test results (National UTME Leaderboard: public read so all candidates can view rankings live)
     match /testResults/{resultId} {
-      allow get: if isSignedIn();
-      allow list: if isSignedIn();
+      allow get: if true;
+      allow list: if true;
       allow create: if isSignedIn() && isValidId(resultId) && isValidTestResult(incoming());
       allow update: if isAdmin();
       allow delete: if isAdmin() || (isSignedIn() && existing().userId == request.auth.uid);
@@ -138,7 +137,7 @@ service cloud.firestore {
     // Cross-device account activations registry
     match /accountActivations/{activationId} {
       allow get: if true;
-      allow list: if isAdmin();
+      allow list: if true;
       allow create: if isValidId(activationId) && isValidAccountActivation(incoming()) && incoming().id == activationId;
       allow update: if isSignedIn() && isValidId(activationId) && isValidAccountActivation(incoming()) &&
                        incoming().id == existing().id &&

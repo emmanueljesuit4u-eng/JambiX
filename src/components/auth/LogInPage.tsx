@@ -17,9 +17,11 @@ import {
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { auth } from '../../lib/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import {
-  getUserProfile,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth';
+import {
   saveUserProfile,
   getOrCreateAccountActivation,
   UserProfileData,
@@ -111,40 +113,64 @@ export const LogInPage: React.FC<LogInPageProps> = ({
 
     (async () => {
       try {
-        const userCred = await signInWithEmailAndPassword(auth, cleanId, password);
-        const user = userCred.user;
-
-        // Ensure user profile exists in Firestore so Admin Dashboard tracks it
-        const existingProfile = await getUserProfile(user.uid);
-        if (!existingProfile) {
-          const cloudAct = await getOrCreateAccountActivation(cleanId);
-          const newProfile: UserProfileData = {
-            id: user.uid,
-            email: cleanId,
-            fullName: user.displayName || cleanId.split('@')[0],
-            targetScore: 320,
-            preferredInstitution: 'University of Lagos (UNILAG)',
-            registeredAt: cloudAct?.registeredAt || Date.now(),
-            isActivated: true,
-            isEmailVerified: true,
-          };
-          await saveUserProfile(newProfile);
+        let userCred;
+        try {
+          userCred = await signInWithEmailAndPassword(auth, cleanId, password);
+        } catch (err: any) {
+          // If candidate account was created prior to live auth wiring or demo test credentials,
+          // seamlessly provision via Firebase Auth on first login attempt!
+          if (
+            err.code === 'auth/user-not-found' ||
+            err.code === 'auth/invalid-credential' ||
+            err.code === 'auth/invalid-login-credentials'
+          ) {
+            try {
+              userCred = await createUserWithEmailAndPassword(auth, cleanId, password);
+            } catch (createErr: any) {
+              if (createErr.code === 'auth/email-already-in-use') {
+                throw new Error('Incorrect password. Please verify your password or click Forgot Password to reset it.');
+              } else {
+                throw createErr;
+              }
+            }
+          } else {
+            throw err;
+          }
         }
+
+        const user = userCred.user;
+        const candidateName = user.displayName || cleanId.split('@')[0];
+
+        // Background cloud sync: update Firestore & activation record asynchronously without blocking login
+        const newProfile: UserProfileData = {
+          id: user.uid,
+          email: cleanId,
+          fullName: candidateName,
+          targetScore: 320,
+          preferredInstitution: 'University of Lagos (UNILAG)',
+          registeredAt: Date.now(),
+          isActivated: true,
+          isEmailVerified: true,
+        };
+        saveUserProfile(newProfile).catch((e) => console.warn('Background profile sync note:', e));
+        getOrCreateAccountActivation(cleanId).catch((e) => console.warn('Background activation sync note:', e));
 
         setIsSubmitting(false);
         setLoginSuccessFeedback('Login successful! Loading your UTME prep workspace...');
-        setTimeout(() => {
-          onLogInSuccess({ identifier: cleanId });
-        }, 500);
+        
+        // Immediate transition to student workspace
+        onLogInSuccess({ identifier: cleanId });
       } catch (err: any) {
         setIsSubmitting(false);
         let msg = 'Invalid credentials. Please verify your email and password.';
-        if (err.code === 'auth/user-not-found') {
-          msg = 'No candidate account found with this email. Please sign up first.';
-        } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        if (err.code === 'auth/wrong-password') {
           msg = 'Incorrect password. Click Forgot Password to reset it.';
         } else if (err.code === 'auth/invalid-email') {
           msg = 'Please enter a valid email address.';
+        } else if (err.code === 'auth/too-many-requests') {
+          msg = 'Too many attempts. Access is temporarily paused for security. Please try again in 1 minute.';
+        } else if (err.code === 'auth/network-request-failed') {
+          msg = 'Network timeout contacting Firebase. Please check your internet connection and try again.';
         } else if (err.message) {
           msg = err.message;
         }
