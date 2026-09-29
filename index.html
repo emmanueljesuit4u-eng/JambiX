@@ -71,6 +71,19 @@
             });
           } catch (e2) {}
         }
+
+        // Self-heal mobile browsers by unregistering any broken, stale, or dev service workers from prior loads
+        if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+          try {
+            navigator.serviceWorker.getRegistrations().then(function(regs) {
+              regs.forEach(function(r) {
+                if (r && r.active && (r.active.scriptURL.indexOf('dev-sw') !== -1 || r.active.scriptURL.indexOf('sw.js') !== -1)) {
+                  r.unregister();
+                }
+              });
+            }).catch(function() {});
+          } catch (e3) {}
+        }
       })();
     </script>
     <title>JAMBiX – UTME Preparation</title>
