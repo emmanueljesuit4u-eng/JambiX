@@ -56,6 +56,7 @@ import { NovelsTab } from './NovelsTab';
 import { LiveLeaderboardTab } from './LiveLeaderboardTab';
 import { ActivationPaywallModal } from './ActivationPaywallModal';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { PWAInstallButton } from '../common/PWAInstallButton';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { auth } from '../../lib/firebase';
 import {
@@ -266,6 +267,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
             {/* Right Action Controls: Clean and spacious */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Native PWA Install Button */}
+              <PWAInstallButton />
+
               {/* Free Access Badge */}
               <div
                 className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"

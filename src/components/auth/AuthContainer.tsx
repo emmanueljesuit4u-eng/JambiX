@@ -18,6 +18,7 @@ import { ForgotPasswordPage } from './ForgotPasswordPage';
 import { TermsModal } from './TermsModal';
 import { StudentDashboard } from '../dashboard/StudentDashboard';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { PWAInstallButton } from '../common/PWAInstallButton';
 import { useAuth } from '../../context/AuthContext';
 
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
@@ -132,6 +133,9 @@ export const AuthContainer: React.FC = () => {
               <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               <span>Admin</span>
             </button>
+
+            {/* Install JambiX App Button */}
+            <PWAInstallButton />
 
             {/* Toggle for Light and Dark Mode on the first page at the top right hand side corner */}
             <ThemeToggle />
