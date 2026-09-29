@@ -18,7 +18,6 @@ import { ForgotPasswordPage } from './ForgotPasswordPage';
 import { TermsModal } from './TermsModal';
 import { StudentDashboard } from '../dashboard/StudentDashboard';
 import { ThemeToggle } from '../common/ThemeToggle';
-import { PWAInstallButton } from '../common/PWAInstallButton';
 import { useAuth } from '../../context/AuthContext';
 
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
@@ -73,73 +72,23 @@ export const AuthContainer: React.FC = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col justify-between text-slate-800 dark:text-slate-100 transition-colors duration-200 antialiased overflow-x-hidden">
       {/* Top Utility Bar */}
       <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-3 sm:px-6 py-2.5 transition-colors">
-        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2 sm:gap-4 flex-nowrap">
-          {/* Brand Wordmark */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <button
-              onClick={() => setCurrentScreen('login')}
-              className="text-left cursor-pointer flex items-center gap-2 group"
-            >
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs group-hover:bg-emerald-800 transition-colors">
-                J
-              </div>
-              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight text-base sm:text-lg">
-                Jambi<span className="text-emerald-600 dark:text-emerald-400">X</span>
-              </span>
-            </button>
-            <span className="hidden sm:inline-block text-xs text-slate-400 dark:text-slate-500 font-medium border-l border-slate-200 dark:border-slate-700 pl-3">
-              UTME Prep Engine
-            </span>
-          </div>
+        <div className="max-w-6xl mx-auto flex items-center justify-end gap-2 sm:gap-3">
+          {/* Dedicated /admin Portal Link */}
+          <button
+            type="button"
+            onClick={() => {
+              window.history.pushState({}, '', '/admin');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+            }}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            title="Access Master Admin Portal (/admin)"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <span>Admin</span>
+          </button>
 
-          {/* Quick Screen Nav Links, Demo Jump, Device Switcher & Top Right Light/Dark Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {/* Screen Tabs (Clean 2-tab switch for Log In / Sign Up) */}
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800/90 border border-slate-200/60 dark:border-slate-700/80 p-0.5 sm:p-1 rounded-xl text-xs font-semibold">
-              <button
-                type="button"
-                onClick={() => setCurrentScreen('login')}
-                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-xs ${
-                  currentScreen === 'login'
-                    ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                Log In
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrentScreen('signup')}
-                className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all cursor-pointer text-xs ${
-                  currentScreen === 'signup'
-                    ? 'bg-white dark:bg-slate-700 text-emerald-800 dark:text-emerald-300 shadow-2xs font-bold'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                Sign Up
-              </button>
-            </div>
-
-            {/* Dedicated /admin Portal Link */}
-            <button
-              type="button"
-              onClick={() => {
-                window.history.pushState({}, '', '/admin');
-                window.dispatchEvent(new PopStateEvent('popstate'));
-              }}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-              title="Access Master Admin Portal (/admin)"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>Admin</span>
-            </button>
-
-            {/* Install JambiX App Button */}
-            <PWAInstallButton />
-
-            {/* Toggle for Light and Dark Mode on the first page at the top right hand side corner */}
-            <ThemeToggle />
-          </div>
+          {/* Toggle for Light and Dark Mode on the first page at the top right hand side corner */}
+          <ThemeToggle />
         </div>
       </header>
 
@@ -267,24 +216,10 @@ export const AuthContainer: React.FC = () => {
 
       {/* Footer */}
       <footer className="border-t border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 py-4 px-4 text-center text-xs text-slate-500 dark:text-slate-400 transition-colors">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 text-xs">
-            <span className="font-bold text-slate-800 dark:text-white">JambiX</span>
-            <span>·</span>
-            <span>Prepare smarter. Perform better.</span>
-          </div>
-
-          <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
-            <a
-              href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-1"
-            >
-              <span>WhatsApp Channel</span>
-            </a>
-            <span className="font-medium text-slate-700 dark:text-slate-300">By Jp classixs group</span>
-          </div>
+        <div className="max-w-6xl mx-auto flex items-center justify-center gap-1.5 text-xs">
+          <span className="font-bold text-slate-800 dark:text-white">JambiX</span>
+          <span>·</span>
+          <span>Prepare smarter. Perform better.</span>
         </div>
       </footer>
 

@@ -179,14 +179,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
     })();
   };
 
-  // Demo autofill for rapid testing
-  const handleAutofillDemo = () => {
-    setIdentifier('adeleke.chukwudi@gmail.com');
-    setPassword('JambMaster2026!');
-    setErrors({});
-    setAuthError(null);
-  };
-
   return (
     <div className="w-full max-w-md mx-auto">
       {/* Brand Header */}
@@ -198,18 +190,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           Continue your JambiX preparation journey.
         </p>
-
-        {/* Quick autofill helper */}
-        <div className="mt-2.5 flex justify-center">
-          <button
-            type="button"
-            onClick={handleAutofillDemo}
-            className="text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200/80 dark:border-emerald-800/80 px-2.5 py-1 rounded-full transition-colors flex items-center gap-1 cursor-pointer"
-          >
-            <span>✨</span>
-            <span>Tap to fill demo student login</span>
-          </button>
-        </div>
       </div>
 
       {/* Global alert error */}
@@ -365,10 +345,6 @@ export const LogInPage: React.FC<LogInPageProps> = ({
             Create Account
           </button>
         </div>
-
-        <p className="mt-5 text-xs text-center text-slate-500 dark:text-slate-400 font-medium">
-          By Jp classixs group
-        </p>
       </div>
     </div>
   );
