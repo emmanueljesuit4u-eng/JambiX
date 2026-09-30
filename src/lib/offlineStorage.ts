@@ -117,6 +117,16 @@ export function getLocalTestResults(userId?: string): OfflineTestResult[] {
   return tests.filter((t) => !t.userId || t.userId === userId || t.userId === 'offline_candidate');
 }
 
+export function clearLocalTestResults(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.removeItem(STORAGE_KEYS.TESTS);
+    localStorage.removeItem(STORAGE_KEYS.SYNC_QUEUE);
+  } catch (err) {
+    console.warn('Error clearing local test results:', err);
+  }
+}
+
 // 2. Local Offline Posts Storage
 export function saveLocalPost(
   post: Omit<OfflinePostItem, 'createdAt' | 'syncedToCloud'> & { syncedToCloud?: boolean }

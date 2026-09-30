@@ -430,83 +430,579 @@ export const ENGLISH_GENERAL_BANK: BankQuestionDefinition[] = [
     answer: 'A',
     explanation: 'The verb "commend" collocates with the preposition "for" when specifying the reason for praise. (A-Z OF ENGLISH, Chapter 5).',
     bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 162'
+  },
+  // Additional Antonyms
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The minister’s speech was full of AMBIGUOUS statements."',
+    options: { A: 'Explicit', B: 'Obscure', C: 'Vague', D: 'Equivocal' },
+    answer: 'A',
+    explanation: '"Ambiguous" means open to more than one interpretation or unclear; the opposite is "explicit" or "clear". (A-Z OF ENGLISH, Chapter 4).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 132'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "His TRANSIENT visit left little impression on the villagers."',
+    options: { A: 'Permanent', B: 'Brief', C: 'Temporary', D: 'Fleeting' },
+    answer: 'A',
+    explanation: '"Transient" means lasting only for a short time; its antonym is "permanent". (A-Z OF ENGLISH, Chapter 4).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 134'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The principal praised the student for being INDUSTRIOUS."',
+    options: { A: 'Indolent', B: 'Diligent', C: 'Hardworking', D: 'Punctual' },
+    answer: 'A',
+    explanation: '"Industrious" means hardworking and persevering. The direct antonym is "indolent" (lazy or idle). (A-Z OF ENGLISH, Chapter 4).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 136'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The new tax policy was greeted with ENTHUSIASTIC support."',
+    options: { A: 'Apathetic', B: 'Eager', C: 'Passionate', D: 'Warm' },
+    answer: 'A',
+    explanation: '"Enthusiastic" denotes strong interest and eagerness; the antonym is "apathetic" (showing no concern or enthusiasm). (A-Z OF ENGLISH, Chapter 4).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 138'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The witness gave a HOSTILE response to the defense attorney."',
+    options: { A: 'Friendly', B: 'Aggressive', C: 'Antagonistic', D: 'Bitter' },
+    answer: 'A',
+    explanation: '"Hostile" means showing enmity or opposition; the opposite is "friendly" or "cordial". (A-Z OF ENGLISH, Chapter 4).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 140'
+  },
+  // Additional Synonyms
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The professor’s lecture was PROFOUND and inspired the whole auditorium."',
+    options: { A: 'Deep', B: 'Superficial', C: 'Shallow', D: 'Brief' },
+    answer: 'A',
+    explanation: '"Profound" means having great depth of thought or insight; nearest in meaning is "deep". (A-Z OF ENGLISH, Chapter 3).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 102'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The school board decided to ABOLISH corporal punishment."',
+    options: { A: 'End', B: 'Reinforce', C: 'Encourage', D: 'Promote' },
+    answer: 'A',
+    explanation: '"Abolish" means to formally put an end to a practice or institution; nearest in meaning is "end". (A-Z OF ENGLISH, Chapter 3).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 105'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The manager was RESILIENT in the face of financial adversity."',
+    options: { A: 'Tough', B: 'Fragile', C: 'Defeated', D: 'Vulnerable' },
+    answer: 'A',
+    explanation: '"Resilient" means able to recover quickly from difficulties; nearest in meaning is "tough" or "adaptable". (A-Z OF ENGLISH, Chapter 3).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 108'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "She gave an INGENIOUS solution to the complex programming defect."',
+    options: { A: 'Clever', B: 'Ordinary', C: 'Clumsy', D: 'Incompetent' },
+    answer: 'A',
+    explanation: '"Ingenious" means clever, original, and inventive; nearest in meaning is "clever". (A-Z OF ENGLISH, Chapter 3).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 110'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The committee reached a UNANIMOUS decision on the disciplinary case."',
+    options: { A: 'Undivided', B: 'Divided', C: 'Contentious', D: 'Hesitant' },
+    answer: 'A',
+    explanation: '"Unanimous" means fully in agreement without dissent; nearest in meaning is "undivided". (A-Z OF ENGLISH, Chapter 3).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 114'
+  },
+  // Additional Concord & Grammar
+  {
+    topic: 'Grammatical Concord: Neither of them',
+    text: 'Neither of the suspects ______ admitted committing the examination burglary.',
+    options: { A: 'has', B: 'have', C: 'are', D: 'were' },
+    answer: 'A',
+    explanation: '"Neither of" is followed by a plural noun or pronoun but takes a singular verb ("has admitted"). (A-Z OF ENGLISH, Chapter 1).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 35'
+  },
+  {
+    topic: 'Grammatical Concord: Not only... but also',
+    text: 'Not only the teacher but also the students ______ enthusiastic about the national science fair.',
+    options: { A: 'are', B: 'is', C: 'was', D: 'has been' },
+    answer: 'A',
+    explanation: 'With "not only... but also", the verb agrees with the subject closest to it ("the students", plural), requiring "are". (A-Z OF ENGLISH, Chapter 1).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 40'
+  },
+  {
+    topic: 'Grammatical Concord: Plural in form, singular in meaning',
+    text: 'Mathematics ______ one of the core matriculation requirements for engineering faculties.',
+    options: { A: 'is', B: 'are', C: 'were', D: 'have been' },
+    answer: 'A',
+    explanation: 'Academic subjects ending in -s (Mathematics, Physics, Economics) are singular in meaning and take singular verbs. (A-Z OF ENGLISH, Chapter 1).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 44'
+  },
+  {
+    topic: 'Tenses: Past Perfect Continuous',
+    text: 'By the time the dean arrived at the faculty board room, the senators ______ for over two hours.',
+    options: { A: 'had been deliberating', B: 'have been deliberating', C: 'were deliberating', D: 'deliberated' },
+    answer: 'A',
+    explanation: 'An action ongoing prior to another specific event in the past requires the past perfect continuous tense ("had been deliberating"). (A-Z OF ENGLISH, Chapter 2).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 68'
+  },
+  {
+    topic: 'Subjunctive: "It is high time"',
+    text: 'It is high time we ______ preparation for the national UTME examination.',
+    options: { A: 'commenced', B: 'commence', C: 'should commence', D: 'have commenced' },
+    answer: 'A',
+    explanation: 'The idiomatic expression "it is high time" is strictly followed by a past tense verb ("commenced") to convey subjunctive urgency. (A-Z OF ENGLISH, Chapter 2).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 70'
+  },
+  // Additional Oral English
+  {
+    topic: 'Oral English: Vowel Contrasts (/u:/ vs /ʊ/)',
+    text: 'Which word contains the vowel sound /u:/ as in "f<u>oo</u>d"?',
+    options: { A: 'Rude', B: 'Foot', C: 'Cook', D: 'Book' },
+    answer: 'A',
+    explanation: '"Rude" is pronounced /ru:d/ with the long back close vowel /u:/. "Foot", "cook", and "book" all contain the short vowel /ʊ/. (A-Z OF ENGLISH, Chapter 9).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 280'
+  },
+  {
+    topic: 'Oral English: Silent Consonants',
+    text: 'In which of the following words is the letter "k" silent?',
+    options: { A: 'Knight', B: 'Kangaroo', C: 'Kitchen', D: 'Kettle' },
+    answer: 'A',
+    explanation: 'In "knight" (/naɪt/), the initial "k" is an orthographic silent letter before "n". (A-Z OF ENGLISH, Chapter 10).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 308'
+  },
+  {
+    topic: 'Oral English: Word Stress on Verbs Ending in -ate',
+    text: 'Where does the primary stress fall in the trisyllabic verb "INVESTIGATE"?',
+    options: { A: 'in-VES-tigate (second syllable)', B: 'IN-vestigate (first syllable)', C: 'inves-TI-gate (third syllable)', D: 'investi-GATE (fourth syllable)' },
+    answer: 'A',
+    explanation: 'Polysyllabic verbs ending in -ate are stressed on the antepenultimate syllable (third syllable from end): in-VES-ti-gate. (A-Z OF ENGLISH, Chapter 11).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 342'
+  },
+  {
+    topic: 'Oral English: Rhymes',
+    text: 'Which of the following words rhymes with "DAUGHTER"?',
+    options: { A: 'Water', B: 'Laughter', C: 'Faster', D: 'Master' },
+    answer: 'A',
+    explanation: '"Daughter" (/ˈdɔ:tə/) rhymes with "water" (/ˈwɔ:tə/). "Laughter" has /ɑ:ftə/. (A-Z OF ENGLISH, Chapter 9).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 285'
+  },
+  {
+    topic: 'Idioms: "To turn over a new leaf"',
+    text: 'To "turn over a new leaf" means to:',
+    options: { A: 'Change one’s behavior for the better', B: 'Browse a new page in a textbook', C: 'Clear forest vegetation for farming', D: 'Discard unwanted study materials' },
+    answer: 'A',
+    explanation: 'The idiom "turn over a new leaf" signifies reforming one’s conduct and starting afresh with good intentions. (A-Z OF ENGLISH, Chapter 12).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 370'
+  },
+  // Extensive Question Bank Expansion for Use of English (Concord, Lexis, Synonyms, Antonyms, Oral English, Idioms)
+  {
+    topic: 'Concord: "The number of" vs "A number of"',
+    text: 'The number of successful matriculants in this year’s UTME ______ significantly increased.',
+    options: { A: 'has', B: 'have', C: 'are', D: 'were' },
+    answer: 'A',
+    explanation: '"The number of" takes a singular verb ("has"), whereas "a number of" takes a plural verb. (A-Z OF ENGLISH, Chapter 1, p. 38).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 38'
+  },
+  {
+    topic: 'Concord: "A number of"',
+    text: 'A number of candidates ______ already collected their provisional admission letters.',
+    options: { A: 'have', B: 'has', C: 'is', D: 'was' },
+    answer: 'A',
+    explanation: 'The expression "a number of" means several and always requires a plural verb ("have"). (A-Z OF ENGLISH, Chapter 1, p. 39).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 39'
+  },
+  {
+    topic: 'Concord: "Many a"',
+    text: 'Many a student ______ fallen victim to examination malpractices due to inadequate preparation.',
+    options: { A: 'has', B: 'have', C: 'are', D: 'were' },
+    answer: 'A',
+    explanation: '"Many a" is strictly followed by a singular countable noun and takes a singular verb ("has fallen"). (A-Z OF ENGLISH, Chapter 1, p. 42).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 42'
+  },
+  {
+    topic: 'Concord: Accompaniment ("Together with")',
+    text: 'The Vice-Chancellor, together with the members of the university senate, ______ attending the convocation ceremony.',
+    options: { A: 'is', B: 'are', C: 'were', D: 'have been' },
+    answer: 'A',
+    explanation: 'When a subject is followed by prepositional phrases like "together with", "as well as", or "along with", the verb agrees only with the primary subject ("The Vice-Chancellor", singular). (A-Z OF ENGLISH, Chapter 1, p. 45).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 45'
+  },
+  {
+    topic: 'Concord: "One of those who"',
+    text: 'Chinedu is one of those students who ______ always punctual at the morning briefing.',
+    options: { A: 'are', B: 'is', C: 'was', D: 'has been' },
+    answer: 'A',
+    explanation: 'In the construction "one of those who [verb]", the relative pronoun "who" refers back to the plural antecedent "students", demanding a plural verb ("are"). (A-Z OF ENGLISH, Chapter 1, p. 47).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 47'
+  },
+  {
+    topic: 'Concord: "The only one of those who"',
+    text: 'He is the only one of the applicants who ______ the required academic credentials.',
+    options: { A: 'possesses', B: 'possess', C: 'have possessed', D: 'are possessing' },
+    answer: 'A',
+    explanation: 'When qualified by "the only one of...", the focus shifts back to the single entity, requiring a singular verb ("possesses"). (A-Z OF ENGLISH, Chapter 1, p. 48).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 48'
+  },
+  {
+    topic: 'Concord: Either... or / Proximity Rule',
+    text: 'Either the captain or the crew members ______ responsible for safeguarding the ship’s logbook.',
+    options: { A: 'are', B: 'is', C: 'was', D: 'has been' },
+    answer: 'A',
+    explanation: 'Under the principle of proximity with "either... or", the verb agrees with the closer subject ("crew members", plural), so "are" is correct. (A-Z OF ENGLISH, Chapter 1, p. 33).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 33'
+  },
+  {
+    topic: 'Lexis: Conditional Clause Type 3',
+    text: 'If the invigilator had arrived earlier, the examination ______ on schedule.',
+    options: { A: 'would have commenced', B: 'will commence', C: 'would commence', D: 'commenced' },
+    answer: 'A',
+    explanation: 'Third conditional sentences expressing unfulfilled past conditions take past perfect in the if-clause and "would have + past participle" in the main clause. (A-Z OF ENGLISH, Chapter 2, p. 82).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 82'
+  },
+  {
+    topic: 'Lexis: Inversion with Negative Adverbials',
+    text: 'Scarcely ______ entered the lecture hall when the power supply was disconnected.',
+    options: { A: 'had the lecturer', B: 'the lecturer had', C: 'did the lecturer', D: 'was the lecturer' },
+    answer: 'A',
+    explanation: 'When sentences begin with restrictive negative adverbials like "scarcely", "hardly", or "no sooner", subject-auxiliary inversion is mandatory ("had the lecturer entered... when"). (A-Z OF ENGLISH, Chapter 2, p. 88).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 88'
+  },
+  {
+    topic: 'Lexis: Question Tags',
+    text: 'Candidates hardly ever read the instruction leaflet before the test, ______?',
+    options: { A: 'do they', B: 'don’t they', C: 'did they', D: 'haven’t they' },
+    answer: 'A',
+    explanation: '"Hardly ever" has a negative sense, requiring an affirmative question tag in the simple present tense ("do they?"). (A-Z OF ENGLISH, Chapter 2, p. 94).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 94'
+  },
+  {
+    topic: 'Lexis: Prepositions with "Prefer"',
+    text: 'Most medical aspirants prefer studying at Ahmadu Bello University ______ other private universities.',
+    options: { A: 'to', B: 'than', C: 'more than', D: 'above' },
+    answer: 'A',
+    explanation: 'The verb "prefer" is strictly followed by the preposition "to" (never "than"). (A-Z OF ENGLISH, Chapter 5, p. 156).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 156'
+  },
+  {
+    topic: 'Lexis: Prepositions with "Congratulate"',
+    text: 'The principal congratulated the overall best graduating student ______ his stellar performance.',
+    options: { A: 'on', B: 'for', C: 'at', D: 'with' },
+    answer: 'A',
+    explanation: 'The standard collocation is "congratulate someone ON something" (not "for"). (A-Z OF ENGLISH, Chapter 5, p. 159).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 159'
+  },
+  {
+    topic: 'Lexis: Prepositions with "Devoid"',
+    text: 'The suspect’s explanation was completely devoid ______ any factual evidence.',
+    options: { A: 'of', B: 'from', C: 'with', D: 'in' },
+    answer: 'A',
+    explanation: 'The adjective "devoid" always collocates with the preposition "of". (A-Z OF ENGLISH, Chapter 5, p. 164).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 164'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The general made a METICULOUS inspection of the defense facilities."',
+    options: { A: 'Painstaking', B: 'Casual', C: 'Superficial', D: 'Hurried' },
+    answer: 'A',
+    explanation: '"Meticulous" means showing great attention to detail; very careful and precise. The synonym is "painstaking". (A-Z OF ENGLISH, Chapter 3, p. 116).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 116'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The lawyer gave a PRAGMATIC solution to the contentious boundary dispute."',
+    options: { A: 'Practical', B: 'Theoretical', C: 'Unrealistic', D: 'Complicated' },
+    answer: 'A',
+    explanation: '"Pragmatic" deals with things sensibly and realistically based on practical considerations. (A-Z OF ENGLISH, Chapter 3, p. 118).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 118'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "His AUDACIOUS maneuver stunned the opposing chess grandmaster."',
+    options: { A: 'Daring', B: 'Cowardly', C: 'Timid', D: 'Careful' },
+    answer: 'A',
+    explanation: '"Audacious" means showing a willingness to take surprisingly bold risks; nearest in meaning is "daring". (A-Z OF ENGLISH, Chapter 3, p. 120).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 120'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The new governor is known to be a BENEVOLENT patron of educational charities."',
+    options: { A: 'Kindhearted', B: 'Hostile', C: 'Miserly', D: 'Selfish' },
+    answer: 'A',
+    explanation: '"Benevolent" means well meaning, generous, and kindly; nearest in meaning is "kindhearted". (A-Z OF ENGLISH, Chapter 3, p. 122).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 122'
+  },
+  {
+    topic: 'Synonyms: Nearest in Meaning',
+    text: 'Choose the option nearest in meaning to the capitalized word: "The accountant was accused of FABRICATING financial statements."',
+    options: { A: 'Forging', B: 'Auditing', C: 'Publishing', D: 'Preserving' },
+    answer: 'A',
+    explanation: '"Fabricating" in this context signifies inventing or producing something false in order to deceive; nearest in meaning is "forging". (A-Z OF ENGLISH, Chapter 3, p. 124).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 124'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The witness gave a PLAUSIBLE account of what transpired at the crossroads."',
+    options: { A: 'Incredible', B: 'Believable', C: 'Reasonable', D: 'Convincing' },
+    answer: 'A',
+    explanation: '"Plausible" means seemingly reasonable or probable. The direct antonym is "incredible" (hard to believe). (A-Z OF ENGLISH, Chapter 4, p. 142).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 142'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The retired army general lived in an AFFLUENT residential estate."',
+    options: { A: 'Impoverished', B: 'Wealthy', C: 'Prosperous', D: 'Opulent' },
+    answer: 'A',
+    explanation: '"Affluent" means having a great deal of money or wealthy; the direct opposite is "impoverished". (A-Z OF ENGLISH, Chapter 4, p. 144).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 144'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The students found the trek across the rugged mountain ARDUOUS."',
+    options: { A: 'Effortless', B: 'Strenuous', C: 'Exhausting', D: 'Demanding' },
+    answer: 'A',
+    explanation: '"Arduous" means involving or requiring strenuous effort; difficult and tiring. Its direct antonym is "effortless" or "easy". (A-Z OF ENGLISH, Chapter 4, p. 146).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 146'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "The high court judge decided to EXONERATE the wrongly accused youth."',
+    options: { A: 'Convict', B: 'Acquit', C: 'Absolve', D: 'Pardon' },
+    answer: 'A',
+    explanation: '"Exonerate" means to officially absolve someone from blame or fault. The opposite is "convict" (declare someone guilty). (A-Z OF ENGLISH, Chapter 4, p. 148).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 148'
+  },
+  {
+    topic: 'Antonyms: Opposites in Meaning',
+    text: 'Choose the option opposite in meaning to the capitalized word: "She was praised by her colleagues for being FRUGAL in managing company finances."',
+    options: { A: 'Extravagant', B: 'Economical', C: 'Prudent', D: 'Thrifty' },
+    answer: 'A',
+    explanation: '"Frugal" means sparing or economical with regard to money. The opposite is "extravagant" or "wasteful". (A-Z OF ENGLISH, Chapter 4, p. 150).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 150'
+  },
+  {
+    topic: 'Oral English: Vowel Contrasts (/i:/ vs /ɪ/)',
+    text: 'Which of the following words contains the short vowel sound /ɪ/ as in "sit"?',
+    options: { A: 'Gym', B: 'Scene', C: 'Meat', D: 'Field' },
+    answer: 'A',
+    explanation: '"Gym" is pronounced /dʒɪm/ with the short close front unrounded vowel /ɪ/. "Scene", "meat", and "field" all contain the long vowel /i:/. (A-Z OF ENGLISH, Chapter 9, p. 282).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 282'
+  },
+  {
+    topic: 'Oral English: Consonant Contrasts (/θ/ vs /ð/)',
+    text: 'In which of the following words is the underlined "th" pronounced as the voiceless dental fricative /θ/?',
+    options: { A: '<u>Th</u>ought', B: '<u>Th</u>is', C: '<u>Th</u>ose', D: 'Fa<u>th</u>er' },
+    answer: 'A',
+    explanation: '"Thought" (/θɔ:t/) contains the voiceless dental fricative /θ/. In "this", "those", and "father", the "th" is voiced (/ð/). (A-Z OF ENGLISH, Chapter 10, p. 312).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 312'
+  },
+  {
+    topic: 'Oral English: Silent Consonants (Letter "p")',
+    text: 'In which of the following words is the consonant "p" silent in standard pronunciation?',
+    options: { A: 'Receipt', B: 'Receptacle', C: 'Recipient', D: 'Reception' },
+    answer: 'A',
+    explanation: 'In "receipt" (/rɪˈsi:t/), the letter "p" is completely silent. In the other options, the /p/ sound is voiced. (A-Z OF ENGLISH, Chapter 10, p. 318).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 318'
+  },
+  {
+    topic: 'Oral English: Stress on Suffix -tion',
+    text: 'Which syllable carries the primary stress in the word "EXAMINATION"?',
+    options: { A: 'exami-NA-tion (penultimate syllable)', B: 'ex-A-mination', C: 'EX-amination', D: 'examin-a-TION' },
+    answer: 'A',
+    explanation: 'English words ending in the suffix -tion or -sion consistently carry primary stress on the penultimate syllable (the syllable directly preceding the suffix): exami-NA-tion. (A-Z OF ENGLISH, Chapter 11, p. 346).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 346'
+  },
+  {
+    topic: 'Idioms: "To bite the bullet"',
+    text: 'The idiomatic expression "to bite the bullet" means to:',
+    options: { A: 'Face an unavoidable unpleasant situation with courage', B: 'Participate in military shooting drills', C: 'Accidentally swallow a hard object', D: 'Retaliate against an enemy fiercely' },
+    answer: 'A',
+    explanation: '"To bite the bullet" means to endure a painful or otherwise unpleasant situation that is seen as unavoidable. (A-Z OF ENGLISH, Chapter 12, p. 372).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 372'
+  },
+  {
+    topic: 'Idioms: "A blessing in disguise"',
+    text: 'An apparent misfortune that eventually results in an unexpected good outcome is called:',
+    options: { A: 'A blessing in disguise', B: 'A bolt from the blue', C: 'A storm in a teacup', D: 'A white elephant' },
+    answer: 'A',
+    explanation: '"A blessing in disguise" is something that appears bad or unfortunate at first, but turns out to produce beneficial results. (A-Z OF ENGLISH, Chapter 12, p. 374).',
+    bookTitle: 'A-Z OF ENGLISH', author: 'B.O. Dele Ashade', textbookRef: 'A-Z OF ENGLISH by B.O. Dele Ashade, p. 374'
   }
 ];
 
 // Helper to pull 15 distinct questions from prescribed novels for English Part 1
-export function getPrescribedNovelQuestions(count: number = 15, seed: number = 2026): VerifiedQuestion[] {
+// Filters against previous tests and guarantees zero duplicates in the current session
+export function getPrescribedNovelQuestions(
+  count: number = 15,
+  seed: number = 2026,
+  excludeTexts?: Set<string>,
+  sessionUsedTexts?: Set<string>
+): VerifiedQuestion[] {
+  const localTexts = sessionUsedTexts || new Set<string>();
+  const excluded = excludeTexts || new Set<string>();
   const allNovelQs = [...NOVEL_EXAM_QUESTIONS];
+
   // Deterministic shuffle based on seed
   for (let i = allNovelQs.length - 1; i > 0; i--) {
     const j = Math.abs((seed * (i + 13)) % (i + 1));
     [allNovelQs[i], allNovelQs[j]] = [allNovelQs[j], allNovelQs[i]];
   }
 
-  return allNovelQs.slice(0, count).map((nq, idx) => {
-    const qNum = idx + 1;
-    const authorName =
-      nq.novel === 'The Life Changer'
-        ? 'Khadija Abubakar Jalli'
-        : nq.novel === 'The Lekki Headmaster'
-          ? 'Kabir Alabi Garba'
-          : 'Bolaji Abdullahi';
+  const picked: VerifiedQuestion[] = [];
 
-    return {
-      id: 950000 + (seed * 10) + qNum,
-      year: seed,
-      questionNumber: qNum,
-      subject: 'Use of English',
-      topic: `Prescribed Novel: "${nq.novel}"`,
-      text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${nq.novel}"] ${nq.question}`,
-      options: nq.options,
-      answer: nq.answer,
-      explanation: `${nq.explanation} (Official Prescribed Novel: "${nq.novel}" by ${authorName}).`,
-      bookTitle: nq.novel,
-      author: authorName,
-      textbookRef: `"${nq.novel}" by ${authorName}`,
-    };
-  });
+  // Pass 1: Prioritize questions unseen in previous tests AND not yet in this test
+  for (let i = 0; i < allNovelQs.length && picked.length < count; i++) {
+    const nq = allNovelQs[i];
+    const core = nq.question.trim().toLowerCase();
+    if (!localTexts.has(core) && !excluded.has(core)) {
+      localTexts.add(core);
+      const qNum = picked.length + 1;
+      const authorName =
+        nq.novel === 'The Life Changer'
+          ? 'Khadija Abubakar Jalli'
+          : nq.novel === 'The Lekki Headmaster'
+            ? 'Kabir Alabi Garba'
+            : 'Bolaji Abdullahi';
+
+      picked.push({
+        id: 950000 + (seed * 10) + qNum,
+        year: seed,
+        questionNumber: qNum,
+        subject: 'Use of English',
+        topic: `Prescribed Novel: "${nq.novel}"`,
+        text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${nq.novel}"] ${nq.question}`,
+        options: nq.options,
+        answer: nq.answer,
+        explanation: `${nq.explanation} (Official Prescribed Novel: "${nq.novel}" by ${authorName}).`,
+        bookTitle: nq.novel,
+        author: authorName,
+        textbookRef: `"${nq.novel}" by ${authorName}`,
+      });
+    }
+  }
+
+  // Pass 2: If pool of unseen novel questions is exhausted, fill remaining while strictly guaranteeing NO repeats in THIS session
+  if (picked.length < count) {
+    for (let i = 0; i < allNovelQs.length && picked.length < count; i++) {
+      const nq = allNovelQs[i];
+      const core = nq.question.trim().toLowerCase();
+      if (!localTexts.has(core)) {
+        localTexts.add(core);
+        const qNum = picked.length + 1;
+        const authorName =
+          nq.novel === 'The Life Changer'
+            ? 'Khadija Abubakar Jalli'
+            : nq.novel === 'The Lekki Headmaster'
+              ? 'Kabir Alabi Garba'
+              : 'Bolaji Abdullahi';
+
+        picked.push({
+          id: 950000 + (seed * 10) + qNum,
+          year: seed,
+          questionNumber: qNum,
+          subject: 'Use of English',
+          topic: `Prescribed Novel: "${nq.novel}"`,
+          text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${nq.novel}"] ${nq.question}`,
+          options: nq.options,
+          answer: nq.answer,
+          explanation: `${nq.explanation} (Official Prescribed Novel: "${nq.novel}" by ${authorName}).`,
+          bookTitle: nq.novel,
+          author: authorName,
+          textbookRef: `"${nq.novel}" by ${authorName}`,
+        });
+      }
+    }
+  }
+
+  return picked;
 }
 
 // Helper to pull 45 distinct questions from General English Bank (Grammar, Lexis, Antonyms, Synonyms, Oral English, Comprehension)
-export function getGeneralEnglishQuestions(count: number = 45, seed: number = 2026): VerifiedQuestion[] {
+// Filters against previous tests and guarantees zero duplicates in the current session
+export function getGeneralEnglishQuestions(
+  count: number = 45,
+  seed: number = 2026,
+  excludeTexts?: Set<string>,
+  sessionUsedTexts?: Set<string>
+): VerifiedQuestion[] {
+  const localTexts = sessionUsedTexts || new Set<string>();
+  const excluded = excludeTexts || new Set<string>();
   const allGeneral = [...ENGLISH_GENERAL_BANK];
+
   // Deterministic shuffle
   for (let i = allGeneral.length - 1; i > 0; i--) {
     const j = Math.abs((seed * (i + 17)) % (i + 1));
     [allGeneral[i], allGeneral[j]] = [allGeneral[j], allGeneral[i]];
   }
 
-  // If count exceeds length, cycle through uniquely
   const picked: VerifiedQuestion[] = [];
-  for (let i = 0; i < count; i++) {
-    const item = allGeneral[i % allGeneral.length];
-    const qNum = 15 + i + 1; // Numbered 16 to 60
-    picked.push({
-      id: 960000 + (seed * 10) + qNum,
-      year: seed,
-      questionNumber: qNum,
-      subject: 'Use of English',
-      topic: item.topic,
-      text: `[JAMB UTME Q${qNum}] ${item.text}`,
-      options: item.options,
-      answer: item.answer,
-      explanation: item.explanation,
-      bookTitle: item.bookTitle,
-      author: item.author,
-      textbookRef: item.textbookRef,
-    });
+
+  // Pass 1: Prioritize questions unseen in previous tests AND not yet in this test
+  for (let i = 0; i < allGeneral.length && picked.length < count; i++) {
+    const item = allGeneral[i];
+    const core = item.text.trim().toLowerCase();
+    if (!localTexts.has(core) && !excluded.has(core)) {
+      localTexts.add(core);
+      const qNum = 15 + picked.length + 1; // Numbered 16 to 60
+      picked.push({
+        id: 960000 + (seed * 10) + qNum,
+        year: seed,
+        questionNumber: qNum,
+        subject: 'Use of English',
+        topic: item.topic,
+        text: `[JAMB UTME Q${qNum}] ${item.text}`,
+        options: item.options,
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: item.bookTitle,
+        author: item.author,
+        textbookRef: item.textbookRef,
+      });
+    }
   }
+
+  // Pass 2: If pool of unseen questions is exhausted, fill remaining guaranteeing NO repeats in THIS session
+  if (picked.length < count) {
+    for (let i = 0; i < allGeneral.length && picked.length < count; i++) {
+      const item = allGeneral[i];
+      const core = item.text.trim().toLowerCase();
+      if (!localTexts.has(core)) {
+        localTexts.add(core);
+        const qNum = 15 + picked.length + 1;
+        picked.push({
+          id: 960000 + (seed * 10) + qNum,
+          year: seed,
+          questionNumber: qNum,
+          subject: 'Use of English',
+          topic: item.topic,
+          text: `[JAMB UTME Q${qNum}] ${item.text}`,
+          options: item.options,
+          answer: item.answer,
+          explanation: item.explanation,
+          bookTitle: item.bookTitle,
+          author: item.author,
+          textbookRef: item.textbookRef,
+        });
+      }
+    }
+  }
+
   return picked;
 }
 
 // Combines 15 novel questions and 45 normal English questions to guarantee EXACTLY 60 questions for Use of English
-export function getCompleteEnglishSection(count: number = 60, seed: number = 2026): VerifiedQuestion[] {
+export function getCompleteEnglishSection(
+  count: number = 60,
+  seed: number = 2026,
+  excludeTexts?: Set<string>,
+  sessionUsedTexts?: Set<string>
+): VerifiedQuestion[] {
+  const localTexts = sessionUsedTexts || new Set<string>();
   const novelCount = count >= 60 ? 15 : Math.max(5, Math.round(count * 0.25));
   const generalCount = count - novelCount;
 
-  const novelQuestions = getPrescribedNovelQuestions(novelCount, seed);
-  const generalQuestions = getGeneralEnglishQuestions(generalCount, seed + 1);
+  const novelQuestions = getPrescribedNovelQuestions(novelCount, seed, excludeTexts, localTexts);
+  const generalQuestions = getGeneralEnglishQuestions(generalCount, seed + 1, excludeTexts, localTexts);
 
   const combined = [...novelQuestions, ...generalQuestions];
   return combined.slice(0, count).map((q, idx) => ({

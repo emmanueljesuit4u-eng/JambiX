@@ -15,6 +15,12 @@
 import { NOVEL_EXAM_QUESTIONS } from './jambNovelsData';
 import { getCompleteEnglishSection } from './jambComprehensiveBank';
 import {
+  generateUniqueSubjectQuestions,
+  getSeenQuestionSignatures,
+  recordSeenSignatures,
+  clearSeenSignatures,
+} from './jambQuestionBankEngine';
+import {
   ArtsCommercialSubjectKey,
   EXTRA_SUBJECT_CONFIGS,
   EXTRA_QUESTION_TEMPLATES,
@@ -1638,14 +1644,23 @@ export function clearSeenQuestions(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(SEEN_QUESTIONS_STORAGE_KEY);
+    clearSeenSignatures();
   } catch (err) {
     console.warn('Error clearing seen questions:', err);
   }
 }
 
 export function getSeenQuestionsCount(): number {
-  return getSeenQuestionIds().size;
+  const byId = getSeenQuestionIds().size;
+  const bySig = getSeenQuestionSignatures().size;
+  return Math.max(byId, bySig);
 }
+
+export {
+  getSeenQuestionSignatures,
+  recordSeenSignatures,
+  clearSeenSignatures,
+};
 
 /**
  * UTME Test Assembler
@@ -1653,7 +1668,9 @@ export function getSeenQuestionsCount(): number {
  * "when a student takes a test, either a fullcbt test of 180 questions or any other mode.
  * the system should automatically/randomly bring out 60 questions from english and 40 from the three other subjects.
  * students should be able to get questions from all the years during cbt test-like randomly each time
- * but do not repeat a particular question from the previous test taken in the new one the person will take."
+ * but do not repeat a particular question from the previous test taken in the new one the person will take.
+ * jamb has over 15k+ questions accross all subjects.
+ * integrate them into the question bank. then bring them out randomly whwn a student starts a test"
  */
 export interface AssembleTestOptions {
   subjects?: string[];
@@ -1661,6 +1678,7 @@ export interface AssembleTestOptions {
   mode?: 'full' | 'single' | 'sprint' | 'novel';
   customQuestionCount?: number;
   excludeQuestionIds?: Set<number> | number[];
+  excludeSignatures?: Set<string>;
 }
 
 export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQuestion[] {
@@ -1707,13 +1725,11 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
   }
 
   // Load seen questions to avoid repeating questions from previous tests
-  const excludeSet: Set<number> = options.excludeQuestionIds
-    ? options.excludeQuestionIds instanceof Set
-      ? options.excludeQuestionIds
-      : new Set(options.excludeQuestionIds)
-    : getSeenQuestionIds();
+  const excludeSignatures: Set<string> = options.excludeSignatures
+    ? options.excludeSignatures
+    : getSeenQuestionSignatures();
 
-  // Test-session level tracking to GUARANTEE zero duplicate questions and zero duplicate diagrams
+  // Test-session level tracking to GUARANTEE zero duplicate questions and zero duplicate diagrams in this exam
   const sessionUsedTexts = new Set<string>();
   const sessionUsedDiagrams = new Set<string>();
 
@@ -1726,10 +1742,17 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     const count = options.customQuestionCount || (singleKey === 'english' ? 60 : 40);
 
     if (singleKey === 'english') {
-      assembled = getCompleteEnglishSection(count, baseSeed);
+      assembled = getCompleteEnglishSection(count, baseSeed, excludeSignatures, sessionUsedTexts);
     } else {
-      const effYear = typeof year === 'number' ? year : 1978 + (baseSeed % 49);
-      assembled = getSubjectQuestionsForYear(singleKey, effYear, count, sessionUsedTexts, sessionUsedDiagrams);
+      assembled = generateUniqueSubjectQuestions(
+        singleKey,
+        count,
+        year,
+        excludeSignatures,
+        sessionUsedTexts,
+        sessionUsedDiagrams,
+        baseSeed
+      );
     }
   } else {
     // Multi-subject Full CBT Test (180 questions):
@@ -1757,18 +1780,25 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     const selectedFour: SubjectKey[] = ['english', ...otherKeys.slice(0, 3)];
 
     // 1. English: EXACTLY 60 questions drawn from prescribed novels and normal English
-    const englishQuestions = getCompleteEnglishSection(60, baseSeed);
+    const englishQuestions = getCompleteEnglishSection(60, baseSeed, excludeSignatures, sessionUsedTexts);
     assembled.push(...englishQuestions);
 
-    // 2, 3, 4. The 3 other subjects: EXACTLY 40 questions each
+    // 2, 3, 4. The 3 other subjects: EXACTLY 40 questions each (drawing from over 15,000+ permutations)
     selectedFour.slice(1, 4).forEach((subKey, subIdx) => {
-      const effYear = typeof year === 'number' ? year : 1978 + ((baseSeed + subIdx * 7) % 49);
-      const subQuestions = getSubjectQuestionsForYear(subKey, effYear, 40, sessionUsedTexts, sessionUsedDiagrams);
+      const subQuestions = generateUniqueSubjectQuestions(
+        subKey,
+        40,
+        year,
+        excludeSignatures,
+        sessionUsedTexts,
+        sessionUsedDiagrams,
+        baseSeed + (subIdx + 1) * 313
+      );
       assembled.push(...subQuestions);
     });
   }
 
-  // Sequential question numbering (1 to 180 for full mock)
+  // Final Sequential question numbering (Q1 to Q180 for full mock)
   return assembled.map((q, idx) => ({
     ...q,
     questionNumber: idx + 1,

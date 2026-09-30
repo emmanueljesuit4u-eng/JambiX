@@ -43,6 +43,8 @@ import {
   normalizeSubjectKey,
   getSeenQuestionsCount,
   markQuestionsSeen,
+  recordSeenSignatures,
+  getQuestionCoreSignature,
   clearSeenQuestions,
 } from '../../data/verifiedTextbooks';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
@@ -182,8 +184,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setTestCompleted(null);
     setTestStarted(true);
 
-    // Record question IDs as seen to guarantee zero repetition in future random tests
+    // Record question IDs and signatures as seen to guarantee zero repetition in future random tests
     markQuestionsSeen(questions.map((q) => q.id));
+    recordSeenSignatures(
+      questions.map((q) => getQuestionCoreSignature(q.text)),
+      questions.map((q) => q.id)
+    );
     setSeenCount(getSeenQuestionsCount());
   };
 
@@ -297,7 +303,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           : `${testTitle} (${selectedYear} UTME)`);
 
     let synced = false;
-    if (auth.currentUser && effectiveOnline) {
+    // Strict Leaderboard Regulation: ONLY the 2-Hour Full CBT Mock Exam (180 questions) is recorded to the live stream leaderboard
+    if (auth.currentUser && effectiveOnline && isFullTwoHour) {
       try {
         let candidateName = (studentName || '').trim();
         if (!candidateName || candidateName === 'UTME Candidate' || candidateName.includes('@')) {

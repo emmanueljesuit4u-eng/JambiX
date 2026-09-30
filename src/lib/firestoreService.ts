@@ -38,6 +38,8 @@ export interface UserProfileData {
   updatedAt?: unknown;
 }
 
+export const LEADERBOARD_SESSION_START_MS = 1775010000000;
+
 export interface TestResultData {
   id: string;
   userId: string;
@@ -50,6 +52,7 @@ export interface TestResultData {
   jambScore?: number;
   candidateName?: string;
   userEmail?: string;
+  sessionEpoch?: number;
   subjectScores?: Array<{
     subject: string;
     score: number;
@@ -149,8 +152,24 @@ export async function saveTestResult(
     console.warn('Firestore saveTestResult: student not authenticated with Firebase. Test result preserved in offline storage.');
     return;
   }
+
+  // Strict Rule: ONLY 2-hour full CBT mock exams (180 questions: English 60 + 3 others 40 each) are recorded on the live leaderboard from this moment
+  const isTwoHourFullCbt =
+    result.totalQuestions === 180 &&
+    (result.testType === 'full' || result.testType === 'full_2hr_cbt') &&
+    (result.testTitle.toLowerCase().includes('full') ||
+      result.testTitle.toLowerCase().includes('180') ||
+      result.testTitle.toLowerCase().includes('2-hr') ||
+      result.testType === 'full');
+
+  if (!isTwoHourFullCbt) {
+    console.info('Firestore saveTestResult: Only 2-Hour Full CBT Mock exams (180 Qs) are recorded on the national leaderboard. Saved to local history.');
+    return;
+  }
+
   const payload = {
     ...result,
+    sessionEpoch: LEADERBOARD_SESSION_START_MS,
     userId: auth.currentUser.uid,
   };
   try {
@@ -165,6 +184,39 @@ export async function saveTestResult(
       return;
     }
     console.warn('Firestore saveTestResult error note:', error);
+  }
+}
+
+export async function deleteTestResult(testId: string): Promise<void> {
+  try {
+    const testRef = doc(db, 'testResults', testId);
+    await deleteDoc(testRef);
+  } catch (err) {
+    console.warn('Could not delete test result:', err);
+  }
+}
+
+/**
+ * Deletes all previous test results to start up a fresh national leaderboard
+ */
+export async function clearAllLeaderboardTestResults(): Promise<number> {
+  try {
+    const q = query(collection(db, 'testResults'), limit(500));
+    const snapshot = await getDocs(q);
+    let deletedCount = 0;
+    const deletePromises = snapshot.docs.map(async (docSnap) => {
+      try {
+        await deleteDoc(doc(db, 'testResults', docSnap.id));
+        deletedCount++;
+      } catch (err) {
+        console.warn(`Could not delete testResult ${docSnap.id}:`, err);
+      }
+    });
+    await Promise.all(deletePromises);
+    return deletedCount;
+  } catch (err) {
+    console.warn('clearAllLeaderboardTestResults error:', err);
+    return 0;
   }
 }
 
@@ -576,10 +628,32 @@ export function subscribeToAllTestResults(
     return onSnapshot(
       q,
       (snapshot) => {
-        const results = snapshot.docs.map((d) => ({
-          ...d.data(),
-          id: d.id,
-        })) as TestResultData[];
+        const results = snapshot.docs
+          .map((d) => ({
+            ...d.data(),
+            id: d.id,
+          } as TestResultData))
+          .filter((t) => {
+            // Strictly 2-hour full CBT mock tests only (180 questions across 4 subjects)
+            if (t.totalQuestions !== 180) return false;
+            const typeLower = (t.testType || '').toLowerCase();
+            if (typeLower !== 'full' && typeLower !== 'full_2hr_cbt') return false;
+
+            // Purge results from before this fresh restart moment
+            if (t.sessionEpoch && t.sessionEpoch < LEADERBOARD_SESSION_START_MS) return false;
+            if (t.createdAt) {
+              const createdMs =
+                typeof t.createdAt === 'object' && t.createdAt !== null && 'toMillis' in t.createdAt
+                  ? (t.createdAt as any).toMillis()
+                  : typeof t.createdAt === 'string'
+                  ? new Date(t.createdAt).getTime()
+                  : typeof t.createdAt === 'number'
+                  ? t.createdAt
+                  : 0;
+              if (createdMs > 0 && createdMs < LEADERBOARD_SESSION_START_MS) return false;
+            }
+            return true;
+          });
         onUpdate(results);
       },
       (error) => {

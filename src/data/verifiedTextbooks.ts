@@ -1430,6 +1430,10 @@ export {
   markQuestionsSeen,
   clearSeenQuestions,
   getSeenQuestionsCount,
+  getSeenQuestionSignatures,
+  recordSeenSignatures,
+  clearSeenSignatures,
+  getQuestionCoreSignature,
   scatterQuestionOptions,
 } from './jambPastQuestions';
 export type {

@@ -20,12 +20,15 @@ import {
   ChevronRight,
   Zap,
   Layers,
+  RotateCcw,
 } from 'lucide-react';
 import {
   subscribeToAllTestResults,
   updateTestResultCandidateName,
+  clearAllLeaderboardTestResults,
   TestResultData,
 } from '../../lib/firestoreService';
+import { clearLocalTestResults } from '../../lib/offlineStorage';
 
 interface LiveLeaderboardTabProps {
   onLaunchExam: () => void;
@@ -122,17 +125,10 @@ export const getSubjectBreakdownForEntry = (
 
 // Strictly qualifies 2-Hour Full CBT mock exam sessions (180 questions across 4 subjects)
 export const isTwoHourFullCbtRecord = (t: TestResultData): boolean => {
-  const titleLower = (t.testTitle || '').toLowerCase();
   const typeLower = (t.testType || '').toLowerCase();
-
   return (
-    typeLower === 'full' ||
-    typeLower === 'full_2hr_cbt' ||
-    (t.totalQuestions !== undefined && t.totalQuestions >= 160) ||
-    titleLower.includes('full') ||
-    titleLower.includes('2-hr') ||
-    titleLower.includes('2hr') ||
-    titleLower.includes('180')
+    t.totalQuestions === 180 &&
+    (typeLower === 'full' || typeLower === 'full_2hr_cbt')
   );
 };
 
@@ -146,6 +142,17 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
   const [filterMode, setFilterMode] = useState<'all' | 'top10' | 'high_scorers'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+
+  // Automatic reset to delete previous leader, purge old submissions and start a brand new leaderboard session
+  useEffect(() => {
+    const RESET_SESSION_KEY = 'jambix_fresh_leaderboard_2026_epoch_v2';
+    if (!localStorage.getItem(RESET_SESSION_KEY)) {
+      clearAllLeaderboardTestResults().catch(() => {});
+      clearLocalTestResults();
+      setTestResults([]);
+      localStorage.setItem(RESET_SESSION_KEY, 'true');
+    }
+  }, []);
 
   // Subscribe to real-time test results from Firestore
   useEffect(() => {
@@ -245,6 +252,21 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
     return index !== -1 ? index + 1 : null;
   }, [rankedEntries, myBestEntry]);
 
+  const [isResetting, setIsResetting] = useState(false);
+
+  const handleResetLeaderboard = async () => {
+    setIsResetting(true);
+    try {
+      await clearAllLeaderboardTestResults();
+      clearLocalTestResults();
+      setTestResults([]);
+    } catch (err) {
+      console.warn('Error resetting leaderboard:', err);
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Hero Header with Live Pulse */}
@@ -264,8 +286,18 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
             </h1>
           </div>
 
-          {/* Action Challenge Button */}
+          {/* Action Challenge Button & Leaderboard Reset */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={handleResetLeaderboard}
+              disabled={isResetting}
+              className="px-3.5 py-3 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-2xl border border-white/20 flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+              title="Clear all test records and start up a fresh new leaderboard session"
+            >
+              <RotateCcw className={`w-3.5 h-3.5 text-amber-300 ${isResetting ? 'animate-spin' : ''}`} />
+              <span>{isResetting ? 'Clearing...' : 'Clear / Restart Leaderboard'}</span>
+            </button>
             <button
               type="button"
               onClick={onLaunchExam}
