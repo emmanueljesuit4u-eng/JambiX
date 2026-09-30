@@ -987,7 +987,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
                 <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 shrink-0">
                   <span className="text-[11px] text-slate-500 dark:text-slate-400">Current Subject:</span>
-                  <span className="font-bold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-md border border-rose-200 dark:border-rose-900/60 text-xs">
+                  <span className="font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md border border-blue-200 dark:border-blue-900/60 text-xs">
                     {subjectPartitions.find((p) => p.subject === activeQuestions[currentQuestionIndex]?.subject)?.answeredCount || 0} of {subjectPartitions.find((p) => p.subject === activeQuestions[currentQuestionIndex]?.subject)?.count || 0} Answered
                   </span>
                 </div>
@@ -996,7 +996,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
               {/* Question Metadata & Timer Bar - Clean and Uncluttered */}
               <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-2.5 py-1 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 rounded-lg font-black text-xs">
+                  <span className="px-2.5 py-1 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 rounded-lg font-black text-xs">
                     {activeQuestions[currentQuestionIndex]?.subject}
                   </span>
                   <span className="text-xs text-slate-500 font-bold">
@@ -1064,14 +1064,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         }
                         className={`w-full p-3.5 rounded-xl border text-left text-xs sm:text-sm flex items-center gap-3 transition-all cursor-pointer ${
                           isChecked
-                            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 font-semibold shadow-2xs ring-2 ring-rose-500/40'
+                            ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-500 text-blue-950 dark:text-blue-200 font-semibold shadow-2xs ring-2 ring-blue-500/40'
                             : 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/60'
                         }`}
                       >
                         <span
                           className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
                             isChecked
-                              ? 'bg-rose-600 text-white shadow-xs'
+                              ? 'bg-blue-600 text-white shadow-xs'
                               : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600'
                           }`}
                         >
