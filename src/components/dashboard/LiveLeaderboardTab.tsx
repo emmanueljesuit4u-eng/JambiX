@@ -413,8 +413,8 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
         )}
       </div>
 
-      {/* Candidate Personal Standing Card */}
-      {myBestEntry ? (
+      {/* Candidate Personal Standing Card (shown when candidate has completed a 2-Hour Full CBT) */}
+      {myBestEntry && (
         <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm shrink-0">
@@ -444,26 +444,6 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
             className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer shrink-0 shadow-xs"
           >
             Improve Your 2-Hr Score
-          </button>
-        </div>
-      ) : (
-        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-300 dark:border-amber-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <span className="text-amber-500 text-base">⚠️</span>
-              <span>You haven&apos;t taken the 2-Hour Full CBT yet!</span>
-            </h4>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-              Only candidates who complete the comprehensive <strong>2-Hour Full Mock Exam (180 questions)</strong> appear on the live stream leaderboard.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onLaunchExam}
-            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer shrink-0 shadow-xs flex items-center gap-1.5"
-          >
-            <Play className="w-3.5 h-3.5 fill-white" />
-            <span>Take 2-Hour Mock &amp; Qualify</span>
           </button>
         </div>
       )}

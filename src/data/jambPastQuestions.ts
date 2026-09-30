@@ -13,6 +13,7 @@
  */
 
 import { NOVEL_EXAM_QUESTIONS } from './jambNovelsData';
+import { getCompleteEnglishSection } from './jambComprehensiveBank';
 import {
   ArtsCommercialSubjectKey,
   EXTRA_SUBJECT_CONFIGS,
@@ -1715,69 +1716,34 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
   // Test-session level tracking to GUARANTEE zero duplicate questions and zero duplicate diagrams
   const sessionUsedTexts = new Set<string>();
   const sessionUsedDiagrams = new Set<string>();
-  const sessionQuestionIds = new Set<number>();
 
   let assembled: VerifiedQuestion[] = [];
+  const baseSeed = typeof year === 'number' ? year : Math.floor(Math.random() * 100000);
 
   // If single subject mode (or only 1 subject specified)
   if (mode === 'single' || chosenKeys.length === 1) {
     const singleKey = chosenKeys[0] || 'english';
     const count = options.customQuestionCount || (singleKey === 'english' ? 60 : 40);
-    const maxQIndex = singleKey === 'english' ? 60 : 40;
 
-    if (typeof year === 'number') {
-      assembled = getSubjectQuestionsForYear(singleKey, year, count, sessionUsedTexts, sessionUsedDiagrams);
+    if (singleKey === 'english') {
+      assembled = getCompleteEnglishSection(count, baseSeed);
     } else {
-      // Randomly select across all 49 years (1978 - 2026) avoiding previously seen question IDs and duplicates
-      const picked: VerifiedQuestion[] = [];
-      let attempts = 0;
-      const maxAttempts = count * 80;
-
-      while (picked.length < count && attempts < maxAttempts) {
-        attempts++;
-        const randomYear = 1978 + Math.floor(Math.random() * (2026 - 1978 + 1));
-        const randomQIndex = Math.floor(Math.random() * maxQIndex);
-        const q = generateQuestionForYear(singleKey, randomYear, randomQIndex);
-        const coreText = getQuestionCoreSignature(q.text);
-
-        if (!sessionQuestionIds.has(q.id) && !sessionUsedTexts.has(coreText) && !excludeSet.has(q.id)) {
-          sessionQuestionIds.add(q.id);
-          sessionUsedTexts.add(coreText);
-          picked.push(q);
-        }
-      }
-
-      // If pool of unseen questions is exhausted, fill remaining with any unique question
-      if (picked.length < count) {
-        let fallbackAttempts = 0;
-        while (picked.length < count && fallbackAttempts < 2000) {
-          fallbackAttempts++;
-          const randomYear = 1978 + Math.floor(Math.random() * (2026 - 1978 + 1));
-          const randomQIndex = Math.floor(Math.random() * maxQIndex);
-          const q = generateQuestionForYear(singleKey, randomYear, randomQIndex);
-          const coreText = getQuestionCoreSignature(q.text);
-          if (!sessionQuestionIds.has(q.id) && !sessionUsedTexts.has(coreText)) {
-            sessionQuestionIds.add(q.id);
-            sessionUsedTexts.add(coreText);
-            picked.push(q);
-          }
-        }
-      }
-
-      assembled = injectRandomImageQuestions(picked, singleKey, 2025, sessionUsedDiagrams, sessionUsedTexts);
+      const effYear = typeof year === 'number' ? year : 1978 + (baseSeed % 49);
+      assembled = getSubjectQuestionsForYear(singleKey, effYear, count, sessionUsedTexts, sessionUsedDiagrams);
     }
   } else {
     // Multi-subject Full CBT Test (180 questions):
-    // 60 questions from English + 40 questions each from the 3 other selected subjects
+    // EXACTLY 60 questions from English (15 Prescribed Novels + 45 Normal English)
+    // + EXACTLY 40 questions each from the 3 other selected subjects
     const otherKeys: SubjectKey[] = chosenKeys.filter((k) => k !== 'english');
     // Fill other subjects up to 3 if fewer were provided
     const fallbackDefaults: SubjectKey[] = [
       'mathematics',
-      'economics',
-      'government',
       'physics',
       'chemistry',
       'biology',
+      'economics',
+      'government',
       'literature',
       'commerce',
     ];
@@ -1790,92 +1756,23 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
 
     const selectedFour: SubjectKey[] = ['english', ...otherKeys.slice(0, 3)];
 
-    selectedFour.forEach((subKey) => {
-      const count = subKey === 'english' ? 60 : 40;
-      const maxQIndex = subKey === 'english' ? 60 : 40;
-      
-      if (typeof year === 'number') {
-        // Exactly from the chosen year with deduplication tracking
-        const subQuestions = getSubjectQuestionsForYear(subKey, year, count, sessionUsedTexts, sessionUsedDiagrams);
-        assembled.push(...subQuestions);
-      } else {
-        // Randomly distributed across JAMB years 1978 - 2026, avoiding questions from previous tests and duplicates
-        const subPicked: VerifiedQuestion[] = [];
-        let attempts = 0;
-        const maxAttempts = count * 80;
+    // 1. English: EXACTLY 60 questions drawn from prescribed novels and normal English
+    const englishQuestions = getCompleteEnglishSection(60, baseSeed);
+    assembled.push(...englishQuestions);
 
-        while (subPicked.length < count && attempts < maxAttempts) {
-          attempts++;
-          const randomYear = 1978 + Math.floor(Math.random() * (2026 - 1978 + 1));
-          const randomQIndex = Math.floor(Math.random() * maxQIndex);
-          const q = generateQuestionForYear(subKey, randomYear, randomQIndex);
-          const coreText = getQuestionCoreSignature(q.text);
-
-          if (!sessionQuestionIds.has(q.id) && !sessionUsedTexts.has(coreText) && !excludeSet.has(q.id)) {
-            sessionQuestionIds.add(q.id);
-            sessionUsedTexts.add(coreText);
-            subPicked.push(q);
-          }
-        }
-
-        // If user has exhausted almost all unseen questions for this subject, fill remaining uniquely
-        if (subPicked.length < count) {
-          let fallbackAttempts = 0;
-          while (subPicked.length < count && fallbackAttempts < 2000) {
-            fallbackAttempts++;
-            const randomYear = 1978 + Math.floor(Math.random() * (2026 - 1978 + 1));
-            const randomQIndex = Math.floor(Math.random() * maxQIndex);
-            const q = generateQuestionForYear(subKey, randomYear, randomQIndex);
-            const coreText = getQuestionCoreSignature(q.text);
-            if (!sessionQuestionIds.has(q.id) && !sessionUsedTexts.has(coreText)) {
-              sessionQuestionIds.add(q.id);
-              sessionUsedTexts.add(coreText);
-              subPicked.push(q);
-            }
-          }
-        }
-
-        assembled.push(...injectRandomImageQuestions(subPicked, subKey, 2025, sessionUsedDiagrams, sessionUsedTexts));
-      }
+    // 2, 3, 4. The 3 other subjects: EXACTLY 40 questions each
+    selectedFour.slice(1, 4).forEach((subKey, subIdx) => {
+      const effYear = typeof year === 'number' ? year : 1978 + ((baseSeed + subIdx * 7) % 49);
+      const subQuestions = getSubjectQuestionsForYear(subKey, effYear, 40, sessionUsedTexts, sessionUsedDiagrams);
+      assembled.push(...subQuestions);
     });
   }
 
-  // FINAL POST-ASSEMBLY FAILSAFE AUDIT:
-  // Absolutely guarantee that neither a question nor a diagram is EVER repeated more than once!
-  const finalGuaranteed: VerifiedQuestion[] = [];
-  const finalSeenTexts = new Set<string>();
-  const finalSeenDiagrams = new Set<string>();
-
-  for (let i = 0; i < assembled.length; i++) {
-    const q = assembled[i];
-    const coreText = getQuestionCoreSignature(q.text);
-
-    // If text was seen before in this session, skip duplicate
-    if (finalSeenTexts.has(coreText)) {
-      continue;
-    }
-    finalSeenTexts.add(coreText);
-
-    // If diagram was seen before in this session, strip repeated diagram to prevent duplicate visuals
-    if (q.hasImage || q.imageSvg) {
-      const diagSig = getDiagramSignature(q);
-      if (diagSig && finalSeenDiagrams.has(diagSig)) {
-        q.hasImage = false;
-        q.imageSvg = undefined;
-        q.imageCaption = undefined;
-        q.imageAlt = undefined;
-      } else if (diagSig) {
-        finalSeenDiagrams.add(diagSig);
-      }
-    }
-
-    finalGuaranteed.push(q);
-  }
-
-  // Sequential question numbering
-  return finalGuaranteed.map((q, idx) => ({
+  // Sequential question numbering (1 to 180 for full mock)
+  return assembled.map((q, idx) => ({
     ...q,
     questionNumber: idx + 1,
+    id: q.id || (100000 + idx + 1),
   }));
 }
 
