@@ -831,6 +831,7 @@ export const ENGLISH_GENERAL_BANK: BankQuestionDefinition[] = [
 ];
 
 // Helper to pull 15 distinct questions from prescribed novels for English Part 1
+// Evenly diversified across all 3 prescribed novels (5 from each)
 // Filters against previous tests and guarantees zero duplicates in the current session
 export function getPrescribedNovelQuestions(
   count: number = 15,
@@ -840,27 +841,51 @@ export function getPrescribedNovelQuestions(
 ): VerifiedQuestion[] {
   const localTexts = sessionUsedTexts || new Set<string>();
   const excluded = excludeTexts || new Set<string>();
-  const allNovelQs = [...NOVEL_EXAM_QUESTIONS];
 
-  // Deterministic shuffle based on seed
-  for (let i = allNovelQs.length - 1; i > 0; i--) {
-    const j = Math.abs((seed * (i + 13)) % (i + 1));
-    [allNovelQs[i], allNovelQs[j]] = [allNovelQs[j], allNovelQs[i]];
-  }
+  // Group novel questions by title to guarantee even diversification across all 3 prescribed texts
+  const novelsList = ['The Life Changer', 'Sweet Sixteen', 'The Lekki Headmaster'] as const;
+  const groups: Record<string, typeof NOVEL_EXAM_QUESTIONS> = {
+    'The Life Changer': [],
+    'Sweet Sixteen': [],
+    'The Lekki Headmaster': [],
+  };
+
+  NOVEL_EXAM_QUESTIONS.forEach((q) => {
+    if (groups[q.novel]) {
+      groups[q.novel].push(q);
+    }
+  });
+
+  // Shuffle each novel group deterministically
+  novelsList.forEach((novelKey, idx) => {
+    const arr = groups[novelKey];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.abs((seed * (i + 13 + idx * 7)) % (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  });
 
   const picked: VerifiedQuestion[] = [];
+  const targetPerNovel = Math.floor(count / 3);
 
-  // Pass 1: Prioritize questions unseen in previous tests AND not yet in this test
-  for (let i = 0; i < allNovelQs.length && picked.length < count; i++) {
-    const nq = allNovelQs[i];
-    const core = nq.question.trim().toLowerCase();
-    if (!localTexts.has(core) && !excluded.has(core)) {
+  // Pass 1: Draw evenly across all 3 novels, prioritizing questions unseen in previous tests
+  for (let round = 0; round < count && picked.length < count; round++) {
+    const novelKey = novelsList[round % 3];
+    const candidatePool = groups[novelKey];
+
+    const unseenCandidate = candidatePool.find((nq) => {
+      const core = nq.question.trim().toLowerCase();
+      return !localTexts.has(core) && !excluded.has(core);
+    });
+
+    if (unseenCandidate) {
+      const core = unseenCandidate.question.trim().toLowerCase();
       localTexts.add(core);
       const qNum = picked.length + 1;
       const authorName =
-        nq.novel === 'The Life Changer'
+        unseenCandidate.novel === 'The Life Changer'
           ? 'Khadija Abubakar Jalli'
-          : nq.novel === 'The Lekki Headmaster'
+          : unseenCandidate.novel === 'The Lekki Headmaster'
             ? 'Kabir Alabi Garba'
             : 'Bolaji Abdullahi';
 
@@ -869,20 +894,22 @@ export function getPrescribedNovelQuestions(
         year: seed,
         questionNumber: qNum,
         subject: 'Use of English',
-        topic: `Prescribed Novel: "${nq.novel}"`,
-        text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${nq.novel}"] ${nq.question}`,
-        options: nq.options,
-        answer: nq.answer,
-        explanation: `${nq.explanation} (Official Prescribed Novel: "${nq.novel}" by ${authorName}).`,
-        bookTitle: nq.novel,
+        topic: `Prescribed Novel: "${unseenCandidate.novel}"`,
+        text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${unseenCandidate.novel}"] ${unseenCandidate.question}`,
+        options: unseenCandidate.options,
+        answer: unseenCandidate.answer,
+        explanation: `${unseenCandidate.explanation} (Official Prescribed Novel: "${unseenCandidate.novel}" by ${authorName}).`,
+        bookTitle: unseenCandidate.novel,
         author: authorName,
-        textbookRef: `"${nq.novel}" by ${authorName}`,
+        textbookRef: `"${unseenCandidate.novel}" by ${authorName}`,
       });
     }
   }
 
-  // Pass 2: If pool of unseen novel questions is exhausted, fill remaining while strictly guaranteeing NO repeats in THIS session
+  // Pass 2: If pool of unseen novel questions for any specific novel is exhausted,
+  // draw remaining from all novels while STILL STRICTLY GUARANTEEING ZERO DUPLICATES IN THIS SESSION
   if (picked.length < count) {
+    const allNovelQs = [...NOVEL_EXAM_QUESTIONS];
     for (let i = 0; i < allNovelQs.length && picked.length < count; i++) {
       const nq = allNovelQs[i];
       const core = nq.question.trim().toLowerCase();
@@ -917,7 +944,15 @@ export function getPrescribedNovelQuestions(
   return picked;
 }
 
-// Helper to pull 45 distinct questions from General English Bank (Grammar, Lexis, Antonyms, Synonyms, Oral English, Comprehension)
+// Helper to pull 45 distinct questions from General English Bank
+// 100% Evenly Diversified Across ALL Core English Topics:
+// 1. Grammatical Concord & Agreement
+// 2. Tenses, Modals & Conditional Clauses
+// 3. Prepositions & Phrasal Verbs
+// 4. Synonyms (Nearest in Meaning)
+// 5. Antonyms (Opposites in Meaning)
+// 6. Oral English (Vowel Contrasts, Consonants, Silent Letters & Stress)
+// 7. Idiomatic Expressions & Figurative Language
 // Filters against previous tests and guarantees zero duplicates in the current session
 export function getGeneralEnglishQuestions(
   count: number = 45,
@@ -927,21 +962,60 @@ export function getGeneralEnglishQuestions(
 ): VerifiedQuestion[] {
   const localTexts = sessionUsedTexts || new Set<string>();
   const excluded = excludeTexts || new Set<string>();
-  const allGeneral = [...ENGLISH_GENERAL_BANK];
 
-  // Deterministic shuffle
-  for (let i = allGeneral.length - 1; i > 0; i--) {
-    const j = Math.abs((seed * (i + 17)) % (i + 1));
-    [allGeneral[i], allGeneral[j]] = [allGeneral[j], allGeneral[i]];
-  }
+  // Classify questions into standard UTME English topic buckets
+  const buckets: { name: string; items: typeof ENGLISH_GENERAL_BANK }[] = [
+    { name: 'Concord', items: [] },
+    { name: 'Tenses', items: [] },
+    { name: 'Prepositions', items: [] },
+    { name: 'Synonyms', items: [] },
+    { name: 'Antonyms', items: [] },
+    { name: 'Oral English', items: [] },
+    { name: 'Idioms', items: [] },
+    { name: 'General Lexis', items: [] },
+  ];
+
+  ENGLISH_GENERAL_BANK.forEach((q) => {
+    const t = q.topic.toLowerCase();
+    if (t.includes('concord') || t.includes('agreement') || t.includes('neither') || t.includes('number of')) {
+      buckets[0].items.push(q);
+    } else if (t.includes('tense') || t.includes('conditional') || t.includes('modal') || t.includes('subjunctive')) {
+      buckets[1].items.push(q);
+    } else if (t.includes('preposition') || t.includes('phrasal') || t.includes('collocation') || t.includes('prefer') || t.includes('devoid')) {
+      buckets[2].items.push(q);
+    } else if (t.includes('synonym') || t.includes('nearest')) {
+      buckets[3].items.push(q);
+    } else if (t.includes('antonym') || t.includes('opposite')) {
+      buckets[4].items.push(q);
+    } else if (t.includes('oral') || t.includes('vowel') || t.includes('consonant') || t.includes('stress') || t.includes('rhyme') || t.includes('silent')) {
+      buckets[5].items.push(q);
+    } else if (t.includes('idiom') || t.includes('expression') || t.includes('figurative')) {
+      buckets[6].items.push(q);
+    } else {
+      buckets[7].items.push(q);
+    }
+  });
+
+  // Shuffle items within each bucket deterministically
+  buckets.forEach((b, bIdx) => {
+    for (let i = b.items.length - 1; i > 0; i--) {
+      const j = Math.abs((seed * (i + 17 + bIdx * 5)) % (i + 1));
+      [b.items[i], b.items[j]] = [b.items[j], b.items[i]];
+    }
+  });
 
   const picked: VerifiedQuestion[] = [];
 
-  // Pass 1: Prioritize questions unseen in previous tests AND not yet in this test
-  for (let i = 0; i < allGeneral.length && picked.length < count; i++) {
-    const item = allGeneral[i];
-    const core = item.text.trim().toLowerCase();
-    if (!localTexts.has(core) && !excluded.has(core)) {
+  // Pass 1: Round-robin across all 8 topic buckets to guarantee 100% topic diversification!
+  for (let step = 0; step < count * 3 && picked.length < count; step++) {
+    const bucket = buckets[step % buckets.length];
+    const unseenItem = bucket.items.find((item) => {
+      const core = item.text.trim().toLowerCase();
+      return !localTexts.has(core) && !excluded.has(core);
+    });
+
+    if (unseenItem) {
+      const core = unseenItem.text.trim().toLowerCase();
       localTexts.add(core);
       const qNum = 15 + picked.length + 1; // Numbered 16 to 60
       picked.push({
@@ -949,20 +1023,21 @@ export function getGeneralEnglishQuestions(
         year: seed,
         questionNumber: qNum,
         subject: 'Use of English',
-        topic: item.topic,
-        text: `[JAMB UTME Q${qNum}] ${item.text}`,
-        options: item.options,
-        answer: item.answer,
-        explanation: item.explanation,
-        bookTitle: item.bookTitle,
-        author: item.author,
-        textbookRef: item.textbookRef,
+        topic: unseenItem.topic,
+        text: `[JAMB UTME Q${qNum}] ${unseenItem.text}`,
+        options: unseenItem.options,
+        answer: unseenItem.answer,
+        explanation: unseenItem.explanation,
+        bookTitle: unseenItem.bookTitle,
+        author: unseenItem.author,
+        textbookRef: unseenItem.textbookRef,
       });
     }
   }
 
-  // Pass 2: If pool of unseen questions is exhausted, fill remaining guaranteeing NO repeats in THIS session
+  // Pass 2: If pool of unseen questions is exhausted, fill remaining while STRICTLY GUARANTEEING ZERO DUPLICATES IN THIS SESSION
   if (picked.length < count) {
+    const allGeneral = [...ENGLISH_GENERAL_BANK];
     for (let i = 0; i < allGeneral.length && picked.length < count; i++) {
       const item = allGeneral[i];
       const core = item.text.trim().toLowerCase();

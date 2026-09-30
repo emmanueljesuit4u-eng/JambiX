@@ -678,7 +678,29 @@ export async function getAllTestResults(): Promise<TestResultData[]> {
   try {
     const q = query(collection(db, 'testResults'), limit(200));
     const snapshot = await getDocs(q);
-    return snapshot.docs.map((d) => d.data() as TestResultData);
+    return snapshot.docs
+      .map((d) => ({
+        ...d.data(),
+        id: d.id,
+      } as TestResultData))
+      .filter((t) => {
+        if (t.totalQuestions !== 180) return false;
+        const typeLower = (t.testType || '').toLowerCase();
+        if (typeLower !== 'full' && typeLower !== 'full_2hr_cbt') return false;
+        if (t.sessionEpoch && t.sessionEpoch < LEADERBOARD_SESSION_START_MS) return false;
+        if (t.createdAt) {
+          const createdMs =
+            typeof t.createdAt === 'object' && t.createdAt !== null && 'toMillis' in t.createdAt
+              ? (t.createdAt as any).toMillis()
+              : typeof t.createdAt === 'string'
+              ? new Date(t.createdAt).getTime()
+              : typeof t.createdAt === 'number'
+              ? t.createdAt
+              : 0;
+          if (createdMs > 0 && createdMs < LEADERBOARD_SESSION_START_MS) return false;
+        }
+        return true;
+      });
   } catch (error) {
     if (!isOfflineError(error)) {
       handleFirestoreError(error, OperationType.LIST, path);
