@@ -1438,6 +1438,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         testType={activeTest.type}
         initialSubject={activeTest.subject}
         initialYear={activeTest.year}
+        studentName={user?.name}
       />
 
       {/* OPay Activation Paywall Modal */}

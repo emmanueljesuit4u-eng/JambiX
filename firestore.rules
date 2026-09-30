@@ -56,7 +56,7 @@ service cloud.firestore {
 
     function isValidTestResult(data) {
       return data.keys().hasAll(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions']) &&
-             data.keys().hasOnly(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions', 'percentage', 'timeSpentSeconds', 'createdAt', 'candidateName', 'userEmail']) &&
+             data.keys().hasOnly(['id', 'userId', 'testTitle', 'testType', 'score', 'totalQuestions', 'percentage', 'timeSpentSeconds', 'createdAt', 'candidateName', 'userEmail', 'jambScore', 'subjectScores']) &&
              data.id is string && isValidId(data.id) &&
              data.userId is string && data.userId == request.auth.uid &&
              data.testTitle is string && data.testTitle.size() <= 250 &&
@@ -64,6 +64,8 @@ service cloud.firestore {
              data.score is number && data.score >= 0 &&
              data.totalQuestions is number && data.totalQuestions > 0 &&
              data.score <= data.totalQuestions &&
+             (!('jambScore' in data) || (data.jambScore is number && data.jambScore >= 0 && data.jambScore <= 400)) &&
+             (!('subjectScores' in data) || (data.subjectScores is list)) &&
              (!('candidateName' in data) || (data.candidateName is string && data.candidateName.size() <= 120)) &&
              (!('userEmail' in data) || (data.userEmail is string && data.userEmail.size() <= 120));
     }
@@ -113,7 +115,7 @@ service cloud.firestore {
       allow get: if true;
       allow list: if true;
       allow create: if isSignedIn() && isValidId(resultId) && isValidTestResult(incoming());
-      allow update: if isAdmin();
+      allow update: if isAdmin() || (isSignedIn() && existing().userId == request.auth.uid && isValidTestResult(incoming()) && incoming().userId == existing().userId);
       allow delete: if isAdmin() || (isSignedIn() && existing().userId == request.auth.uid);
     }
 

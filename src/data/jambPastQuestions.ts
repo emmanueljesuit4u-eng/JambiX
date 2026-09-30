@@ -1933,8 +1933,20 @@ export function calculateJambGrade(
 
     totalRawCorrect += subCorrect;
     const subTotal = group.questions.length;
-    // Scale each subject to 100 marks (JAMB Standard)
-    const jambScaledScore = subTotal > 0 ? Math.round((subCorrect / subTotal) * 100) : 0;
+    const isEnglish = subjectName.toLowerCase().includes('english');
+
+    // Official JAMB UTME Marking Scheme:
+    // 1. Non-English subjects: 40 questions = 100 marks (exactly 2.5 marks per question)
+    // 2. Use of English: 60 questions = 100 marks (~1.667 marks per question)
+    // 3. Any custom subset scaled accurately to 100 marks
+    let jambScaledScore = 0;
+    if (subTotal === 40 && !isEnglish) {
+      jambScaledScore = Math.min(100, Math.round(subCorrect * 2.5));
+    } else if (subTotal === 60 && isEnglish) {
+      jambScaledScore = Math.min(100, Math.round((subCorrect / 60) * 100));
+    } else if (subTotal > 0) {
+      jambScaledScore = Math.min(100, Math.round((subCorrect / subTotal) * 100));
+    }
     const percentage = subTotal > 0 ? Math.round((subCorrect / subTotal) * 100) : 0;
 
     const sampleQ = group.questions[0];
@@ -1952,10 +1964,13 @@ export function calculateJambGrade(
   // Calculate total JAMB Aggregate Score out of 400
   let totalJambScore = 0;
   if (breakdowns.length === 4) {
-    // Standard 4 subjects = sum of 4 scaled scores out of 100
-    totalJambScore = breakdowns.reduce((acc, curr) => acc + curr.jambScaledScore, 0);
+    // Official 4-subject UTME: sum of all 4 subjects (100 + 100 + 100 + 100 = 400 marks)
+    totalJambScore = Math.min(400, breakdowns.reduce((acc, curr) => acc + curr.jambScaledScore, 0));
+  } else if (breakdowns.length === 1) {
+    // Single-subject drill: subject score is out of 100, projected to 400 marks
+    totalJambScore = Math.min(400, breakdowns[0].jambScaledScore * 4);
   } else if (breakdowns.length > 0) {
-    // If single subject or non-standard count, scale proportionally to 400
+    // Proportional scaling to 400 marks for custom multi-subject tests
     const rawSum = breakdowns.reduce((acc, curr) => acc + curr.jambScaledScore, 0);
     totalJambScore = Math.min(400, Math.round((rawSum / (breakdowns.length * 100)) * 400));
   }

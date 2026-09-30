@@ -47,8 +47,17 @@ export interface TestResultData {
   totalQuestions: number;
   percentage: number;
   timeSpentSeconds: number;
+  jambScore?: number;
   candidateName?: string;
   userEmail?: string;
+  subjectScores?: Array<{
+    subject: string;
+    score: number;
+    total: number;
+    correct?: number;
+    percentage?: number;
+    bookTitle?: string;
+  }>;
   createdAt?: unknown;
 }
 
@@ -156,6 +165,19 @@ export async function saveTestResult(
       return;
     }
     console.warn('Firestore saveTestResult error note:', error);
+  }
+}
+
+export async function updateTestResultCandidateName(
+  testId: string,
+  candidateName: string
+): Promise<void> {
+  if (!auth.currentUser) return;
+  try {
+    const testRef = doc(db, 'testResults', testId);
+    await updateDoc(testRef, { candidateName });
+  } catch (err) {
+    console.warn('Could not update test result candidateName:', err);
   }
 }
 

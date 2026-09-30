@@ -29,7 +29,7 @@ import {
   Calculator,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
-import { saveTestResult } from '../../lib/firestoreService';
+import { saveTestResult, getUserProfile } from '../../lib/firestoreService';
 import { saveLocalTestResult } from '../../lib/offlineStorage';
 import { useNetwork } from '../../context/NetworkContext';
 import {
@@ -55,6 +55,7 @@ interface CbtTestModalProps {
   testType: string;
   initialSubject?: string;
   initialYear?: number;
+  studentName?: string;
 }
 
 export const CbtTestModal: React.FC<CbtTestModalProps> = ({
@@ -64,6 +65,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   testType,
   initialSubject,
   initialYear,
+  studentName,
 }) => {
   const { effectiveOnline } = useNetwork();
 
@@ -284,29 +286,56 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const testId = `test_${Date.now()}`;
     const timeSpent = duration * 60 - timeLeftSeconds;
 
+    const isFullTwoHour = examMode === 'full' || duration === 120 || activeQuestions.length >= 180;
+    const computedTestType = isFullTwoHour ? 'full' : (examMode || testType || 'single');
+    const computedTitle = isFullTwoHour
+      ? (selectedYear === 'random'
+          ? 'Full JAMB UTME CBT (2-Hr Standard Mock - 1978-2026 Mix)'
+          : `Full JAMB UTME CBT (2-Hr Standard Mock - ${selectedYear})`)
+      : (selectedYear === 'random'
+          ? `${testTitle} (1978-2026 Cross-Year Mix)`
+          : `${testTitle} (${selectedYear} UTME)`);
+
     let synced = false;
     if (auth.currentUser && effectiveOnline) {
       try {
-        const candidateName =
-          auth.currentUser.displayName ||
-          auth.currentUser.email?.split('@')[0] ||
-          'UTME Candidate';
+        let candidateName = (studentName || '').trim();
+        if (!candidateName || candidateName === 'UTME Candidate' || candidateName.includes('@')) {
+          try {
+            const profile = await getUserProfile(auth.currentUser.uid);
+            if (profile && profile.fullName && profile.fullName.trim()) {
+              candidateName = profile.fullName.trim();
+            }
+          } catch (e) {
+            console.warn('Could not fetch user profile for registered name:', e);
+          }
+        }
+        if (!candidateName) {
+          candidateName = auth.currentUser.displayName || auth.currentUser.email?.split('@')[0] || 'UTME Candidate';
+        }
         const userEmail = auth.currentUser.email || '';
+        const subjectScores = grade.subjectBreakdowns.map((sb) => ({
+          subject: sb.subject,
+          score: sb.jambScaledScore,
+          total: sb.total,
+          correct: sb.correct,
+          percentage: sb.percentage,
+          bookTitle: sb.bookTitle,
+        }));
 
         await saveTestResult({
           id: testId,
           userId: auth.currentUser.uid,
-          testTitle:
-            selectedYear === 'random'
-              ? `${testTitle} (1978-2026 Cross-Year Mix)`
-              : `${testTitle} (${selectedYear} UTME)`,
-          testType,
+          testTitle: computedTitle,
+          testType: computedTestType,
           score: grade.totalRawCorrect, // Conforms strictly to score <= totalQuestions rule
           totalQuestions: grade.totalQuestions,
+          jambScore: grade.totalJambScore, // Official JAMB marking scheme aggregate score (out of 400)
           percentage: grade.overallPercentage,
           timeSpentSeconds: timeSpent > 0 ? timeSpent : 180,
           candidateName,
           userEmail,
+          subjectScores,
         });
         synced = true;
       } catch (err) {
@@ -317,11 +346,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     saveLocalTestResult({
       id: testId,
       userId: auth.currentUser?.uid,
-      testTitle:
-        selectedYear === 'random'
-          ? `${testTitle} (1978-2026 Cross-Year Mix)`
-          : `${testTitle} (${selectedYear} UTME)`,
-      testType,
+      testTitle: computedTitle,
+      testType: computedTestType,
       score: grade.totalRawCorrect,
       jambScore: grade.totalJambScore,
       totalRawCorrect: grade.totalRawCorrect,
