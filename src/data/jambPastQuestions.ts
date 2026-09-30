@@ -1329,34 +1329,30 @@ export function generateQuestionForYear(
   qIndex: number
 ): VerifiedQuestion {
   // Exactly like JAMB does in UTME: Questions 11 to 20 (qIndex 10-19) are strictly drawn
-  // from the prescribed compulsory novels used last year and the year before ("The Life Changer" & "Sweet Sixteen")
+  // from the prescribed compulsory novel ("The Lekki Headmaster" by Kabir Alabi Garba)
   if (subjectKey === 'english' && qIndex >= 10 && qIndex < 20) {
-    const novelIdx = (qIndex - 10 + (year * 3)) % NOVEL_EXAM_QUESTIONS.length;
-    const novelQ = NOVEL_EXAM_QUESTIONS[novelIdx];
+    const lekkiQuestions = NOVEL_EXAM_QUESTIONS.filter((q) => q.novel === 'The Lekki Headmaster');
+    const novelIdx = (qIndex - 10 + (year * 3)) % lekkiQuestions.length;
+    const novelQ = lekkiQuestions[novelIdx];
     const qNum = qIndex + 1;
     const subCode = 100000;
     const id = subCode + (year * 100) + qNum;
 
-    const authorName =
-      novelQ.novel === 'The Life Changer'
-        ? 'Khadija Abubakar Jalli'
-        : novelQ.novel === 'The Lekki Headmaster'
-          ? 'Kabir Alabi Garba'
-          : 'Bolaji Abdullahi';
+    const authorName = 'Kabir Alabi Garba';
 
     const baseQuestion: VerifiedQuestion = {
       id,
       year,
       questionNumber: qNum,
       subject: 'Use of English',
-      topic: `Prescribed Novel: "${novelQ.novel}"`,
-      text: `[JAMB UTME ${year} Q${qNum} · Prescribed Novel: "${novelQ.novel}"] ${novelQ.question}`,
+      topic: 'Prescribed Novel: "The Lekki Headmaster"',
+      text: `[JAMB UTME ${year} Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${novelQ.question}`,
       options: novelQ.options,
       answer: novelQ.answer,
-      explanation: `${novelQ.explanation} (Reference: "${novelQ.novel}" by ${authorName}).`,
-      bookTitle: novelQ.novel,
+      explanation: `${novelQ.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
+      bookTitle: 'The Lekki Headmaster',
       author: authorName,
-      textbookRef: `"${novelQ.novel}" by ${authorName}`,
+      textbookRef: `"The Lekki Headmaster" by ${authorName}`,
     };
 
     return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
@@ -1684,32 +1680,28 @@ export interface AssembleTestOptions {
 export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQuestion[] {
   const { subjects = ['Use of English', 'Mathematics', 'Physics', 'Chemistry'], year = 'random', mode = 'full' } = options;
   
-  // Dedicated Novel Test Mode (like JAMB novel section practice)
+  // Dedicated Novel Test Mode (strictly "The Lekki Headmaster" by Kabir Alabi Garba)
   if (mode === 'novel') {
     const novelCount = options.customQuestionCount || 10;
     const chosenYear = typeof year === 'number' ? year : 2025;
-    return NOVEL_EXAM_QUESTIONS.slice(0, novelCount).map((nq, i) => {
+    const lekkiQuestions = NOVEL_EXAM_QUESTIONS.filter((q) => q.novel === 'The Lekki Headmaster');
+    const authorName = 'Kabir Alabi Garba';
+    return lekkiQuestions.slice(0, novelCount).map((nq, i) => {
       const qNum = i + 1;
-      const authorName =
-        nq.novel === 'The Life Changer'
-          ? 'Khadija Abubakar Jalli'
-          : nq.novel === 'The Lekki Headmaster'
-            ? 'Kabir Alabi Garba'
-            : 'Bolaji Abdullahi';
 
       const baseQ: VerifiedQuestion = {
         id: 950000 + (chosenYear * 10) + qNum,
         year: chosenYear,
         questionNumber: qNum,
         subject: 'Use of English',
-        topic: `Prescribed Novel: "${nq.novel}"`,
-        text: `[JAMB UTME Novel Practice Q${qNum} · "${nq.novel}"] ${nq.question}`,
+        topic: 'Prescribed Novel: "The Lekki Headmaster"',
+        text: `[JAMB UTME Novel Practice Q${qNum} · "The Lekki Headmaster"] ${nq.question}`,
         options: nq.options,
         answer: nq.answer,
-        explanation: `${nq.explanation} (Accredited Prescribed Novel: "${nq.novel}" by ${authorName}).`,
-        bookTitle: nq.novel,
+        explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
+        bookTitle: 'The Lekki Headmaster',
         author: authorName,
-        textbookRef: `"${nq.novel}" by ${authorName}`,
+        textbookRef: `"The Lekki Headmaster" by ${authorName}`,
       };
 
       return scatterQuestionOptions(baseQ, chosenYear * 10 + qNum);

@@ -830,8 +830,7 @@ export const ENGLISH_GENERAL_BANK: BankQuestionDefinition[] = [
   }
 ];
 
-// Helper to pull 15 distinct questions from prescribed novels for English Part 1
-// Evenly diversified across all 3 prescribed novels (5 from each)
+// Helper to pull 15 distinct questions strictly from "The Lekki Headmaster" by Kabir Alabi Garba
 // Filters against previous tests and guarantees zero duplicates in the current session
 export function getPrescribedNovelQuestions(
   count: number = 15,
@@ -842,100 +841,70 @@ export function getPrescribedNovelQuestions(
   const localTexts = sessionUsedTexts || new Set<string>();
   const excluded = excludeTexts || new Set<string>();
 
-  // Group novel questions by title to guarantee even diversification across all 3 prescribed texts
-  const novelsList = ['The Life Changer', 'Sweet Sixteen', 'The Lekki Headmaster'] as const;
-  const groups: Record<string, typeof NOVEL_EXAM_QUESTIONS> = {
-    'The Life Changer': [],
-    'Sweet Sixteen': [],
-    'The Lekki Headmaster': [],
-  };
+  // Strictly filter for "The Lekki Headmaster" by Kabir Alabi Garba (exclude all other novels)
+  const lekkiQuestions = NOVEL_EXAM_QUESTIONS.filter(
+    (q) => q.novel === 'The Lekki Headmaster'
+  );
 
-  NOVEL_EXAM_QUESTIONS.forEach((q) => {
-    if (groups[q.novel]) {
-      groups[q.novel].push(q);
-    }
-  });
-
-  // Shuffle each novel group deterministically
-  novelsList.forEach((novelKey, idx) => {
-    const arr = groups[novelKey];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.abs((seed * (i + 13 + idx * 7)) % (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  });
+  // Deterministic shuffle of The Lekki Headmaster questions based on seed
+  const candidatePool = [...lekkiQuestions];
+  for (let i = candidatePool.length - 1; i > 0; i--) {
+    const j = Math.abs((seed * (i + 13)) % (i + 1));
+    [candidatePool[i], candidatePool[j]] = [candidatePool[j], candidatePool[i]];
+  }
 
   const picked: VerifiedQuestion[] = [];
-  const targetPerNovel = Math.floor(count / 3);
+  const authorName = 'Kabir Alabi Garba';
 
-  // Pass 1: Draw evenly across all 3 novels, prioritizing questions unseen in previous tests
-  for (let round = 0; round < count && picked.length < count; round++) {
-    const novelKey = novelsList[round % 3];
-    const candidatePool = groups[novelKey];
+  // Pass 1: Draw strictly from The Lekki Headmaster, prioritizing questions unseen in previous tests
+  for (let i = 0; i < candidatePool.length && picked.length < count; i++) {
+    const nq = candidatePool[i];
+    const core = nq.question.trim().toLowerCase();
 
-    const unseenCandidate = candidatePool.find((nq) => {
-      const core = nq.question.trim().toLowerCase();
-      return !localTexts.has(core) && !excluded.has(core);
-    });
-
-    if (unseenCandidate) {
-      const core = unseenCandidate.question.trim().toLowerCase();
+    if (!localTexts.has(core) && !excluded.has(core)) {
       localTexts.add(core);
       const qNum = picked.length + 1;
-      const authorName =
-        unseenCandidate.novel === 'The Life Changer'
-          ? 'Khadija Abubakar Jalli'
-          : unseenCandidate.novel === 'The Lekki Headmaster'
-            ? 'Kabir Alabi Garba'
-            : 'Bolaji Abdullahi';
 
       picked.push({
         id: 950000 + (seed * 10) + qNum,
         year: seed,
         questionNumber: qNum,
         subject: 'Use of English',
-        topic: `Prescribed Novel: "${unseenCandidate.novel}"`,
-        text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${unseenCandidate.novel}"] ${unseenCandidate.question}`,
-        options: unseenCandidate.options,
-        answer: unseenCandidate.answer,
-        explanation: `${unseenCandidate.explanation} (Official Prescribed Novel: "${unseenCandidate.novel}" by ${authorName}).`,
-        bookTitle: unseenCandidate.novel,
+        topic: 'Prescribed Novel: "The Lekki Headmaster"',
+        text: `[JAMB UTME Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${nq.question}`,
+        options: nq.options,
+        answer: nq.answer,
+        explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
+        bookTitle: 'The Lekki Headmaster',
         author: authorName,
-        textbookRef: `"${unseenCandidate.novel}" by ${authorName}`,
+        textbookRef: `"The Lekki Headmaster" by ${authorName}`,
       });
     }
   }
 
-  // Pass 2: If pool of unseen novel questions for any specific novel is exhausted,
-  // draw remaining from all novels while STILL STRICTLY GUARANTEEING ZERO DUPLICATES IN THIS SESSION
+  // Pass 2: If pool of unseen questions is exhausted, draw remaining strictly from The Lekki Headmaster
+  // while STILL STRICTLY GUARANTEEING ZERO DUPLICATES IN THIS SESSION (and never from other novels)
   if (picked.length < count) {
-    const allNovelQs = [...NOVEL_EXAM_QUESTIONS];
-    for (let i = 0; i < allNovelQs.length && picked.length < count; i++) {
-      const nq = allNovelQs[i];
+    for (let i = 0; i < candidatePool.length && picked.length < count; i++) {
+      const nq = candidatePool[i];
       const core = nq.question.trim().toLowerCase();
       if (!localTexts.has(core)) {
         localTexts.add(core);
         const qNum = picked.length + 1;
-        const authorName =
-          nq.novel === 'The Life Changer'
-            ? 'Khadija Abubakar Jalli'
-            : nq.novel === 'The Lekki Headmaster'
-              ? 'Kabir Alabi Garba'
-              : 'Bolaji Abdullahi';
 
         picked.push({
           id: 950000 + (seed * 10) + qNum,
           year: seed,
           questionNumber: qNum,
           subject: 'Use of English',
-          topic: `Prescribed Novel: "${nq.novel}"`,
-          text: `[JAMB UTME Q${qNum} · Prescribed Novel: "${nq.novel}"] ${nq.question}`,
+          topic: 'Prescribed Novel: "The Lekki Headmaster"',
+          text: `[JAMB UTME Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${nq.question}`,
           options: nq.options,
           answer: nq.answer,
-          explanation: `${nq.explanation} (Official Prescribed Novel: "${nq.novel}" by ${authorName}).`,
-          bookTitle: nq.novel,
+          explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
+          bookTitle: 'The Lekki Headmaster',
           author: authorName,
-          textbookRef: `"${nq.novel}" by ${authorName}`,
+          textbookRef: `"The Lekki Headmaster" by ${authorName}`,
         });
       }
     }

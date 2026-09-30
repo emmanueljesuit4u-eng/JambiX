@@ -126,7 +126,7 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
                   <span className="block truncate font-bold">{novel.title}</span>
                   {novel.id === 'the-lekki-headmaster' && (
                     <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase shrink-0 ${isSelected ? 'bg-emerald-900 text-emerald-200' : 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'}`}>
-                      2025 UTME
+                      Active UTME Novel
                     </span>
                   )}
                 </div>
