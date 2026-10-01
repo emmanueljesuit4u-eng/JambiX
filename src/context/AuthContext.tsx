@@ -24,6 +24,8 @@ interface AuthContextType {
   currentUser: User | null;
   studentProfile: UserProfileData | null;
   loading: boolean;
+  isExplicitlyAuthenticated: boolean;
+  setIsExplicitlyAuthenticated: (val: boolean) => void;
   loginWithGoogle: () => Promise<void>;
   logOut: () => Promise<void>;
   setLocalStudent: (user: { name: string; email: string; identifier?: string }) => void;
@@ -36,6 +38,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [studentProfile, setStudentProfile] = useState<UserProfileData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isExplicitlyAuthenticated, setIsExplicitlyAuthenticated] = useState<boolean>(false);
   const [localStudent, setLocalStudentState] = useState<{
     name: string;
     email: string;
@@ -43,9 +46,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   } | null>(null);
 
   useEffect(() => {
+    // Every time the site link is opened, require manual login instead of automatically opening
+    setIsExplicitlyAuthenticated(false);
+    setLocalStudentState(null);
+    fbSignOut(auth).catch(() => {});
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
       if (user && !user.isAnonymous) {
+        setCurrentUser(user);
         try {
           const profile = await getUserProfile(user.uid);
           if (profile) {
@@ -70,6 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           console.warn('Profile load note:', err);
         }
       } else {
+        setCurrentUser(null);
         setStudentProfile(null);
       }
       setLoading(false);
@@ -97,6 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
       await saveUserProfile(profile);
       setStudentProfile(profile);
+      setIsExplicitlyAuthenticated(true);
     } catch (error) {
       console.error('Google sign in error:', error);
       throw error;
@@ -112,10 +122,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLocalStudentState(null);
     setStudentProfile(null);
     setCurrentUser(null);
+    setIsExplicitlyAuthenticated(false);
   };
 
   const setLocalStudent = (user: { name: string; email: string; identifier?: string }) => {
     setLocalStudentState(user);
+    setIsExplicitlyAuthenticated(true);
   };
 
   return (
@@ -124,6 +136,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentUser,
         studentProfile,
         loading,
+        isExplicitlyAuthenticated,
+        setIsExplicitlyAuthenticated,
         loginWithGoogle,
         logOut,
         setLocalStudent,

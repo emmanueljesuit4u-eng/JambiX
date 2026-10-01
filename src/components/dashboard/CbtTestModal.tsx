@@ -60,6 +60,21 @@ interface CbtTestModalProps {
   studentName?: string;
 }
 
+export const isLekkiNovelCheck = (title?: string, type?: string, subject?: string) => {
+  const t = (title || '').toLowerCase();
+  const s = (subject || '').toLowerCase();
+  const tp = (type || '').toLowerCase();
+  return (
+    tp === 'novel' ||
+    t.includes('novel') ||
+    t.includes('lekki') ||
+    t.includes('headmaster') ||
+    s.includes('lekki') ||
+    s.includes('headmaster') ||
+    s.includes('novel')
+  );
+};
+
 export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   isOpen,
   onClose,
@@ -70,19 +85,21 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   studentName,
 }) => {
   const { effectiveOnline } = useNetwork();
+  const isInitialLekki = isLekkiNovelCheck(testTitle, testType, initialSubject);
 
   // Test Configuration State
-  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([
-    'Use of English',
-    'Mathematics',
-    'Physics',
-    'Chemistry',
-  ]);
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>(
+    isInitialLekki
+      ? ['The Lekki Headmaster']
+      : ['Use of English', 'Mathematics', 'Physics', 'Chemistry']
+  );
   const [selectedYear, setSelectedYear] = useState<number | 'random'>(
     initialYear || 2026
   );
-  const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint' | 'novel'>('full');
-  const [duration, setDuration] = useState<number>(120);
+  const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint' | 'novel'>(
+    isInitialLekki ? 'novel' : 'full'
+  );
+  const [duration, setDuration] = useState<number>(isInitialLekki ? 20 : 120);
   const [seenCount, setSeenCount] = useState<number>(0);
 
   // Active Test State
@@ -90,7 +107,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [activeQuestions, setActiveQuestions] = useState<VerifiedQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
-  const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(120 * 60);
+  const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(
+    (isInitialLekki ? 20 : 120) * 60
+  );
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
   // Completed Test State
@@ -108,37 +127,71 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
 
-    const titleLower = (testTitle || '').toLowerCase();
-    const initLower = (initialSubject || '').toLowerCase();
+    // Reset previous run state so every launch is pristine
+    setTestStarted(false);
+    setTestCompleted(null);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswers({});
+    setActiveQuestions([]);
 
-    if (testType === 'novel' || titleLower.includes('novel')) {
-      setSelectedSubjects(['Use of English']);
+    const titleLower = (testTitle || '').toLowerCase();
+    const typeLower = (testType || '').toLowerCase();
+    const isLekkiNovel = isLekkiNovelCheck(testTitle, testType, initialSubject);
+
+    if (isLekkiNovel) {
+      setSelectedSubjects(['The Lekki Headmaster']);
       setExamMode('novel');
-      setDuration(25);
+      setDuration(20);
+      setTimeLeftSeconds(20 * 60);
     } else if (initialSubject) {
       const key = normalizeSubjectKey(initialSubject);
       const conf = SUBJECT_CONFIGS[key];
       if (conf) {
         setSelectedSubjects([conf.name]);
         setExamMode('single');
+        setDuration(conf.name === 'Use of English' ? 60 : 45);
+        setTimeLeftSeconds((conf.name === 'Use of English' ? 60 : 45) * 60);
       }
+    } else if (
+      typeLower === 'jamb' ||
+      typeLower === 'offline' ||
+      titleLower.includes('full') ||
+      titleLower.includes('180') ||
+      titleLower.includes('mock') ||
+      titleLower.includes('simulation') ||
+      titleLower.includes('jamb cbt')
+    ) {
+      // Standard Full JAMB CBT Mock: Exactly 60 English + 40 each for 3 other subjects (180 questions)
+      setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
+      setExamMode('full');
+      setDuration(120);
+      setTimeLeftSeconds(120 * 60);
     } else if (testTitle && !titleLower.includes('full') && !titleLower.includes('180')) {
       const key = normalizeSubjectKey(testTitle);
       const conf = SUBJECT_CONFIGS[key];
       if (conf && titleLower.includes(conf.name.toLowerCase())) {
         setSelectedSubjects([conf.name]);
         setExamMode('single');
+        setDuration(conf.name === 'Use of English' ? 60 : 45);
+        setTimeLeftSeconds((conf.name === 'Use of English' ? 60 : 45) * 60);
+      } else {
+        setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
+        setExamMode('full');
+        setDuration(120);
+        setTimeLeftSeconds(120 * 60);
       }
     } else {
       setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
       setExamMode('full');
+      setDuration(120);
+      setTimeLeftSeconds(120 * 60);
     }
 
     if (initialYear && initialYear >= 1978 && initialYear <= 2026) {
       setSelectedYear(initialYear);
     }
     setSeenCount(getSeenQuestionsCount());
-  }, [testTitle, initialSubject, initialYear, isOpen]);
+  }, [testTitle, initialSubject, initialYear, isOpen, testType]);
 
   // Available subjects for UTME (all 18 accredited subjects)
   const availableSubjects = useMemo(() => {
@@ -168,27 +221,48 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
   // Start Exam
   const handleStartExam = () => {
+    const isLekkiNovel = isLekkiNovelCheck(testTitle, testType, initialSubject) || examMode === 'novel';
+
+    const effectiveSubjects = isLekkiNovel ? ['The Lekki Headmaster'] : selectedSubjects;
+    const effectiveMode = isLekkiNovel ? 'novel' : examMode;
+    const effectiveCount = isLekkiNovel ? 30 : examMode === 'sprint' ? 20 : undefined;
+    const effectiveDurationMinutes = isLekkiNovel ? 20 : duration;
+
     // Generate questions according to user requirements:
-    // Full CBT test brings out 60 questions from English and 40 from the 3 other subjects
+    // Full CBT test brings out 60 questions from English and 40 from the 3 other subjects;
+    // Lekki Headmaster test brings out strictly 30 questions on The Lekki Headmaster for 20 minutes
     const questions = assembleUtmeTest({
-      subjects: selectedSubjects,
+      subjects: effectiveSubjects,
       year: selectedYear,
-      mode: examMode,
-      customQuestionCount: examMode === 'sprint' ? 20 : examMode === 'novel' ? 10 : undefined,
+      mode: effectiveMode,
+      customQuestionCount: effectiveCount,
     });
 
-    setActiveQuestions(questions);
+    // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English
+    const finalQuestions = isLekkiNovel
+      ? questions.slice(0, 30).map((q, idx) => ({
+          ...q,
+          subject: 'The Lekki Headmaster',
+          questionNumber: idx + 1,
+          topic: q.topic && q.topic.includes('Headmaster') ? q.topic : `Chapter ${((idx % 12) + 1)}: "The Lekki Headmaster"`,
+          bookTitle: 'The Lekki Headmaster',
+          author: 'Kabir Alabi Garba',
+        }))
+      : questions;
+
+    setActiveQuestions(finalQuestions);
     setSelectedAnswers({});
     setCurrentQuestionIndex(0);
-    setTimeLeftSeconds(duration * 60);
+    setTimeLeftSeconds(effectiveDurationMinutes * 60);
+    setDuration(effectiveDurationMinutes);
     setTestCompleted(null);
     setTestStarted(true);
 
     // Record question IDs and signatures as seen to guarantee zero repetition in future random tests
-    markQuestionsSeen(questions.map((q) => q.id));
+    markQuestionsSeen(finalQuestions.map((q) => q.id));
     recordSeenSignatures(
-      questions.map((q) => getQuestionCoreSignature(q.text)),
-      questions.map((q) => q.id)
+      finalQuestions.map((q) => getQuestionCoreSignature(q.text)),
+      finalQuestions.map((q) => q.id)
     );
     setSeenCount(getSeenQuestionsCount());
   };
@@ -211,11 +285,16 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     return () => clearInterval(interval);
   }, [testStarted, testCompleted]);
 
-  // Format time (HH:MM:SS)
+  // Format time (MM:SS for <= 1 hour, HH:MM:SS for > 1 hour)
   const formattedTime = useMemo(() => {
     const hours = Math.floor(timeLeftSeconds / 3600);
     const minutes = Math.floor((timeLeftSeconds % 3600) / 60);
     const seconds = timeLeftSeconds % 60;
+    if (hours === 0) {
+      return `${minutes.toString().padStart(2, '0')}:${seconds
+        .toString()
+        .padStart(2, '0')}`;
+    }
     return `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -242,6 +321,40 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     });
     return map;
   }, [activeQuestions, selectedAnswers]);
+
+  // Current active subject partition
+  const currentPartition = useMemo(() => {
+    if (!activeQuestions[currentQuestionIndex]) return null;
+    const curSub = activeQuestions[currentQuestionIndex].subject;
+    return subjectPartitions.find((p) => p.subject === curSub) || null;
+  }, [activeQuestions, currentQuestionIndex, subjectPartitions]);
+
+  const currentPartitionQuestions = useMemo(() => {
+    if (!currentPartition) {
+      return activeQuestions.map((_, i) => ({ globalIndex: i, subjectNumber: i + 1 }));
+    }
+    const list: { globalIndex: number; subjectNumber: number }[] = [];
+    for (let i = 0; i < currentPartition.count; i++) {
+      const globalIdx = currentPartition.startIndex + i;
+      list.push({ globalIndex: globalIdx, subjectNumber: i + 1 });
+    }
+    return list;
+  }, [currentPartition, activeQuestions]);
+
+  const currentSubjectQNum = currentPartition
+    ? currentQuestionIndex - currentPartition.startIndex + 1
+    : currentQuestionIndex + 1;
+  const currentSubjectTotal = currentPartition?.count || activeQuestions.length;
+
+  // Determine if active session is strictly The Lekki Headmaster Novel CBT
+  const isCurrentLekkiTest = useMemo(() => {
+    if (examMode === 'full') return false;
+    return (
+      isLekkiNovelCheck(testTitle, testType, initialSubject) ||
+      examMode === 'novel' ||
+      (activeQuestions.length === 30 && activeQuestions.every((q) => q.subject === 'The Lekki Headmaster'))
+    );
+  }, [testTitle, testType, initialSubject, examMode, activeQuestions]);
 
   // Official JAMB 8-key keyboard navigation (A, B, C, D, N, P, R, S)
   useEffect(() => {
@@ -562,12 +675,18 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       onChange={(e) => setReviewSubjectFilter(e.target.value)}
                       className="text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium cursor-pointer"
                     >
-                      <option value="All">All Subjects ({activeQuestions.length})</option>
-                      {Array.from(new Set(activeQuestions.map((q) => q.subject))).map((sub) => (
-                        <option key={sub} value={sub}>
-                          {sub}
-                        </option>
-                      ))}
+                      {isCurrentLekkiTest ? (
+                        <option value="All">The Lekki Headmaster ({activeQuestions.length} Questions)</option>
+                      ) : (
+                        <>
+                          <option value="All">All Subjects ({activeQuestions.length})</option>
+                          {Array.from(new Set(activeQuestions.map((q) => q.subject))).map((sub) => (
+                            <option key={sub} value={sub}>
+                              {sub}
+                            </option>
+                          ))}
+                        </>
+                      )}
                     </select>
 
                     {/* Status Filter */}
@@ -748,260 +867,394 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                2. EXAM SETUP & YEAR SELECTION SCREEN (1978 - 2025)
                ======================================================== */
             <div className="space-y-5">
-              {/* Exam Mode Toggle */}
-              {/* Zero-Repeat Protection Notice */}
-              {selectedYear === 'random' && seenCount > 0 && (
-                <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-center justify-between text-xs transition-all">
-                  <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
-                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                    <span>
-                      <strong>Zero-Repeat CBT Guarantee:</strong> {seenCount} questions already practiced in your previous tests are automatically excluded. You will get 100% fresh questions.
-                    </span>
+              {examMode === 'novel' ? (
+                /* DEDICATED THE LEKKI HEADMASTER CBT EXAM PANEL */
+                <div className="space-y-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 border-2 border-emerald-500/50 text-white shadow-lg space-y-3 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 -mr-12 -mt-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+
+                    <div className="relative z-10 flex items-center justify-between">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>Official UTME Prescribed Novel</span>
+                      </div>
+                      <span className="px-2.5 py-1 bg-amber-400 text-slate-950 font-black rounded-lg text-xs shadow-xs">
+                        Author: Kabir Alabi Garba
+                      </span>
+                    </div>
+
+                    <div className="relative z-10">
+                      <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                        The Lekki Headmaster CBT Examination
+                      </h3>
+                      <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 leading-relaxed">
+                        This test is strictly and exclusively on <strong>&ldquo;The Lekki Headmaster&rdquo;</strong> by Kabir Alabi Garba. It does not contain questions from any other novel or non-novel subject. Every single question comprehensively examines the narrative, all 12 chapters, key characters (Bepo, Mrs. Ibidun Gloss, Chief Didi Ogba, Jide), central themes (Japa syndrome, educational integrity, parental pressure), and official UTME question formats.
+                      </p>
+                    </div>
+
+                    <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-white/10 text-xs">
+                      <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-emerald-300 uppercase font-bold block">Examination Scope</span>
+                        <span className="text-base sm:text-lg font-black text-white">30 Questions</span>
+                        <span className="text-[10px] text-emerald-200/70 block">100% Lekki Headmaster</span>
+                      </div>
+                      <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-emerald-300 uppercase font-bold block">Official CBT Timer</span>
+                        <span className="text-base sm:text-lg font-black text-amber-300">20 Minutes</span>
+                        <span className="text-[10px] text-emerald-200/70 block">Official 20-min timed drill</span>
+                      </div>
+                      <div className="bg-white/5 p-3 rounded-xl border border-white/10 col-span-2 sm:col-span-1">
+                        <span className="text-[10px] text-emerald-300 uppercase font-bold block">Chapters Tested</span>
+                        <span className="text-base sm:text-lg font-black text-emerald-400">Chapters 1 – 12</span>
+                        <span className="text-[10px] text-emerald-200/70 block">Full Novel Mastery</span>
+                      </div>
+                    </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      clearSeenQuestions();
-                      setSeenCount(0);
-                    }}
-                    className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 underline hover:text-emerald-950 dark:hover:text-emerald-200 cursor-pointer shrink-0 ml-2"
-                  >
-                    Reset History
-                  </button>
-                </div>
-              )}
 
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
-                  1. Select Examination Mode
-                </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setExamMode('full');
-                      setDuration(120);
-                      setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
-                    }}
-                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                      examMode === 'full'
-                        ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 shadow-2xs'
-                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
+                  {/* Subject Selection Dropdown strictly showing The Lekki Headmaster */}
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs">Full JAMB CBT Exam</span>
-                      <span className="text-[10px] font-black px-1.5 py-0.5 bg-rose-600 text-white rounded">
-                        180 Qs
+                      <label htmlFor="lekki-modal-subject-select" className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer">
+                        <BookOpen className="w-4 h-4 text-emerald-600" />
+                        <span>Prescribed Subject (Official CBT Novel):</span>
+                      </label>
+                      <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                        1 Subject · 30 Questions · 20 Mins
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                      60 English + 40 each for 3 other subjects. Graded over 400.
-                    </p>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setExamMode('single');
-                      setDuration(45);
-                    }}
-                    className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                      examMode === 'single'
-                        ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 shadow-2xs'
-                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs">Single Subject Drill</span>
-                      <span className="text-[10px] font-black px-1.5 py-0.5 bg-slate-900 dark:bg-slate-700 text-white rounded">
-                        40/60 Qs
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                      Focus on 1 specific subject. Graded over 100 &amp; 400.
-                    </p>
-                  </button>
-                </div>
-              </div>
-
-              {/* Year Selector (1978 to 2026) */}
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-                <div className="flex items-center justify-between mb-2">
-                  <label htmlFor="cbt-modal-year-select" className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer">
-                    <Calendar className="w-4 h-4 text-emerald-600" />
-                    <span>2. Select UTME Past Questions Year (1978 – 2026)</span>
-                  </label>
-                  <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
-                    49 Examination Years
-                  </span>
-                </div>
-
-                <div>
-                  <select
-                    id="cbt-modal-year-select"
-                    value={selectedYear}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setSelectedYear(val === 'random' ? 'random' : parseInt(val, 10));
-                    }}
-                    className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
-                  >
-                    <option value="random">🌟 Random Cross-Year UTME Mix (1978 – 2026)</option>
-                    <optgroup label="Recent UTME Years (2020 – 2026)">
-                      {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((y) => (
-                        <option key={y} value={y}>
-                          JAMB UTME {y} (Official Authentic Paper)
-                        </option>
-                      ))}
-                    </optgroup>
-                    <optgroup label="2010 – 2019 Past Questions">
-                      {[2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map((y) => (
-                        <option key={y} value={y}>
-                          JAMB UTME {y}
-                        </option>
-                      ))}
-                    </optgroup>
-                    <optgroup label="2000 – 2009 Past Questions">
-                      {[2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000].map((y) => (
-                        <option key={y} value={y}>
-                          JAMB UTME {y}
-                        </option>
-                      ))}
-                    </optgroup>
-                    <optgroup label="1978 – 1999 Classic Archive">
-                      {JAMB_YEARS.filter((y) => y < 2000).map((y) => (
-                        <option key={y} value={y}>
-                          JAMB UTME {y} Classic
-                        </option>
-                      ))}
-                    </optgroup>
-                  </select>
-                </div>
-              </div>
-
-              {/* Subject Selection Dropdown Menus */}
-              <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                    <BookOpen className="w-4 h-4 text-emerald-600" />
-                    <span>3. Select Subjects</span>
-                  </label>
-                  <span className="px-2.5 py-1 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600 rounded-full text-[11px] font-bold shadow-2xs">
-                    All Subjects (18)
-                  </span>
-                </div>
-
-                {examMode === 'single' ? (
-                  <div>
-                    <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1.5">
-                      Select Subject to Practice:
-                    </label>
                     <select
-                      value={selectedSubjects[0] || 'Use of English'}
-                      onChange={(e) => setSelectedSubjects([e.target.value])}
-                      className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                      id="lekki-modal-subject-select"
+                      value="The Lekki Headmaster"
+                      disabled
+                      className="w-full p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs shadow-2xs cursor-not-allowed"
                     >
-                      {availableSubjects.map((sub) => (
-                        <option key={sub.name} value={sub.name}>
-                          {sub.name} ({sub.name === 'Use of English' ? '60 Qs' : '40 Qs'}) — Ref: {sub.book}
-                        </option>
-                      ))}
+                      <option value="The Lekki Headmaster">
+                        The Lekki Headmaster (Kabir Alabi Garba · 30 UTME Novel Questions)
+                      </option>
                     </select>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
                     <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                      Use the dropdown menus below to select your 4 examination subjects:
+                      This CBT drill is locked strictly to <strong>The Lekki Headmaster</strong>. General English questions (antonyms, idioms, comprehension passages) are completely excluded.
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                      {/* Slot 1: Use of English (Compulsory) */}
-                      <div className="p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-slate-900 flex items-center justify-between shadow-2xs">
-                        <div>
-                          <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 block tracking-wider">
-                            Subject 1 · Compulsory
-                          </span>
-                          <span className="text-xs font-bold text-slate-900 dark:text-white">Use of English</span>
-                        </div>
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md">
-                          60 Qs
+                  </div>
+
+                  {/* Zero repetition guarantee banner */}
+                  <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200 flex items-start gap-2.5">
+                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <p className="leading-relaxed">
+                      <strong>Zero-Repeat CBT Guarantee:</strong> Questions are randomized across all 12 chapters. Questions you have answered in earlier practice runs are automatically excluded, ensuring you experience fresh, diverse questions every time you practice.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Zero-Repeat Protection Notice */}
+                  {selectedYear === 'random' && seenCount > 0 && (
+                    <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-center justify-between text-xs transition-all">
+                      <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
+                        <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span>
+                          <strong>Zero-Repeat CBT Guarantee:</strong> {seenCount} questions already practiced in your previous tests are automatically excluded. You will get 100% fresh questions.
                         </span>
                       </div>
+                    </div>
+                  )}
 
-                      {/* Slot 2: Dropdown */}
-                      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
-                        <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
-                          Subject 2 (40 Questions)
-                        </label>
-                        <select
-                          value={selectedSubjects[1] || 'Mathematics'}
-                          onChange={(e) => handleSlotSubjectChange(1, e.target.value)}
-                          className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
-                        >
-                          {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
-                            <option key={sub.name} value={sub.name}>
-                              {sub.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
+                      1. Select Examination Mode
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setExamMode('full');
+                          setDuration(120);
+                          setSelectedSubjects(['Use of English', 'Mathematics', 'Physics', 'Chemistry']);
+                        }}
+                        className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          examMode === 'full'
+                            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 shadow-2xs'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-xs">Full JAMB CBT Exam</span>
+                          <span className="text-[10px] font-black px-1.5 py-0.5 bg-rose-600 text-white rounded">
+                            180 Qs
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                          60 English + 40 each for 3 other subjects. Graded over 400.
+                        </p>
+                      </button>
 
-                      {/* Slot 3: Dropdown */}
-                      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
-                        <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
-                          Subject 3 (40 Questions)
-                        </label>
-                        <select
-                          value={selectedSubjects[2] || 'Physics'}
-                          onChange={(e) => handleSlotSubjectChange(2, e.target.value)}
-                          className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
-                        >
-                          {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
-                            <option key={sub.name} value={sub.name}>
-                              {sub.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      {/* Slot 4: Dropdown */}
-                      <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
-                        <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
-                          Subject 4 (40 Questions)
-                        </label>
-                        <select
-                          value={selectedSubjects[3] || 'Chemistry'}
-                          onChange={(e) => handleSlotSubjectChange(3, e.target.value)}
-                          className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
-                        >
-                          {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
-                            <option key={sub.name} value={sub.name}>
-                              {sub.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setExamMode('single');
+                          setDuration(45);
+                        }}
+                        className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          examMode === 'single'
+                            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 shadow-2xs'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-xs">Single Subject Drill</span>
+                          <span className="text-[10px] font-black px-1.5 py-0.5 bg-slate-900 dark:bg-slate-700 text-white rounded">
+                            40/60 Qs
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                          Focus on 1 specific subject. Graded over 100 &amp; 400.
+                        </p>
+                      </button>
                     </div>
                   </div>
-                )}
-              </div>
+
+                  {/* Year Selector (1978 to 2026) */}
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center justify-between mb-2">
+                      <label htmlFor="cbt-modal-year-select" className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer">
+                        <Calendar className="w-4 h-4 text-emerald-600" />
+                        <span>2. Select UTME Past Questions Year (1978 – 2026)</span>
+                      </label>
+                      <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                        49 Examination Years
+                      </span>
+                    </div>
+
+                    <div>
+                      <select
+                        id="cbt-modal-year-select"
+                        value={selectedYear}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setSelectedYear(val === 'random' ? 'random' : parseInt(val, 10));
+                        }}
+                        className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                      >
+                        <option value="random">🌟 Random Cross-Year UTME Mix (1978 – 2026)</option>
+                        <optgroup label="Recent UTME Years (2020 – 2026)">
+                          {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((y) => (
+                            <option key={y} value={y}>
+                              JAMB UTME {y} (Official Authentic Paper)
+                            </option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="2010 – 2019 Past Questions">
+                          {[2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map((y) => (
+                            <option key={y} value={y}>
+                              JAMB UTME {y}
+                            </option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="2000 – 2009 Past Questions">
+                          {[2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000].map((y) => (
+                            <option key={y} value={y}>
+                              JAMB UTME {y}
+                            </option>
+                          ))}
+                        </optgroup>
+                        <optgroup label="1978 – 1999 Classic Archive">
+                          {JAMB_YEARS.filter((y) => y < 2000).map((y) => (
+                            <option key={y} value={y}>
+                              JAMB UTME {y} Classic
+                            </option>
+                          ))}
+                        </optgroup>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Subject Selection Dropdown Menus */}
+                  <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                        <BookOpen className="w-4 h-4 text-emerald-600" />
+                        <span>3. Select Subjects</span>
+                      </label>
+                      <span className="px-2.5 py-1 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600 rounded-full text-[11px] font-bold shadow-2xs">
+                        All Subjects (18)
+                      </span>
+                    </div>
+
+                    {examMode === 'single' ? (
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1.5">
+                          Select Subject to Practice:
+                        </label>
+                        <select
+                          value={selectedSubjects[0] || 'Use of English'}
+                          onChange={(e) => setSelectedSubjects([e.target.value])}
+                          className="w-full p-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                        >
+                          {availableSubjects.map((sub) => (
+                            <option key={sub.name} value={sub.name}>
+                              {sub.name} ({sub.name === 'Use of English' ? '60 Qs' : '40 Qs'}) — Ref: {sub.book}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                          Use the dropdown menus below to select your 4 examination subjects:
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          {/* Slot 1: Use of English (Compulsory) */}
+                          <div className="p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-slate-900 flex items-center justify-between shadow-2xs">
+                            <div>
+                              <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 block tracking-wider">
+                                Subject 1 · Compulsory
+                              </span>
+                              <span className="text-xs font-bold text-slate-900 dark:text-white">Use of English</span>
+                            </div>
+                            <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md">
+                              60 Qs
+                            </span>
+                          </div>
+
+                          {/* Slot 2: Dropdown */}
+                          <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                            <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                              Subject 2 (40 Questions)
+                            </label>
+                            <select
+                              value={selectedSubjects[1] || 'Mathematics'}
+                              onChange={(e) => handleSlotSubjectChange(1, e.target.value)}
+                              className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                            >
+                              {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                                <option key={sub.name} value={sub.name}>
+                                  {sub.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {/* Slot 3: Dropdown */}
+                          <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                            <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                              Subject 3 (40 Questions)
+                            </label>
+                            <select
+                              value={selectedSubjects[2] || 'Physics'}
+                              onChange={(e) => handleSlotSubjectChange(2, e.target.value)}
+                              className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                            >
+                              {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                                <option key={sub.name} value={sub.name}>
+                                  {sub.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {/* Slot 4: Dropdown */}
+                          <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                            <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                              Subject 4 (40 Questions)
+                            </label>
+                            <select
+                              value={selectedSubjects[3] || 'Chemistry'}
+                              onChange={(e) => handleSlotSubjectChange(3, e.target.value)}
+                              className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                            >
+                              {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                                <option key={sub.name} value={sub.name}>
+                                  {sub.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             /* ========================================================
                3. ACTIVE CBT EXAM SIMULATION (WITH SUBJECT QUICK JUMP)
                ======================================================== */
             <div className="space-y-4">
-              {/* Subject Dropdown Menu During Test (Clean, Uncongested Navigation) */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              {/* Official JAMB CBT Subject Tabs (Showing 60 Qs for English and 40 Qs each for other subjects) */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {isCurrentLekkiTest ? (
+                  <div className="col-span-2 sm:col-span-4 p-3 rounded-xl bg-emerald-600 text-white shadow-sm flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] font-black uppercase tracking-wider text-emerald-100 block">
+                        Prescribed Literature Novel Exam
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-black">The Lekki Headmaster</h4>
+                    </div>
+                    <span className="text-xs font-black bg-white/20 px-2.5 py-1 rounded-lg">
+                      30 Questions · 20 Mins
+                    </span>
+                  </div>
+                ) : (
+                  subjectPartitions.map((part, pIdx) => {
+                    const isCurrentSubject = activeQuestions[currentQuestionIndex]?.subject === part.subject;
+                    return (
+                      <button
+                        key={part.subject}
+                        type="button"
+                        onClick={() => setCurrentQuestionIndex(part.startIndex)}
+                        className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                          isCurrentSubject
+                            ? 'bg-rose-600 text-white border-rose-700 shadow-md ring-2 ring-rose-400/50'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-1">
+                          <span
+                            className={`text-[10px] font-black uppercase tracking-wider ${
+                              isCurrentSubject ? 'text-rose-100' : 'text-slate-500 dark:text-slate-400'
+                            }`}
+                          >
+                            Subject {pIdx + 1}
+                          </span>
+                          <span
+                            className={`text-[10px] font-black px-1.5 py-0.5 rounded ${
+                              isCurrentSubject
+                                ? 'bg-white/25 text-white'
+                                : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                            }`}
+                          >
+                            {part.count} Qs
+                          </span>
+                        </div>
+                        <div className="mt-1 font-bold text-xs truncate">
+                          {part.subject}
+                        </div>
+                        <div
+                          className={`mt-1 text-[10px] font-medium ${
+                            isCurrentSubject ? 'text-rose-100' : 'text-emerald-600 dark:text-emerald-400'
+                          }`}
+                        >
+                          {part.answeredCount} of {part.count} Answered
+                        </div>
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Subject Quick Jump Selector */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center gap-2 flex-1 min-w-0">
                   <label htmlFor="cbt-active-subject-select" className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5 shrink-0 cursor-pointer">
                     <BookOpen className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-                    <span>Subject:</span>
+                    <span>Jump to Subject:</span>
                   </label>
                   <select
                     id="cbt-active-subject-select"
-                    value={activeQuestions[currentQuestionIndex]?.subject || ''}
+                    value={activeQuestions[currentQuestionIndex]?.subject || 'Use of English'}
                     onChange={(e) => {
+                      if (isCurrentLekkiTest) return;
                       const targetSub = e.target.value;
                       const part = subjectPartitions.find((p) => p.subject === targetSub);
                       if (part) {
@@ -1010,30 +1263,41 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     }}
                     className="w-full sm:max-w-xs px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
                   >
-                    {subjectPartitions.map((part) => (
-                      <option key={part.subject} value={part.subject}>
-                        {part.subject} ({part.answeredCount}/{part.count} Answered)
+                    {isCurrentLekkiTest ? (
+                      <option value="The Lekki Headmaster">
+                        The Lekki Headmaster ({activeQuestions.filter((_, idx) => selectedAnswers[idx]).length}/{activeQuestions.length} Answered)
                       </option>
-                    ))}
+                    ) : (
+                      subjectPartitions.map((part) => (
+                        <option key={part.subject} value={part.subject}>
+                          {part.subject} ({part.count} Questions · {part.answeredCount}/{part.count} Answered)
+                        </option>
+                      ))
+                    )}
                   </select>
                 </div>
 
                 <div className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 shrink-0">
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Current Subject:</span>
-                  <span className="font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md border border-blue-200 dark:border-blue-900/60 text-xs">
-                    {subjectPartitions.find((p) => p.subject === activeQuestions[currentQuestionIndex]?.subject)?.answeredCount || 0} of {subjectPartitions.find((p) => p.subject === activeQuestions[currentQuestionIndex]?.subject)?.count || 0} Answered
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">Subject Progress:</span>
+                  <span className="font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-900/60 text-xs">
+                    {isCurrentLekkiTest
+                      ? `${activeQuestions.filter((_, idx) => selectedAnswers[idx]).length} of ${activeQuestions.length} Answered`
+                      : `${currentPartition?.answeredCount || 0} of ${currentPartition?.count || 0} Answered (${activeQuestions[currentQuestionIndex]?.subject || ''})`}
                   </span>
                 </div>
               </div>
 
               {/* Question Metadata & Timer Bar - Clean and Uncluttered */}
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800 flex-wrap gap-2">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-2.5 py-1 bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 rounded-lg font-black text-xs">
+                  <span className="px-2.5 py-1 bg-rose-600 text-white rounded-lg font-black text-xs shadow-2xs">
                     {activeQuestions[currentQuestionIndex]?.subject}
                   </span>
-                  <span className="text-xs text-slate-500 font-bold">
-                    Question {currentQuestionIndex + 1} of {activeQuestions.length}
+                  <span className="text-xs font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
+                    Question {currentSubjectQNum} of {currentSubjectTotal}
+                  </span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                    (Overall CBT Q{currentQuestionIndex + 1} of {activeQuestions.length})
                   </span>
                   {(activeQuestions[currentQuestionIndex]?.imageSvg || activeQuestions[currentQuestionIndex]?.imageUrl) && (
                     <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 rounded font-black text-[10px] flex items-center gap-1">
@@ -1081,7 +1345,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 )}
               </div>
 
-              {/* Options - Spacious, touch-friendly, without distracting badges during live test */}
+              {/* Options - Spacious, touch-friendly */}
               <div className="space-y-2.5">
                 {activeQuestions[currentQuestionIndex] &&
                   Object.entries(activeQuestions[currentQuestionIndex].options).map(([key, val]) => {
@@ -1116,7 +1380,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   })}
               </div>
 
-              {/* Navigation Controls - Clean and mobile friendly */}
+              {/* Navigation Controls */}
               <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   disabled={currentQuestionIndex === 0}
@@ -1158,6 +1422,44 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   )}
                 </div>
               </div>
+
+              {/* Subject Question Number Palette (1 to 60 for English, 1 to 40 for other subjects) */}
+              <div className="mt-2 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1">
+                  <span className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                    <span>{activeQuestions[currentQuestionIndex]?.subject} Question Palette</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 font-extrabold">
+                      {currentSubjectTotal} Questions
+                    </span>
+                  </span>
+                  <span className="text-[11px] text-slate-500">
+                    Click any number to jump directly to that question
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-1">
+                  {currentPartitionQuestions.map(({ globalIndex, subjectNumber }) => {
+                    const isCurrent = globalIndex === currentQuestionIndex;
+                    const isAnswered = Boolean(selectedAnswers[globalIndex]);
+                    return (
+                      <button
+                        key={globalIndex}
+                        type="button"
+                        onClick={() => setCurrentQuestionIndex(globalIndex)}
+                        className={`w-7 h-7 rounded-lg text-xs font-bold flex items-center justify-center transition-all cursor-pointer ${
+                          isCurrent
+                            ? 'bg-rose-600 text-white shadow-xs ring-2 ring-rose-400'
+                            : isAnswered
+                            ? 'bg-emerald-600 text-white shadow-2xs'
+                            : 'bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600'
+                        }`}
+                        title={`Question ${subjectNumber} ${isAnswered ? '(Answered)' : '(Unanswered)'}`}
+                      >
+                        {subjectNumber}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -1167,10 +1469,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           <div className="px-5 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/90 flex items-center justify-end">
             <button
               onClick={handleStartExam}
-              className="w-full sm:w-auto px-8 py-3 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-sm font-black tracking-wide rounded-xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full sm:w-auto px-8 py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-black tracking-wide rounded-xl shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
             >
               <Play className="w-4 h-4 fill-current" />
-              <span>START EXAM NOW</span>
+              <span>
+                {examMode === 'novel'
+                  ? 'START LEKKI HEADMASTER CBT EXAM (30 Qs)'
+                  : 'START EXAM NOW'}
+              </span>
             </button>
           </div>
         )}

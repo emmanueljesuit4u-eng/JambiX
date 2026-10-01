@@ -87,15 +87,15 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
             <button
               onClick={() =>
                 onLaunchTest(
-                  `JAMB Compulsory Novel Drills: "${activeNovel.title}"`,
+                  'The Lekki Headmaster CBT Examination',
                   'novel',
-                  'Use of English'
+                  'The Lekki Headmaster'
                 )
               }
               className="px-4 py-2.5 bg-white hover:bg-emerald-50 text-emerald-900 font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-2 transition-all cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 fill-emerald-900" />
-              <span>Practice {activeNovel.title} CBT</span>
+              <span>Practice The Lekki Headmaster CBT</span>
             </button>
           </div>
         </div>
@@ -187,9 +187,9 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
                 <button
                   onClick={() =>
                     onLaunchTest(
-                      `JAMB Novel CBT: ${activeNovel.title}`,
+                      'The Lekki Headmaster CBT Examination',
                       'novel',
-                      'Use of English'
+                      'The Lekki Headmaster'
                     )
                   }
                   className="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
@@ -285,14 +285,14 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
               <button
                 onClick={() =>
                   onLaunchTest(
-                    `JAMB Compulsory Novel Drills: "${activeNovel.title}"`,
+                    'The Lekki Headmaster CBT Examination',
                     'novel',
-                    'Use of English'
+                    'The Lekki Headmaster'
                   )
                 }
                 className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors cursor-pointer"
               >
-                Take Timed 10-Question Novel Drill
+                Take The Lekki Headmaster CBT Drill
               </button>
             </div>
           </div>
@@ -512,15 +512,15 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
             <button
               onClick={() =>
                 onLaunchTest(
-                  `JAMB Compulsory Novel Drills: "${activeNovel.title}"`,
+                  'The Lekki Headmaster CBT Examination',
                   'novel',
-                  'Use of English'
+                  'The Lekki Headmaster'
                 )
               }
               className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl flex items-center gap-2 cursor-pointer shadow-xs"
             >
               <Play className="w-3.5 h-3.5 fill-white" />
-              <span>Launch Timed CBT Mode</span>
+              <span>Launch The Lekki Headmaster CBT</span>
             </button>
           </div>
 

@@ -23,7 +23,15 @@ import { useAuth } from '../../context/AuthContext';
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
 
 export const AuthContainer: React.FC = () => {
-  const { currentUser, studentProfile, logOut: fbLogOut, localStudent, setLocalStudent } = useAuth();
+  const {
+    currentUser,
+    studentProfile,
+    logOut: fbLogOut,
+    localStudent,
+    setLocalStudent,
+    isExplicitlyAuthenticated,
+    setIsExplicitlyAuthenticated,
+  } = useAuth();
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('login');
   const [prefilledLoginEmail, setPrefilledLoginEmail] = useState<string>('');
 
@@ -38,6 +46,7 @@ export const AuthContainer: React.FC = () => {
 
   const handleSignUpSuccess = (user: { name: string; email: string }) => {
     setLocalStudent(user);
+    setIsExplicitlyAuthenticated(true);
   };
 
   const handleLogInSuccess = (user: { identifier: string }) => {
@@ -48,22 +57,27 @@ export const AuthContainer: React.FC = () => {
       email: user.identifier.includes('@') ? user.identifier : `${user.identifier}@student.jambix.ng`,
       identifier: user.identifier,
     });
+    setIsExplicitlyAuthenticated(true);
   };
 
   const handleLogOut = async () => {
     await fbLogOut();
+    setIsExplicitlyAuthenticated(false);
     setCurrentScreen('login');
   };
 
-  const activeUser = (currentUser && !currentUser.isAnonymous)
-    ? {
-        name: studentProfile?.fullName || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'UTME Candidate'),
-        email: currentUser.email || 'student@jambix.ng',
-        identifier: currentUser.email || currentUser.uid,
-      }
-    : localStudent;
+  // Only transition to StudentDashboard if the user has explicitly logged in during this active session
+  const activeUser = isExplicitlyAuthenticated
+    ? (currentUser && !currentUser.isAnonymous)
+      ? {
+          name: studentProfile?.fullName || currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'UTME Candidate'),
+          email: currentUser.email || 'student@jambix.ng',
+          identifier: currentUser.email || currentUser.uid,
+        }
+      : localStudent
+    : null;
 
-  // If the student is authenticated via Firebase or local session, transition directly to the StudentDashboard!
+  // If the student is authenticated via explicit login this session, transition to StudentDashboard!
   if (activeUser) {
     return <StudentDashboard user={activeUser} onLogOut={handleLogOut} />;
   }

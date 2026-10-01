@@ -4,7 +4,14 @@
  */
 
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  setPersistence,
+  inMemoryPersistence,
+} from 'firebase/auth';
 import {
   initializeFirestore,
   getFirestore,
@@ -31,6 +38,12 @@ try {
 // CRITICAL: Must pass firebaseConfig.firestoreDatabaseId as the second parameter
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
+
+// Configure in-memory persistence so user authentication does NOT persist across tab/browser closures or link openings
+setPersistence(auth, inMemoryPersistence).catch((err) => {
+  console.warn('Could not set inMemoryPersistence:', err);
+});
+
 export const googleProvider = new GoogleAuthProvider();
 
 export async function signInWithGoogle() {

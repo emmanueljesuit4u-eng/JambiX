@@ -9,8 +9,6 @@ import {
   GraduationCap,
   Monitor,
   BookOpen,
-  Users,
-  ShoppingBag,
   MoreHorizontal,
   LogOut,
   Laptop,
@@ -36,8 +34,6 @@ import {
   HelpCircle,
   Calendar,
   BookMarked,
-  MessageCircle,
-  ExternalLink,
   Lock,
   Unlock,
   ShieldCheck,
@@ -49,7 +45,6 @@ import {
 } from 'lucide-react';
 import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
-import { UniversityConnectTab } from './UniversityConnectTab';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
@@ -218,7 +213,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
               { id: 'History', icon: Clock, label: 'History' },
-              { id: 'Connect', icon: Users, label: 'Connect' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
@@ -335,29 +329,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </button>
             </div>
           </header>
-
-          {/* Official WhatsApp Channel Top Alert Banner */}
-          <div className="bg-[#075e54] text-white px-3 sm:px-6 py-2 border-b border-emerald-700/60 shadow-xs flex flex-wrap items-center justify-between gap-2.5 text-xs select-none">
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="flex h-2.5 w-2.5 relative shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#25d366] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#25d366]" />
-              </span>
-              <p className="truncate text-emerald-50 text-[11px] sm:text-xs font-medium">
-                <strong className="text-white font-bold">Important UTME Updates:</strong> Join our Official WhatsApp Channel for instant JAMB timetable alerts, novel breakdowns &amp; cut-off updates!
-              </p>
-            </div>
-            <a
-              href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#25d366] hover:bg-[#20ba59] text-slate-900 font-extrabold text-[11px] sm:text-xs rounded-full shadow-xs transition-all shrink-0 cursor-pointer"
-            >
-              <MessageCircle className="w-3.5 h-3.5 fill-slate-900" />
-              <span>Join WhatsApp Channel</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
 
           {/* Dynamic Offline Status Banner (Shown when offline or on unstable/no data) */}
           {!effectiveOnline && (
@@ -751,7 +722,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                   {[
                     { title: 'JAMB CBT Full Simulation', time: '120 Mins', type: 'jamb', questions: '180 Questions' },
                     { title: '40-Question Sprint Drill', time: '30 Mins', type: 'general', questions: '40 Questions' },
-                    { title: 'Use of English & Novel Sprint', time: '45 Mins', type: 'novel', questions: '60 Questions' },
+                    { title: 'The Lekki Headmaster CBT Exam', time: '20 Mins', type: 'novel', questions: '30 Questions', subject: 'The Lekki Headmaster' },
                     { title: '15-Year Past Questions Bank', time: '60 Mins', type: 'archive', questions: '50 Questions' },
                     { title: 'Sciences Speed Drill (MTH, PHY, CHM)', time: '60 Mins', type: 'general', questions: '50 Questions' },
                     { title: '100% Offline In-App UTME Mock', time: '120 Mins', type: 'offline', questions: '180 Questions' },
@@ -769,7 +740,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         </h4>
                       </div>
                       <button
-                        onClick={() => handleLaunchTest(test.title, test.type)}
+                        onClick={() => handleLaunchTest(test.title, test.type, test.subject)}
                         className="mt-4 w-full py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
                       >
                         Start Test
@@ -1293,11 +1264,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
             )}
 
-            {/* View: Connect / Study Groups */}
-            {activeNav === 'Connect' && (
-              <UniversityConnectTab showToast={showToast} />
-            )}
-
             {/* View: Shop / Materials */}
             {activeNav === 'Shop' && (
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
@@ -1339,49 +1305,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
             )}
 
-            {/* Upper Footer: Official WhatsApp Channel Banner */}
-            <div className="mt-8 rounded-2xl overflow-hidden bg-gradient-to-r from-[#075e54] via-[#0f766e] to-[#064e3b] text-white p-5 sm:p-7 shadow-xs border border-emerald-600/40 relative">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-950/70 text-emerald-200 border border-emerald-400/30">
-                    <MessageCircle className="w-3.5 h-3.5 text-[#25d366]" />
-                    <span>Official JAMB WhatsApp Channel</span>
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-black text-white tracking-tight">
-                    Join Our WhatsApp Channel for Important Updates
-                  </h3>
-                  <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
-                    Never miss critical announcements: exam dates, venue accreditation, novel analyses (&ldquo;The Lekki Headmaster&rdquo; &amp; &ldquo;The Life Changer&rdquo;), daily past question walkthroughs, and instant university admission cut-off releases.
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-                  <a
-                    href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-5 py-3 bg-[#25d366] hover:bg-[#20ba59] text-slate-900 font-extrabold text-xs sm:text-sm rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer transform hover:scale-[1.02]"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-slate-900" />
-                    <span>Join WhatsApp Channel</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
             {/* Dashboard Footer Note */}
-            <footer className="pt-6 pb-2 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+            <footer className="pt-8 pb-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
               <p>© {new Date().getFullYear()} JAMB UTME Prep Hub. All curriculum citations verified against official textbooks.</p>
-              <a
-                href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-emerald-700 dark:text-emerald-400 font-bold hover:underline inline-flex items-center gap-1.5"
-              >
-                <MessageCircle className="w-3.5 h-3.5 text-[#25d366]" />
-                <span>Join Official WhatsApp Channel for Updates</span>
-              </a>
+              <span className="font-semibold text-slate-400 dark:text-slate-500">Official IBASS Curriculum Syllabus Standard</span>
             </footer>
           </main>
         </div>
