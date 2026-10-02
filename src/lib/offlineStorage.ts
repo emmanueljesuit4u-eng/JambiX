@@ -91,8 +91,12 @@ export function saveLocalTestResult(
   const updated = [newTest, ...allTests.filter((t) => t.id !== test.id)];
   setStoredJson(STORAGE_KEYS.TESTS, updated);
 
-  // If not synced, queue it for cloud sync
-  if (!newTest.syncedToCloud) {
+  // Strict Leaderboard Regulation: Only 2-hour full CBT mock tests (180 questions) are enqueued for live cloud leaderboard sync
+  const isTwoHourFullCbt =
+    newTest.totalQuestions === 180 &&
+    (newTest.testType === 'full' || newTest.testType === 'full_2hr_cbt');
+
+  if (!newTest.syncedToCloud && isTwoHourFullCbt) {
     enqueueSyncItem({
       action: 'SAVE_TEST',
       payload: {
@@ -101,9 +105,10 @@ export function saveLocalTestResult(
         testTitle: newTest.testTitle,
         testType: newTest.testType,
         score: newTest.score,
-        totalQuestions: newTest.totalQuestions,
+        totalQuestions: 180,
         percentage: newTest.percentage,
         timeSpentSeconds: newTest.timeSpentSeconds,
+        jambScore: newTest.jambScore,
       },
     });
   }

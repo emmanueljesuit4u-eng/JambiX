@@ -125,8 +125,8 @@ export const AuthContainer: React.FC = () => {
                     <div className="text-xl font-extrabold tracking-tight">
                       Jambi<span className="text-emerald-400">X</span>
                     </div>
-                    <div className="text-[11px] text-emerald-200/80 font-medium">
-                      Prepare smarter. Perform better.
+                    <div className="text-[11px] text-emerald-200/80 font-medium tracking-wide">
+                      by jp classixs group
                     </div>
                   </div>
                 </div>
@@ -233,7 +233,7 @@ export const AuthContainer: React.FC = () => {
         <div className="max-w-6xl mx-auto flex items-center justify-center gap-1.5 text-xs">
           <span className="font-bold text-slate-800 dark:text-white">JambiX</span>
           <span>·</span>
-          <span>Prepare smarter. Perform better.</span>
+          <span>by jp classixs group</span>
         </div>
       </footer>
 

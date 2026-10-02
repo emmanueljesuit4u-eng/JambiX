@@ -66,9 +66,9 @@ export const ActivationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [isPaywallOpen, setIsPaywallOpen] = useState(false);
   const [restrictedFeature, setRestrictedFeature] = useState<string | null>(null);
 
-  // Authoritative Cross-Device Cloud Sync
+  // Authoritative Cross-Device Cloud Sync (only attach listener if authenticated)
   useEffect(() => {
-    if (!userEmail) return;
+    if (!userEmail || !currentUser) return;
 
     let isMounted = true;
     getOrCreateAccountActivation(userEmail)

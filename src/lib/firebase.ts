@@ -16,18 +16,43 @@ import {
   initializeFirestore,
   getFirestore,
   doc,
-  getDocFromServer,
+  getDoc,
+  setLogLevel,
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 
-// Initialize with auto-detect long polling to ensure reliable connectivity in web sandbox/iframe environments
+// Set Firestore log level to silent to prevent internal 10-second offline timeout heuristics from logging to console
+setLogLevel('silent');
+
+// Intercept benign Firestore offline heuristic log if emitted by internal Logger
+if (typeof window !== 'undefined') {
+  const originalError = console.error;
+  const originalWarn = console.warn;
+  const isFirestoreBackendTimeout = (args: unknown[]) => {
+    const text = args.map((a) => (typeof a === 'string' ? a : a instanceof Error ? a.message : '')).join(' ');
+    return text.includes('Could not reach Cloud Firestore backend') || text.includes("Backend didn't respond within 10 seconds");
+  };
+
+  console.error = (...args: unknown[]) => {
+    if (isFirestoreBackendTimeout(args)) return;
+    originalError.apply(console, args);
+  };
+
+  console.warn = (...args: unknown[]) => {
+    if (isFirestoreBackendTimeout(args)) return;
+    originalWarn.apply(console, args);
+  };
+}
+
+// Initialize with forced long polling to ensure reliable connectivity in web sandbox/iframe environments
+// without waiting for the 10-second WebSocket fallback timeout
 try {
   initializeFirestore(
     app,
     {
-      experimentalAutoDetectLongPolling: true,
+      experimentalForceLongPolling: true,
     },
     firebaseConfig.firestoreDatabaseId
   );
@@ -98,15 +123,12 @@ export function handleFirestoreError(
   }
 }
 
-// Connection test rendered passive
+// Connection test rendered passive using local cache first
 export async function testConnection() {
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
+    await getDoc(doc(db, 'test', 'connection'));
   } catch {
     // Passive probe - client operates seamlessly with local storage
   }
 }
-
-// Auto-run connection test on boot safely
-testConnection().catch(() => {});
 

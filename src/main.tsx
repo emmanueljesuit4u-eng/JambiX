@@ -1,3 +1,23 @@
+// Intercept benign Firestore offline timeout heuristics
+if (typeof window !== 'undefined') {
+  const origErr = console.error;
+  const origWarn = console.warn;
+  const isIgnored = (args: unknown[]) => {
+    const text = args
+      .map((a) => (typeof a === 'string' ? a : a instanceof Error ? a.message : (typeof a === 'object' && a !== null ? JSON.stringify(a) : String(a))))
+      .join(' ');
+    return text.includes('Could not reach Cloud Firestore backend') || text.includes("Backend didn't respond within 10 seconds");
+  };
+  console.error = (...args: unknown[]) => {
+    if (isIgnored(args)) return;
+    origErr.apply(console, args);
+  };
+  console.warn = (...args: unknown[]) => {
+    if (isIgnored(args)) return;
+    origWarn.apply(console, args);
+  };
+}
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';

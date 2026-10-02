@@ -115,6 +115,28 @@
           "type": "number",
           "description": "Duration spent on test in seconds"
         },
+        "candidateName": {
+          "type": "string",
+          "description": "Candidate full name",
+          "maxLength": 120
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Candidate email address",
+          "maxLength": 120
+        },
+        "jambScore": {
+          "type": "number",
+          "description": "JAMB scaled score out of 400"
+        },
+        "subjectScores": {
+          "type": "array",
+          "description": "Subject scores breakdown list"
+        },
+        "sessionEpoch": {
+          "type": "number",
+          "description": "Session epoch timestamp"
+        },
         "createdAt": {
           "type": "string",
           "description": "Server timestamp when test was submitted"

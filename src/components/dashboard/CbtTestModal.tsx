@@ -58,6 +58,7 @@ interface CbtTestModalProps {
   initialSubject?: string;
   initialYear?: number;
   studentName?: string;
+  studentEmail?: string;
 }
 
 export const isLekkiNovelCheck = (title?: string, type?: string, subject?: string) => {
@@ -83,6 +84,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   initialSubject,
   initialYear,
   studentName,
+  studentEmail,
 }) => {
   const { effectiveOnline } = useNetwork();
   const isInitialLekki = isLekkiNovelCheck(testTitle, testType, initialSubject);
@@ -405,7 +407,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const testId = `test_${Date.now()}`;
     const timeSpent = duration * 60 - timeLeftSeconds;
 
-    const isFullTwoHour = examMode === 'full' || duration === 120 || activeQuestions.length >= 180;
+    // Strict Leaderboard Regulation: ONLY 2-hour full CBT exams (180 questions across 4 subjects and 120-minute duration) are submitted to the live leaderboard
+    const isFullTwoHour = (examMode === 'full' || activeQuestions.length === 180) && duration === 120;
     const computedTestType = isFullTwoHour ? 'full' : (examMode || testType || 'single');
     const computedTitle = isFullTwoHour
       ? (selectedYear === 'random'
@@ -416,7 +419,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           : `${testTitle} (${selectedYear} UTME)`);
 
     let synced = false;
-    // Strict Leaderboard Regulation: ONLY the 2-Hour Full CBT Mock Exam (180 questions) is recorded to the live stream leaderboard
+    // ONLY the 2-Hour Full CBT Mock Exam (180 questions) is recorded to the live stream leaderboard
     if (auth.currentUser && effectiveOnline && isFullTwoHour) {
       try {
         let candidateName = (studentName || '').trim();
@@ -433,7 +436,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
         if (!candidateName) {
           candidateName = auth.currentUser.displayName || auth.currentUser.email?.split('@')[0] || 'UTME Candidate';
         }
-        const userEmail = auth.currentUser.email || '';
+        const userEmail = (studentEmail || auth.currentUser.email || '').trim();
         const subjectScores = grade.subjectBreakdowns.map((sb) => ({
           subject: sb.subject,
           score: sb.jambScaledScore,
@@ -449,7 +452,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           testTitle: computedTitle,
           testType: computedTestType,
           score: grade.totalRawCorrect, // Conforms strictly to score <= totalQuestions rule
-          totalQuestions: grade.totalQuestions,
+          totalQuestions: 180,
           jambScore: grade.totalJambScore, // Official JAMB marking scheme aggregate score (out of 400)
           percentage: grade.overallPercentage,
           timeSpentSeconds: timeSpent > 0 ? timeSpent : 180,
@@ -479,6 +482,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       questions: activeQuestions,
       selectedAnswers: selectedAnswers,
     });
+
+    // Notify components immediately so live leaderboard updates in real-time
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('jambix_test_submitted', { detail: { testId, isFullTwoHour } }));
+    }
 
     setTestCompleted({
       grade,

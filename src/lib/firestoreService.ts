@@ -153,31 +153,37 @@ export async function saveTestResult(
     return;
   }
 
-  // Strict Rule: ONLY 2-hour full CBT mock exams (180 questions: English 60 + 3 others 40 each) are recorded on the live leaderboard from this moment
+  // Strict Rule: ONLY 2-hour full CBT mock exams (180 questions: English 60 + 3 others 40 each) are recorded on the live leaderboard
   const isTwoHourFullCbt =
     result.totalQuestions === 180 &&
-    (result.testType === 'full' || result.testType === 'full_2hr_cbt') &&
-    (result.testTitle.toLowerCase().includes('full') ||
-      result.testTitle.toLowerCase().includes('180') ||
-      result.testTitle.toLowerCase().includes('2-hr') ||
-      result.testType === 'full');
+    (result.testType === 'full' || result.testType === 'full_2hr_cbt');
 
   if (!isTwoHourFullCbt) {
     console.info('Firestore saveTestResult: Only 2-Hour Full CBT Mock exams (180 Qs) are recorded on the national leaderboard. Saved to local history.');
     return;
   }
 
-  const payload = {
-    ...result,
-    sessionEpoch: LEADERBOARD_SESSION_START_MS,
+  const payload: any = {
+    id: result.id,
     userId: auth.currentUser.uid,
+    testTitle: result.testTitle,
+    testType: result.testType || 'full',
+    score: result.score,
+    totalQuestions: 180,
+    percentage: result.percentage,
+    timeSpentSeconds: result.timeSpentSeconds,
+    createdAt: serverTimestamp(),
   };
+
+  if (result.candidateName) payload.candidateName = result.candidateName.slice(0, 120);
+  if (result.userEmail) payload.userEmail = result.userEmail.slice(0, 120);
+  if (typeof result.jambScore === 'number') payload.jambScore = Math.min(400, Math.max(0, result.jambScore));
+  if (Array.isArray(result.subjectScores)) payload.subjectScores = result.subjectScores;
+  if (typeof result.sessionEpoch === 'number') payload.sessionEpoch = result.sessionEpoch;
+
   try {
     const testRef = doc(db, 'testResults', payload.id);
-    await setDoc(testRef, {
-      ...payload,
-      createdAt: serverTimestamp(),
-    });
+    await setDoc(testRef, payload);
   } catch (error) {
     if (isOfflineError(error)) {
       console.warn('Firestore saveTestResult: cached locally while offline.');
@@ -637,22 +643,7 @@ export function subscribeToAllTestResults(
             // Strictly 2-hour full CBT mock tests only (180 questions across 4 subjects)
             if (t.totalQuestions !== 180) return false;
             const typeLower = (t.testType || '').toLowerCase();
-            if (typeLower !== 'full' && typeLower !== 'full_2hr_cbt') return false;
-
-            // Purge results from before this fresh restart moment
-            if (t.sessionEpoch && t.sessionEpoch < LEADERBOARD_SESSION_START_MS) return false;
-            if (t.createdAt) {
-              const createdMs =
-                typeof t.createdAt === 'object' && t.createdAt !== null && 'toMillis' in t.createdAt
-                  ? (t.createdAt as any).toMillis()
-                  : typeof t.createdAt === 'string'
-                  ? new Date(t.createdAt).getTime()
-                  : typeof t.createdAt === 'number'
-                  ? t.createdAt
-                  : 0;
-              if (createdMs > 0 && createdMs < LEADERBOARD_SESSION_START_MS) return false;
-            }
-            return true;
+            return typeLower === 'full' || typeLower === 'full_2hr_cbt';
           });
         onUpdate(results);
       },
@@ -686,20 +677,7 @@ export async function getAllTestResults(): Promise<TestResultData[]> {
       .filter((t) => {
         if (t.totalQuestions !== 180) return false;
         const typeLower = (t.testType || '').toLowerCase();
-        if (typeLower !== 'full' && typeLower !== 'full_2hr_cbt') return false;
-        if (t.sessionEpoch && t.sessionEpoch < LEADERBOARD_SESSION_START_MS) return false;
-        if (t.createdAt) {
-          const createdMs =
-            typeof t.createdAt === 'object' && t.createdAt !== null && 'toMillis' in t.createdAt
-              ? (t.createdAt as any).toMillis()
-              : typeof t.createdAt === 'string'
-              ? new Date(t.createdAt).getTime()
-              : typeof t.createdAt === 'number'
-              ? t.createdAt
-              : 0;
-          if (createdMs > 0 && createdMs < LEADERBOARD_SESSION_START_MS) return false;
-        }
-        return true;
+        return typeLower === 'full' || typeLower === 'full_2hr_cbt';
       });
   } catch (error) {
     if (!isOfflineError(error)) {

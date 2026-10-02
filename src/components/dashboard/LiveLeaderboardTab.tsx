@@ -140,16 +140,63 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Subscribe to real-time test results from Firestore
+  // Subscribe to real-time test results from Firestore with instant local synchronization
   useEffect(() => {
     setIsLoading(true);
-    const unsubscribe = subscribeToAllTestResults((data) => {
-      setTestResults(data);
+
+    const mergeWithLocalTwoHourTests = (cloudData: TestResultData[]) => {
+      let localTwoHourTests: TestResultData[] = [];
+      try {
+        const rawLocal = localStorage.getItem('jambix_offline_tests_v1');
+        if (rawLocal) {
+          const parsed = JSON.parse(rawLocal) as any[];
+          localTwoHourTests = parsed
+            .filter((lt) => lt.totalQuestions === 180 && (lt.testType === 'full' || lt.testType === 'full_2hr_cbt'))
+            .map((lt) => ({
+              id: lt.id,
+              userId: lt.userId || currentUserId || '',
+              testTitle: lt.testTitle,
+              testType: lt.testType,
+              score: lt.score,
+              totalQuestions: 180,
+              percentage: lt.percentage,
+              timeSpentSeconds: lt.timeSpentSeconds,
+              candidateName: currentUserName || 'UTME Candidate',
+              userEmail: currentUserEmail || '',
+              jambScore: lt.jambScore,
+              createdAt: lt.createdAt,
+            }));
+        }
+      } catch (e) {
+        console.warn('Could not read local tests for leaderboard merge:', e);
+      }
+
+      const cloudIds = new Set(cloudData.map((d) => d.id));
+      const merged = [...cloudData, ...localTwoHourTests.filter((lt) => !cloudIds.has(lt.id))];
+      setTestResults(merged);
       setIsLoading(false);
+    };
+
+    let latestCloudData: TestResultData[] = [];
+
+    const unsubscribe = subscribeToAllTestResults((data) => {
+      latestCloudData = data;
+      mergeWithLocalTwoHourTests(data);
     });
 
-    return () => unsubscribe();
-  }, []);
+    const handleSubmissionEvent = () => {
+      mergeWithLocalTwoHourTests(latestCloudData);
+    };
+
+    window.addEventListener('storage', handleSubmissionEvent);
+    window.addEventListener('jambix_test_submitted', handleSubmissionEvent);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('storage', handleSubmissionEvent);
+      window.removeEventListener('jambix_test_submitted', handleSubmissionEvent);
+    };
+  }, [currentUserId, currentUserEmail, currentUserName]);
 
   // Ensure student's registration full name is permanently synchronized to their cloud test records
   useEffect(() => {

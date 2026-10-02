@@ -1034,6 +1034,51 @@ export function getGeneralEnglishQuestions(
   return picked;
 }
 
+function scatterBankQuestionOptions(
+  question: VerifiedQuestion,
+  seed?: number
+): VerifiedQuestion {
+  const letters: ('A' | 'B' | 'C' | 'D')[] = ['A', 'B', 'C', 'D'];
+  const rawAns = (question.answer || 'A').toUpperCase();
+  const originalAnswer = (['A', 'B', 'C', 'D'].includes(rawAns) ? rawAns : 'A') as 'A' | 'B' | 'C' | 'D';
+
+  const entries = letters.map((l) => ({
+    text: question.options[l] || '',
+    isCorrect: l === originalAnswer,
+  }));
+
+  const randomFunc = typeof seed === 'number' && !isNaN(seed)
+    ? (() => {
+        let a = (Math.floor(seed) ^ 0x5deece66) | 0;
+        return () => {
+          a = (a + 0x9e3779b9) | 0;
+          let t = a ^ (a >>> 16);
+          t = Math.imul(t, 0x21f0aaad);
+          t = t ^ (t >>> 15);
+          t = Math.imul(t, 0x735a2d97);
+          return ((t = t ^ (t >>> 15)) >>> 0) / 4294967296;
+        };
+      })()
+    : Math.random;
+
+  for (let i = entries.length - 1; i > 0; i--) {
+    const j = Math.floor(randomFunc() * (i + 1));
+    [entries[i], entries[j]] = [entries[j], entries[i]];
+  }
+
+  const correctIndex = entries.findIndex((e) => e.isCorrect);
+  return {
+    ...question,
+    options: {
+      A: entries[0].text,
+      B: entries[1].text,
+      C: entries[2].text,
+      D: entries[3].text,
+    },
+    answer: letters[correctIndex >= 0 ? correctIndex : 0],
+  };
+}
+
 // Combines 15 novel questions and 45 normal English questions to guarantee EXACTLY 60 questions for Use of English
 export function getCompleteEnglishSection(
   count: number = 60,
@@ -1049,9 +1094,12 @@ export function getCompleteEnglishSection(
   const generalQuestions = getGeneralEnglishQuestions(generalCount, seed + 1, excludeTexts, localTexts);
 
   const combined = [...novelQuestions, ...generalQuestions];
-  return combined.slice(0, count).map((q, idx) => ({
-    ...q,
-    questionNumber: idx + 1,
-    text: `[JAMB UTME Q${idx + 1}] ${q.text.replace(/^\[JAMB UTME Q\d+\s*·?[^\]]*\]\s*/i, '')}`,
-  }));
+  return combined.slice(0, count).map((q, idx) => {
+    const qWithNum: VerifiedQuestion = {
+      ...q,
+      questionNumber: idx + 1,
+      text: `[JAMB UTME Q${idx + 1}] ${q.text.replace(/^\[JAMB UTME Q\d+\s*·?[^\]]*\]\s*/i, '')}`,
+    };
+    return scatterBankQuestionOptions(qWithNum, seed * 100 + (q.id || idx) * 19 + idx * 7);
+  });
 }

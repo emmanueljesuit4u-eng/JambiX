@@ -1258,64 +1258,77 @@ const TEMPLATE_MAP: Record<SubjectKey, QuestionTemplate[]> = {
 
 /**
  * Scatters multiple choice options uniformly across A, B, C, and D
- * so that correct answers are never predictable or always 'A'.
+ * using an authentic Fisher-Yates shuffle so that correct answers are
+ * never predictable, never always 'A', and distributed with ~25% balance
+ * across all four answer keys.
  */
 export function scatterQuestionOptions<T extends {
   options: { A: string; B: string; C: string; D: string };
   answer: 'A' | 'B' | 'C' | 'D';
 }>(question: T, seed?: number): T {
   const letters: ('A' | 'B' | 'C' | 'D')[] = ['A', 'B', 'C', 'D'];
-  const originalAnswer = question.answer;
-  const correctText = question.options[originalAnswer];
+  const rawAns = (question.answer || 'A').toUpperCase();
+  const originalAnswer = (['A', 'B', 'C', 'D'].includes(rawAns) ? rawAns : 'A') as 'A' | 'B' | 'C' | 'D';
 
-  // Distractor texts
-  const distractors = letters
-    .filter((l) => l !== originalAnswer)
-    .map((l) => question.options[l]);
+  const correctText = question.options[originalAnswer] || '';
+  const usedTexts = new Set<string>([correctText.trim().toLowerCase()]);
+  const entries: { text: string; isCorrect: boolean }[] = [
+    { text: correctText, isCorrect: true },
+  ];
 
-  // Determine target position for the correct answer
-  let targetIndex: number;
-  if (typeof seed === 'number' && !isNaN(seed)) {
-    // Balanced deterministic cycle based on question seed
-    targetIndex = Math.abs((Math.floor(seed) * 7 + 1) % 4);
-  } else {
-    targetIndex = Math.floor(Math.random() * 4);
+  for (const l of letters) {
+    if (l === originalAnswer) continue;
+    let optText = question.options[l] || '';
+    let norm = optText.trim().toLowerCase();
+    let tweakCount = 0;
+    while (usedTexts.has(norm) && tweakCount < 5) {
+      tweakCount++;
+      const numMatch = optText.match(/^(-?\d+(\.\d+)?)(.*)$/);
+      if (numMatch) {
+        const val = parseFloat(numMatch[1]);
+        const unit = numMatch[3];
+        const adjusted = Number((val * (1.2 + tweakCount * 0.3) + tweakCount).toFixed(1));
+        optText = `${adjusted}${unit}`;
+      } else {
+        optText = `${optText} (alt)`;
+      }
+      norm = optText.trim().toLowerCase();
+    }
+    usedTexts.add(norm);
+    entries.push({ text: optText, isCorrect: false });
   }
 
-  // Permute distractors
-  const shuffledDistractors = [...distractors];
-  if (typeof seed === 'number' && !isNaN(seed)) {
-    const shift = Math.abs(Math.floor(seed * 3) % 3);
-    for (let i = 0; i < shift; i++) {
-      shuffledDistractors.push(shuffledDistractors.shift()!);
-    }
-  } else {
-    for (let i = shuffledDistractors.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledDistractors[i], shuffledDistractors[j]] = [shuffledDistractors[j], shuffledDistractors[i]];
-    }
+  // Seeded SplitMix32 PRNG when seed is provided, or Math.random
+  const randomFunc = typeof seed === 'number' && !isNaN(seed)
+    ? (() => {
+        let a = (Math.floor(seed) ^ 0x5deece66) | 0;
+        return () => {
+          a = (a + 0x9e3779b9) | 0;
+          let t = a ^ (a >>> 16);
+          t = Math.imul(t, 0x21f0aaad);
+          t = t ^ (t >>> 15);
+          t = Math.imul(t, 0x735a2d97);
+          return ((t = t ^ (t >>> 15)) >>> 0) / 4294967296;
+        };
+      })()
+    : Math.random;
+
+  // Authentic Fisher-Yates permutation of the 4 options
+  for (let i = entries.length - 1; i > 0; i--) {
+    const j = Math.floor(randomFunc() * (i + 1));
+    [entries[i], entries[j]] = [entries[j], entries[i]];
   }
 
-  // Construct new options dictionary
-  const newOptionsList: string[] = [];
-  let distractorIdx = 0;
-  for (let i = 0; i < 4; i++) {
-    if (i === targetIndex) {
-      newOptionsList.push(correctText);
-    } else {
-      newOptionsList.push(shuffledDistractors[distractorIdx++]);
-    }
-  }
-
-  const newAnswer = letters[targetIndex];
+  const correctIndex = entries.findIndex((e) => e.isCorrect);
+  const newAnswer = letters[correctIndex >= 0 ? correctIndex : 0];
 
   return {
     ...question,
     options: {
-      A: newOptionsList[0],
-      B: newOptionsList[1],
-      C: newOptionsList[2],
-      D: newOptionsList[3],
+      A: entries[0].text,
+      B: entries[1].text,
+      C: entries[2].text,
+      D: entries[3].text,
     },
     answer: newAnswer,
   };
@@ -1895,12 +1908,16 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     });
   }
 
-  // Final Sequential question numbering (Q1 to Q180 for full mock)
-  return assembled.map((q, idx) => ({
-    ...q,
-    questionNumber: idx + 1,
-    id: q.id || (100000 + idx + 1),
-  }));
+  // Final Sequential question numbering (Q1 to Q180 for full mock) and guaranteed option randomization
+  return assembled.map((q, idx) => {
+    const numberedQ: VerifiedQuestion = {
+      ...q,
+      questionNumber: idx + 1,
+      id: q.id || (100000 + idx + 1),
+    };
+    // Ensure all questions across Use of English and all other subjects have options randomly distributed across A, B, C, D
+    return scatterQuestionOptions(numberedQ, baseSeed * 1000 + (q.id || idx) * 37 + idx * 13);
+  });
 }
 
 /**

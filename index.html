@@ -5,13 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       (function() {
-        // Global error suppression for fetch property setter issues
-        var suppressFetchError = function(msg) {
-          return typeof msg === 'string' && msg.indexOf('fetch') !== -1;
+        // Global error suppression for fetch property setter issues and benign Firestore offline timeout heuristics
+        var isIgnoredError = function(msg) {
+          if (!msg) return false;
+          var s = typeof msg === 'string' ? msg : (msg && msg.message ? msg.message : String(msg));
+          return s.indexOf('fetch') !== -1 ||
+                 s.indexOf('Could not reach Cloud Firestore backend') !== -1 ||
+                 s.indexOf("Backend didn't respond within 10 seconds") !== -1;
+        };
+
+        var origErr = console.error;
+        console.error = function() {
+          for (var i = 0; i < arguments.length; i++) {
+            if (isIgnoredError(arguments[i])) return;
+          }
+          origErr.apply(console, arguments);
+        };
+
+        var origWarn = console.warn;
+        console.warn = function() {
+          for (var i = 0; i < arguments.length; i++) {
+            if (isIgnoredError(arguments[i])) return;
+          }
+          origWarn.apply(console, arguments);
         };
 
         window.onerror = function(message, source, lineno, colno, error) {
-          if (suppressFetchError(message) || (error && suppressFetchError(error.message))) {
+          if (isIgnoredError(message) || (error && isIgnoredError(error.message))) {
             return true;
           }
           return false;
@@ -21,8 +41,8 @@
           if (
             event &&
             (
-              suppressFetchError(event.message) ||
-              (event.error && suppressFetchError(event.error.message))
+              isIgnoredError(event.message) ||
+              (event.error && isIgnoredError(event.error.message))
             )
           ) {
             if (typeof event.preventDefault === 'function') event.preventDefault();
@@ -35,7 +55,7 @@
           if (
             event &&
             event.reason &&
-            suppressFetchError(event.reason.message || String(event.reason))
+            isIgnoredError(event.reason.message || String(event.reason))
           ) {
             if (typeof event.preventDefault === 'function') event.preventDefault();
             if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();

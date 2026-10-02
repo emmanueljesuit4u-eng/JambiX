@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   BookOpen,
   Users,
@@ -25,6 +25,7 @@ import {
   NOVEL_EXAM_QUESTIONS,
   NovelDetails,
 } from '../../data/jambNovelsData';
+import { scatterQuestionOptions } from '../../data/jambPastQuestions';
 
 interface NovelsTabProps {
   onLaunchTest: (title: string, type: string, subject?: string, year?: number) => void;
@@ -41,9 +42,11 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
   const activeNovel: NovelDetails =
     JAMB_NOVELS.find((n) => n.id === selectedNovelId) || JAMB_NOVELS[0];
 
-  const novelQuestions = NOVEL_EXAM_QUESTIONS.filter(
-    (q) => q.novel.toLowerCase() === activeNovel.title.toLowerCase()
-  );
+  const novelQuestions = useMemo(() => {
+    return NOVEL_EXAM_QUESTIONS
+      .filter((q) => q.novel.toLowerCase() === activeNovel.title.toLowerCase())
+      .map((q) => scatterQuestionOptions(q, q.id * 37 + 11));
+  }, [activeNovel.title]);
 
   const toggleAnswer = (id: number) => {
     setRevealedAnswerIds((prev) => {

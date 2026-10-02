@@ -72,7 +72,7 @@ export const Logo: React.FC<LogoProps> = ({
 
       {showTagline && (
         <p className="mt-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 tracking-wide text-center">
-          Prepare smarter. Perform better.
+          by jp classixs group
         </p>
       )}
     </div>
