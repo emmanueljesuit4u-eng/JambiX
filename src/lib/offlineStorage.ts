@@ -10,6 +10,8 @@ import type { VerifiedQuestion } from '../data/verifiedTextbooks';
 export interface OfflineTestResult {
   id: string;
   userId?: string;
+  candidateName?: string;
+  userEmail?: string;
   testTitle: string;
   testType: string;
   score: number;
@@ -109,6 +111,8 @@ export function saveLocalTestResult(
         percentage: newTest.percentage,
         timeSpentSeconds: newTest.timeSpentSeconds,
         jambScore: newTest.jambScore,
+        candidateName: newTest.candidateName,
+        userEmail: newTest.userEmail,
       },
     });
   }

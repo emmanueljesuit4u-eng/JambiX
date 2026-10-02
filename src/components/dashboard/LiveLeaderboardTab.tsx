@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Trophy,
   Medal,
@@ -152,7 +152,7 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
         if (rawLocal) {
           const parsed = JSON.parse(rawLocal) as any[];
           localTwoHourTests = parsed
-            .filter((lt) => lt.totalQuestions === 180 && (lt.testType === 'full' || lt.testType === 'full_2hr_cbt'))
+            .filter((lt) => lt.totalQuestions === 180 && (lt.testType === 'full' || lt.testType === 'full_2hr_cbt' || (lt.testTitle && lt.testTitle.toLowerCase().includes('full'))))
             .map((lt) => ({
               id: lt.id,
               userId: lt.userId || currentUserId || '',
@@ -162,8 +162,8 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
               totalQuestions: 180,
               percentage: lt.percentage,
               timeSpentSeconds: lt.timeSpentSeconds,
-              candidateName: currentUserName || 'UTME Candidate',
-              userEmail: currentUserEmail || '',
+              candidateName: lt.candidateName || currentUserName || 'UTME Candidate',
+              userEmail: lt.userEmail || currentUserEmail || '',
               jambScore: lt.jambScore,
               createdAt: lt.createdAt,
             }));
@@ -177,6 +177,9 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
       setTestResults(merged);
       setIsLoading(false);
     };
+
+    // Load instantly from local storage cache so leaderboard appears with zero delay
+    mergeWithLocalTwoHourTests([]);
 
     let latestCloudData: TestResultData[] = [];
 
@@ -199,16 +202,23 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
     };
   }, [currentUserId, currentUserEmail, currentUserName]);
 
-  // Ensure student's registration full name is permanently synchronized to their cloud test records
+  // Ensure student's registration full name is permanently synchronized to their cloud test records (guarded against re-trigger loops)
+  const attemptedSyncIdsRef = useRef<Set<string>>(new Set());
   useEffect(() => {
     if (!currentUserId || !currentUserName || currentUserName === 'UTME Candidate' || currentUserName.includes('@')) {
       return;
     }
     const cleanName = currentUserName.trim();
     const myTestsNeedingUpdate = testResults.filter(
-      (t) => t.userId === currentUserId && (!t.candidateName || t.candidateName !== cleanName || t.candidateName.includes('@'))
+      (t) =>
+        t.userId === currentUserId &&
+        (!t.candidateName || t.candidateName !== cleanName || t.candidateName.includes('@')) &&
+        !attemptedSyncIdsRef.current.has(t.id)
     );
+    if (myTestsNeedingUpdate.length === 0) return;
+
     myTestsNeedingUpdate.forEach((t) => {
+      attemptedSyncIdsRef.current.add(t.id);
       updateTestResultCandidateName(t.id, cleanName).catch(() => {});
     });
   }, [testResults, currentUserId, currentUserName]);

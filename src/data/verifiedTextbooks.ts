@@ -1433,6 +1433,7 @@ export {
   getSeenQuestionSignatures,
   recordSeenSignatures,
   clearSeenSignatures,
+  getCompletedTwoHourTestsCount,
   getQuestionCoreSignature,
   scatterQuestionOptions,
 } from './jambPastQuestions';

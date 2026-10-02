@@ -38,6 +38,7 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [pendingSyncCount, setPendingSyncCount] = useState<number>(0);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
+  const isSyncingRef = React.useRef(false);
 
   // Refresh pending count
   const refreshPendingCount = useCallback(() => {
@@ -46,26 +47,30 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setLastSyncedAt(getLastSyncTime());
   }, []);
 
-  // Sync execution
+  // Sync execution - stable reference, guarded by isSyncingRef to prevent dependency loops
   const syncNow = useCallback(async () => {
-    if (isSyncing) return { syncedCount: 0, errorsCount: 0 };
+    if (isSyncingRef.current) return { syncedCount: 0, errorsCount: 0 };
+    isSyncingRef.current = true;
     setIsSyncing(true);
     try {
       const res = await flushSyncQueue();
       refreshPendingCount();
       return res;
     } finally {
+      isSyncingRef.current = false;
       setIsSyncing(false);
     }
-  }, [isSyncing, refreshPendingCount]);
+  }, [refreshPendingCount]);
+
+  const syncNowRef = React.useRef(syncNow);
+  syncNowRef.current = syncNow;
 
   // Listen to browser network state
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      // Auto flush queue when restored
       if (!isSimulatedOffline) {
-        syncNow();
+        syncNowRef.current();
       }
     };
 
@@ -78,24 +83,29 @@ export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     // Initial check & periodic queue count poll
     refreshPendingCount();
-    const interval = setInterval(refreshPendingCount, 3000);
+    const interval = setInterval(refreshPendingCount, 5000);
 
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
       clearInterval(interval);
     };
-  }, [isSimulatedOffline, syncNow, refreshPendingCount]);
+  }, [isSimulatedOffline, refreshPendingCount]);
 
-  // Also auto-sync on auth change when online
+  // Auto-sync once on auth change when online (tracks previous user to prevent re-triggering loops)
+  const prevSyncedUidRef = React.useRef<string | null>(null);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user && isOnline && !isSimulatedOffline) {
-        syncNow();
+      const currentUid = user?.uid || null;
+      if (user && currentUid !== prevSyncedUidRef.current && isOnline && !isSimulatedOffline) {
+        prevSyncedUidRef.current = currentUid;
+        syncNowRef.current();
+      } else if (!user) {
+        prevSyncedUidRef.current = null;
       }
     });
     return () => unsubscribe();
-  }, [isOnline, isSimulatedOffline, syncNow]);
+  }, [isOnline, isSimulatedOffline]);
 
   const toggleSimulatedOffline = () => {
     const newVal = !isSimulatedOffline;

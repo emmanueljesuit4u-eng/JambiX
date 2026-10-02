@@ -19,6 +19,7 @@ import {
   getSeenQuestionSignatures,
   recordSeenSignatures,
   clearSeenSignatures,
+  getCompletedTwoHourTestsCount,
 } from './jambQuestionBankEngine';
 import {
   ArtsCommercialSubjectKey,
@@ -1672,6 +1673,7 @@ export {
   getSeenQuestionSignatures,
   recordSeenSignatures,
   clearSeenSignatures,
+  getCompletedTwoHourTestsCount,
 };
 
 /**
@@ -1691,10 +1693,15 @@ export interface AssembleTestOptions {
   customQuestionCount?: number;
   excludeQuestionIds?: Set<number> | number[];
   excludeSignatures?: Set<string>;
+  difficultyTier?: number;
 }
 
 export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQuestion[] {
   const { subjects = ['Use of English', 'Mathematics', 'Physics', 'Chemistry'], year = 'random', mode = 'full' } = options;
+  const effectiveDifficultyTier =
+    options.difficultyTier !== undefined
+      ? options.difficultyTier
+      : getCompletedTwoHourTestsCount();
   
   // Dedicated Novel Test Mode (strictly "The Lekki Headmaster" by Kabir Alabi Garba)
   if (
@@ -1792,7 +1799,7 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     const count = options.customQuestionCount || (singleKey === 'english' ? 60 : 40);
 
     if (singleKey === 'english') {
-      assembled = getCompleteEnglishSection(count, baseSeed, excludeSignatures, sessionUsedTexts);
+      assembled = getCompleteEnglishSection(count, baseSeed, excludeSignatures, sessionUsedTexts, effectiveDifficultyTier);
     } else {
       assembled = generateUniqueSubjectQuestions(
         singleKey,
@@ -1801,7 +1808,8 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
         excludeSignatures,
         sessionUsedTexts,
         sessionUsedDiagrams,
-        baseSeed
+        baseSeed,
+        effectiveDifficultyTier
       );
     }
   } else {
@@ -1830,7 +1838,7 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     const selectedFour: SubjectKey[] = ['english', ...otherKeys.slice(0, 3)];
 
     // 1. English: EXACTLY 60 questions drawn from prescribed novels and normal English
-    const rawEnglishQuestions = getCompleteEnglishSection(60, baseSeed, excludeSignatures, sessionUsedTexts);
+    const rawEnglishQuestions = getCompleteEnglishSection(60, baseSeed, excludeSignatures, sessionUsedTexts, effectiveDifficultyTier);
     const finalEnglish = rawEnglishQuestions.slice(0, 60).map((q, qIdx) => ({
       ...q,
       subject: 'Use of English',
@@ -1870,7 +1878,8 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
         excludeSignatures,
         sessionUsedTexts,
         sessionUsedDiagrams,
-        baseSeed + (subIdx + 1) * 313
+        baseSeed + (subIdx + 1) * 313,
+        effectiveDifficultyTier
       );
       const finalSub = rawSubQuestions.slice(0, 40).map((q, qIdx) => ({
         ...q,

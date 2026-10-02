@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { TOUGH_LEKKI_NOVEL_QUESTIONS } from './jambToughQuestionsBank';
+
 export interface NovelChapter {
   chapterNumber: number;
   title: string;
@@ -2546,4 +2548,5 @@ export const NOVEL_EXAM_QUESTIONS: NovelQuestion[] = [
     answer: 'A',
     explanation: 'The acclaimed novel "The Lekki Headmaster" is written by veteran journalist, cultural scholar, and author Kabir Alabi Garba.',
   },
+  ...TOUGH_LEKKI_NOVEL_QUESTIONS
 ];

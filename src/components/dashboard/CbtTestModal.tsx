@@ -27,6 +27,7 @@ import {
   XCircle,
   HelpCircle,
   Calculator,
+  Flame,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import { saveTestResult, getUserProfile } from '../../lib/firestoreService';
@@ -46,6 +47,7 @@ import {
   recordSeenSignatures,
   getQuestionCoreSignature,
   clearSeenQuestions,
+  getCompletedTwoHourTestsCount,
 } from '../../data/verifiedTextbooks';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { JambCalculator } from '../common/JambCalculator';
@@ -230,14 +232,18 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const effectiveCount = isLekkiNovel ? 30 : examMode === 'sprint' ? 20 : undefined;
     const effectiveDurationMinutes = isLekkiNovel ? 20 : duration;
 
+    const difficultyTier = getCompletedTwoHourTestsCount();
+
     // Generate questions according to user requirements:
     // Full CBT test brings out 60 questions from English and 40 from the 3 other subjects;
-    // Lekki Headmaster test brings out strictly 30 questions on The Lekki Headmaster for 20 minutes
+    // Lekki Headmaster test brings out strictly 30 questions on The Lekki Headmaster for 20 minutes;
+    // Progressive toughness increases with every completed 2-hour test without repeating questions.
     const questions = assembleUtmeTest({
       subjects: effectiveSubjects,
       year: selectedYear,
       mode: effectiveMode,
       customQuestionCount: effectiveCount,
+      difficultyTier,
     });
 
     // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English
@@ -267,6 +273,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       finalQuestions.map((q) => q.id)
     );
     setSeenCount(getSeenQuestionsCount());
+
+    // Advance 2-hour test progression counter so every subsequent 2-hour test becomes progressively tougher
+    if ((effectiveMode === 'full' || finalQuestions.length === 180) && effectiveDurationMinutes >= 120) {
+      try {
+        const prevStarted = parseInt(localStorage.getItem('jambix_2hr_tests_started_count') || '0', 10);
+        localStorage.setItem('jambix_2hr_tests_started_count', String((isNaN(prevStarted) ? 0 : prevStarted) + 1));
+      } catch {}
+    }
   };
 
   // Timer countdown
@@ -408,7 +422,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const timeSpent = duration * 60 - timeLeftSeconds;
 
     // Strict Leaderboard Regulation: ONLY 2-hour full CBT exams (180 questions across 4 subjects and 120-minute duration) are submitted to the live leaderboard
-    const isFullTwoHour = (examMode === 'full' || activeQuestions.length === 180) && duration === 120;
+    const isFullTwoHour = (examMode === 'full' || activeQuestions.length === 180) && (duration === 120 || !duration);
     const computedTestType = isFullTwoHour ? 'full' : (examMode || testType || 'single');
     const computedTitle = isFullTwoHour
       ? (selectedYear === 'random'
@@ -418,25 +432,28 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           ? `${testTitle} (1978-2026 Cross-Year Mix)`
           : `${testTitle} (${selectedYear} UTME)`);
 
+    let candidateName = (studentName || '').trim();
+    if (!candidateName || candidateName === 'UTME Candidate' || candidateName.includes('@')) {
+      try {
+        if (auth.currentUser) {
+          const profile = await getUserProfile(auth.currentUser.uid);
+          if (profile && profile.fullName && profile.fullName.trim()) {
+            candidateName = profile.fullName.trim();
+          }
+        }
+      } catch (e) {
+        console.warn('Could not fetch user profile for registered name:', e);
+      }
+    }
+    if (!candidateName) {
+      candidateName = auth.currentUser?.displayName || auth.currentUser?.email?.split('@')[0] || 'UTME Candidate';
+    }
+    const userEmail = (studentEmail || auth.currentUser?.email || '').trim();
+
     let synced = false;
     // ONLY the 2-Hour Full CBT Mock Exam (180 questions) is recorded to the live stream leaderboard
     if (auth.currentUser && effectiveOnline && isFullTwoHour) {
       try {
-        let candidateName = (studentName || '').trim();
-        if (!candidateName || candidateName === 'UTME Candidate' || candidateName.includes('@')) {
-          try {
-            const profile = await getUserProfile(auth.currentUser.uid);
-            if (profile && profile.fullName && profile.fullName.trim()) {
-              candidateName = profile.fullName.trim();
-            }
-          } catch (e) {
-            console.warn('Could not fetch user profile for registered name:', e);
-          }
-        }
-        if (!candidateName) {
-          candidateName = auth.currentUser.displayName || auth.currentUser.email?.split('@')[0] || 'UTME Candidate';
-        }
-        const userEmail = (studentEmail || auth.currentUser.email || '').trim();
         const subjectScores = grade.subjectBreakdowns.map((sb) => ({
           subject: sb.subject,
           score: sb.jambScaledScore,
@@ -469,6 +486,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     saveLocalTestResult({
       id: testId,
       userId: auth.currentUser?.uid,
+      candidateName,
+      userEmail,
       testTitle: computedTitle,
       testType: computedTestType,
       score: grade.totalRawCorrect,
@@ -485,6 +504,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     // Notify components immediately so live leaderboard updates in real-time
     if (typeof window !== 'undefined') {
+      if (isFullTwoHour) {
+        try {
+          const prevCount = parseInt(localStorage.getItem('jambix_completed_2hr_tests_count') || '0', 10);
+          localStorage.setItem('jambix_completed_2hr_tests_count', String((isNaN(prevCount) ? 0 : prevCount) + 1));
+        } catch {}
+      }
       window.dispatchEvent(new CustomEvent('jambix_test_submitted', { detail: { testId, isFullTwoHour } }));
     }
 
@@ -955,17 +980,32 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 </div>
               ) : (
                 <>
-                  {/* Zero-Repeat Protection Notice */}
-                  {selectedYear === 'random' && seenCount > 0 && (
-                    <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-center justify-between text-xs transition-all">
-                      <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200">
-                        <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                        <span>
-                          <strong>Zero-Repeat CBT Guarantee:</strong> {seenCount} questions already practiced in your previous tests are automatically excluded. You will get 100% fresh questions.
+                  {/* Adaptive Progressive Toughness & Zero-Repeat Banner */}
+                  {(() => {
+                    const completedCount = getCompletedTwoHourTestsCount();
+                    const tierLevel = completedCount + 1;
+                    const tierLabel =
+                      tierLevel === 1
+                        ? 'Standard Difficulty (Level 1)'
+                        : tierLevel === 2
+                        ? 'Tougher Problem Sets (Level 2)'
+                        : tierLevel === 3
+                        ? 'Advanced High Rigor (Level 3)'
+                        : `Mastery UTME Toughness (Level ${tierLevel})`;
+                    return (
+                      <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-50 to-emerald-50 dark:from-amber-950/40 dark:to-emerald-950/30 border border-amber-300 dark:border-amber-800 flex items-center justify-between text-xs gap-3">
+                        <div className="flex items-center gap-2.5 text-slate-800 dark:text-slate-200">
+                          <Flame className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                          <p className="leading-snug">
+                            <strong>Adaptive 2-Hr Test Toughness:</strong> <span className="text-amber-700 dark:text-amber-300 font-bold">{tierLabel}</span>. As you complete more 2-hour tests, each next test becomes systematically tougher with <strong>zero repeated questions</strong> ({seenCount} previously seen questions excluded).
+                          </p>
+                        </div>
+                        <span className="hidden sm:inline-flex px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 shrink-0">
+                          {completedCount} Mock(s) Completed
                         </span>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">

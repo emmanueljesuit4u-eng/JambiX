@@ -204,7 +204,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         if (rawLocal) {
           const parsed = JSON.parse(rawLocal) as any[];
           localTwoHourTests = parsed
-            .filter((lt) => lt.totalQuestions === 180)
+            .filter((lt) => lt.totalQuestions === 180 && (lt.testType === 'full' || lt.testType === 'full_2hr_cbt' || (lt.testTitle && lt.testTitle.toLowerCase().includes('full'))))
             .map((lt) => ({
               id: lt.id,
               userId: lt.userId || auth.currentUser?.uid || '',
@@ -214,8 +214,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               totalQuestions: 180,
               percentage: lt.percentage,
               timeSpentSeconds: lt.timeSpentSeconds,
-              candidateName: user?.name || 'UTME Candidate',
-              userEmail: user?.email || '',
+              candidateName: lt.candidateName || user?.name || 'UTME Candidate',
+              userEmail: lt.userEmail || user?.email || '',
               jambScore: lt.jambScore,
             }));
         }
@@ -226,8 +226,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       const cloudIds = new Set(results.map((d) => d.id));
       const combined = [...results, ...localTwoHourTests.filter((lt) => !cloudIds.has(lt.id))];
 
-      // Strictly 2-hour tests AND only high scorers (>= 200 marks out of 400)
-      const qualifying = combined
+      // Strictly 2-hour tests
+      const allTwoHour = combined
         .filter(isTwoHourFullCbtRecord)
         .map((t) => {
           const scaledScore =
@@ -242,24 +242,26 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             candidateName: formatCandidateName(t.candidateName, t.userEmail, t.userId),
           };
         })
-        .filter((t) => t.scaledScore >= 200)
         .sort((a, b) => {
           if (b.scaledScore !== a.scaledScore) return b.scaledScore - a.scaledScore;
           return a.timeSpentSeconds - b.timeSpentSeconds;
         });
 
-      if (qualifying.length > 0) {
-        const leader = qualifying[0];
-        const myIndex = qualifying.findIndex(
+      // High scorers (>= 200 marks out of 400)
+      const highScorers = allTwoHour.filter((t) => t.scaledScore >= 200);
+      const displayLeader = highScorers.length > 0 ? highScorers[0] : allTwoHour[0];
+
+      if (displayLeader) {
+        const myIndex = allTwoHour.findIndex(
           (q) => (auth.currentUser && q.userId === auth.currentUser.uid) || (user?.email && q.userEmail === user.email)
         );
 
         setLeaderboardTopScore({
-          topScore: leader.scaledScore,
-          leaderName: leader.candidateName,
-          totalCandidates: qualifying.length,
-          timeSpentSeconds: leader.timeSpentSeconds,
-          userBestScore: myIndex >= 0 ? qualifying[myIndex].scaledScore : undefined,
+          topScore: displayLeader.scaledScore,
+          leaderName: displayLeader.candidateName,
+          totalCandidates: highScorers.length > 0 ? highScorers.length : allTwoHour.length,
+          timeSpentSeconds: displayLeader.timeSpentSeconds,
+          userBestScore: myIndex >= 0 ? allTwoHour[myIndex].scaledScore : undefined,
           userRank: myIndex >= 0 ? myIndex + 1 : undefined,
         });
       } else {
@@ -271,6 +273,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         });
       }
     };
+
+    // Calculate immediately on mount from local storage cache
+    updateStatsFromResults([]);
 
     let latestCloud: TestResultData[] = [];
     const unsubscribe = subscribeToAllTestResults((data) => {
@@ -379,11 +384,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 <button
                   type="button"
                   onClick={() => handleNavClick('Leaderboard')}
-                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors cursor-pointer shadow-2xs"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors cursor-pointer shadow-2xs"
                   title="Click to view National Live 2-Hour Leaderboard"
                 >
-                  <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                  <span>2-Hr Top Score: <strong className="text-amber-700 dark:text-amber-300">{leaderboardTopScore.topScore}/400</strong></span>
+                  <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <span>2-Hr Top: <strong className="text-amber-700 dark:text-amber-300">{leaderboardTopScore.topScore}/400</strong></span>
                 </button>
               )}
 
