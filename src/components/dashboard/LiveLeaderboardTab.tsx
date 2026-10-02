@@ -123,9 +123,10 @@ export const getSubjectBreakdownForEntry = (
 // Strictly qualifies 2-Hour Full CBT mock exam sessions (180 questions across 4 subjects)
 export const isTwoHourFullCbtRecord = (t: TestResultData): boolean => {
   const typeLower = (t.testType || '').toLowerCase();
+  const titleLower = (t.testTitle || '').toLowerCase();
   return (
     t.totalQuestions === 180 &&
-    (typeLower === 'full' || typeLower === 'full_2hr_cbt')
+    (typeLower === 'full' || typeLower === 'full_2hr_cbt' || typeLower === 'jamb' || titleLower.includes('2-hr') || titleLower.includes('full'))
   );
 };
 
@@ -245,6 +246,10 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
           isCurrentUser,
         };
       })
+      .filter((item) => {
+        // Strict Regulation: ONLY candidates who score high (>= 200 marks out of 400) in the 2-hour full CBT exam qualify to show on the live leaderboard
+        return item.scaledScore >= 200;
+      })
       .sort((a, b) => {
         if (b.scaledScore !== a.scaledScore) {
           return b.scaledScore - a.scaledScore;
@@ -279,6 +284,26 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
     return myEntries.length > 0 ? myEntries[0] : null;
   }, [rankedEntries]);
 
+  // Current user's latest 2-hour attempt (including non-qualifying scores below 200)
+  const myLatestTwoHourAttempt = useMemo(() => {
+    const userAttempts = testResults
+      .filter(isTwoHourFullCbtRecord)
+      .filter(
+        (t) =>
+          (currentUserId && t.userId === currentUserId) ||
+          (currentUserEmail && t.userEmail && t.userEmail.toLowerCase() === currentUserEmail.toLowerCase())
+      );
+    if (userAttempts.length === 0) return null;
+    const latest = userAttempts[0];
+    const scaledScore =
+      typeof latest.jambScore === 'number' && latest.jambScore >= 0
+        ? Math.min(400, Math.round(latest.jambScore))
+        : latest.totalQuestions > 0
+        ? Math.min(400, Math.round((latest.score / latest.totalQuestions) * 400))
+        : 0;
+    return { ...latest, scaledScore };
+  }, [testResults, currentUserId, currentUserEmail]);
+
   const myRank = useMemo(() => {
     if (!myBestEntry) return null;
     const index = rankedEntries.findIndex((e) => e.id === myBestEntry.id);
@@ -295,7 +320,7 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span>🟢 Live Real-Time Leaderboard · 2-Hour Full CBT Only</span>
+              <span>🟢 Live Real-Time Leaderboard · 2-Hour Full CBT (200+ High Scorers Only)</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight flex items-center gap-2.5">
@@ -488,6 +513,36 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
         </div>
       )}
 
+      {/* Encouraging Banner for candidates who took 2-Hr mock but scored below 200 */}
+      {!myBestEntry && myLatestTwoHourAttempt && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shrink-0">
+              ⚡
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-amber-900 dark:text-amber-100 flex items-center gap-1.5">
+                <span>Recent 2-Hour Mock Result: {myLatestTwoHourAttempt.scaledScore} / 400</span>
+                <span className="px-2 py-0.5 bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 rounded-md text-[10px] font-bold">
+                  200+ Needed to Qualify
+                </span>
+              </h4>
+              <p className="text-xs text-amber-700 dark:text-amber-300">
+                Only high-scoring candidates (200+ marks out of 400) in the 2-Hour Full CBT Mock are published on the National Live Leaderboard. Retake the 2-Hour Mock to boost your score into the qualifying ranks!
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={onLaunchExam}
+            className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black rounded-xl transition-all cursor-pointer shrink-0 shadow-xs"
+          >
+            Retake 2-Hour Mock
+          </button>
+        </div>
+      )}
+
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
         {/* Search */}
@@ -513,7 +568,7 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
                 : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
-            All 2-Hour Mocks ({rankedEntries.length})
+            All High Scorers (200+) ({rankedEntries.length})
           </button>
 
           <button
@@ -798,10 +853,10 @@ export const LiveLeaderboardTab: React.FC<LiveLeaderboardTabProps> = ({
                   <td colSpan={6} className="py-12 text-center text-slate-400 text-xs">
                     <Trophy className="w-8 h-8 text-slate-300 dark:text-slate-700 mx-auto mb-2" />
                     <p className="font-bold text-slate-700 dark:text-slate-300">
-                      No 2-Hour Full CBT submissions found yet.
+                      No High-Scoring Candidates (200+ Marks) Recorded Yet
                     </p>
-                    <p className="text-slate-500 mt-1">
-                      Complete a 2-Hour Mock Exam (180 questions) to claim the #1 spot on the national leaderboard!
+                    <p className="text-slate-500 mt-1 max-w-md mx-auto">
+                      Only high scorers (200+ marks out of 400) in the official 2-Hour Full CBT Mock Exam (180 questions) qualify to appear on the National Live Leaderboard. Start your 2-Hour Mock now to claim the #1 spot!
                     </p>
                   </td>
                 </tr>

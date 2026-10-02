@@ -643,7 +643,7 @@ export function subscribeToAllTestResults(
             // Strictly 2-hour full CBT mock tests only (180 questions across 4 subjects)
             if (t.totalQuestions !== 180) return false;
             const typeLower = (t.testType || '').toLowerCase();
-            return typeLower === 'full' || typeLower === 'full_2hr_cbt';
+            return typeLower === 'full' || typeLower === 'full_2hr_cbt' || typeLower === 'jamb';
           });
         onUpdate(results);
       },
@@ -677,7 +677,7 @@ export async function getAllTestResults(): Promise<TestResultData[]> {
       .filter((t) => {
         if (t.totalQuestions !== 180) return false;
         const typeLower = (t.testType || '').toLowerCase();
-        return typeLower === 'full' || typeLower === 'full_2hr_cbt';
+        return typeLower === 'full' || typeLower === 'full_2hr_cbt' || typeLower === 'jamb';
       });
   } catch (error) {
     if (!isOfflineError(error)) {

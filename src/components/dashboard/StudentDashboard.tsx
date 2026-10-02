@@ -48,13 +48,18 @@ import { CbtTestModal } from './CbtTestModal';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
-import { LiveLeaderboardTab } from './LiveLeaderboardTab';
+import {
+  LiveLeaderboardTab,
+  isTwoHourFullCbtRecord,
+  formatCandidateName,
+} from './LiveLeaderboardTab';
 import { ActivationPaywallModal } from './ActivationPaywallModal';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { auth } from '../../lib/firebase';
 import {
   getUserTestResults,
+  subscribeToAllTestResults,
   TestResultData,
 } from '../../lib/firestoreService';
 import {
@@ -175,6 +180,115 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     }
   };
 
+  // Live 2-Hour CBT Top Score State
+  const [leaderboardTopScore, setLeaderboardTopScore] = useState<{
+    topScore: number;
+    leaderName: string;
+    totalCandidates: number;
+    timeSpentSeconds: number;
+    userBestScore?: number;
+    userRank?: number;
+  }>({
+    topScore: 0,
+    leaderName: '',
+    totalCandidates: 0,
+    timeSpentSeconds: 0,
+  });
+
+  // Real-time synchronization of the National 2-Hour CBT Top Score
+  useEffect(() => {
+    const updateStatsFromResults = (results: TestResultData[]) => {
+      let localTwoHourTests: TestResultData[] = [];
+      try {
+        const rawLocal = localStorage.getItem('jambix_offline_tests_v1');
+        if (rawLocal) {
+          const parsed = JSON.parse(rawLocal) as any[];
+          localTwoHourTests = parsed
+            .filter((lt) => lt.totalQuestions === 180)
+            .map((lt) => ({
+              id: lt.id,
+              userId: lt.userId || auth.currentUser?.uid || '',
+              testTitle: lt.testTitle,
+              testType: lt.testType,
+              score: lt.score,
+              totalQuestions: 180,
+              percentage: lt.percentage,
+              timeSpentSeconds: lt.timeSpentSeconds,
+              candidateName: user?.name || 'UTME Candidate',
+              userEmail: user?.email || '',
+              jambScore: lt.jambScore,
+            }));
+        }
+      } catch (e) {
+        console.warn('Could not read local tests for dashboard topscore:', e);
+      }
+
+      const cloudIds = new Set(results.map((d) => d.id));
+      const combined = [...results, ...localTwoHourTests.filter((lt) => !cloudIds.has(lt.id))];
+
+      // Strictly 2-hour tests AND only high scorers (>= 200 marks out of 400)
+      const qualifying = combined
+        .filter(isTwoHourFullCbtRecord)
+        .map((t) => {
+          const scaledScore =
+            typeof t.jambScore === 'number' && t.jambScore >= 0
+              ? Math.min(400, Math.round(t.jambScore))
+              : t.totalQuestions > 0
+              ? Math.min(400, Math.round((t.score / t.totalQuestions) * 400))
+              : 0;
+          return {
+            ...t,
+            scaledScore,
+            candidateName: formatCandidateName(t.candidateName, t.userEmail, t.userId),
+          };
+        })
+        .filter((t) => t.scaledScore >= 200)
+        .sort((a, b) => {
+          if (b.scaledScore !== a.scaledScore) return b.scaledScore - a.scaledScore;
+          return a.timeSpentSeconds - b.timeSpentSeconds;
+        });
+
+      if (qualifying.length > 0) {
+        const leader = qualifying[0];
+        const myIndex = qualifying.findIndex(
+          (q) => (auth.currentUser && q.userId === auth.currentUser.uid) || (user?.email && q.userEmail === user.email)
+        );
+
+        setLeaderboardTopScore({
+          topScore: leader.scaledScore,
+          leaderName: leader.candidateName,
+          totalCandidates: qualifying.length,
+          timeSpentSeconds: leader.timeSpentSeconds,
+          userBestScore: myIndex >= 0 ? qualifying[myIndex].scaledScore : undefined,
+          userRank: myIndex >= 0 ? myIndex + 1 : undefined,
+        });
+      } else {
+        setLeaderboardTopScore({
+          topScore: 0,
+          leaderName: '',
+          totalCandidates: 0,
+          timeSpentSeconds: 0,
+        });
+      }
+    };
+
+    let latestCloud: TestResultData[] = [];
+    const unsubscribe = subscribeToAllTestResults((data) => {
+      latestCloud = data;
+      updateStatsFromResults(data);
+    });
+
+    const handleEvent = () => updateStatsFromResults(latestCloud);
+    window.addEventListener('storage', handleEvent);
+    window.addEventListener('jambix_test_submitted', handleEvent);
+
+    return () => {
+      unsubscribe();
+      window.removeEventListener('storage', handleEvent);
+      window.removeEventListener('jambix_test_submitted', handleEvent);
+    };
+  }, [user?.name, user?.email]);
+
   useEffect(() => {
     loadStoredData();
   }, [effectiveOnline]);
@@ -260,6 +374,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
             {/* Right Action Controls: Clean and spacious */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Live 2-Hour Leaderboard Top Score Pill */}
+              {leaderboardTopScore.topScore > 0 && (
+                <button
+                  type="button"
+                  onClick={() => handleNavClick('Leaderboard')}
+                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors cursor-pointer shadow-2xs"
+                  title="Click to view National Live 2-Hour Leaderboard"
+                >
+                  <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                  <span>2-Hr Top Score: <strong className="text-amber-700 dark:text-amber-300">{leaderboardTopScore.topScore}/400</strong></span>
+                </button>
+              )}
+
               {/* Free Access Badge */}
               <div
                 className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
@@ -373,37 +500,71 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View Render Based on Active Nav */}
             {activeNav === 'Home' && (
               <>
-                {/* Live National Leaderboard Quick Banner */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/5 border border-amber-400/40 dark:border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+                {/* Live National Leaderboard Quick Banner with Live 2-Hour Top Score */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-teal-500/10 border border-amber-400/50 dark:border-amber-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
                   <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-xl shadow-xs shrink-0">
-                      🏆
+                    <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 text-slate-950 flex items-center justify-center font-black text-2xl shadow-md shrink-0">
+                      👑
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="text-sm sm:text-base font-black text-slate-900 dark:text-white">
-                          Live National UTME Leaderboard
+                          Live 2-Hour UTME CBT Leaderboard
                         </h3>
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                          Live Stream
+                          Live Stream · High Scorers (200+)
                         </span>
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">
-                        Check who is leading the national 2-hour mock exam right now across Nigeria! Compare your scores with candidates nationwide.
-                      </p>
+
+                      {leaderboardTopScore.topScore > 0 ? (
+                        <div className="text-xs text-slate-700 dark:text-slate-200 flex items-center gap-2 flex-wrap pt-0.5">
+                          <span>Current National Top Score:</span>
+                          <span className="font-black text-amber-700 dark:text-amber-300 text-sm bg-amber-100 dark:bg-amber-950/70 px-2.5 py-0.5 rounded-md border border-amber-300/60">
+                            {leaderboardTopScore.topScore} / 400 Marks
+                          </span>
+                          <span className="text-slate-400">·</span>
+                          <span>Leader: <strong className="text-slate-900 dark:text-white font-bold">{leaderboardTopScore.leaderName}</strong></span>
+                          <span className="text-slate-400">·</span>
+                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                            {Math.floor(leaderboardTopScore.timeSpentSeconds / 60)}m spent in 2-Hr Mock
+                          </span>
+                          {leaderboardTopScore.userBestScore ? (
+                            <>
+                              <span className="text-slate-400">·</span>
+                              <span className="font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/50 px-2 py-0.5 rounded-md">
+                                Your Standing: {leaderboardTopScore.userBestScore}/400 (Rank #{leaderboardTopScore.userRank})
+                              </span>
+                            </>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">
+                          Current 2-Hour Top Score: <strong className="text-slate-800 dark:text-slate-200">No high scores recorded yet</strong> · Complete the 2-Hour Full Mock (180 questions) and score 200+ marks to claim the #1 spot on the live national leaderboard!
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={() => handleNavClick('Leaderboard')}
-                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer shrink-0"
-                  >
-                    <Trophy className="w-3.5 h-3.5" />
-                    <span>View Live Rankings</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => handleLaunchTest('JAMB UTME Comprehensive 180 Qs CBT Mock', 'jamb')}
+                      className="px-3.5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-slate-950" />
+                      <span>Start 2-Hour Mock</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleNavClick('Leaderboard')}
+                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                    >
+                      <Trophy className="w-3.5 h-3.5" />
+                      <span>View Live Rankings</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
                 {/* Take a Test Section */}
