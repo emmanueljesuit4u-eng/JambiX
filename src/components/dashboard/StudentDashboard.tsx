@@ -48,6 +48,7 @@ import { CbtTestModal } from './CbtTestModal';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
+import { TopicDrillsTab } from './TopicDrillsTab';
 import {
   LiveLeaderboardTab,
   isTwoHourFullCbtRecord,
@@ -332,6 +333,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
               { id: 'History', icon: Clock, label: 'History' },
+              { id: 'TopicDrills', icon: Target, label: 'Topic Drills' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
@@ -812,6 +814,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         100% Verified
                       </span>
                     </div>
+                    <button
+                      onClick={() => handleNavClick('TopicDrills')}
+                      className="mt-3 w-full py-1.5 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Target className="w-3.5 h-3.5 text-rose-500" />
+                      <span>Topic Drills (Myschool) →</span>
+                    </button>
                   </div>
 
                   {/* Card 3: Recent CBT Scores */}
@@ -1430,6 +1439,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
             )}
 
+            {/* View: Topic-by-Topic Question Drills (Myschool Style) */}
+            {activeNav === 'TopicDrills' && (
+              <TopicDrillsTab
+                onLaunchTest={handleLaunchTest}
+                showToast={showToast}
+              />
+            )}
+
             {/* View: Shop / Materials */}
             {activeNav === 'Shop' && (
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
@@ -1485,9 +1502,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         {[
           { id: 'Home', icon: Home, label: 'Home' },
           { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
-          { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
           { id: 'History', icon: Clock, label: 'History' },
+          { id: 'TopicDrills', icon: Target, label: 'Drills' },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;
