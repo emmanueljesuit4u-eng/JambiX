@@ -91,6 +91,7 @@ import {
   ToughSubjectQuestion,
 } from '../../data/jambToughQuestionsBank';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
+import { getCustomVerifiedQuestionsForTopic } from '../../lib/customQuestionsService';
 
 // Sound effect synthesizer (zero external assets, 100% offline Web Audio)
 function playHapticSound(type: 'correct' | 'wrong' | 'click') {
@@ -288,6 +289,19 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     const results: VerifiedQuestion[] = [];
     const usedTexts = new Set<string>();
     const seedBase = Date.now() + chIdx * 101;
+
+    // 0. Include candidate's custom extracted PDF questions matching this topic if available
+    try {
+      const customMatches = getCustomVerifiedQuestionsForTopic(subKey, chTitle, 3);
+      for (const cq of customMatches) {
+        if (!usedTexts.has(cq.text) && results.length < targetCount) {
+          results.push(cq);
+          usedTexts.add(cq.text);
+        }
+      }
+    } catch {
+      // Continue if custom lookup fails
+    }
 
     // 1. Check for relevant diagram/image questions
     try {

@@ -28,6 +28,7 @@ import {
   HelpCircle,
   Calculator,
   Flame,
+  FileUp,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import { saveTestResult, getUserProfile } from '../../lib/firestoreService';
@@ -51,6 +52,10 @@ import {
 } from '../../data/verifiedTextbooks';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { JambCalculator } from '../common/JambCalculator';
+import {
+  getLocalCustomQuestions,
+  convertToVerifiedQuestion,
+} from '../../lib/customQuestionsService';
 
 interface CbtTestModalProps {
   isOpen: boolean;
@@ -105,6 +110,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   );
   const [duration, setDuration] = useState<number>(isInitialLekki ? 20 : 120);
   const [seenCount, setSeenCount] = useState<number>(0);
+  const [includeCustomPdfQuestions, setIncludeCustomPdfQuestions] = useState<boolean>(true);
+  const [customQuestionsCount, setCustomQuestionsCount] = useState<number>(0);
 
   // Active Test State
   const [testStarted, setTestStarted] = useState(false);
@@ -138,11 +145,25 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setSelectedAnswers({});
     setActiveQuestions([]);
 
+    const customList = getLocalCustomQuestions();
+    setCustomQuestionsCount(customList.length);
+
     const titleLower = (testTitle || '').toLowerCase();
     const typeLower = (testType || '').toLowerCase();
     const isLekkiNovel = isLekkiNovelCheck(testTitle, testType, initialSubject);
+    const isCustomPdf = typeLower === 'custom_pdf' || titleLower.includes('pdf') || titleLower.includes('extracted');
 
-    if (isLekkiNovel) {
+    if (isCustomPdf) {
+      const filtered = initialSubject && initialSubject !== 'Custom Extracted Questions'
+        ? customList.filter((q) => q.subject.toLowerCase() === initialSubject.toLowerCase())
+        : customList;
+      const effectiveQs = filtered.length > 0 ? filtered : customList;
+      const count = effectiveQs.length || 20;
+      setSelectedSubjects(Array.from(new Set(effectiveQs.map((q) => q.subject))).slice(0, 4));
+      setExamMode('single');
+      setDuration(Math.max(15, Math.round(count * 1.2)));
+      setTimeLeftSeconds(Math.max(15, Math.round(count * 1.2)) * 60);
+    } else if (isLekkiNovel) {
       setSelectedSubjects(['The Lekki Headmaster']);
       setExamMode('novel');
       setDuration(20);
@@ -238,25 +259,81 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     // Full CBT test brings out 60 questions from English and 40 from the 3 other subjects;
     // Lekki Headmaster test brings out strictly 30 questions on The Lekki Headmaster for 20 minutes;
     // Progressive toughness increases with every completed 2-hour test without repeating questions.
-    const questions = assembleUtmeTest({
-      subjects: effectiveSubjects,
-      year: selectedYear,
-      mode: effectiveMode,
-      customQuestionCount: effectiveCount,
-      difficultyTier,
-    });
+    const titleLower = (testTitle || '').toLowerCase();
+    const typeLower = (testType || '').toLowerCase();
+    const isCustomPdf = typeLower === 'custom_pdf' || titleLower.includes('pdf') || titleLower.includes('extracted');
+    let finalQuestions: VerifiedQuestion[] = [];
 
-    // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English
-    const finalQuestions = isLekkiNovel
-      ? questions.slice(0, 30).map((q, idx) => ({
-          ...q,
-          subject: 'The Lekki Headmaster',
-          questionNumber: idx + 1,
-          topic: q.topic && q.topic.includes('Headmaster') ? q.topic : `Chapter ${((idx % 12) + 1)}: "The Lekki Headmaster"`,
-          bookTitle: 'The Lekki Headmaster',
-          author: 'Kabir Alabi Garba',
-        }))
-      : questions;
+    if (isCustomPdf) {
+      const allCustom = getLocalCustomQuestions();
+      const filtered = initialSubject && initialSubject !== 'Custom Extracted Questions'
+        ? allCustom.filter((q) => q.subject.toLowerCase() === initialSubject.toLowerCase())
+        : allCustom;
+      const targetPool = filtered.length > 0 ? filtered : allCustom;
+      if (targetPool.length > 0) {
+        finalQuestions = targetPool.map((cq, idx) => convertToVerifiedQuestion(cq, idx));
+      }
+    }
+
+    if (finalQuestions.length === 0) {
+      const questions = assembleUtmeTest({
+        subjects: effectiveSubjects,
+        year: selectedYear,
+        mode: effectiveMode,
+        customQuestionCount: effectiveCount,
+        difficultyTier,
+      });
+
+      // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English
+      let processedQuestions = isLekkiNovel
+        ? questions.slice(0, 30).map((q, idx) => ({
+            ...q,
+            subject: 'The Lekki Headmaster',
+            questionNumber: idx + 1,
+            topic: q.topic && q.topic.includes('Headmaster') ? q.topic : `Chapter ${((idx % 12) + 1)}: "The Lekki Headmaster"`,
+            bookTitle: 'The Lekki Headmaster',
+            author: 'Kabir Alabi Garba',
+          }))
+        : questions;
+
+      // Inject custom PDF questions if toggle is active
+      if (includeCustomPdfQuestions && !isLekkiNovel) {
+        const customQs = getLocalCustomQuestions();
+        if (customQs.length > 0) {
+          const matchingCustom = customQs
+            .filter((cq) => effectiveSubjects.some((s) => s.toLowerCase() === cq.subject.toLowerCase()))
+            .map((cq, idx) => convertToVerifiedQuestion(cq, 9000 + idx));
+
+          if (matchingCustom.length > 0) {
+            const subGroups: Record<string, VerifiedQuestion[]> = {};
+            processedQuestions.forEach((q) => {
+              if (!subGroups[q.subject]) subGroups[q.subject] = [];
+              subGroups[q.subject].push(q);
+            });
+
+            const injected: VerifiedQuestion[] = [];
+            for (const sub of Object.keys(subGroups)) {
+              const subCustom = matchingCustom.filter((cq) => cq.subject.toLowerCase() === sub.toLowerCase());
+              const group = subGroups[sub];
+              if (subCustom.length > 0) {
+                const injectCount = Math.min(subCustom.length, Math.floor(group.length * 0.35));
+                for (let k = 0; k < injectCount; k++) {
+                  group[k] = {
+                    ...subCustom[k],
+                    questionNumber: group[k].questionNumber,
+                    subjectQuestionNumber: group[k].subjectQuestionNumber,
+                    subjectTotalQuestions: group[k].subjectTotalQuestions,
+                  };
+                }
+              }
+              injected.push(...group);
+            }
+            processedQuestions = injected;
+          }
+        }
+      }
+      finalQuestions = processedQuestions;
+    }
 
     setActiveQuestions(finalQuestions);
     setSelectedAnswers({});
@@ -1114,6 +1191,44 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         </optgroup>
                       </select>
                     </div>
+                  </div>
+
+                  {/* Extracted PDF Questions Integration Card */}
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <FileUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        <span className="text-xs font-bold text-slate-900 dark:text-white">
+                          Extracted PDF Questions Bank
+                        </span>
+                        {customQuestionsCount > 0 ? (
+                          <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold">
+                            {customQuestionsCount} indexed
+                          </span>
+                        ) : (
+                          <span className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-medium">
+                            0 in vault
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                        {customQuestionsCount > 0
+                          ? 'Incorporate your uploaded past question PDF items into matching subjects during this CBT session.'
+                          : 'Upload your own PDF question leaflets in the PDF Bank tab to automatically include custom questions.'}
+                      </p>
+                    </div>
+
+                    {customQuestionsCount > 0 && (
+                      <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                        <input
+                          type="checkbox"
+                          checked={includeCustomPdfQuestions}
+                          onChange={(e) => setIncludeCustomPdfQuestions(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
+                      </label>
+                    )}
                   </div>
 
                   {/* Subject Selection Dropdown Menus */}

@@ -42,6 +42,7 @@ import {
   ChevronLeft,
   RotateCcw,
   Filter,
+  FileUp,
 } from 'lucide-react';
 import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
@@ -49,6 +50,7 @@ import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
 import { TopicDrillsTab } from './TopicDrillsTab';
+import { PdfQuestionExtractorTab } from './PdfQuestionExtractorTab';
 import {
   LiveLeaderboardTab,
   isTwoHourFullCbtRecord,
@@ -334,6 +336,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
               { id: 'History', icon: Clock, label: 'History' },
               { id: 'TopicDrills', icon: Target, label: 'Topic Drills' },
+              { id: 'PdfExtractor', icon: FileUp, label: 'PDF Bank' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
@@ -820,6 +823,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     >
                       <Target className="w-3.5 h-3.5 text-rose-500" />
                       <span>Topic Drills (Myschool) →</span>
+                    </button>
+                    <button
+                      onClick={() => handleNavClick('PdfExtractor')}
+                      className="mt-2 w-full py-1.5 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <FileUp className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>Extract PDF Questions &amp; CBT Bank →</span>
                     </button>
                   </div>
 
@@ -1447,6 +1457,14 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               />
             )}
 
+            {/* View: PDF Past Question Extractor & CBT Bank Indexer */}
+            {activeNav === 'PdfExtractor' && (
+              <PdfQuestionExtractorTab
+                onLaunchTest={handleLaunchTest}
+                showToast={showToast}
+              />
+            )}
+
             {/* View: Shop / Materials */}
             {activeNav === 'Shop' && (
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4 transition-colors">
@@ -1501,10 +1519,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 py-1.5 flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
-          { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
-          { id: 'History', icon: Clock, label: 'History' },
           { id: 'TopicDrills', icon: Target, label: 'Drills' },
+          { id: 'PdfExtractor', icon: FileUp, label: 'PDF Bank' },
+          { id: 'History', icon: Clock, label: 'History' },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;

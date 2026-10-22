@@ -148,5 +148,12 @@ service cloud.firestore {
                        (isAdmin() || incoming().diff(existing()).affectedKeys().hasOnly(['isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified']));
       allow delete: if isAdmin();
     }
+
+    // Custom Extracted Questions (Indexed from PDFs)
+    match /customQuestions/{questionId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isSignedIn() && (incoming().userId == request.auth.uid || isAdmin());
+      allow delete: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
+    }
   }
 }
