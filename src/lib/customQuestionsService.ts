@@ -35,21 +35,63 @@ export interface CustomExtractedQuestion {
   textbookRef?: string;
   isUserApproved: boolean;
   userId?: string;
+  hasImage?: boolean;
+  imageUrl?: string;
+  imageCaption?: string;
+  imageAlt?: string;
 }
 
+import { PHYSICS_DEMYSTIFIED_ITEMS } from '../data/physicsDemystifiedBank';
+
+export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
+  id: item.id || `phy_demystified_${idx + 1}`,
+  sourcePdfName: 'Physics_Demystified_soft_copy_by_Dr_Timothy.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Physics',
+  subjectKey: 'physics' as const,
+  topic: item.topic,
+  year: 2024,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
+  bookTitle: 'PHYSICS DEMYSTIFIED (Dr. Timothy)',
+  author: 'Dr. Aifuwa Timothy',
+  textbookRef: `Physics Demystified (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
 /**
- * Get all indexed custom questions from local storage
+ * Get all indexed custom questions from local storage + built-in extracted Physics Demystified bank
  */
 export function getLocalCustomQuestions(): CustomExtractedQuestion[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(CUSTOM_QUESTIONS_STORAGE_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw);
-  } catch (err) {
-    console.warn('Failed to load custom questions from localStorage:', err);
-    return [];
+  let userCustom: CustomExtractedQuestion[] = [];
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem(CUSTOM_QUESTIONS_STORAGE_KEY);
+      if (raw) {
+        userCustom = JSON.parse(raw);
+      }
+    } catch (err) {
+      console.warn('Failed to load custom questions from localStorage:', err);
+    }
   }
+
+  // Combine user uploads and Physics Demystified bank without duplicate IDs
+  const seenIds = new Set(userCustom.map((q) => q.id));
+  const combined = [...userCustom];
+  for (const q of PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS) {
+    if (!seenIds.has(q.id)) {
+      combined.push(q);
+      seenIds.add(q.id);
+    }
+  }
+
+  return combined;
 }
 
 /**
@@ -174,20 +216,36 @@ export function convertToVerifiedQuestion(
   const normKey = normalizeSubjectKey(cq.subject);
   const year = cq.year || 2024;
   
+  const isDemystified = cq.sourcePdfName?.includes('Timothy') || cq.bookTitle?.includes('DEMYSTIFIED');
+  const tag = isDemystified
+    ? `[Physics Demystified · ${cq.topic}]`
+    : `[PDF Exam Source: ${cq.sourcePdfName || 'Extracted Bank'}]`;
+
   const baseQ: VerifiedQuestion = {
     id: 950000 + index * 10 + (typeof cq.id === 'string' ? parseInt(cq.id.slice(-4), 16) || index : cq.id),
     year,
     questionNumber: index + 1,
     subject: cq.subject,
     topic: cq.topic || 'General Practice',
-    text: `[PDF Exam Source: ${cq.sourcePdfName || 'Extracted Bank'}] ${cq.text}`,
+    text: `${tag} ${cq.text}`,
     options: cq.options,
     answer: cq.answer,
-    explanation: `${cq.explanation} (Indexed from Candidate Document: ${cq.sourcePdfName || 'Custom PDF Upload'}).`,
-    bookTitle: cq.bookTitle || `Extracted PDF Exam: ${cq.sourcePdfName || 'Custom Bank'}`,
-    author: cq.author || 'Candidate Uploaded Syllabus Item',
-    textbookRef: cq.textbookRef || `Verified Candidate PDF Item · ${cq.subject}`,
+    explanation: isDemystified
+      ? `${cq.explanation}`
+      : `${cq.explanation} (Indexed from Candidate Document: ${cq.sourcePdfName || 'Custom PDF Upload'}).`,
+    bookTitle: cq.bookTitle || (isDemystified ? 'PHYSICS DEMYSTIFIED' : `Extracted PDF Exam: ${cq.sourcePdfName || 'Custom Bank'}`),
+    author: cq.author || (isDemystified ? 'Dr. Aifuwa Timothy' : 'Candidate Uploaded Syllabus Item'),
+    textbookRef: cq.textbookRef || (isDemystified ? `Physics Demystified by Dr. Timothy · ${cq.topic}` : `Verified Candidate PDF Item · ${cq.subject}`),
+    hasImage: cq.hasImage,
+    imageUrl: cq.imageUrl,
+    imageCaption: cq.imageCaption,
+    imageAlt: cq.imageAlt,
   };
+
+  if (isDemystified) {
+    // Preserve authentic textbook answer keys and option order from Dr. Timothy's textbook
+    return baseQ;
+  }
 
   return scatterQuestionOptions(baseQ, year * 10 + index * 7);
 }
@@ -220,13 +278,25 @@ export function getCustomVerifiedQuestionsForTopic(
 ): VerifiedQuestion[] {
   const all = getLocalCustomQuestions();
   const lowTopic = topicKeyword.toLowerCase();
+  const words = lowTopic.split(/[\s,&:/-]+/).filter((w) => w.length > 3);
   
   const matched = all.filter((q) => {
     const isSub = normalizeSubjectKey(q.subject) === subjectKey;
-    const isTop = q.topic.toLowerCase().includes(lowTopic) || q.text.toLowerCase().includes(lowTopic);
-    return isSub && isTop;
+    if (!isSub) return false;
+    const qTop = q.topic.toLowerCase();
+    const qTxt = q.text.toLowerCase();
+    return qTop.includes(lowTopic) || qTxt.includes(lowTopic) || (words.length > 0 && words.some((w) => qTop.includes(w)));
   });
 
-  const converted = matched.map((cq, idx) => convertToVerifiedQuestion(cq, idx));
+  // Randomize so student gets non-repeating fresh questions
+  const shuffled = [...matched];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = temp;
+  }
+
+  const converted = shuffled.map((cq, idx) => convertToVerifiedQuestion(cq, idx));
   return limitCount ? converted.slice(0, limitCount) : converted;
 }

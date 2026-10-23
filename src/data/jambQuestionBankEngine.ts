@@ -43,6 +43,7 @@ import {
   TOUGH_AGRIC_QUESTIONS,
   ToughSubjectQuestion,
 } from './jambToughQuestionsBank';
+import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
 
 export const SEEN_SIGNATURES_STORAGE_KEY = 'jambix_seen_signatures_v2';
 export const SEEN_IDS_STORAGE_KEY = 'jambix_seen_ids_v2';
@@ -3337,6 +3338,67 @@ export function generateUniqueSubjectQuestions(
   const chapterGens = getSubjectChapterGenerators(subjectKey);
   const numChapters = chapterGens.length;
   const config = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.english;
+
+  // Step 0: Progressive Toughness Injection: As students take more 2-hour tests (Mock 1 -> Mock 2 -> Mock 3 -> Mock 4...),
+  // the proportion of authentic, high-rigor historical UTME questions escalates systematically:
+  // - Mock 1 (Tier 0): ~15-20% tough questions (baseline syllabus rigor, 6-8 of 40)
+  // - Mock 2 (Tier 1): ~35-40% tough questions (14-16 of 40)
+  // - Mock 3 (Tier 2): ~55-60% very tough questions (22-24 of 40)
+  // - Mock 4 (Tier 3): ~75-80% advanced mastery questions (30-32 of 40)
+  // - Mock 5+ (Tier 4+): 88-100% highest-rigor historical problem sets (36-40 of 40)
+  // For Physics: Draw directly from the 1,479 verified questions extracted from "Physics Demystified by Dr. Timothy"
+  // covering all 27 syllabus topics, randomized without repetition!
+  if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
+    const physicsPool = [...PHYSICS_DEMYSTIFIED_ITEMS];
+    // Deterministic pseudo-random shuffle seeded by baseSeed, chosenYear, and difficultyTier
+    let randState = Math.abs((baseSeed * 1103515245 + chosenYear * 12345 + difficultyTier * 31337) | 0);
+    const nextRand = () => {
+      randState = (randState * 1664525 + 1013904223) | 0;
+      return (randState >>> 0) / 4294967296;
+    };
+    for (let i = physicsPool.length - 1; i > 0; i--) {
+      const j = Math.floor(nextRand() * (i + 1));
+      const tmp = physicsPool[i];
+      physicsPool[i] = physicsPool[j];
+      physicsPool[j] = tmp;
+    }
+
+    const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
+    const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
+
+    // Step through the shuffled pool and add unseen questions
+    for (const item of physicsPool) {
+      if (picked.length >= targetCount) break;
+      const coreSig = getQuestionCoreSignature(item.text);
+      if (!safeSessionUsed.has(coreSig) && !safeExclude.has(coreSig)) {
+        safeSessionUsed.add(coreSig);
+        const qNum = picked.length + 1;
+        const vq: VerifiedQuestion = {
+          id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
+          year: typeof year === 'number' ? year : 2024,
+          questionNumber: qNum,
+          subject: 'Physics',
+          topic: item.topic,
+          text: `[JAMB UTME Q${qNum}] ${item.text}`,
+          options: item.options,
+          answer: item.answer,
+          explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}]`,
+          bookTitle: 'PHYSICS DEMYSTIFIED',
+          author: 'Dr. Aifuwa Timothy',
+          textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+          hasImage: item.hasImage,
+          imageUrl: item.imageUrl,
+          imageCaption: item.imageCaption,
+          imageAlt: item.imageAlt,
+        };
+        picked.push(scatterQuestionOptions(vq, baseSeed + qNum * 37 + difficultyTier * 13));
+      }
+    }
+
+    if (picked.length >= targetCount) {
+      return picked;
+    }
+  }
 
   // Step 0: Progressive Toughness Injection: As students take more 2-hour tests (Mock 1 -> Mock 2 -> Mock 3 -> Mock 4...),
   // the proportion of authentic, high-rigor historical UTME questions escalates systematically:

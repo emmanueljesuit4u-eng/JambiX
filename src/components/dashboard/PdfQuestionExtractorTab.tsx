@@ -55,6 +55,7 @@ import {
   syncCustomQuestionsFromCloud,
 } from '../../lib/customQuestionsService';
 import { SUBJECT_CONFIGS, SubjectKey, JAMB_YEARS } from '../../data/verifiedTextbooks';
+import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 
 interface PdfQuestionExtractorTabProps {
   onLaunchTest: (title: string, type: string, subject?: string, year?: number) => void;
@@ -90,6 +91,7 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
   const [indexedQuestions, setIndexedQuestions] = useState<CustomExtractedQuestion[]>([]);
   const [vaultSearchQuery, setVaultSearchQuery] = useState<string>('');
   const [vaultSubjectFilter, setVaultSubjectFilter] = useState<string>('All');
+  const [visibleVaultCount, setVisibleVaultCount] = useState<number>(40);
   const [isSyncingCloud, setIsSyncingCloud] = useState<boolean>(false);
 
   // Load Vault Questions on mount
@@ -221,6 +223,10 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
       author: q.author || 'Accredited Curriculum Item',
       textbookRef: `Extracted Past Question · ${q.subject}`,
       isUserApproved: true,
+      hasImage: q.hasImage,
+      imageUrl: q.imageUrl,
+      imageCaption: q.imageCaption,
+      imageAlt: q.imageAlt,
     }));
 
     await saveCustomQuestions(toSave);
@@ -638,12 +644,23 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
                       rows={3}
                       value={q.text}
                       onChange={(e) => handleUpdateStaged(q.id, { text: e.target.value })}
-                      className="w-full p-2.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:outline-hidden"
+                      className="w-full p-2.5 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-black dark:text-white focus:outline-hidden"
                     />
                   ) : (
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">
+                    <p className="text-sm font-bold text-black dark:text-white leading-relaxed">
                       {q.text}
                     </p>
+                  )}
+
+                  {/* Question Image / Visual Diagram */}
+                  {(q.hasImage || q.imageUrl) && (
+                    <div className="my-2 max-w-sm">
+                      <QuestionImageDisplay
+                        imageUrl={q.imageUrl}
+                        caption={q.imageCaption}
+                        alt={q.imageAlt}
+                      />
+                    </div>
                   )}
 
                   {/* Options Grid */}
@@ -654,18 +671,18 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
                         <div
                           key={opt}
                           onClick={() => handleUpdateStaged(q.id, { answer: opt })}
-                          className={`p-3 rounded-xl border-2 flex items-center justify-between cursor-pointer transition-colors ${
+                          className={`p-3 rounded-xl border-2 flex items-center justify-between cursor-pointer transition-colors bg-white dark:bg-slate-900 ${
                             isCorrect
-                              ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 text-emerald-900 dark:text-emerald-200 font-bold'
-                              : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-400'
+                              ? 'border-slate-900 dark:border-white shadow-xs'
+                              : 'border-slate-300 dark:border-slate-700 hover:border-slate-500'
                           }`}
                         >
                           <div className="flex items-center gap-2 flex-1">
                             <span
                               className={`w-5 h-5 rounded-md flex items-center justify-center font-bold text-[11px] shrink-0 ${
                                 isCorrect
-                                  ? 'bg-emerald-600 text-white'
-                                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                                  ? 'bg-black text-white dark:bg-white dark:text-black'
+                                  : 'bg-slate-100 dark:bg-slate-800 text-black dark:text-slate-200 border border-slate-300 dark:border-slate-600'
                               }`}
                             >
                               {opt}
@@ -679,21 +696,21 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
                                     options: { ...q.options, [opt]: e.target.value },
                                   })
                                 }
-                                className="w-full px-2 py-1 text-xs bg-transparent border-b border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
+                                className="w-full px-2 py-1 text-xs bg-transparent border-b border-slate-300 dark:border-slate-700 text-black dark:text-white"
                               />
                             ) : (
-                              <span>{q.options[opt]}</span>
+                              <span className="text-black dark:text-white font-medium">{q.options[opt]}</span>
                             )}
                           </div>
-                          {isCorrect && <Check className="w-4 h-4 text-emerald-600 shrink-0 ml-2" />}
+                          {isCorrect && <Check className="w-4 h-4 text-black dark:text-white shrink-0 ml-2" />}
                         </div>
                       );
                     })}
                   </div>
 
                   {/* Explanation Field */}
-                  <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1">
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                  <div className="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs text-black dark:text-slate-100 space-y-1">
+                    <span className="font-bold text-black dark:text-white">
                       Step-by-Step Solution &amp; Working:
                     </span>
                     {isEditing ? (
@@ -821,28 +838,28 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
             </div>
           ) : (
             <div className="space-y-3 max-h-[650px] overflow-y-auto pr-1 scrollbar-thin">
-              {filteredVault.map((q, idx) => (
+              {filteredVault.slice(0, visibleVaultCount).map((q, idx) => (
                 <div
                   key={q.id}
-                  className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-850/60 hover:border-emerald-300 dark:hover:border-emerald-800/80 transition-colors space-y-2.5"
+                  className="p-4 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xs hover:border-slate-400 transition-colors space-y-2.5"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-bold text-[11px] flex items-center justify-center">
+                      <span className="w-5 h-5 rounded-md bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold text-[11px] flex items-center justify-center">
                         {idx + 1}
                       </span>
-                      <span className="font-bold text-slate-900 dark:text-white">
+                      <span className="font-bold text-black dark:text-white">
                         {q.subject} • {q.topic}
                       </span>
                       {q.sourcePdfName && (
-                        <span className="text-[11px] text-slate-400 truncate max-w-[150px]">
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate max-w-[200px]">
                           ({q.sourcePdfName})
                         </span>
                       )}
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 font-bold text-[11px]">
+                      <span className="px-2.5 py-0.5 rounded-md bg-slate-100 text-black dark:bg-slate-800 dark:text-white font-bold text-[11px] border border-slate-300 dark:border-slate-600">
                         Answer: Option {q.answer}
                       </span>
                       <button
@@ -855,32 +872,71 @@ export const PdfQuestionExtractorTab: React.FC<PdfQuestionExtractorTabProps> = (
                     </div>
                   </div>
 
-                  <p className="text-xs font-medium text-slate-800 dark:text-slate-200 leading-relaxed">
+                  <p className="text-sm font-semibold text-black dark:text-white leading-relaxed">
                     {q.text}
                   </p>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px]">
+                  {/* Question Image / Visual Diagram */}
+                  {(q.hasImage || q.imageUrl) && (
+                    <div className="my-2 max-w-sm">
+                      <QuestionImageDisplay
+                        imageUrl={q.imageUrl}
+                        caption={q.imageCaption}
+                        alt={q.imageAlt}
+                      />
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {(['A', 'B', 'C', 'D'] as const).map((opt) => (
                       <div
                         key={opt}
-                        className={`p-2 rounded-lg border ${
+                        className={`p-2.5 rounded-xl border flex items-center gap-2 bg-white dark:bg-slate-900 ${
                           opt === q.answer
-                            ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 text-emerald-900 dark:text-emerald-200 font-bold'
-                            : 'bg-slate-50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'
+                            ? 'border-2 border-slate-900 dark:border-white shadow-2xs'
+                            : 'border-slate-300 dark:border-slate-700'
                         }`}
                       >
-                        <strong>{opt}.</strong> {q.options[opt]}
+                        <span
+                          className={`w-5 h-5 rounded-md flex items-center justify-center font-bold text-[11px] shrink-0 ${
+                            opt === q.answer
+                              ? 'bg-black text-white dark:bg-white dark:text-black'
+                              : 'bg-slate-100 dark:bg-slate-800 text-black dark:text-slate-200 border border-slate-300 dark:border-slate-600'
+                          }`}
+                        >
+                          {opt}
+                        </span>
+                        <span className="text-black dark:text-white font-medium flex-1">{q.options[opt]}</span>
+                        {opt === q.answer && (
+                          <span className="text-[10px] font-black uppercase text-black dark:text-white shrink-0">
+                            ✓ Correct
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
 
                   {q.explanation && (
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 italic pt-1">
-                      {q.explanation}
-                    </p>
+                    <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-850 border border-slate-200 dark:border-slate-700 text-xs">
+                      <span className="font-bold text-black dark:text-white block mb-0.5">Solution &amp; Verification:</span>
+                      <p className="text-black dark:text-slate-100 leading-relaxed font-normal">
+                        {q.explanation}
+                      </p>
+                    </div>
                   )}
                 </div>
               ))}
+
+              {filteredVault.length > visibleVaultCount && (
+                <div className="text-center pt-2">
+                  <button
+                    onClick={() => setVisibleVaultCount((prev) => prev + 50)}
+                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-bold transition-all cursor-pointer border border-slate-200 dark:border-slate-700"
+                  >
+                    Showing {visibleVaultCount} of {filteredVault.length} Questions • Load 50 More
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

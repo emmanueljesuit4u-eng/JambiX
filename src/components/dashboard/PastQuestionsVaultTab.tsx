@@ -418,7 +418,7 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
                 </div>
 
                 {/* Question Body */}
-                <p className="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">
+                <p className="text-sm font-bold text-black dark:text-white leading-relaxed">
                   {q.text}
                 </p>
 
@@ -439,24 +439,24 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
                     return (
                       <div
                         key={optKey}
-                        className={`p-3 rounded-xl border flex items-center gap-2.5 transition-colors ${
+                        className={`p-3 rounded-xl border flex items-center gap-2.5 transition-colors bg-white dark:bg-slate-900 ${
                           isAnswer
-                            ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-500 text-emerald-950 dark:text-emerald-100 font-bold shadow-2xs'
-                            : 'bg-slate-50/70 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                            ? 'border-2 border-slate-950 dark:border-white text-black dark:text-white font-bold shadow-2xs'
+                            : 'border border-slate-300 dark:border-slate-700 text-black dark:text-slate-100 font-medium'
                         }`}
                       >
                         <span
                           className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
                             isAnswer
-                              ? 'bg-emerald-600 text-white'
-                              : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-600'
+                              ? 'bg-black text-white dark:bg-white dark:text-black'
+                              : 'bg-slate-100 dark:bg-slate-700 text-black dark:text-slate-200 border border-slate-300 dark:border-slate-600'
                           }`}
                         >
                           {optKey}
                         </span>
-                        <span>{optVal}</span>
+                        <span className="text-black dark:text-white flex-1">{optVal}</span>
                         {isAnswer && (
-                          <span className="ml-auto text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-300">
+                          <span className="ml-auto text-[10px] font-black uppercase text-black dark:text-white shrink-0">
                             ✓ Correct
                           </span>
                         )}
@@ -467,22 +467,22 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
 
                 {/* Answer and Verified Textbook Reference Box */}
                 {isRevealed && (
-                  <div className="p-4 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/60 space-y-2 text-xs animate-in fade-in">
-                    <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-emerald-200/80 dark:border-emerald-900/40">
-                      <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200 font-bold">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-300 dark:border-slate-700 space-y-2 text-xs animate-in fade-in">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-200 dark:border-slate-700">
+                      <div className="flex items-center gap-2 text-black dark:text-white font-bold">
+                        <CheckCircle2 className="w-4 h-4 text-black dark:text-white" />
                         <span>Official Correct Answer: Option {q.answer}</span>
                       </div>
-                      <span className="text-[11px] font-mono text-emerald-800 dark:text-emerald-300 font-semibold">
+                      <span className="text-[11px] font-mono text-slate-700 dark:text-slate-300 font-semibold">
                         Verified Reference: {q.textbookRef}
                       </span>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[11px] font-bold text-emerald-950 dark:text-emerald-100 uppercase tracking-wider block">
+                      <span className="text-[11px] font-bold text-black dark:text-white uppercase tracking-wider block">
                         Step-by-Step Textbook Explanation:
                       </span>
-                      <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                      <p className="text-black dark:text-slate-100 leading-relaxed font-normal">
                         {q.explanation}
                       </p>
                     </div>

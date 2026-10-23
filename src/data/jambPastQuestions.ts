@@ -1791,7 +1791,7 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
   const sessionUsedDiagrams = new Set<string>();
 
   let assembled: VerifiedQuestion[] = [];
-  const baseSeed = typeof year === 'number' ? year : Math.floor(Math.random() * 100000);
+  const baseSeed = (typeof year === 'number' ? year * 313 : 0) + Date.now() + Math.floor(Math.random() * 100000);
 
   // If single subject mode (or only 1 subject specified)
   if (mode === 'single' || chosenKeys.length === 1) {

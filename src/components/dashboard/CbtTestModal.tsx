@@ -46,6 +46,7 @@ import {
   getSeenQuestionsCount,
   markQuestionsSeen,
   recordSeenSignatures,
+  getSeenQuestionSignatures,
   getQuestionCoreSignature,
   clearSeenQuestions,
   getCompletedTwoHourTestsCount,
@@ -271,7 +272,31 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
         : allCustom;
       const targetPool = filtered.length > 0 ? filtered : allCustom;
       if (targetPool.length > 0) {
-        finalQuestions = targetPool.map((cq, idx) => convertToVerifiedQuestion(cq, idx));
+        // Enforce random selection without repetition using seen signatures
+        const seenSigs = getSeenQuestionSignatures();
+        const unseen = targetPool.filter((q) => !seenSigs.has(getQuestionCoreSignature(q.text)));
+        const poolToSample = unseen.length >= (examMode === 'sprint' ? 20 : 40) ? unseen : targetPool;
+
+        // Fisher-Yates random shuffle
+        const shuffled = [...poolToSample];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = shuffled[i];
+          shuffled[i] = shuffled[j];
+          shuffled[j] = temp;
+        }
+
+        const targetCount = examMode === 'sprint' ? 20 : 40;
+        const selected = shuffled.slice(0, Math.min(targetCount, shuffled.length));
+        finalQuestions = selected.map((cq, idx) => {
+          const vq = convertToVerifiedQuestion(cq, idx);
+          return {
+            ...vq,
+            questionNumber: idx + 1,
+            subjectQuestionNumber: idx + 1,
+            subjectTotalQuestions: selected.length,
+          };
+        });
       }
     }
 

@@ -92,6 +92,7 @@ import {
 } from '../../data/jambToughQuestionsBank';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { getCustomVerifiedQuestionsForTopic } from '../../lib/customQuestionsService';
+import { PHYSICS_DEMYSTIFIED_ITEMS } from '../../data/physicsDemystifiedBank';
 
 // Sound effect synthesizer (zero external assets, 100% offline Web Audio)
 function playHapticSound(type: 'correct' | 'wrong' | 'click') {
@@ -186,7 +187,7 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
   // Drill Config State
   const [activeChapterIndex, setActiveChapterIndex] = useState<number | null>(null);
   const [drillMode, setDrillMode] = useState<DrillMode>('study');
-  const [drillQuestionCount, setDrillQuestionCount] = useState<number>(10);
+  const [drillQuestionCount, setDrillQuestionCount] = useState<number>(40);
   const [drillDifficultyFilter, setDrillDifficultyFilter] = useState<'all' | 'tough' | 'recent'>('all');
 
   // Active Session State
@@ -195,7 +196,7 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, 'A' | 'B' | 'C' | 'D'>>({});
   const [revealedSolutions, setRevealedSolutions] = useState<Record<number, boolean>>({});
-  const [timeRemainingSeconds, setTimeRemainingSeconds] = useState<number>(600); // 10 mins default
+  const [timeRemainingSeconds, setTimeRemainingSeconds] = useState<number>(2400); // 40 mins default
   const [isDrillCompleted, setIsDrillCompleted] = useState<boolean>(false);
   const [drillStartTime, setDrillStartTime] = useState<number>(0);
   const [timeSpentSeconds, setTimeSpentSeconds] = useState<number>(0);
@@ -289,52 +290,101 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     const results: VerifiedQuestion[] = [];
     const usedTexts = new Set<string>();
     const seedBase = Date.now() + chIdx * 101;
+    const chKeywords = chTitle.toLowerCase().split(/[\s,&:/-]+/).filter((w) => w.length > 3);
 
-    // 0. Include candidate's custom extracted PDF questions matching this topic if available
+    // 0. For Physics: Draw directly from the 1,848 verified questions in Physics Demystified by Dr. Timothy!
+    if (subKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
+      const matchingItems = PHYSICS_DEMYSTIFIED_ITEMS.filter((item) => {
+        if (item.originalChapter === chIdx + 1) return true;
+        const lowTop = item.topic.toLowerCase();
+        return chKeywords.some((kw) => lowTop.includes(kw));
+      });
+
+      // Pseudo-random shuffle of matching chapter questions
+      const pool = [...(matchingItems.length > 0 ? matchingItems : PHYSICS_DEMYSTIFIED_ITEMS)];
+      let randState = Math.abs((seedBase * 1664525 + chIdx * 31337) | 0);
+      for (let i = pool.length - 1; i > 0; i--) {
+        randState = (randState * 1664525 + 1013904223) | 0;
+        const j = Math.floor(((randState >>> 0) / 4294967296) * (i + 1));
+        const temp = pool[i];
+        pool[i] = pool[j];
+        pool[j] = temp;
+      }
+
+      for (const item of pool) {
+        if (results.length >= targetCount) break;
+        const cleanSig = item.text.trim().toLowerCase().slice(0, 35);
+        if (!usedTexts.has(cleanSig)) {
+          usedTexts.add(cleanSig);
+          const qNum = results.length + 1;
+          results.push({
+            id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
+            year: 2024,
+            questionNumber: qNum,
+            subject: 'Physics',
+            topic: item.topic,
+            text: item.text,
+            options: item.options,
+            answer: item.answer,
+            explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
+            bookTitle: 'PHYSICS DEMYSTIFIED',
+            author: 'Dr. Aifuwa Timothy',
+            textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+            hasImage: item.hasImage,
+            imageUrl: item.imageUrl,
+            imageCaption: item.imageCaption,
+            imageAlt: item.imageAlt,
+          });
+        }
+      }
+    }
+
+    // 1. Include candidate's custom extracted PDF questions matching this topic if available
     try {
-      const customMatches = getCustomVerifiedQuestionsForTopic(subKey, chTitle, 3);
+      const customMatches = getCustomVerifiedQuestionsForTopic(subKey, chTitle, targetCount);
       for (const cq of customMatches) {
-        if (!usedTexts.has(cq.text) && results.length < targetCount) {
+        const cleanSig = cq.text.trim().toLowerCase().slice(0, 35);
+        if (!usedTexts.has(cleanSig) && results.length < targetCount) {
           results.push(cq);
-          usedTexts.add(cq.text);
+          usedTexts.add(cleanSig);
         }
       }
     } catch {
       // Continue if custom lookup fails
     }
 
-    // 1. Check for relevant diagram/image questions
+    // 2. Check for relevant diagram/image questions
     try {
       const imgDefs = getImageQuestionsForSubject(subKey);
-      const chKeywords = chTitle.toLowerCase().split(/[\s,&]+/).filter((w) => w.length > 3);
       const matchingImg = imgDefs.filter((def) => {
         const topLow = def.topic.toLowerCase();
         return chKeywords.some((kw) => topLow.includes(kw));
       });
       for (const def of matchingImg) {
-        if (results.length >= 2) break;
+        if (results.length >= targetCount) break;
         const q = createImageVerifiedQuestion(def, 2024, results.length + 1);
-        if (!usedTexts.has(q.text)) {
+        const cleanSig = q.text.trim().toLowerCase().slice(0, 35);
+        if (!usedTexts.has(cleanSig)) {
           results.push(q);
-          usedTexts.add(q.text);
+          usedTexts.add(cleanSig);
         }
       }
     } catch {
       // Continue if image lookup fails
     }
 
-    // 2. Check for relevant tough historical questions if requested
+    // 3. Check for relevant tough historical questions if requested
     if (difficultyFilter === 'tough' || difficultyFilter === 'all') {
       const toughPool = TOUGH_MAP[subKey] || [];
-      const chKeywords = chTitle.toLowerCase().split(/[\s,&]+/).filter((w) => w.length > 3);
       const matchedTough = toughPool.filter((tq) => {
         const topLow = tq.topic.toLowerCase();
         return chKeywords.some((kw) => topLow.includes(kw));
       });
 
-      for (let i = 0; i < matchedTough.length && results.length < Math.min(targetCount, 4); i++) {
+      for (let i = 0; i < matchedTough.length && results.length < targetCount; i++) {
         const tq = matchedTough[i];
-        if (!usedTexts.has(tq.text)) {
+        const cleanSig = tq.text.trim().toLowerCase().slice(0, 35);
+        if (!usedTexts.has(cleanSig)) {
           const q: VerifiedQuestion = {
             id: 800000 + (tq.year * 10) + i,
             year: tq.year,
@@ -350,14 +400,14 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
             textbookRef: `${tq.bookTitle} by ${tq.author}`,
           };
           results.push(scatterQuestionOptions(q, seedBase + i * 29));
-          usedTexts.add(tq.text);
+          usedTexts.add(cleanSig);
         }
       }
     }
 
-    // 3. Fill the remainder using official chapter generators across authentic JAMB examination years (1978-2026)
+    // 4. Fill the remainder using official chapter generators across authentic JAMB examination years (1978-2026)
     let variantAttempt = 0;
-    while (results.length < targetCount && variantAttempt < 60) {
+    while (results.length < targetCount && variantAttempt < 150) {
       const year =
         difficultyFilter === 'recent'
           ? 2015 + ((seedBase + variantAttempt) % 12)
@@ -372,13 +422,35 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         variantAttempt
       );
 
-      // Verify question is unique
-      const cleanCore = generated.text.replace(/^\[JAMB UTME \d+ Q\d+\]\s*/, '').trim();
+      const cleanCore = generated.text.replace(/^\[JAMB UTME \d+ Q\d+\]\s*/, '').trim().toLowerCase().slice(0, 35);
       if (!usedTexts.has(cleanCore)) {
         usedTexts.add(cleanCore);
         results.push(generated);
       }
       variantAttempt++;
+    }
+
+    // 5. If still below targetCount, draw from other chapters of this subject to guarantee full 40+ count
+    if (results.length < targetCount) {
+      const standardChaps = activeSubjectConfig.standardChapters || [];
+      for (let offset = 1; offset < standardChaps.length && results.length < targetCount; offset++) {
+        const otherChIdx = (chIdx + offset) % standardChaps.length;
+        for (let attempt = 0; attempt < 5 && results.length < targetCount; attempt++) {
+          const gen = generateQuestionForChapter(
+            subKey,
+            otherChIdx,
+            1990 + (attempt * 7),
+            results.length + 1,
+            seedBase + attempt * 41 + otherChIdx * 19,
+            attempt
+          );
+          const cleanCore = gen.text.replace(/^\[JAMB UTME \d+ Q\d+\]\s*/, '').trim().toLowerCase().slice(0, 35);
+          if (!usedTexts.has(cleanCore)) {
+            usedTexts.add(cleanCore);
+            results.push(gen);
+          }
+        }
+      }
     }
 
     // Re-index question numbers sequentially
@@ -396,11 +468,14 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     setActiveChapterIndex(chIdx);
     setDrillMode(mode);
 
+    // In Timed mode, guarantee at least 40 questions for an authentic full test
+    const effectiveTargetCount = mode === 'timed' ? Math.max(40, drillQuestionCount) : drillQuestionCount;
+
     const questions = buildTopicQuestions(
       selectedSubjectKey,
       chIdx,
       chapter.title,
-      drillQuestionCount,
+      effectiveTargetCount,
       drillDifficultyFilter
     );
 
@@ -416,12 +491,12 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     setIsDrillCompleted(false);
     setTimeSpentSeconds(0);
     setDrillStartTime(Date.now());
-    // In Timed mode: 60 seconds per question
-    setTimeRemainingSeconds(drillQuestionCount * 60);
+    // In Timed mode: 60 seconds per question (e.g. 40 mins for 40 questions)
+    setTimeRemainingSeconds(effectiveTargetCount * 60);
     setIsDrillActive(true);
 
     if (soundEnabled) playHapticSound('click');
-    showToast(`Started ${mode === 'study' ? 'Study Drill' : 'Timed Exam'}: ${chapter.title}`);
+    showToast(`Started ${mode === 'study' ? 'Study Drill' : 'Timed Exam'} (${questions.length} Questions): ${chapter.title}`);
   };
 
   // Timer countdown for Timed Drill
@@ -1194,14 +1269,14 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                 {/* Question Count */}
                 <div className="flex items-center gap-1.5">
                   <span className="text-slate-500 font-medium">Questions:</span>
-                  {[5, 10, 15, 20].map((count) => (
+                  {[10, 20, 30, 40, 50].map((count) => (
                     <button
                       key={count}
                       onClick={() => setDrillQuestionCount(count)}
-                      className={`w-7 h-7 rounded-lg font-bold transition-all cursor-pointer ${
+                      className={`min-w-7 h-7 px-1.5 rounded-lg font-bold text-xs transition-all cursor-pointer ${
                         drillQuestionCount === count
-                          ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                          : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                          ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-2xs'
+                          : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
                       }`}
                     >
                       {count}

@@ -38,6 +38,10 @@ export interface ExtractedRawQuestion {
   bookTitle?: string;
   author?: string;
   confidence: 'high' | 'medium' | 'low';
+  hasImage?: boolean;
+  imageUrl?: string;
+  imageCaption?: string;
+  imageAlt?: string;
 }
 
 /**

@@ -6,3 +6,9 @@ coverage/
 *.log
 .env*
 !.env.example
+.cache_page_renders/
+.cache*/
+*.tmp
+test_*.png
+page_*.png
+test_*.js
