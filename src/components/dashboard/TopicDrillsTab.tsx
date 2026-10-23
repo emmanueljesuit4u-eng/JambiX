@@ -228,11 +228,28 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
   // Expanded Syllabus Objectives in Chapter List
   const [expandedObjectives, setExpandedObjectives] = useState<Record<number, boolean>>({});
 
-  // Topic mastery stats
+  // Topic mastery stats (Strictly normalized to 40 questions per topic drill)
   const [topicRecords, setTopicRecords] = useState<Record<string, TopicDrillRecord>>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_TOPIC_STATS);
-      return saved ? JSON.parse(saved) : {};
+      if (!saved) return {};
+      const parsed = JSON.parse(saved);
+      // Migrate all historical records so total questions is strictly 40
+      const migrated: Record<string, TopicDrillRecord> = {};
+      for (const [key, rec] of Object.entries(parsed)) {
+        const r = rec as TopicDrillRecord;
+        const total = 40;
+        const best = r.totalQuestions && r.totalQuestions !== 40
+          ? Math.min(40, Math.round(((r.bestScore || 0) / Math.max(1, r.totalQuestions)) * 40))
+          : Math.min(40, r.bestScore || 0);
+        migrated[key] = {
+          ...r,
+          bestScore: best,
+          totalQuestions: total,
+          masteryPercentage: Math.round((best / total) * 100),
+        };
+      }
+      return migrated;
     } catch {
       return {};
     }
@@ -247,7 +264,9 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
   ) => {
     try {
       const recordKey = `${subKey}_ch_${chIdx}`;
-      const percentage = Math.round((score / total) * 100);
+      const effectiveTotal = 40; // Strictly 40 questions per test
+      const normalizedScore = total === 40 ? score : Math.min(40, Math.round((score / Math.max(1, total)) * 40));
+      const percentage = Math.round((normalizedScore / effectiveTotal) * 100);
       setTopicRecords((prev) => {
         const existing = prev[recordKey];
         const newRecord: TopicDrillRecord = {
@@ -255,8 +274,8 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
           chapterIndex: chIdx,
           chapterTitle: chTitle,
           attemptsCount: (existing?.attemptsCount || 0) + 1,
-          bestScore: Math.max(existing?.bestScore || 0, score),
-          totalQuestions: total,
+          bestScore: Math.min(40, Math.max(existing?.bestScore || 0, normalizedScore)),
+          totalQuestions: effectiveTotal,
           lastAttemptDate: new Date().toLocaleDateString('en-GB'),
           masteryPercentage: Math.max(existing?.masteryPercentage || 0, percentage),
         };
@@ -318,10 +337,10 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     const seedBase = Date.now() + chIdx * 101;
     const chKeywords = chTitle.toLowerCase().split(/[\s,&:/-]+/).filter((w) => w.length > 3);
 
-    // Helper to add question with duplicate checking
+    // Helper to add question with duplicate checking (signature compares 80 normalized chars)
     const tryAddQuestion = (q: VerifiedQuestion, allowSeen: boolean = false): boolean => {
       if (results.length >= REQUIRED_COUNT) return false;
-      const cleanSig = q.text.trim().toLowerCase().slice(0, 35);
+      const cleanSig = q.text.trim().toLowerCase().replace(/\s+/g, ' ').slice(0, 80);
       if (usedTexts.has(cleanSig)) return false;
       if (!allowSeen && seenSignatures.has(cleanSig)) return false;
       usedTexts.add(cleanSig);
@@ -330,6 +349,7 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     };
 
     // 0. For Physics: Draw directly from the 1,848 verified questions in Physics Demystified by Dr. Timothy!
+    // Pulls both diagram questions and normal text questions with verified answer keys and step-by-step explanations.
     if (subKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
       const matchingItems = PHYSICS_DEMYSTIFIED_ITEMS.filter((item) => {
         if (item.originalChapter === chIdx + 1) return true;
@@ -337,18 +357,57 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         return chKeywords.some((kw) => lowTop.includes(kw));
       });
 
-      const pool = [...(matchingItems.length > 0 ? matchingItems : PHYSICS_DEMYSTIFIED_ITEMS)];
-      let randState = Math.abs((seedBase * 1664525 + chIdx * 31337) | 0);
-      for (let i = pool.length - 1; i > 0; i--) {
-        randState = (randState * 1664525 + 1013904223) | 0;
-        const j = Math.floor(((randState >>> 0) / 4294967296) * (i + 1));
-        const temp = pool[i];
-        pool[i] = pool[j];
-        pool[j] = temp;
+      const chapterPool = matchingItems.length >= 20 ? matchingItems : PHYSICS_DEMYSTIFIED_ITEMS;
+      
+      // Shuffle helper with pseudo-random deterministic seed
+      const shuffleList = <T,>(arr: T[], seedOffset: number): T[] => {
+        const copy = [...arr];
+        let randState = Math.abs((seedBase * 1664525 + chIdx * 31337 + seedOffset) | 0);
+        for (let i = copy.length - 1; i > 0; i--) {
+          randState = (randState * 1664525 + 1013904223) | 0;
+          const j = Math.floor(((randState >>> 0) / 4294967296) * (i + 1));
+          const temp = copy[i];
+          copy[i] = copy[j];
+          copy[j] = temp;
+        }
+        return copy;
+      };
+
+      // 0a. Include 3-6 diagram questions for this physics test
+      const diagramCandidates = shuffleList(
+        PHYSICS_DEMYSTIFIED_ITEMS.filter((item) => item.hasImage),
+        seedBase + 101
+      );
+      // Prioritize diagrams matching this chapter first
+      const chapterDiagrams = diagramCandidates.filter(
+        (item) => item.originalChapter === chIdx + 1 || chKeywords.some((kw) => item.topic.toLowerCase().includes(kw))
+      );
+      const chosenDiagrams = [...chapterDiagrams, ...diagramCandidates].slice(0, 6);
+      for (const item of chosenDiagrams) {
+        if (results.length >= 6) break;
+        tryAddQuestion({
+          id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
+          year: 2024,
+          questionNumber: results.length + 1,
+          subject: 'Physics',
+          topic: item.topic,
+          text: item.text,
+          options: item.options,
+          answer: item.answer,
+          explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
+          bookTitle: 'PHYSICS DEMYSTIFIED',
+          author: 'Dr. Aifuwa Timothy',
+          textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+          hasImage: true,
+          imageUrl: item.imageUrl,
+          imageCaption: item.imageCaption,
+          imageAlt: item.imageAlt,
+        }, false);
       }
 
-      // First pass: Prioritize unseen questions
-      for (const item of pool) {
+      // 0b. First pass: Pull unseen questions from chapter pool
+      const shuffledChapterPool = shuffleList(chapterPool, seedBase + 202);
+      for (const item of shuffledChapterPool) {
         if (results.length >= REQUIRED_COUNT) break;
         tryAddQuestion({
           id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
@@ -370,9 +429,35 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         }, false);
       }
 
-      // If needed, second pass for physics from chapter pool (still 0 duplicates within test)
+      // 0c. Second pass: If needed, allow seen questions from chapter pool (strictly 0 duplicates within test)
       if (results.length < REQUIRED_COUNT) {
-        for (const item of pool) {
+        for (const item of shuffledChapterPool) {
+          if (results.length >= REQUIRED_COUNT) break;
+          tryAddQuestion({
+            id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
+            year: 2024,
+            questionNumber: results.length + 1,
+            subject: 'Physics',
+            topic: item.topic,
+            text: item.text,
+            options: item.options,
+            answer: item.answer,
+            explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
+            bookTitle: 'PHYSICS DEMYSTIFIED',
+            author: 'Dr. Aifuwa Timothy',
+            textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+            hasImage: item.hasImage,
+            imageUrl: item.imageUrl,
+            imageCaption: item.imageCaption,
+            imageAlt: item.imageAlt,
+          }, true);
+        }
+      }
+
+      // 0d. Third pass: If still under 40, pull from the complete 1,848 question Physics Demystified bank
+      if (results.length < REQUIRED_COUNT) {
+        const fullBankShuffled = shuffleList(PHYSICS_DEMYSTIFIED_ITEMS, seedBase + 303);
+        for (const item of fullBankShuffled) {
           if (results.length >= REQUIRED_COUNT) break;
           tryAddQuestion({
             id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
@@ -1005,7 +1090,7 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                   </div>
 
                   {/* Question Prompt */}
-                  <div className="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-relaxed">
+                  <div className="text-base sm:text-lg font-bold text-black dark:text-white leading-relaxed">
                     {currentQuestion.text}
                   </div>
 
@@ -1028,18 +1113,18 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                       const isOptionCorrect = opt === currentQuestion.answer;
                       const isStudyRevealed = drillMode === 'study' && isCurrentAnswered;
 
-                      let btnStyle = 'bg-white dark:bg-slate-800/80 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-rose-400 dark:hover:border-rose-500 hover:bg-rose-50/30';
+                      let btnStyle = 'bg-white dark:bg-slate-800/80 border-slate-300 dark:border-slate-700 text-black dark:text-white font-medium hover:border-rose-400 dark:hover:border-rose-500 hover:bg-slate-50';
 
                       if (isStudyRevealed) {
                         if (isOptionCorrect) {
-                          btnStyle = 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-900 dark:text-emerald-100 font-bold shadow-xs';
+                          btnStyle = 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 text-emerald-950 dark:text-emerald-100 font-bold shadow-xs';
                         } else if (isSelected) {
-                          btnStyle = 'bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-900 dark:text-rose-100 font-bold';
+                          btnStyle = 'bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-950 dark:text-rose-100 font-bold';
                         } else {
-                          btnStyle = 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-400 opacity-60';
+                          btnStyle = 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 text-slate-500 opacity-60';
                         }
                       } else if (isSelected) {
-                        btnStyle = 'bg-rose-50 dark:bg-rose-950/50 border-rose-600 text-rose-700 dark:text-rose-300 font-bold ring-2 ring-rose-500/20';
+                        btnStyle = 'bg-rose-50 dark:bg-rose-950/50 border-rose-600 text-rose-950 dark:text-rose-200 font-bold ring-2 ring-rose-500/20';
                       }
 
                       return (
@@ -1057,12 +1142,12 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                                   ? 'bg-rose-600 text-white'
                                   : isSelected
                                   ? 'bg-rose-600 text-white'
-                                  : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200'
+                                  : 'bg-slate-100 dark:bg-slate-700 text-black dark:text-white'
                               }`}
                             >
                               {opt}
                             </span>
-                            <span className="text-sm sm:text-base">
+                            <span className="text-sm sm:text-base text-black dark:text-white font-medium">
                               {currentQuestion.options[opt]}
                             </span>
                           </div>
@@ -1322,22 +1407,13 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                   </button>
                 </div>
 
-                {/* Question Count */}
+                {/* Standard Test Format */}
                 <div className="flex items-center gap-1.5">
-                  <span className="text-slate-500 font-medium">Questions:</span>
-                  {[10, 20, 30, 40, 50].map((count) => (
-                    <button
-                      key={count}
-                      onClick={() => setDrillQuestionCount(count)}
-                      className={`min-w-7 h-7 px-1.5 rounded-lg font-bold text-xs transition-all cursor-pointer ${
-                        drillQuestionCount === count
-                          ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-2xs'
-                          : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-slate-400'
-                      }`}
-                    >
-                      {count}
-                    </button>
-                  ))}
+                  <span className="text-slate-500 font-medium">Standard Test:</span>
+                  <span className="px-2.5 py-1 rounded-lg font-bold text-xs bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-2xs flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600" />
+                    40 Questions / Topic
+                  </span>
                 </div>
 
                 {/* Difficulty Filter */}
@@ -1404,14 +1480,15 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                               Page {ch.startPage || 1} · {activeSubjectConfig.bookTitle}
                             </span>
                             <span>•</span>
-                            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
-                              40+ Past Questions
+                            <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 font-bold text-[11px] border border-emerald-200/80 dark:border-emerald-800 flex items-center gap-1">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                              40 Questions per Test
                             </span>
                             {record && (
                               <>
                                 <span>•</span>
-                                <span className="font-bold text-slate-700 dark:text-slate-300">
-                                  Best: {record.bestScore}/{record.totalQuestions} ({record.masteryPercentage}%)
+                                <span className="font-bold text-slate-800 dark:text-slate-200">
+                                  Best: {Math.min(40, record.bestScore)}/40 ({record.masteryPercentage}%)
                                 </span>
                               </>
                             )}
@@ -1465,7 +1542,7 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
                             }
                             className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline flex items-center gap-1 cursor-pointer"
                           >
-                            <span>Official Syllabus Objectives ({matchingModule.objectives.length})</span>
+                            <span>JAMB Syllabus Curriculum Objectives ({matchingModule.objectives.length} Benchmarks)</span>
                             {isObjectivesOpen ? (
                               <ChevronUp className="w-3.5 h-3.5" />
                             ) : (
