@@ -94,6 +94,30 @@ import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { getCustomVerifiedQuestionsForTopic } from '../../lib/customQuestionsService';
 import { PHYSICS_DEMYSTIFIED_ITEMS } from '../../data/physicsDemystifiedBank';
 
+const DRILL_SEEN_KEY = 'jambix_topic_drill_seen_v1';
+
+function getDrillSeenSignatures(): Set<string> {
+  if (typeof window === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(DRILL_SEEN_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch {
+    return new Set();
+  }
+}
+
+function recordDrillSeenSignatures(sigs: string[]): void {
+  if (typeof window === 'undefined' || sigs.length === 0) return;
+  try {
+    const existing = getDrillSeenSignatures();
+    for (const s of sigs) existing.add(s);
+    const arr = Array.from(existing).slice(-10000);
+    localStorage.setItem(DRILL_SEEN_KEY, JSON.stringify(arr));
+  } catch {
+    // Ignore storage quota errors
+  }
+}
+
 // Sound effect synthesizer (zero external assets, 100% offline Web Audio)
 function playHapticSound(type: 'correct' | 'wrong' | 'click') {
   if (typeof window === 'undefined') return;
@@ -279,18 +303,31 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     return activeSubjectConfig.standardChapters || [];
   }, [activeSubjectConfig]);
 
-  // Assemble Questions for a Selected Topic Drill
+  // Assemble Questions for a Selected Topic Drill (Strictly 40 questions with zero repetition)
   const buildTopicQuestions = useCallback((
     subKey: SubjectKey,
     chIdx: number,
     chTitle: string,
-    targetCount: number,
-    difficultyFilter: 'all' | 'tough' | 'recent'
+    targetCount: number = 40,
+    difficultyFilter: 'all' | 'tough' | 'recent' = 'all'
   ): VerifiedQuestion[] => {
+    const REQUIRED_COUNT = 40;
     const results: VerifiedQuestion[] = [];
     const usedTexts = new Set<string>();
+    const seenSignatures = getDrillSeenSignatures();
     const seedBase = Date.now() + chIdx * 101;
     const chKeywords = chTitle.toLowerCase().split(/[\s,&:/-]+/).filter((w) => w.length > 3);
+
+    // Helper to add question with duplicate checking
+    const tryAddQuestion = (q: VerifiedQuestion, allowSeen: boolean = false): boolean => {
+      if (results.length >= REQUIRED_COUNT) return false;
+      const cleanSig = q.text.trim().toLowerCase().slice(0, 35);
+      if (usedTexts.has(cleanSig)) return false;
+      if (!allowSeen && seenSignatures.has(cleanSig)) return false;
+      usedTexts.add(cleanSig);
+      results.push(q);
+      return true;
+    };
 
     // 0. For Physics: Draw directly from the 1,848 verified questions in Physics Demystified by Dr. Timothy!
     if (subKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
@@ -300,7 +337,6 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         return chKeywords.some((kw) => lowTop.includes(kw));
       });
 
-      // Pseudo-random shuffle of matching chapter questions
       const pool = [...(matchingItems.length > 0 ? matchingItems : PHYSICS_DEMYSTIFIED_ITEMS)];
       let randState = Math.abs((seedBase * 1664525 + chIdx * 31337) | 0);
       for (let i = pool.length - 1; i > 0; i--) {
@@ -311,16 +347,37 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         pool[j] = temp;
       }
 
+      // First pass: Prioritize unseen questions
       for (const item of pool) {
-        if (results.length >= targetCount) break;
-        const cleanSig = item.text.trim().toLowerCase().slice(0, 35);
-        if (!usedTexts.has(cleanSig)) {
-          usedTexts.add(cleanSig);
-          const qNum = results.length + 1;
-          results.push({
+        if (results.length >= REQUIRED_COUNT) break;
+        tryAddQuestion({
+          id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
+          year: 2024,
+          questionNumber: results.length + 1,
+          subject: 'Physics',
+          topic: item.topic,
+          text: item.text,
+          options: item.options,
+          answer: item.answer,
+          explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
+          bookTitle: 'PHYSICS DEMYSTIFIED',
+          author: 'Dr. Aifuwa Timothy',
+          textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+          hasImage: item.hasImage,
+          imageUrl: item.imageUrl,
+          imageCaption: item.imageCaption,
+          imageAlt: item.imageAlt,
+        }, false);
+      }
+
+      // If needed, second pass for physics from chapter pool (still 0 duplicates within test)
+      if (results.length < REQUIRED_COUNT) {
+        for (const item of pool) {
+          if (results.length >= REQUIRED_COUNT) break;
+          tryAddQuestion({
             id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
             year: 2024,
-            questionNumber: qNum,
+            questionNumber: results.length + 1,
             subject: 'Physics',
             topic: item.topic,
             text: item.text,
@@ -334,20 +391,17 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
             imageUrl: item.imageUrl,
             imageCaption: item.imageCaption,
             imageAlt: item.imageAlt,
-          });
+          }, true);
         }
       }
     }
 
     // 1. Include candidate's custom extracted PDF questions matching this topic if available
     try {
-      const customMatches = getCustomVerifiedQuestionsForTopic(subKey, chTitle, targetCount);
+      const customMatches = getCustomVerifiedQuestionsForTopic(subKey, chTitle, REQUIRED_COUNT);
       for (const cq of customMatches) {
-        const cleanSig = cq.text.trim().toLowerCase().slice(0, 35);
-        if (!usedTexts.has(cleanSig) && results.length < targetCount) {
-          results.push(cq);
-          usedTexts.add(cleanSig);
-        }
+        if (results.length >= REQUIRED_COUNT) break;
+        tryAddQuestion(cq, false);
       }
     } catch {
       // Continue if custom lookup fails
@@ -361,13 +415,9 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         return chKeywords.some((kw) => topLow.includes(kw));
       });
       for (const def of matchingImg) {
-        if (results.length >= targetCount) break;
+        if (results.length >= REQUIRED_COUNT) break;
         const q = createImageVerifiedQuestion(def, 2024, results.length + 1);
-        const cleanSig = q.text.trim().toLowerCase().slice(0, 35);
-        if (!usedTexts.has(cleanSig)) {
-          results.push(q);
-          usedTexts.add(cleanSig);
-        }
+        tryAddQuestion(q, false);
       }
     } catch {
       // Continue if image lookup fails
@@ -381,33 +431,29 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         return chKeywords.some((kw) => topLow.includes(kw));
       });
 
-      for (let i = 0; i < matchedTough.length && results.length < targetCount; i++) {
+      for (let i = 0; i < matchedTough.length && results.length < REQUIRED_COUNT; i++) {
         const tq = matchedTough[i];
-        const cleanSig = tq.text.trim().toLowerCase().slice(0, 35);
-        if (!usedTexts.has(cleanSig)) {
-          const q: VerifiedQuestion = {
-            id: 800000 + (tq.year * 10) + i,
-            year: tq.year,
-            questionNumber: results.length + 1,
-            subject: activeSubjectConfig.name,
-            topic: tq.topic,
-            text: `[JAMB UTME ${tq.year} Tough Question] ${tq.text}`,
-            options: tq.options,
-            answer: tq.answer,
-            explanation: `${tq.explanation} (Official UTME Reference: ${tq.bookTitle} by ${tq.author}).`,
-            bookTitle: tq.bookTitle,
-            author: tq.author,
-            textbookRef: `${tq.bookTitle} by ${tq.author}`,
-          };
-          results.push(scatterQuestionOptions(q, seedBase + i * 29));
-          usedTexts.add(cleanSig);
-        }
+        const q: VerifiedQuestion = {
+          id: 800000 + (tq.year * 10) + i,
+          year: tq.year,
+          questionNumber: results.length + 1,
+          subject: activeSubjectConfig.name,
+          topic: tq.topic,
+          text: `[JAMB UTME ${tq.year} Tough Question] ${tq.text}`,
+          options: tq.options,
+          answer: tq.answer,
+          explanation: `${tq.explanation} (Official UTME Reference: ${tq.bookTitle} by ${tq.author}).`,
+          bookTitle: tq.bookTitle,
+          author: tq.author,
+          textbookRef: `${tq.bookTitle} by ${tq.author}`,
+        };
+        tryAddQuestion(scatterQuestionOptions(q, seedBase + i * 29), false);
       }
     }
 
-    // 4. Fill the remainder using official chapter generators across authentic JAMB examination years (1978-2026)
+    // 4. Fill remainder using official chapter generators across authentic JAMB examination years (1978-2026)
     let variantAttempt = 0;
-    while (results.length < targetCount && variantAttempt < 150) {
+    while (results.length < REQUIRED_COUNT && variantAttempt < 200) {
       const year =
         difficultyFilter === 'recent'
           ? 2015 + ((seedBase + variantAttempt) % 12)
@@ -422,20 +468,33 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
         variantAttempt
       );
 
-      const cleanCore = generated.text.replace(/^\[JAMB UTME \d+ Q\d+\]\s*/, '').trim().toLowerCase().slice(0, 35);
-      if (!usedTexts.has(cleanCore)) {
-        usedTexts.add(cleanCore);
-        results.push(generated);
-      }
+      tryAddQuestion(generated, false);
       variantAttempt++;
     }
 
-    // 5. If still below targetCount, draw from other chapters of this subject to guarantee full 40+ count
-    if (results.length < targetCount) {
+    // 5. If still below 40, backfill with generator variants to strictly reach 40 (0 duplicates in session)
+    if (results.length < REQUIRED_COUNT) {
+      let backfillAttempt = 0;
+      while (results.length < REQUIRED_COUNT && backfillAttempt < 100) {
+        const gen = generateQuestionForChapter(
+          subKey,
+          chIdx,
+          1985 + (backfillAttempt % 40),
+          results.length + 1,
+          seedBase + backfillAttempt * 31 + 999,
+          backfillAttempt + 50
+        );
+        tryAddQuestion(gen, true);
+        backfillAttempt++;
+      }
+    }
+
+    // 6. If still below 40, pull from related chapters of the same subject
+    if (results.length < REQUIRED_COUNT) {
       const standardChaps = activeSubjectConfig.standardChapters || [];
-      for (let offset = 1; offset < standardChaps.length && results.length < targetCount; offset++) {
+      for (let offset = 1; offset < standardChaps.length && results.length < REQUIRED_COUNT; offset++) {
         const otherChIdx = (chIdx + offset) % standardChaps.length;
-        for (let attempt = 0; attempt < 5 && results.length < targetCount; attempt++) {
+        for (let attempt = 0; attempt < 5 && results.length < REQUIRED_COUNT; attempt++) {
           const gen = generateQuestionForChapter(
             subKey,
             otherChIdx,
@@ -444,17 +503,13 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
             seedBase + attempt * 41 + otherChIdx * 19,
             attempt
           );
-          const cleanCore = gen.text.replace(/^\[JAMB UTME \d+ Q\d+\]\s*/, '').trim().toLowerCase().slice(0, 35);
-          if (!usedTexts.has(cleanCore)) {
-            usedTexts.add(cleanCore);
-            results.push(gen);
-          }
+          tryAddQuestion(gen, true);
         }
       }
     }
 
-    // Re-index question numbers sequentially
-    return results.map((q, idx) => ({
+    // Strictly index exactly 40 questions numbered 1 through 40
+    return results.slice(0, REQUIRED_COUNT).map((q, idx) => ({
       ...q,
       questionNumber: idx + 1,
     }));
@@ -468,14 +523,12 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     setActiveChapterIndex(chIdx);
     setDrillMode(mode);
 
-    // In Timed mode, guarantee at least 40 questions for an authentic full test
-    const effectiveTargetCount = mode === 'timed' ? Math.max(40, drillQuestionCount) : drillQuestionCount;
-
+    // Guaranteed 40 questions per test with zero repetition
     const questions = buildTopicQuestions(
       selectedSubjectKey,
       chIdx,
       chapter.title,
-      effectiveTargetCount,
+      40,
       drillDifficultyFilter
     );
 
@@ -484,6 +537,9 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
       return;
     }
 
+    // Track seen questions to prevent repetition in subsequent tests
+    recordDrillSeenSignatures(questions.map((q) => q.text.trim().toLowerCase().slice(0, 35)));
+
     setDrillQuestions(questions);
     setCurrentQuestionIndex(0);
     setUserAnswers({});
@@ -491,12 +547,12 @@ export const TopicDrillsTab: React.FC<TopicDrillsTabProps> = ({
     setIsDrillCompleted(false);
     setTimeSpentSeconds(0);
     setDrillStartTime(Date.now());
-    // In Timed mode: 60 seconds per question (e.g. 40 mins for 40 questions)
-    setTimeRemainingSeconds(effectiveTargetCount * 60);
+    // 40 minutes for 40 questions (60 seconds per question)
+    setTimeRemainingSeconds(40 * 60);
     setIsDrillActive(true);
 
     if (soundEnabled) playHapticSound('click');
-    showToast(`Started ${mode === 'study' ? 'Study Drill' : 'Timed Exam'} (${questions.length} Questions): ${chapter.title}`);
+    showToast(`Started ${mode === 'study' ? 'Study Drill' : 'Timed Exam'} (40 Questions): ${chapter.title}`);
   };
 
   // Timer countdown for Timed Drill
