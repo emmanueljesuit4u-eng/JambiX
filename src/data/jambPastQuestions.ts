@@ -1550,6 +1550,21 @@ export function getSubjectQuestionsForYear(
 ): VerifiedQuestion[] {
   const config = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.english;
   const total = customCount || config.fullQuestionsPerTest;
+
+  // For Physics: Pull directly from the 1,848 verified questions with diagrams & authentic textbook answers
+  if (subjectKey === 'physics') {
+    return generateUniqueSubjectQuestions(
+      'physics',
+      total,
+      year,
+      new Set(),
+      sessionUsedTexts,
+      sessionUsedDiagrams,
+      year * 313 + 101,
+      0
+    );
+  }
+
   const questions: VerifiedQuestion[] = [];
   const localTexts = sessionUsedTexts || new Set<string>();
   const localDiagrams = sessionUsedDiagrams || new Set<string>();

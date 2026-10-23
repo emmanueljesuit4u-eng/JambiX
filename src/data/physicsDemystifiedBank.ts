@@ -9,7 +9,7 @@
  * Optimized lightweight compact payload for GitHub synchronization.
  */
 
-import { VerifiedQuestion } from './verifiedTextbooks';
+import type { VerifiedQuestion } from './verifiedTextbooks';
 
 export interface PhysicsDemystifiedItem {
   id: string;

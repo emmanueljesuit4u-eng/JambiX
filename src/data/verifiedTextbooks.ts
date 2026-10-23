@@ -12,6 +12,7 @@
  */
 
 import { SubjectKey, normalizeSubjectKey, assembleUtmeTest, VerifiedQuestion, scatterQuestionOptions } from './jambPastQuestions';
+import { getPhysicsDemystifiedVerifiedQuestions } from './physicsDemystifiedBank';
 export type { VerifiedQuestion };
 
 export interface VerifiedTextbook {
@@ -1388,9 +1389,11 @@ const RAW_VERIFIED_QUESTIONS: VerifiedQuestion[] = [
 ];
 
 // Scatter options uniformly so correct answers are evenly spread across A, B, C, and D
-export const VERIFIED_QUESTIONS: VerifiedQuestion[] = RAW_VERIFIED_QUESTIONS.map((q, idx) =>
-  scatterQuestionOptions(q, q.id + idx * 7)
-);
+// Indexes Dr. Timothy's 1,848 Physics Demystified items (with authentic diagrams & answers) into the official question bank
+export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
+  ...RAW_VERIFIED_QUESTIONS.map((q, idx) => scatterQuestionOptions(q, q.id + idx * 7)),
+  ...getPhysicsDemystifiedVerifiedQuestions(),
+];
 
 /**
  * Filter questions based on selected subjects
