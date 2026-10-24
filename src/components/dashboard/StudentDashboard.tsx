@@ -49,7 +49,6 @@ import { CbtTestModal } from './CbtTestModal';
 import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
-import { TopicDrillsTab } from './TopicDrillsTab';
 import { PdfQuestionExtractorTab } from './PdfQuestionExtractorTab';
 import {
   LiveLeaderboardTab,
@@ -335,7 +334,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
               { id: 'History', icon: Clock, label: 'History' },
-              { id: 'TopicDrills', icon: Target, label: 'Topic Drills' },
               { id: 'PdfExtractor', icon: FileUp, label: 'PDF Bank' },
             ].map((item) => {
               const Icon = item.icon;
@@ -818,15 +816,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </span>
                     </div>
                     <button
-                      onClick={() => handleNavClick('TopicDrills')}
-                      className="mt-3 w-full py-1.5 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
-                    >
-                      <Target className="w-3.5 h-3.5 text-rose-500" />
-                      <span>Topic Drills (Myschool) →</span>
-                    </button>
-                    <button
                       onClick={() => handleNavClick('PdfExtractor')}
-                      className="mt-2 w-full py-1.5 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                      className="mt-3 w-full py-1.5 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <FileUp className="w-3.5 h-3.5 text-emerald-500" />
                       <span>Extract PDF Questions &amp; CBT Bank →</span>
@@ -1449,14 +1440,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
             )}
 
-            {/* View: Topic-by-Topic Question Drills (Myschool Style) */}
-            {activeNav === 'TopicDrills' && (
-              <TopicDrillsTab
-                onLaunchTest={handleLaunchTest}
-                showToast={showToast}
-              />
-            )}
-
             {/* View: PDF Past Question Extractor & CBT Bank Indexer */}
             {activeNav === 'PdfExtractor' && (
               <PdfQuestionExtractorTab
@@ -1520,7 +1503,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         {[
           { id: 'Home', icon: Home, label: 'Home' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
-          { id: 'TopicDrills', icon: Target, label: 'Drills' },
+          { id: 'Study', icon: GraduationCap, label: 'Study' },
           { id: 'PdfExtractor', icon: FileUp, label: 'PDF Bank' },
           { id: 'History', icon: Clock, label: 'History' },
         ].map((item) => {
