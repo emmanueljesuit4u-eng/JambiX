@@ -500,199 +500,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View Render Based on Active Nav */}
             {activeNav === 'Home' && (
               <>
-                {/* Live National Leaderboard Quick Banner with Live 2-Hour Top Score */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-teal-500/10 border border-amber-400/50 dark:border-amber-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-13 h-13 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-500 text-slate-950 flex items-center justify-center font-black text-2xl shadow-md shrink-0">
-                      👑
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-sm sm:text-base font-black text-slate-900 dark:text-white">
-                          Live 2-Hour UTME CBT Leaderboard
-                        </h3>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                          Live Stream · High Scorers (200+)
-                        </span>
-                      </div>
-
-                      {leaderboardTopScore.topScore > 0 ? (
-                        <div className="text-xs text-slate-700 dark:text-slate-200 flex items-center gap-2 flex-wrap pt-0.5">
-                          <span>Current National Top Score:</span>
-                          <span className="font-black text-amber-700 dark:text-amber-300 text-sm bg-amber-100 dark:bg-amber-950/70 px-2.5 py-0.5 rounded-md border border-amber-300/60">
-                            {leaderboardTopScore.topScore} / 400 Marks
-                          </span>
-                          <span className="text-slate-400">·</span>
-                          <span>Leader: <strong className="text-slate-900 dark:text-white font-bold">{leaderboardTopScore.leaderName}</strong></span>
-                          <span className="text-slate-400">·</span>
-                          <span className="text-slate-500 dark:text-slate-400 font-mono text-[11px]">
-                            {Math.floor(leaderboardTopScore.timeSpentSeconds / 60)}m spent in 2-Hr Mock
-                          </span>
-                          {leaderboardTopScore.userBestScore ? (
-                            <>
-                              <span className="text-slate-400">·</span>
-                              <span className="font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/50 px-2 py-0.5 rounded-md">
-                                Your Standing: {leaderboardTopScore.userBestScore}/400 (Rank #{leaderboardTopScore.userRank})
-                              </span>
-                            </>
-                          ) : null}
-                        </div>
-                      ) : (
-                        <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 leading-snug">
-                          Current 2-Hour Top Score: <strong className="text-slate-800 dark:text-slate-200">No high scores recorded yet</strong> · Complete the 2-Hour Full Mock (180 questions) and score 200+ marks to claim the #1 spot on the live national leaderboard!
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2.5 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => handleLaunchTest('JAMB UTME Comprehensive 180 Qs CBT Mock', 'jamb')}
-                      className="px-3.5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer"
-                    >
-                      <Play className="w-3.5 h-3.5 fill-slate-950" />
-                      <span>Start 2-Hour Mock</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleNavClick('Leaderboard')}
-                      className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                    >
-                      <Trophy className="w-3.5 h-3.5" />
-                      <span>View Live Rankings</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Take a Test Section */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-2xs transition-colors">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-                        Take a test
-                      </h2>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-1.5 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                        <span>Accurate answers referred directly to syllabus topics in accredited textbooks.</span>
-                      </p>
-                    </div>
-                    <button
-                      onClick={() =>
-                        showToast(
-                          'CBT Options: Practice mode active with verified textbook references. Data saved offline.'
-                        )
-                      }
-                      className="p-1 text-slate-400 hover:text-slate-700 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-                    >
-                      <MoreHorizontal className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  {/* 2x2 Grid of 4 JAMB/UTME-focused test cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Card 1: CBT Simulator (Warm Amber / Peach) */}
-                    <div
-                      onClick={() => handleLaunchTest('CBT Simulator (General UTME Practice)', 'general')}
-                      className="p-4 rounded-2xl bg-[#fdf6ee] dark:bg-amber-950/20 border border-[#f5dfc6] dark:border-amber-900/30 hover:border-[#e9c79f] dark:hover:border-amber-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-orange-100 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/50 flex items-center justify-center shrink-0 text-orange-600 dark:text-orange-400">
-                          <Monitor className="w-5 h-5 stroke-[2]" />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-[#451a03] dark:text-amber-200 group-hover:text-orange-700 dark:group-hover:text-orange-300 transition-colors">
-                            CBT Simulator
-                          </h4>
-                          <p className="mt-1 text-xs text-[#78350f] dark:text-amber-300/80 leading-snug">
-                            Customized CBT environment with authentic 8-key shortcuts.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card 2: JAMB CBT Simulator (Mint / Pale Green with JAMB seal) */}
-                    <div
-                      onClick={() => handleLaunchTest('JAMB CBT Simulator', 'jamb')}
-                      className="p-4 rounded-2xl bg-[#eef8f3] dark:bg-emerald-950/20 border border-[#cde9db] dark:border-emerald-900/30 hover:border-[#a8dec0] dark:hover:border-emerald-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center shrink-0">
-                          <div className="w-7 h-7 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[8px] font-black border-2 border-emerald-300 shadow-2xs">
-                            JAMB
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-bold text-[#064e3b] dark:text-emerald-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                            JAMB CBT Simulator
-                          </h4>
-                          <p className="mt-1 text-xs text-[#065f46] dark:text-emerald-300/80 leading-snug">
-                            Full 4-subject JAMB CBT with real UTME past questions.
-                          </p>
-                          <p className="mt-1.5 text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                            <span>Verified textbook citations</span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card 3: JAMB Novels Hub */}
-                    <div
-                      onClick={() => handleNavClick('Novels')}
-                      className="p-4 rounded-2xl bg-[#edf2fb] dark:bg-blue-950/20 border border-[#ccdcf6] dark:border-blue-900/30 hover:border-[#acc4f0] dark:hover:border-blue-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-blue-100 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800/50 flex items-center justify-center shrink-0">
-                          <div className="w-7 h-7 rounded-full bg-[#1e3a8a] text-yellow-300 flex items-center justify-center text-[7px] font-black border border-yellow-400 shadow-2xs">
-                            NOVELS
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-[#1e293b] dark:text-blue-200 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                            JAMB Novels Hub
-                          </h4>
-                          <p className="mt-1 text-xs text-[#334155] dark:text-blue-300/80 leading-snug">
-                            Summaries &amp; characters for &ldquo;The Lekki Headmaster&rdquo;, &ldquo;The Life Changer&rdquo; &amp; &ldquo;Sweet Sixteen&rdquo;.
-                          </p>
-                          <p className="mt-1.5 text-[10px] font-semibold text-blue-800 dark:text-blue-300 flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3 text-blue-600 dark:text-blue-400 shrink-0" />
-                            <span>Click to Open Novels Hub</span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Card 4: JAMB 1978-2026 Past Questions Bank */}
-                    <div
-                      onClick={() => handleNavClick('Archive')}
-                      className="p-4 rounded-2xl bg-[#f3f9ee] dark:bg-emerald-950/20 border border-[#d6ecce] dark:border-emerald-900/30 hover:border-[#b4e2a6] dark:hover:border-emerald-800/50 transition-all cursor-pointer flex flex-col justify-between group hover:shadow-xs"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center shrink-0">
-                          <div className="w-7 h-7 rounded-full bg-[#15803d] text-yellow-200 flex items-center justify-center text-[7px] font-black border border-emerald-400 shadow-2xs">
-                            49 YRS
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-bold text-[#14532d] dark:text-emerald-200 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                            1978–2026 Past Questions
-                          </h4>
-                          <p className="mt-1 text-xs text-[#166534] dark:text-emerald-300/80 leading-snug">
-                            Browse questions, answers &amp; explanations year by year for all accredited subjects across Sciences, Commercial &amp; Arts.
-                          </p>
-                          <p className="mt-1.5 text-[10px] font-semibold text-emerald-800 dark:text-emerald-400 flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                            <span>Click to Browse Archive</span>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* In-App Offline Practice Center */}
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-2xs space-y-5 transition-colors">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
@@ -763,30 +570,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 </div>
 
                 {/* Candidate Readiness & Recent Activity Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  {/* Card 1: 300+ Target Score Routine */}
-                  <div className="bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-2xl p-5 text-white shadow-sm flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
-                        <Trophy className="w-4 h-4" />
-                        <span>Daily Practice Goal</span>
-                      </div>
-                      <h4 className="text-sm font-extrabold text-white">
-                        300+ Target Score Routine
-                      </h4>
-                      <p className="mt-1 text-xs text-slate-300 leading-relaxed">
-                        Solve at least 40 UTME past questions daily in-app to build speed, accuracy, and 8-key muscle memory.
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => handleLaunchTest('JAMB CBT Simulator', 'jamb')}
-                      className="mt-4 w-full py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
-                    >
-                      Start 40-Question Sprint
-                    </button>
-                  </div>
-
-                  {/* Card 2: Syllabus Mastery Status */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Card 1: Syllabus Mastery Status */}
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xs flex flex-col justify-between transition-colors">
                     <div>
                       <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
@@ -809,7 +594,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </div>
                   </div>
 
-                  {/* Card 3: Recent CBT Scores */}
+                  {/* Card 2: Recent CBT Scores */}
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xs flex flex-col justify-between transition-colors">
                     <div>
                       <div className="flex items-center gap-2 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-2">
@@ -831,7 +616,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                           setActiveNav('History');
                           setReviewingTest(userTests[0]);
                         } else {
-                          handleLaunchTest('JAMB CBT Simulator', 'jamb');
+                          handleLaunchTest('JAMB CBT Full Simulation', 'jamb');
                         }
                       }}
                       className="mt-3 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
