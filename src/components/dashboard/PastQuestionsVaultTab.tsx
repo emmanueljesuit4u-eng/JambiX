@@ -49,19 +49,16 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
   showToast,
 }) => {
   const [selectedSubjectKey, setSelectedSubjectKey] = useState<SubjectKey>('mathematics');
-  const [selectedCategory, setSelectedCategory] = useState<'All' | 'Sciences' | 'Commercial' | 'Arts'>('All');
   const [selectedYear, setSelectedYear] = useState<number>(2026);
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyImages, setOnlyImages] = useState(false);
   const [revealedQuestionIds, setRevealedQuestionIds] = useState<Record<number, boolean>>({});
   const [revealAll, setRevealAll] = useState(false);
 
-  // Available subjects filtered by category
-  const visibleSubjectKeys = useMemo(() => {
-    const allKeys = Object.keys(SUBJECT_CONFIGS) as SubjectKey[];
-    if (selectedCategory === 'All') return allKeys;
-    return allKeys.filter((k) => SUBJECT_CONFIGS[k]?.category === selectedCategory);
-  }, [selectedCategory]);
+  // All 26 available subjects
+  const allSubjectKeys = useMemo(() => {
+    return Object.keys(SUBJECT_CONFIGS) as SubjectKey[];
+  }, []);
 
   // Load questions for the selected subject and year
   const currentQuestions: VerifiedQuestion[] = useMemo(() => {
@@ -193,56 +190,40 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
         </button>
       </div>
 
-      {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        {(['All', 'Sciences', 'Commercial', 'Arts'] as const).map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-              selectedCategory === cat
-                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-            }`}
-          >
-            {cat === 'All' ? `All Subjects (${Object.keys(SUBJECT_CONFIGS).length})` : cat === 'Sciences' ? '🔬 Sciences' : cat === 'Commercial' ? '📊 Commercial / Social' : '🎭 Arts & Humanities'}
-          </button>
-        ))}
-      </div>
-
-      {/* Subject Selector Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
-        {visibleSubjectKeys.map((key) => {
-          const cfg = SUBJECT_CONFIGS[key];
-          if (!cfg) return null;
-          const isSelected = selectedSubjectKey === key;
-          return (
-            <button
-              key={key}
-              onClick={() => {
-                setSelectedSubjectKey(key);
+      {/* Subject Dropdown Menu Selector */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3 transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <label htmlFor="vault-subject-dropdown" className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider shrink-0 flex items-center gap-1.5">
+              <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>Select Subject:</span>
+            </label>
+            <select
+              id="vault-subject-dropdown"
+              value={selectedSubjectKey}
+              onChange={(e) => {
+                setSelectedSubjectKey(e.target.value as SubjectKey);
                 setRevealAll(false);
                 setRevealedQuestionIds({});
               }}
-              className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
-                isSelected
-                  ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-100 shadow-xs ring-1 ring-rose-500/50'
-                  : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300'
-              }`}
+              className="w-full sm:max-w-md px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30 transition-all"
             >
-              <div>
-                <span className="text-[9px] font-black uppercase text-slate-400 block tracking-wider">
-                  {key === 'english' ? 'Compulsory' : cfg.category || 'General'}
-                </span>
-                <h4 className="text-xs font-bold mt-0.5 truncate">{cfg.name}</h4>
-              </div>
-              <div className="mt-2 text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold truncate">
-                Ref: {cfg.bookTitle}
-              </div>
-            </button>
-          );
-        })}
+              {allSubjectKeys.map((key) => {
+                const cfg = SUBJECT_CONFIGS[key];
+                if (!cfg) return null;
+                return (
+                  <option key={key} value={key}>
+                    {cfg.name} {key === 'english' ? '(Compulsory)' : ''}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium shrink-0">
+            26 Accredited UTME Subjects Available
+          </div>
+        </div>
       </div>
 
       {/* Year Selector & Search Controls */}
