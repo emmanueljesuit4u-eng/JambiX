@@ -92,13 +92,15 @@
           } catch (e2) {}
         }
 
-        // Self-heal mobile browsers by unregistering any broken, stale, or dev service workers from prior loads
+        // Self-heal mobile browsers by clearing broken dev service workers and stale caches
         if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
           try {
             navigator.serviceWorker.getRegistrations().then(function(regs) {
               regs.forEach(function(r) {
-                if (r && r.active && (r.active.scriptURL.indexOf('dev-sw') !== -1 || r.active.scriptURL.indexOf('sw.js') !== -1)) {
+                if (r && r.active && r.active.scriptURL.indexOf('dev-sw') !== -1) {
                   r.unregister();
+                } else if (r && typeof r.update === 'function') {
+                  r.update().catch(function() {});
                 }
               });
             }).catch(function() {});

@@ -33,21 +33,34 @@ if (rootEl) {
   );
 }
 
-// 2. Register PWA service worker safely in production without blocking React rendering
+// 2. Register PWA service worker safely in production with immediate update delivery
 if (typeof window !== 'undefined' && 'serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
+    // Listen for new service worker taking control to refresh page with updated code
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+
     import('virtual:pwa-register')
       .then(({ registerSW }) => {
         try {
-          registerSW({
+          const updateSW = registerSW({
             immediate: true,
             onNeedRefresh() {
-              console.info('PWA update available.');
+              console.info('JAMBiX update found. Activating newest version...');
+              updateSW(true);
             },
             onOfflineReady() {
               console.info('JAMBiX is ready to work offline.');
             },
           });
+
+          // Check for service worker updates immediately on page load
+          navigator.serviceWorker.ready
+            .then((registration) => {
+              registration.update().catch(() => {});
+            })
+            .catch(() => {});
         } catch (swErr) {
           console.warn('PWA registerSW error:', swErr);
         }
