@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Home,
   Monitor,
@@ -107,9 +107,31 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const [historyReviewStatus, setHistoryReviewStatus] = useState<'All' | 'Correct' | 'Incorrect' | 'Unattempted'>('All');
   const [historyReviewSubject, setHistoryReviewSubject] = useState<string>('All');
 
+  const availableSubjectsInReview = useMemo<string[]>(() => {
+    if (!reviewingTest?.questions) return [];
+    const subs = new Set<string>();
+    reviewingTest.questions.forEach((q) => {
+      if (q.subject) subs.add(q.subject);
+    });
+    return Array.from(subs);
+  }, [reviewingTest]);
+
   const handleNavClick = (navId: string) => {
     setActiveNav(navId);
-    setReviewingTest(null);
+    if (navId === 'History') {
+      const localTests = getLocalTestResults(auth.currentUser?.uid);
+      const tests = localTests.length > 0 ? localTests : userTests;
+      if (tests.length > 0) {
+        setUserTests(tests);
+        setReviewingTest(tests[0]);
+        setHistoryReviewStatus('All');
+        setHistoryReviewSubject('All');
+      } else {
+        setReviewingTest(null);
+      }
+    } else {
+      setReviewingTest(null);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -279,7 +301,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       updateStatsFromResults(data);
     });
 
-    const handleEvent = () => updateStatsFromResults(latestCloud);
+    const handleEvent = () => {
+      updateStatsFromResults(latestCloud);
+      loadStoredData();
+    };
     window.addEventListener('storage', handleEvent);
     window.addEventListener('jambix_test_submitted', handleEvent);
 
@@ -326,7 +351,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Novels', icon: BookMarked, label: 'Novels' },
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
-              { id: 'History', icon: Clock, label: 'History' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
@@ -594,34 +618,28 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </div>
                   </div>
 
-                  {/* Card 2: Recent CBT Scores */}
+                  {/* Card 2: HISTORY */}
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xs flex flex-col justify-between transition-colors">
                     <div>
-                      <div className="flex items-center gap-2 text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-2">
-                        <BarChart3 className="w-4 h-4" />
-                        <span>Recent CBT Results</span>
+                      <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
+                        <Clock className="w-4 h-4" />
+                        <span>HISTORY</span>
                       </div>
                       <h4 className="text-sm font-bold text-slate-900 dark:text-white">
                         {userTests.length > 0 ? `${userTests.length} Tests Recorded` : 'No Tests Taken Yet'}
                       </h4>
                       <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                         {userTests.length > 0
-                          ? `Latest score: ${userTests[0].jambScore || userTests[0].score}/${userTests[0].totalQuestions} (${userTests[0].percentage}%) - Click to review all questions and step-by-step explanations.`
-                          : 'Take your first in-app practice test to evaluate your baseline score and build test history.'}
+                          ? `Latest score: ${userTests[0].jambScore || userTests[0].score}/${userTests[0].totalQuestions} (${userTests[0].percentage}%) — Click HISTORY below to review all questions and step-by-step explanations.`
+                          : 'Review past CBT examination attempts, question-by-question breakdown, and step-by-step textbook explanations.'}
                       </p>
                     </div>
                     <button
-                      onClick={() => {
-                        if (userTests.length > 0) {
-                          setActiveNav('History');
-                          setReviewingTest(userTests[0]);
-                        } else {
-                          handleLaunchTest('JAMB CBT Full Simulation', 'jamb');
-                        }
-                      }}
-                      className="mt-3 w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
+                      onClick={() => handleNavClick('History')}
+                      className="mt-3 w-full py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-98 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
                     >
-                      {userTests.length > 0 ? 'Review Questions & Explanations' : 'Take Diagnostic Test'}
+                      <Clock className="w-4 h-4" />
+                      <span>HISTORY</span>
                     </button>
                   </div>
                 </div>
@@ -724,20 +742,48 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                   <div className="space-y-5">
                     {/* Review Header */}
                     <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div>
+                      <div className="space-y-1">
                         <button
                           onClick={() => setReviewingTest(null)}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline mb-2 cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline mb-1 cursor-pointer"
                         >
                           <ChevronLeft className="w-4 h-4" />
-                          <span>Back to all test submissions</span>
+                          <span>View all {userTests.length} test submissions</span>
                         </button>
                         <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                           {reviewingTest.testTitle}
                         </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                           Submitted on {new Date(reviewingTest.createdAt).toLocaleString()} · {reviewingTest.totalQuestions} Questions
                         </p>
+
+                        {/* Switch between each test attempt */}
+                        {userTests.length > 1 && (
+                          <div className="pt-2 flex items-center gap-2 flex-wrap">
+                            <label htmlFor="history-attempt-switcher" className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                              Review Test:
+                            </label>
+                            <select
+                              id="history-attempt-switcher"
+                              value={reviewingTest.id}
+                              onChange={(e) => {
+                                const found = userTests.find((t) => t.id === e.target.value);
+                                if (found) {
+                                  setReviewingTest(found);
+                                  setHistoryReviewStatus('All');
+                                  setHistoryReviewSubject('All');
+                                }
+                              }}
+                              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-xs font-bold text-slate-900 dark:text-white cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
+                            >
+                              {userTests.map((t, idx) => (
+                                <option key={t.id} value={t.id}>
+                                  Test #{userTests.length - idx}: {t.testTitle} ({t.percentage}% · {new Date(t.createdAt).toLocaleDateString()})
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex items-center gap-3">
@@ -757,9 +803,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     {/* Filter controls if questions are available */}
                     {reviewingTest.questions && reviewingTest.questions.length > 0 ? (
                       <>
-                        <div className="flex flex-wrap items-center justify-between gap-2.5 pb-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100 dark:border-slate-800">
                           {/* Status Filter */}
                           <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                            <span className="text-xs font-bold text-slate-400 mr-1">Status:</span>
                             {(['All', 'Correct', 'Incorrect', 'Unattempted'] as const).map((filterStatus) => (
                               <button
                                 key={filterStatus}
@@ -775,9 +822,35 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             ))}
                           </div>
 
-                          <span className="text-xs text-slate-500 font-medium">
-                            Showing questions from this test attempt
-                          </span>
+                          {/* Subject Filter (if multiple subjects exist in test) */}
+                          {availableSubjectsInReview.length > 1 && (
+                            <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                              <span className="text-xs font-bold text-slate-400 mr-1">Subject:</span>
+                              <button
+                                onClick={() => setHistoryReviewSubject('All')}
+                                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                                  historyReviewSubject === 'All'
+                                    ? 'bg-rose-600 text-white shadow-xs'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                                }`}
+                              >
+                                All ({reviewingTest.questions.length})
+                              </button>
+                              {availableSubjectsInReview.map((sub: string) => (
+                                <button
+                                  key={sub}
+                                  onClick={() => setHistoryReviewSubject(sub)}
+                                  className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                                    historyReviewSubject === sub
+                                      ? 'bg-rose-600 text-white shadow-xs'
+                                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                                  }`}
+                                >
+                                  {sub}
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
 
                         {/* Questions List */}
@@ -788,9 +861,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               const isCorrect = studentAns === q.answer;
                               const isUnattempted = !studentAns;
 
-                              if (historyReviewStatus === 'Correct') return isCorrect;
-                              if (historyReviewStatus === 'Incorrect') return !isCorrect && !isUnattempted;
-                              if (historyReviewStatus === 'Unattempted') return isUnattempted;
+                              if (historyReviewStatus === 'Correct' && !isCorrect) return false;
+                              if (historyReviewStatus === 'Incorrect' && (isCorrect || isUnattempted)) return false;
+                              if (historyReviewStatus === 'Unattempted' && !isUnattempted) return false;
+                              if (historyReviewSubject !== 'All' && q.subject !== historyReviewSubject) return false;
+
                               return true;
                             })
                             .map((q, filteredIdx) => {
@@ -922,7 +997,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                           This test result was saved in summary mode ({reviewingTest.score}/{reviewingTest.totalQuestions} questions, {reviewingTest.percentage}%). All future test submissions now record full questions and answers for question-by-question review!
                         </p>
                         <button
-                          onClick={() => handleLaunchTest('JAMB CBT Simulator', 'jamb')}
+                          onClick={() => handleLaunchTest('JAMB CBT Full Simulation', 'jamb')}
                           className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold cursor-pointer transition-colors"
                         >
                           Take a New CBT Test
@@ -938,13 +1013,13 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       No Test Submissions Yet
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-                      Once you finish and submit a CBT test or past question drill, it will automatically be recorded here so you can review your answers and understand the solutions.
+                      Once you finish and submit a CBT test or past question drill, it will automatically be recorded here so you can review your questions, chosen options, correct answers, and textbook solutions.
                     </p>
                     <button
                       onClick={() => handleLaunchTest('JAMB CBT Full Simulation', 'jamb')}
                       className="mt-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
                     >
-                      Start a Practice Test
+                      Start a Practice Test (180 Questions)
                     </button>
                   </div>
                 ) : (
@@ -953,7 +1028,12 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     {userTests.map((t) => (
                       <div
                         key={t.id}
-                        className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 hover:border-rose-400 dark:hover:border-rose-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all shadow-2xs"
+                        onClick={() => {
+                          setReviewingTest(t);
+                          setHistoryReviewStatus('All');
+                          setHistoryReviewSubject('All');
+                        }}
+                        className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 hover:border-rose-400 dark:hover:border-rose-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all shadow-2xs cursor-pointer group"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -970,7 +1050,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               })}
                             </span>
                           </div>
-                          <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
                             {t.testTitle}
                           </h4>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -988,9 +1068,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             </p>
                           </div>
                           <button
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setReviewingTest(t);
                               setHistoryReviewStatus('All');
+                              setHistoryReviewSubject('All');
                             }}
                             className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs"
                           >
@@ -1062,7 +1144,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
           { id: 'Test', icon: Monitor, label: 'CBT' },
           { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Archive', icon: BookOpen, label: '1978-2026' },
-          { id: 'History', icon: Clock, label: 'History' },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;
