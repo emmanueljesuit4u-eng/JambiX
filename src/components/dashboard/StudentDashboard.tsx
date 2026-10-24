@@ -6,7 +6,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   Home,
-  GraduationCap,
   Monitor,
   BookOpen,
   MoreHorizontal,
@@ -45,7 +44,6 @@ import {
 } from 'lucide-react';
 import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
-import { StudySyllabusTab } from './StudySyllabusTab';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
 import {
@@ -328,7 +326,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               { id: 'Home', icon: Home, label: 'Home' },
               { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
               { id: 'Novels', icon: BookMarked, label: 'Novels' },
-              { id: 'Study', icon: GraduationCap, label: 'Study' },
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
               { id: 'History', icon: Clock, label: 'History' },
@@ -856,14 +853,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               />
             )}
 
-            {/* View: Study Section - Full Updated JAMB Syllabus */}
-            {activeNav === 'Study' && (
-              <StudySyllabusTab
-                onLaunchTest={handleLaunchTest}
-                showToast={showToast}
-              />
-            )}
-
             {/* View: Test Section */}
             {activeNav === 'Test' && (
               <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-6 transition-colors">
@@ -1103,14 +1092,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View: JAMB Novels Hub */}
             {activeNav === 'Novels' && (
               <NovelsTab
-                onLaunchTest={handleLaunchTest}
-                showToast={showToast}
-              />
-            )}
-
-            {/* View: Study Syllabus & Textbooks */}
-            {activeNav === 'Study' && (
-              <StudySyllabusTab
                 onLaunchTest={handleLaunchTest}
                 showToast={showToast}
               />
@@ -1485,7 +1466,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         {[
           { id: 'Home', icon: Home, label: 'Home' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
-          { id: 'Study', icon: GraduationCap, label: 'Study' },
+          { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Archive', icon: BookOpen, label: '1978-2026' },
           { id: 'History', icon: Clock, label: 'History' },
         ].map((item) => {
