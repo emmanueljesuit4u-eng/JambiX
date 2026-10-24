@@ -42,7 +42,6 @@ import {
   RotateCcw,
   Filter,
 } from 'lucide-react';
-import { JAMB_YEARS, SUBJECT_CONFIGS } from '../../data/verifiedTextbooks';
 import { CbtTestModal } from './CbtTestModal';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
@@ -101,7 +100,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   const [isCbtModalOpen, setIsCbtModalOpen] = useState(false);
   const [activeTest, setActiveTest] = useState<{ title: string; type: string; subject?: string; year?: number }>({ title: '', type: '' });
-  const [selectedVaultYear, setSelectedVaultYear] = useState<number>(2026);
   const [userTests, setUserTests] = useState<OfflineTestResult[]>([]);
 
   // Test History Review State
@@ -853,225 +851,36 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               />
             )}
 
-            {/* View: Test Section */}
+            {/* View: Test Section - Authentic Full CBT Simulation */}
             {activeNav === 'Test' && (
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-6 transition-colors">
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
-                  <div>
-                    <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                      CBT Examination &amp; Mock Room
-                    </h2>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                      Simulate real JAMB examination conditions with authentic 8-key shortcuts and timer.
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-2xs space-y-6 transition-colors">
+                <div className="pb-4 border-b border-slate-100 dark:border-slate-800">
+                  <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+                    CBT Examination &amp; Mock Room
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Simulate real JAMB examination conditions with authentic 8-key shortcuts and timer.
+                  </p>
+                </div>
+
+                <div className="max-w-xl mx-auto py-8">
+                  <div className="p-6 sm:p-8 rounded-2xl border border-rose-200 dark:border-rose-900/60 bg-slate-50 dark:bg-slate-800/40 hover:border-rose-400 dark:hover:border-rose-500 transition-all flex flex-col items-center text-center shadow-xs">
+                    <span className="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider bg-rose-50 dark:bg-rose-950/60 px-3 py-1 rounded-full border border-rose-200 dark:border-rose-900/50 mb-3">
+                      180 Questions · 120 Mins
+                    </span>
+                    <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                      JAMB CBT Full Simulation
+                    </h3>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 max-w-md">
+                      Comprehensive 4-subject standard UTME test (English with 60 questions plus 3 registered subjects with 40 questions each) under authentic 2-hour countdown rules.
                     </p>
-                  </div>
-                  <button
-                    onClick={() => handleLaunchTest('100% In-App Offline Full UTME Mock', 'offline')}
-                    className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                  >
-                    Launch Full Mock (180 Questions)
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[
-                    { title: 'JAMB CBT Full Simulation', time: '120 Mins', type: 'jamb', questions: '180 Questions' },
-                    { title: '40-Question Sprint Drill', time: '30 Mins', type: 'general', questions: '40 Questions' },
-                    { title: 'The Lekki Headmaster CBT Exam', time: '20 Mins', type: 'novel', questions: '30 Questions', subject: 'The Lekki Headmaster' },
-                    { title: '15-Year Past Questions Bank', time: '60 Mins', type: 'archive', questions: '50 Questions' },
-                    { title: 'Sciences Speed Drill (MTH, PHY, CHM)', time: '60 Mins', type: 'general', questions: '50 Questions' },
-                    { title: '100% Offline In-App UTME Mock', time: '120 Mins', type: 'offline', questions: '180 Questions' },
-                  ].map((test) => (
-                    <div
-                      key={test.title}
-                      className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:border-rose-400 dark:hover:border-rose-500 flex flex-col justify-between transition-all"
+                    <button
+                      onClick={() => handleLaunchTest('JAMB CBT Full Simulation', 'jamb')}
+                      className="mt-6 w-full sm:w-auto px-8 py-3.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white rounded-xl text-sm font-bold transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
                     >
-                      <div>
-                        <span className="text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">
-                          {test.questions} · {test.time}
-                        </span>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white mt-1">
-                          {test.title}
-                        </h4>
-                      </div>
-                      <button
-                        onClick={() => handleLaunchTest(test.title, test.type, test.subject)}
-                        className="mt-4 w-full py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                      >
-                        Start Test
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* 1978 - 2025 Year-by-Year Past Questions Explorer */}
-                <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <h3 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-rose-600" />
-                        <span>JAMB UTME Past Questions Year-by-Year Vault (1978 – 2025)</span>
-                      </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                        Select any year from 1978 to 2025 to take authentic full 180-question UTME CBT or subject-by-subject drills.
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <button
-                        onClick={() => setActiveNav('Archive')}
-                        className="px-3.5 py-2 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
-                      >
-                        <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-                        <span>Browse Questions &amp; Solutions</span>
-                      </button>
-                      <button
-                        onClick={() => handleLaunchTest(`Full JAMB UTME ${selectedVaultYear} CBT Exam`, 'jamb', undefined, selectedVaultYear)}
-                        className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 shadow-xs"
-                      >
-                        <Zap className="w-3.5 h-3.5 fill-current" />
-                        <span>Launch Full 180 Qs for {selectedVaultYear}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Year Selection Dropdown Menu (Clean, Uncongested) */}
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
-                        <Calendar className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <label htmlFor="dashboard-year-select" className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider block cursor-pointer">
-                          Select Examination Year:
-                        </label>
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                          Active: <strong className="text-rose-600 dark:text-rose-400">UTME {selectedVaultYear}</strong> (49 Years from 1978 to 2026)
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2.5 flex-1 sm:justify-end">
-                      <select
-                        id="dashboard-year-select"
-                        value={selectedVaultYear}
-                        onChange={(e) => setSelectedVaultYear(parseInt(e.target.value, 10))}
-                        className="w-full sm:w-auto min-w-[200px] px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold text-xs cursor-pointer shadow-2xs focus:ring-2 focus:ring-rose-500/30"
-                      >
-                        <optgroup label="Recent UTME Years (2020 – 2026)">
-                          {[2026, 2025, 2024, 2023, 2022, 2021, 2020].map((yr) => (
-                            <option key={yr} value={yr}>
-                              JAMB UTME {yr}
-                            </option>
-                          ))}
-                        </optgroup>
-                        <optgroup label="2010 – 2019 Past Questions">
-                          {[2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010].map((yr) => (
-                            <option key={yr} value={yr}>
-                              JAMB UTME {yr}
-                            </option>
-                          ))}
-                        </optgroup>
-                        <optgroup label="2000 – 2009 Past Questions">
-                          {[2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000].map((yr) => (
-                            <option key={yr} value={yr}>
-                              JAMB UTME {yr}
-                            </option>
-                          ))}
-                        </optgroup>
-                        <optgroup label="1978 – 1999 Classic Archive">
-                          {JAMB_YEARS.filter((y) => y < 2000).map((yr) => (
-                            <option key={yr} value={yr}>
-                              JAMB UTME {yr}
-                            </option>
-                          ))}
-                        </optgroup>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* 5 Subjects Cards for Selected Year */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                    {[
-                      {
-                        name: 'Use of English',
-                        questions: 60,
-                        book: 'A-Z OF ENGLISH',
-                        author: 'B.O. Dele Ashade',
-                        code: 'eng',
-                        badge: 'Compulsory · 60 Qs',
-                      },
-                      {
-                        name: 'Mathematics',
-                        questions: 40,
-                        book: 'HIDDEN FACTS IN MATHEMATICS',
-                        author: 'M.A. Otumudia',
-                        code: 'math',
-                        badge: '40 Questions',
-                      },
-                      {
-                        name: 'Physics',
-                        questions: 40,
-                        book: 'NEW SCHOOL PHYSICS',
-                        author: 'M.W. Anyakoha, Ph.D.',
-                        code: 'phys',
-                        badge: '40 Questions',
-                      },
-                      {
-                        name: 'Chemistry',
-                        questions: 40,
-                        book: 'NEW SCHOOL CHEMISTRY',
-                        author: 'Osei Yaw Ababio',
-                        code: 'chem',
-                        badge: '40 Questions',
-                      },
-                      {
-                        name: 'Biology',
-                        questions: 40,
-                        book: 'MODERN BIOLOGY',
-                        author: 'Sarojini T. Ramalingam, Ph.D.',
-                        code: 'bio',
-                        badge: '40 Questions',
-                      },
-                    ].map((sub) => (
-                      <div
-                        key={sub.name}
-                        className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 flex flex-col justify-between shadow-2xs hover:border-emerald-400 transition-all"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">
-                              {sub.badge}
-                            </span>
-                            <span className="text-[10px] font-bold text-slate-400">
-                              {selectedVaultYear}
-                            </span>
-                          </div>
-                          <h4 className="text-xs font-bold text-slate-900 dark:text-white mt-2">
-                            {sub.name}
-                          </h4>
-                          <div className="mt-1.5 p-1.5 bg-slate-50 dark:bg-slate-900/60 rounded-lg text-[10px] space-y-0.5">
-                            <p className="font-bold text-emerald-800 dark:text-emerald-300 truncate">
-                              Ref: {sub.book}
-                            </p>
-                            <p className="text-slate-500 truncate">{sub.author}</p>
-                          </div>
-                        </div>
-
-                        <button
-                          onClick={() =>
-                            handleLaunchTest(
-                              `JAMB ${selectedVaultYear} ${sub.name} Practice`,
-                              'archive',
-                              sub.name,
-                              selectedVaultYear
-                            )
-                          }
-                          className="mt-3 w-full py-1.5 bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
-                        >
-                          Practice {sub.name}
-                        </button>
-                      </div>
-                    ))}
+                      <Play className="w-4 h-4 fill-current" />
+                      <span>180 QUESTIONS. 120 MINS</span>
+                    </button>
                   </div>
                 </div>
               </div>
