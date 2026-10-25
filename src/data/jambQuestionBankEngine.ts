@@ -3370,10 +3370,10 @@ export function generateUniqueSubjectQuestions(
       return score;
     };
 
-    // Number of diagram questions escalates with test progression (3 diagrams in Mock 1 up to 7 in advanced Mocks)
+    // Number of diagram questions (guarantees 5 to 8 diagrams per 40 questions)
     const targetDiagramCount = Math.min(
-      Math.floor(targetCount * 0.25),
-      Math.max(3, 3 + difficultyTier)
+      Math.floor(targetCount * 0.35),
+      Math.max(5, 5 + difficultyTier)
     );
 
     const diagramPool = PHYSICS_DEMYSTIFIED_ITEMS.filter((item) => item.hasImage && item.imageUrl);
@@ -3432,12 +3432,18 @@ export function generateUniqueSubjectQuestions(
 
     const pickedPhysicsItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
-    // 1. Pull required diagram questions (unseen first)
+    // 1. Pull required diagram questions (unseen first, tracking diagram signatures)
     for (const item of prioritizedDiagrams) {
       if (pickedPhysicsItems.length >= targetDiagramCount) break;
       const coreSig = getQuestionCoreSignature(item.text);
-      if (!safeSessionUsed.has(coreSig) && !safeExclude.has(coreSig)) {
+      const diagSig = (item.imageUrl || item.id).trim().toLowerCase();
+      if (
+        !safeSessionUsed.has(coreSig) &&
+        !safeExclude.has(coreSig) &&
+        (!sessionUsedDiagrams || !sessionUsedDiagrams.has(diagSig))
+      ) {
         safeSessionUsed.add(coreSig);
+        if (sessionUsedDiagrams) sessionUsedDiagrams.add(diagSig);
         pickedPhysicsItems.push(item);
       }
     }
@@ -3467,17 +3473,25 @@ export function generateUniqueSubjectQuestions(
 
     // 4. Shuffle picked items so diagram and text questions are evenly distributed
     const finalOrderedItems = shuffleArr(pickedPhysicsItems);
+    const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
+    const seenPhysIds = new Set<number>();
 
     for (let i = 0; i < finalOrderedItems.length && picked.length < targetCount; i++) {
       const item = finalOrderedItems[i];
       const qNum = picked.length + 1;
+      let qId = 880000 + ((effYear % 100) * 1000) + qNum;
+      while (seenPhysIds.has(qId)) {
+        qId += 50000;
+      }
+      seenPhysIds.add(qId);
+
       const vq: VerifiedQuestion = {
-        id: 880000 + item.bookQuestionNum * 100 + item.originalChapter,
-        year: typeof year === 'number' ? year : 2024,
+        id: qId,
+        year: effYear,
         questionNumber: qNum,
         subject: 'Physics',
         topic: item.topic,
-        text: `[JAMB UTME Q${qNum}] ${item.text}`,
+        text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: item.options,
         answer: item.answer,
         explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
@@ -3685,7 +3699,7 @@ export function generateUniqueSubjectQuestions(
       if (targetSlot < picked.length) {
         const qNum = targetSlot + 1;
         const imgQ: VerifiedQuestion = {
-          id: 980000 + (chosenYear * 100) + qNum,
+          id: 980000 + ((Math.abs(baseSeed) % 100) * 100) + (k * 1000) + qNum,
           year: chosenYear,
           questionNumber: qNum,
           subject: picked[targetSlot].subject,
@@ -3707,5 +3721,16 @@ export function generateUniqueSubjectQuestions(
     }
   }
 
-  return picked;
+  const seenSubIds = new Set<number>();
+  return picked.map((q, idx) => {
+    let qId = q.id;
+    if (!qId || seenSubIds.has(qId)) {
+      qId = 800000 + (idx + 1) * 100 + (Math.abs(baseSeed) % 97);
+    }
+    seenSubIds.add(qId);
+    return {
+      ...q,
+      id: qId,
+    };
+  });
 }

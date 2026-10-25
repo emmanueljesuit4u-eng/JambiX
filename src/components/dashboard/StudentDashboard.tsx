@@ -877,7 +877,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
                               return (
                                 <div
-                                  key={q.id || origIdx}
+                                  key={`hist-rev-${q.id || 'q'}-${origIdx}`}
                                   className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 shadow-2xs space-y-3"
                                 >
                                   {/* Question Header */}

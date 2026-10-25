@@ -30,6 +30,7 @@ import {
   getImageQuestionsForSubject,
   JAMB_IMAGE_QUESTIONS_DATA,
 } from './jambImageQuestions';
+import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
 
 export type SubjectKey =
   | 'english'
@@ -137,30 +138,37 @@ export const SUBJECT_CONFIGS: Record<SubjectKey, SubjectConfig> = {
     key: 'physics',
     name: 'Physics',
     category: 'Sciences',
-    bookTitle: 'NEW SCHOOL PHYSICS',
-    author: 'M.W. Anyakoha, Ph.D.',
+    bookTitle: 'PHYSICS DEMYSTIFIED',
+    author: 'Dr. Aifuwa Timothy',
     fullQuestionsPerTest: 40,
     standardChapters: [
-      { chapter: 1, title: 'Units, Dimensions, Measurement & Precision', startPage: 1 },
-      { chapter: 2, title: 'Scalars, Vectors & Resolution of Coplanar Forces', startPage: 16 },
-      { chapter: 3, title: 'Linear Motion & Equations of Uniform Acceleration', startPage: 25 },
-      { chapter: 4, title: 'Projectiles & Gravitational Trajectories', startPage: 49 },
-      { chapter: 5, title: 'Newton’s Laws of Motion, Momentum & Impulse', startPage: 85 },
-      { chapter: 6, title: 'Work, Energy, Power & Conservation Laws', startPage: 105 },
-      { chapter: 7, title: 'Simple Machines: Mechanical Advantage & Efficiency', startPage: 118 },
-      { chapter: 8, title: 'Elasticity, Hooke’s Law & Young’s Modulus', startPage: 132 },
-      { chapter: 9, title: 'Hydrostatics, Archimedes Principle & Floatation', startPage: 144 },
-      { chapter: 10, title: 'Thermal Expansion & Thermometry', startPage: 160 },
-      { chapter: 11, title: 'Gas Laws: Boyle’s, Charles’s & Ideal Gas Equation', startPage: 178 },
-      { chapter: 12, title: 'Calorimetry: Specific Heat Capacity & Latent Heat', startPage: 192 },
-      { chapter: 13, title: 'Waves, Resonance & Propagation in Strings/Pipes', startPage: 250 },
-      { chapter: 14, title: 'Reflection & Refraction of Light: Curved Mirrors & Prisms', startPage: 275 },
-      { chapter: 15, title: 'Lenses, Defects of Vision & Optical Instruments', startPage: 298 },
-      { chapter: 16, title: 'Electrostatics, Coulomb’s Law & Capacitors', startPage: 335 },
-      { chapter: 17, title: 'Current Electricity: Ohm’s Law & Kirchhoff’s Laws', startPage: 360 },
-      { chapter: 18, title: 'Magnetic Fields, Electromagnets & Force on Moving Charges', startPage: 413 },
-      { chapter: 19, title: 'Electromagnetic Induction, Transformers & AC Circuits', startPage: 450 },
-      { chapter: 20, title: 'Modern Physics: Atomic Models, Photoelectric Effect & Radioactivity', startPage: 485 },
+      { chapter: 1, title: 'Measurement, Scalars and Vectors', startPage: 1 },
+      { chapter: 2, title: 'Motion: Linear, Projectile, Momentum, Circular, SHM', startPage: 12 },
+      { chapter: 3, title: 'Friction in Solids, Viscosity & Surface Tension', startPage: 32 },
+      { chapter: 4, title: 'Work, Energy and Power', startPage: 44 },
+      { chapter: 5, title: 'Force Field & Gravitational Field', startPage: 56 },
+      { chapter: 6, title: 'Equilibrium of Forces & Moments', startPage: 68 },
+      { chapter: 7, title: 'Simple Machines & Mechanical Advantage', startPage: 78 },
+      { chapter: 8, title: 'Elasticity, Hooke’s Law & Young’s Modulus', startPage: 88 },
+      { chapter: 9, title: 'Hydrostatics, Archimedes Principle & Floatation', startPage: 98 },
+      { chapter: 10, title: 'Temperature & Its Measurement (Thermometry)', startPage: 110 },
+      { chapter: 11, title: 'Thermal Expansion of Solids and Liquids', startPage: 120 },
+      { chapter: 12, title: 'Gas Laws: Boyle’s, Charles’s & General Gas Law', startPage: 130 },
+      { chapter: 13, title: 'Quantity of Heat, Latent Heat & Evaporation', startPage: 140 },
+      { chapter: 14, title: 'Vapour Pressure, Humidity & Boiling', startPage: 154 },
+      { chapter: 15, title: 'Heat Transfer: Conduction, Convection & Radiation', startPage: 164 },
+      { chapter: 16, title: 'Waves & Propagation: Transverse and Longitudinal', startPage: 174 },
+      { chapter: 17, title: 'Sound Waves: Velocity, Pitch, Echoes & Resonance', startPage: 186 },
+      { chapter: 18, title: 'Light Energy: Reflection at Plane and Curved Surfaces', startPage: 198 },
+      { chapter: 19, title: 'Refraction of Light, Total Internal Reflection & Prisms', startPage: 212 },
+      { chapter: 20, title: 'Optical Instruments: Cameras, Microscopes & Telescopes', startPage: 226 },
+      { chapter: 21, title: 'Electrostatics: Charges, Coulomb’s Law & Capacitors', startPage: 238 },
+      { chapter: 22, title: 'Current Electricity: Ohm’s Law & Circuit Analysis', startPage: 254 },
+      { chapter: 23, title: 'Electrical Energy, Power and Heating Effects', startPage: 270 },
+      { chapter: 24, title: 'Magnets, Magnetic Fields and Earth’s Magnetism', startPage: 282 },
+      { chapter: 25, title: 'Electromagnetic Induction, Generators & Transformers', startPage: 294 },
+      { chapter: 26, title: 'Alternating Current (AC) Circuits & Resonance', startPage: 308 },
+      { chapter: 27, title: 'Atomic, Nuclear Physics, Quanta & Radioactivity', startPage: 322 },
     ],
   },
   chemistry: {
@@ -224,7 +232,7 @@ export const SUBJECT_CONFIGS: Record<SubjectKey, SubjectConfig> = {
  * and exact references to the specified 5 standard textbooks.
  */
 
-interface QuestionTemplate {
+export interface QuestionTemplate {
   subject: SubjectKey;
   topic: string;
   chapterIndex: number;
@@ -1248,7 +1256,7 @@ const SUBJECT_ID_OFFSETS: Record<SubjectKey, number> = {
   arabic: 2600000,
 };
 
-const TEMPLATE_MAP: Record<SubjectKey, QuestionTemplate[]> = {
+export const TEMPLATE_MAP: Record<SubjectKey, QuestionTemplate[]> = {
   ...(EXTRA_QUESTION_TEMPLATES as unknown as Record<ArtsCommercialSubjectKey, QuestionTemplate[]>),
   mathematics: MATHEMATICS_TEMPLATES,
   physics: PHYSICS_TEMPLATES,
@@ -1369,6 +1377,37 @@ export function generateQuestionForYear(
       bookTitle: 'The Lekki Headmaster',
       author: authorName,
       textbookRef: `"The Lekki Headmaster" by ${authorName}`,
+    };
+
+    return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
+  }
+
+  // For Physics: Pull directly from authentic Physics Demystified by Dr. Timothy (with cropped diagrams)
+  if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
+    const qNum = qIndex + 1;
+    // Deterministic selection based on year and index across all 1,848 items
+    const itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % PHYSICS_DEMYSTIFIED_ITEMS.length;
+    const item = PHYSICS_DEMYSTIFIED_ITEMS[itemIdx];
+    const subCode = SUBJECT_ID_OFFSETS.physics || 920000;
+    const id = subCode + (year * 100) + qNum;
+
+    const baseQuestion: VerifiedQuestion = {
+      id,
+      year,
+      questionNumber: qNum,
+      subject: 'Physics',
+      topic: item.topic,
+      text: `[JAMB UTME ${year} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+      options: item.options,
+      answer: item.answer,
+      explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
+      bookTitle: 'PHYSICS DEMYSTIFIED',
+      author: 'Dr. Aifuwa Timothy',
+      textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
+      hasImage: item.hasImage,
+      imageUrl: item.imageUrl,
+      imageCaption: item.imageCaption,
+      imageAlt: item.imageAlt,
     };
 
     return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
@@ -1932,15 +1971,21 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
     });
   }
 
-  // Final Sequential question numbering (Q1 to Q180 for full mock) and guaranteed option randomization
+  // Final Sequential question numbering (Q1 to Q180 for full mock) and guaranteed unique IDs & option randomization
+  const seenIds = new Set<number>();
   return assembled.map((q, idx) => {
+    let qId = q.id;
+    if (!qId || seenIds.has(qId)) {
+      qId = 1000000 + (idx + 1) * 100 + (Math.abs(baseSeed) % 97);
+    }
+    seenIds.add(qId);
     const numberedQ: VerifiedQuestion = {
       ...q,
       questionNumber: idx + 1,
-      id: q.id || (100000 + idx + 1),
+      id: qId,
     };
     // Ensure all questions across Use of English and all other subjects have options randomly distributed across A, B, C, D
-    return scatterQuestionOptions(numberedQ, baseSeed * 1000 + (q.id || idx) * 37 + idx * 13);
+    return scatterQuestionOptions(numberedQ, baseSeed * 1000 + (qId || idx) * 37 + idx * 13);
   });
 }
 

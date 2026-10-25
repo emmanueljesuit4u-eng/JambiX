@@ -351,11 +351,11 @@ export const PastQuestionsVaultTab: React.FC<PastQuestionsVaultTabProps> = ({
             No questions matched your search query &ldquo;{searchQuery}&rdquo;. Try another topic or keyword.
           </div>
         ) : (
-          filteredQuestions.map((q) => {
+          filteredQuestions.map((q, qIdx) => {
             const isRevealed = revealAll || revealedQuestionIds[q.id];
             return (
               <div
-                key={q.id}
+                key={`vault-q-${q.id || 'q'}-${qIdx}`}
                 className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3 transition-colors"
               >
                 {/* Question Header */}

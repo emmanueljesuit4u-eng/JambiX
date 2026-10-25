@@ -846,14 +846,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     </div>
                   ) : (
                     filteredReviewQuestions.map((q, originalIdx) => {
-                      const actualIdx = activeQuestions.findIndex((item) => item.id === q.id);
-                      const studentAns = selectedAnswers[actualIdx];
+                      const actualIdx = activeQuestions.findIndex((item, i) => item.id === q.id || i === originalIdx);
+                      const studentAns = selectedAnswers[actualIdx >= 0 ? actualIdx : originalIdx];
                       const isCorrect = studentAns === q.answer;
                       const isUnattempted = !studentAns;
 
                       return (
                         <div
-                          key={q.id}
+                          key={`cbt-rev-${q.id || 'q'}-${originalIdx}`}
                           className={`p-4 rounded-xl border text-xs transition-colors space-y-2.5 ${
                             isCorrect
                               ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/40'
