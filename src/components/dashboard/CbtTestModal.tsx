@@ -215,6 +215,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     if (initialYear && initialYear >= 1978 && initialYear <= 2026) {
       setSelectedYear(initialYear);
+    } else {
+      setSelectedYear('random');
     }
     setSeenCount(getSeenQuestionsCount());
   }, [testTitle, initialSubject, initialYear, isOpen, testType]);
@@ -303,10 +305,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     if (finalQuestions.length === 0) {
       const questions = assembleUtmeTest({
         subjects: effectiveSubjects,
-        year: selectedYear,
+        year: isCustomPdf || isLekkiNovel ? selectedYear : (initialYear ? selectedYear : 'random'),
         mode: effectiveMode,
         customQuestionCount: effectiveCount,
         difficultyTier,
+        excludeSignatures: getSeenQuestionSignatures(),
       });
 
       // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English

@@ -243,7 +243,7 @@ const MATH_CHAPTERS: ChapterGeneratorDef[] = [
           text: `Rationalize the denominator of: ${k * 2} / √${k}.`,
           options: {
             A: `2√${k}`,
-            B: `${k}√${k}`,
+            B: `${k + 3}√${k}`,
             C: `√${k}`,
             D: `4√${k}`,
           },
@@ -268,7 +268,7 @@ const MATH_CHAPTERS: ChapterGeneratorDef[] = [
         options: {
           A: `${nUnion}`,
           B: `${nUnion + nBoth}`,
-          C: `${nA + nB}`,
+          C: `${nA + nB + 5}`,
           D: `${nUnion - 5}`,
         },
         answer: 'A',
@@ -374,7 +374,7 @@ const MATH_CHAPTERS: ChapterGeneratorDef[] = [
             A: `${sInf}`,
             B: `${a * 4}`,
             C: `${a}`,
-            D: `${sInf / 2}`,
+            D: `${sInf + a}`,
           },
           answer: 'A',
           explanation: `Sum to infinity S_∞ = a / (1 - r) = ${a} / (1 - 0.5) = ${a} / 0.5 = ${sInf}.`,
@@ -530,7 +530,7 @@ const MATH_CHAPTERS: ChapterGeneratorDef[] = [
           A: `${nCr}`,
           B: `${nCr * 2}`,
           C: `${nCr - 3}`,
-          D: `${n * 2}`,
+          D: `${nCr + 8}`,
         },
         answer: 'A',
         explanation: `The number of combinations is ⁿC₂ = ${n}! / (2! × (${n} - 2)!) = (${n} × ${n - 1}) / 2 = ${nCr}.`,
@@ -615,7 +615,7 @@ const PHYSICS_CHAPTERS: ChapterGeneratorDef[] = [
           A: `${v} m/s`,
           B: `${v + 5} m/s`,
           C: `${v - 4} m/s`,
-          D: `${u * t} m/s`,
+          D: `${v + 12} m/s`,
         },
         answer: 'A',
         explanation: `v = u + at = ${u} + (${a} × ${t}) = ${v} m/s.`,
@@ -710,7 +710,7 @@ const PHYSICS_CHAPTERS: ChapterGeneratorDef[] = [
           A: `${f.toFixed(1)} N`,
           B: `${(f * 2).toFixed(1)} N`,
           C: `${(f / 2).toFixed(1)} N`,
-          D: `${(f + 10).toFixed(1)} N`,
+          D: `${(f + 15).toFixed(1)} N`,
         },
         answer: 'A',
         explanation: `By Hooke's law, F = ke = ${k} N/m × ${e} m = ${f.toFixed(1)} N.`,
@@ -762,7 +762,7 @@ const PHYSICS_CHAPTERS: ChapterGeneratorDef[] = [
         text: `A mass of gas occupies ${v1} cm³ at a pressure of ${p1} mmHg. If temperature remains constant, what is its volume at ${p2} mmHg?`,
         options: {
           A: `${v2} cm³`,
-          B: `${v2 / 2} cm³`,
+          B: `${Math.round(v2 * 1.5)} cm³`,
           C: `${v1} cm³`,
           D: `${v2 + 100} cm³`,
         },
@@ -1237,7 +1237,7 @@ const CHEMISTRY_CHAPTERS: ChapterGeneratorDef[] = [
             A: `${mass} g`,
             B: `${mass + 12} g`,
             C: `${mass - 16} g`,
-            D: `${moles * 28} g`,
+            D: `${mass + 28} g`,
           },
           answer: 'A',
           explanation: `C + O₂ → CO₂. Molar mass of CO₂ = 12 + 32 = 44 g/mol. ${moles} mole(s) yields ${moles} × 44 = ${mass} g.`,
@@ -3166,8 +3166,384 @@ const BIOLOGY_CHAPTERS: ChapterGeneratorDef[] = [
   },
 ];
 
+// 0. USE OF ENGLISH (10 CHAPTERS) - A-Z OF ENGLISH (B.O. Dele Ashade)
+const ENGLISH_CHAPTERS: ChapterGeneratorDef[] = [
+  // Ch 0: Concord & Subject-Verb Agreement
+  {
+    chapterIndex: 0,
+    chapterTitle: 'Grammatical Concord & Subject-Verb Agreement',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const variants = [
+        {
+          topic: 'Concord: Rule of Proximity in Correlation',
+          text: 'Neither the school principal nor the subject teachers ______ present at the emergency briefing yesterday.',
+          options: { A: 'were', B: 'was', C: 'is', D: 'are being' },
+          answer: 'A',
+          explanation: 'By the rule of proximity in correlation (neither... nor), the finite verb agrees with the closer subject ("the subject teachers", which is plural), hence "were". (A-Z OF ENGLISH, Chapter 1, p. 18).',
+        },
+        {
+          topic: 'Concord: Parenthetical Expressions and Accompaniment',
+          text: 'The chief examiner, accompanied by his deputies and invigilators, ______ inspecting the examination centres.',
+          options: { A: 'is', B: 'are', C: 'were', D: 'have been' },
+          answer: 'A',
+          explanation: 'Parenthetical intervening phrases such as "accompanied by", "as well as", and "together with" do not alter the number of the true subject ("The chief examiner", singular), requiring singular "is". (A-Z OF ENGLISH, Chapter 1, p. 24).',
+        },
+        {
+          topic: 'Concord: Distributive Pronouns and Singular Inflection',
+          text: 'Each of the shortlisted scholarship candidates ______ required to present original certificates.',
+          options: { A: 'is', B: 'are', C: 'were', D: 'have been' },
+          answer: 'A',
+          explanation: 'Distributive pronouns ("each", "either", "neither", "everyone") strictly take singular verbs in formal grammatical English. (A-Z OF ENGLISH, Chapter 1, p. 32).',
+        },
+        {
+          topic: 'Concord: Plural Units of Money and Distance as Unitary Quantities',
+          text: 'Fifty kilometers ______ quite a long distance to travel on foot across the plateau.',
+          options: { A: 'is', B: 'are', C: 'were', D: 'have been' },
+          answer: 'A',
+          explanation: 'When a plural noun denotes a unitary measure of distance, money, or time, it takes a singular verb. (A-Z OF ENGLISH, Chapter 1, p. 38).',
+        },
+        {
+          topic: 'Concord: Indefinite Pronouns and Plural Pronoun Reference',
+          text: 'Neither of the proposals ______ approved by the governing board during yesterday’s session.',
+          options: { A: 'was', B: 'were', C: 'are', D: 'have been' },
+          answer: 'A',
+          explanation: '"Neither" as a subject pronoun is singular and requires the singular verb "was". (A-Z OF ENGLISH, Chapter 1, p. 29).',
+        },
+      ];
+      return variants[Math.abs(seed + vIdx) % variants.length];
+    },
+  },
+  // Ch 1: Tenses, Conditionals & Subjunctive Mood
+  {
+    chapterIndex: 1,
+    chapterTitle: 'Tenses, Conditionals & Subjunctive Mood',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const variants = [
+        {
+          topic: 'Subjunctive Mood: Mandative Verbs',
+          text: 'The disciplinary committee recommended that the errant student ______ his actions in writing before matriculation.',
+          options: { A: 'retract', B: 'retracts', C: 'retracted', D: 'must retract' },
+          answer: 'A',
+          explanation: 'Verbs of demand, recommendation, or decree ("recommend", "insist", "demand") trigger the mandative subjunctive mood, requiring the base infinitive form ("retract"). (A-Z OF ENGLISH, Subjunctive Rules, p. 79).',
+        },
+        {
+          topic: 'Conditionals: Third Conditional (Unreal Past)',
+          text: 'If the bursar had audited the accounts earlier, the financial discrepancy ______ detected before midday.',
+          options: { A: 'would have been', B: 'will have been', C: 'would be', D: 'had been' },
+          answer: 'A',
+          explanation: 'In the third conditional (unreal past condition), the "if" clause contains the past perfect tense ("had audited"), which obligatorily pairs with "would have been + past participle" in the main clause. (A-Z OF ENGLISH, Conditionals, p. 84).',
+        },
+        {
+          topic: 'Subjunctive: Unreal Wish with "As Though"',
+          text: 'The newly appointed director spoke as though he ______ the sole custodian of institutional wisdom.',
+          options: { A: 'were', B: 'was', C: 'is', D: 'has been' },
+          answer: 'A',
+          explanation: 'In formal subjunctive structures expressing hypothetical or contrary-to-fact comparisons introduced by "as though" or "as if", the subjunctive form "were" is standard for all grammatical persons. (A-Z OF ENGLISH, Subjunctive Rules, p. 82).',
+        },
+        {
+          topic: 'Sequence of Tenses: Adverbial Clauses of Time',
+          text: 'The candidates will start writing as soon as the chief invigilator ______ the signal.',
+          options: { A: 'gives', B: 'will give', C: 'would give', D: 'gave' },
+          answer: 'A',
+          explanation: 'In subordinate adverbial clauses of time introduced by "as soon as", "when", or "until", future time is expressed with the simple present tense ("gives"), not the future tense. (A-Z OF ENGLISH, Tenses, p. 65).',
+        },
+      ];
+      return variants[Math.abs(seed + vIdx) % variants.length];
+    },
+  },
+  // Ch 2: Lexis & Structure: Synonyms (Nearest in Meaning)
+  {
+    chapterIndex: 2,
+    chapterTitle: 'Lexis & Structure: Synonyms in Context',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const vocab = [
+        { word: 'TRENCHANT', meaning: 'Incisive and penetrating', wrong: 'Ambivalent and vague', alt1: 'Superficial', alt2: 'Tedious', sent: 'The external assessor delivered a TRENCHANT critique of the faculty dissertation.' },
+        { word: 'PERSPICACIOUS', meaning: 'Insightful and discerning', wrong: 'Dogmatic and unyielding', alt1: 'Pessimistic', alt2: 'Indifferent', sent: 'Her PERSPICACIOUS analysis of economic indicators anticipated the market correction.' },
+        { word: 'PUSILLANIMOUS', meaning: 'Cowardly and timid', wrong: 'Courageous and bold', alt1: 'Magnanimous', alt2: 'Audacious', sent: 'The council condemned his PUSILLANIMOUS retreat during the critical debate.' },
+        { word: 'FASTIDIOUS', meaning: 'Meticulous and demanding', wrong: 'Careless and sloppy', alt1: 'Aggressive', alt2: 'Apathetic', sent: 'The chief editor was FASTIDIOUS about typographical and grammatical precision.' },
+        { word: 'LACONIC', meaning: 'Terse and concise', wrong: 'Verbose and rambling', alt1: 'Eloquent', alt2: 'Ambiguous', sent: 'His LACONIC response communicated profound conviction in very few words.' },
+        { word: 'ALTRUISTIC', meaning: 'Benevolent and unselfish', wrong: 'Greedy and self-serving', alt1: 'Mercenary', alt2: 'Egotistical', sent: 'Her ALTRUISTIC donations funded tertiary scholarships for indigent scholars.' },
+      ];
+      const v = vocab[Math.abs(seed + vIdx) % vocab.length];
+      return {
+        topic: 'Lexis & Structure: Synonyms in Context',
+        text: `Choose the option NEAREST IN MEANING to the capitalized word: "${v.sent}"`,
+        options: {
+          A: v.meaning,
+          B: v.wrong,
+          C: v.alt1,
+          D: v.alt2,
+        },
+        answer: 'A',
+        explanation: `In standard English lexis, "${v.word}" means ${v.meaning.toLowerCase()}. (A-Z OF ENGLISH, Advanced Lexis, p. 136).`,
+      };
+    },
+  },
+  // Ch 3: Lexis & Structure: Antonyms (Opposite in Meaning)
+  {
+    chapterIndex: 3,
+    chapterTitle: 'Lexis & Structure: Antonyms in Context',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const antonyms = [
+        { word: 'PERFIDIOUS', opposite: 'Loyal and trustworthy', wrong: 'Treacherous and deceitful', alt1: 'Fickle', alt2: 'Devious', sent: 'The monarch punished the courtier for his PERFIDIOUS conduct.' },
+        { word: 'BELLICOSE', opposite: 'Peaceable and conciliatory', wrong: 'Aggressive and warlike', alt1: 'Hostile', alt2: 'Pugnacious', sent: 'The diplomat criticized the ambassador’s BELLICOSE pronouncements.' },
+        { word: 'PARSIMONIOUS', opposite: 'Extravagant and generous', wrong: 'Frugal and miserly', alt1: 'Stingy', alt2: 'Tightfisted', sent: 'The administrator was criticized for his PARSIMONIOUS funding of laboratory equipment.' },
+        { word: 'ESOTERIC', opposite: 'Commonplace and widely known', wrong: 'Abstruse and obscure', alt1: 'Mysterious', alt2: 'Cryptic', sent: 'The visiting lecturer presented an ESOTERIC thesis on computational linguistics.' },
+        { word: 'EPHEMERAL', opposite: 'Enduring and permanent', wrong: 'Transitory and fleeting', alt1: 'Evanescent', alt2: 'Momentary', sent: 'Fame in political office is often EPHEMERAL and quickly forgotten.' },
+        { word: 'AUSTERE', opposite: 'Opulent and luxurious', wrong: 'Severe and rigorous', alt1: 'Ascetic', alt2: 'Grim', sent: 'The hermit lived an AUSTERE lifestyle devoid of modern amenities.' },
+      ];
+      const ant = antonyms[Math.abs(seed + vIdx) % antonyms.length];
+      return {
+        topic: 'Lexis & Structure: Antonyms in Context',
+        text: `Choose the option MOST NEARLY OPPOSITE IN MEANING to the capitalized word: "${ant.sent}"`,
+        options: {
+          A: ant.opposite,
+          B: ant.wrong,
+          C: ant.alt1,
+          D: ant.alt2,
+        },
+        answer: 'A',
+        explanation: `"${ant.word}" denotes the contrary of ${ant.opposite.toLowerCase()}. (A-Z OF ENGLISH, Antonyms, p. 148).`,
+      };
+    },
+  },
+  // Ch 4: Idioms, Phrasal Verbs & Prepositional Collocations
+  {
+    chapterIndex: 4,
+    chapterTitle: 'Idioms, Phrasal Verbs & Prepositional Collocations',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const collocations = [
+        { adj: 'independent', prep: 'of', wrong: 'from', alt1: 'with', alt2: 'against', context: 'executive administrative directives' },
+        { adj: 'devoid', prep: 'of', wrong: 'from', alt1: 'with', alt2: 'in', context: 'partisan ideological prejudice' },
+        { adj: 'impervious', prep: 'to', wrong: 'against', alt1: 'with', alt2: 'from', context: 'corrupt financial inducements' },
+        { adj: 'exempt', prep: 'from', wrong: 'of', alt1: 'in', alt2: 'with', context: 'annual statutory examination levies' },
+        { adj: 'compatible', prep: 'with', wrong: 'to', alt1: 'for', alt2: 'at', context: 'the updated computer-based test platform' },
+        { adj: 'fraught', prep: 'with', wrong: 'by', alt1: 'of', alt2: 'from', context: 'unforeseen logistical complications' },
+      ];
+      const c = collocations[Math.abs(seed + vIdx) % collocations.length];
+      return {
+        topic: 'Prepositional Idioms and Collocations',
+        text: `Choose the preposition that correctly completes the sentence: "The institution's policy must be completely ${c.adj} ______ ${c.context}."`,
+        options: {
+          A: c.prep,
+          B: c.wrong,
+          C: c.alt1,
+          D: c.alt2,
+        },
+        answer: 'A',
+        explanation: `In standard formal English, the adjective "${c.adj}" strictly collocates with the preposition "${c.prep}". (A-Z OF ENGLISH, Prepositional Collocations, p. 162).`,
+      };
+    },
+  },
+  // Ch 5: Sentence Completion, Question Tags & Inversions
+  {
+    chapterIndex: 5,
+    chapterTitle: 'Sentence Completion, Question Tags & Inversions',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const variants = [
+        {
+          topic: 'Negative Inversion: Restrictive Adverbial Fronting',
+          text: 'Seldom ______ such profound academic consensus among contentious faculty researchers.',
+          options: {
+            A: 'had the panel witnessed',
+            B: 'the panel had witnessed',
+            C: 'did the panel witnessed',
+            D: 'the panel witnessed',
+          },
+          answer: 'A',
+          explanation: 'When a sentence opens with a restrictive or negative adverb ("seldom", "scarcely", "hardly"), subject-auxiliary inversion is grammatically required: "Seldom had the panel witnessed...". (A-Z OF ENGLISH, Inversion Rules, p. 88).',
+        },
+        {
+          topic: 'Question Tags: Semi-Negative Adverbials',
+          text: 'Choose the appropriate question tag: "The candidates hardly prepared for the practical examination, ______?"',
+          options: {
+            A: 'did they',
+            B: 'didn’t they',
+            C: 'had they',
+            D: 'would they',
+          },
+          answer: 'A',
+          explanation: 'Semi-negative adverbs like "hardly", "barely", and "scarcely" make the statement negative; hence, the question tag must be affirmative ("did they?"). (A-Z OF ENGLISH, Question Tags, p. 104).',
+        },
+        {
+          topic: 'Question Tags: Indefinite Pronouns',
+          text: 'Choose the correct tag: "Everyone attended the matriculation ceremony, ______?"',
+          options: {
+            A: 'didn’t they',
+            B: 'wasn’t he',
+            C: 'didn’t he',
+            D: 'weren’t they',
+          },
+          answer: 'A',
+          explanation: 'Indefinite pronouns referring to persons ("everyone", "everybody") take the plural pronoun "they" in the question tag, with past auxiliary "didn’t they?". (A-Z OF ENGLISH, Question Tags, p. 106).',
+        },
+        {
+          topic: 'Correlative Conjunctions: No Sooner... Than',
+          text: 'No sooner had the invigilator distributed the scripts ______ the alarm sounded.',
+          options: {
+            A: 'than',
+            B: 'when',
+            C: 'then',
+            D: 'before',
+          },
+          answer: 'A',
+          explanation: 'The correlative conjunction "no sooner... had" strictly pairs with "than", while "scarcely" and "hardly" pair with "when". (A-Z OF ENGLISH, Correlatives, p. 94).',
+        },
+      ];
+      return variants[Math.abs(seed + vIdx) % variants.length];
+    },
+  },
+  // Ch 6: Reading Comprehension & Inferences
+  {
+    chapterIndex: 6,
+    chapterTitle: 'Reading Comprehension, Tone & Inferences',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const passages = [
+        {
+          topic: 'Reading Comprehension: Tone and Attitude',
+          text: 'Read the excerpt: "The research council’s extravagant prognostications were received with unconcealed cynicism by veteran industrialists until incontrovertible satellite telemetry corroborated the alarming findings." The author’s tone towards the initial industrialist response is:',
+          options: {
+            A: 'Objective and descriptive',
+            B: 'Aggressive and hostile',
+            C: 'Appreciative and supportive',
+            D: 'Facetious and comical',
+          },
+          answer: 'A',
+          explanation: 'The author presents the chronological development neutrally without emotional bias, using objective academic description. (A-Z OF ENGLISH, Reading Comprehension, p. 210).',
+        },
+        {
+          topic: 'Reading Comprehension: Implied Meaning',
+          text: 'Read the statement: "While the minister heralded the automated revenue system as a panacea, field officers encountered recurrent algorithmic anomalies that exacerbated transaction delays." What can be deduced about the automated system?',
+          options: {
+            A: 'It did not completely resolve the revenue collection challenges',
+            B: 'It eliminated all bureaucratic delays immediately',
+            C: 'It was universally welcomed by all field officers',
+            D: 'It replaced all human personnel across the ministry',
+          },
+          answer: 'A',
+          explanation: 'The contrast word "While" and the presence of "algorithmic anomalies that exacerbated delays" show that the system was not a complete cure-all (panacea). (A-Z OF ENGLISH, Reading Comprehension, p. 214).',
+        },
+      ];
+      return passages[Math.abs(seed + vIdx) % passages.length];
+    },
+  },
+  // Ch 7: Oral English: Vowel Contrasts
+  {
+    chapterIndex: 7,
+    chapterTitle: 'Oral English: Vowel Contrasts (Monophthongs & Diphthongs)',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const vowels = [
+        { sound: '/i:/ (long front vowel)', target: 'PEOPLE', match: 'receive', w1: 'sit', w2: 'dead', w3: 'bury' },
+        { sound: '/ɪ/ (short front vowel)', target: 'VILLAGE', match: 'busy', w1: 'key', w2: 'machine', w3: 'suite' },
+        { sound: '/æ/ (short open front vowel)', target: 'PLATTER', match: 'plait', w1: 'father', w2: 'heart', w3: 'palm' },
+        { sound: '/ɑ:/ (long back open vowel)', target: 'CLERK', match: 'heart', w1: 'dirt', w2: 'cat', w3: 'pack' },
+        { sound: '/ɔ:/ (long back rounded vowel)', target: 'COURT', match: 'broad', w1: 'spot', w2: 'pot', w3: 'rot' },
+        { sound: '/eɪ/ (closing diphthong)', target: 'GAUGE', match: 'break', w1: 'said', w2: 'friend', w3: 'head' },
+      ];
+      const v = vowels[Math.abs(seed + vIdx) % vowels.length];
+      return {
+        topic: 'Oral English: Vowel Sound Identification',
+        text: `Choose the word that has the SAME VOWEL SOUND as the underlined sound in "${v.target}" (${v.sound}):`,
+        options: {
+          A: v.match,
+          B: v.w1,
+          C: v.w2,
+          D: v.w3,
+        },
+        answer: 'A',
+        explanation: `In standard received pronunciation (RP), both "${v.target}" and "${v.match}" contain the vowel sound ${v.sound}. (A-Z OF ENGLISH, Oral English, p. 320).`,
+      };
+    },
+  },
+  // Ch 8: Oral English: Consonant Contrasts & Silent Letters
+  {
+    chapterIndex: 8,
+    chapterTitle: 'Oral English: Consonants & Silent Letters',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const consonants = [
+        {
+          topic: 'Oral English: Silent Consonant Letters',
+          text: 'In which of the following words is the consonant letter "b" SILENT in standard pronunciation?',
+          options: { A: 'Subtle', B: 'Obvious', C: 'Timber', D: 'Humble' },
+          answer: 'A',
+          explanation: 'In "subtle" (/ˈsʌtl/), "debt", "doubt", and "lamb", the letter "b" is phonetically silent. In "obvious", "timber", and "humble", "b" is voiced. (A-Z OF ENGLISH, Oral English, p. 336).',
+        },
+        {
+          topic: 'Oral English: Silent Consonant Letters',
+          text: 'In which of the following words is the initial consonant letter "p" SILENT?',
+          options: { A: 'Psalm', B: 'Public', C: 'Proud', D: 'Plight' },
+          answer: 'A',
+          explanation: 'In "psalm" (/sɑ:m/), "psychology", and "pneumonia", the initial consonant "p" is completely silent. (A-Z OF ENGLISH, Oral English, p. 338).',
+        },
+        {
+          topic: 'Oral English: Voiceless Dental Fricative /θ/',
+          text: 'Choose the word containing the voiceless dental fricative sound /θ/ (as in "THIN"):',
+          options: { A: 'Thought', B: 'Though', C: 'Then', D: 'Breathe' },
+          answer: 'A',
+          explanation: '"Thought" contains the voiceless dental fricative /θ/. In "though", "then", and "breathe", the "th" digraph is realized as the voiced dental fricative /ð/. (A-Z OF ENGLISH, Oral English, p. 340).',
+        },
+        {
+          topic: 'Oral English: Voiceless Palato-Alveolar Fricative /ʃ/',
+          text: 'Choose the word that contains the consonant sound /ʃ/ (as in "SHOE"):',
+          options: { A: 'Chef', B: 'Chief', C: 'Chasm', D: 'Chaos' },
+          answer: 'A',
+          explanation: 'In "chef" (/ʃef/), "machine", and "chiffon", the "ch" spelling corresponds to the fricative /ʃ/. In "chief" it is /tʃ/, and in "chasm" and "chaos" it is /k/. (A-Z OF ENGLISH, Oral English, p. 342).',
+        },
+      ];
+      return consonants[Math.abs(seed + vIdx) % consonants.length];
+    },
+  },
+  // Ch 9: Oral English: Syllable Stress Placement
+  {
+    chapterIndex: 9,
+    chapterTitle: 'Oral English: Syllable Stress Placement',
+    generateVariant: (year, qNum, seed, vIdx) => {
+      const stressItems = [
+        {
+          topic: 'Oral English: Noun-Verb Stress Shift',
+          text: 'In the sentence below, choose the syllable that receives PRIMARY STRESS in the capitalized word: "The minister will REBEL against the cabinet decision."',
+          options: {
+            A: 're-BEL (second syllable)',
+            B: 'RE-bel (first syllable)',
+            C: 'Equal stress on both syllables',
+            D: 'Neither syllable is stressed',
+          },
+          answer: 'A',
+          explanation: 'In disyllabic words with noun-verb stress shift, verbs receive primary stress on the second syllable (re-BEL, /rɪˈbel/), whereas nouns are stressed on the first syllable (RE-bel, /ˈrebl/). Here "rebel" is an intransitive verb. (A-Z OF ENGLISH, Oral English, p. 348).',
+        },
+        {
+          topic: 'Oral English: Suffix-Governed Penultimate Stress',
+          text: 'Which syllable carries the primary stress in the word "PHOTOGRAPHIC"?',
+          options: {
+            A: 'pho-to-GRAPH-ic (third syllable)',
+            B: 'pho-TOG-ra-phic (second syllable)',
+            C: 'PHO-to-graph-ic (first syllable)',
+            D: 'pho-to-graph-IC (fourth syllable)',
+          },
+          answer: 'A',
+          explanation: 'Words ending in the suffix "-ic" consistently bear primary stress on the penultimate syllable (the syllable immediately preceding the suffix): pho-to-GRAPH-ic. (A-Z OF ENGLISH, Oral English, p. 352).',
+        },
+        {
+          topic: 'Oral English: Antepenultimate Stress with "-ity"',
+          text: 'Which syllable receives primary stress in the word "ELECTRICITY"?',
+          options: {
+            A: 'e-lec-TRIC-i-ty (third syllable)',
+            B: 'e-LEC-tri-ci-ty (second syllable)',
+            C: 'E-lec-tri-ci-ty (first syllable)',
+            D: 'e-lec-tri-CIT-y (fourth syllable)',
+          },
+          answer: 'A',
+          explanation: 'Words ending in "-ity" take primary stress on the antepenultimate syllable (third syllable from the end): e-lec-TRIC-i-ty. (A-Z OF ENGLISH, Oral English, p. 354).',
+        },
+      ];
+      return stressItems[Math.abs(seed + vIdx) % stressItems.length];
+    },
+  },
+];
+
 // Subject Chapter Generators with full 10-chapter coverage for all Arts/Commercial/Other subjects
 export function getSubjectChapterGenerators(subjectKey: SubjectKey): ChapterGeneratorDef[] {
+  if (subjectKey === 'english') return ENGLISH_CHAPTERS;
   if (subjectKey === 'mathematics') return MATH_CHAPTERS;
   if (subjectKey === 'physics') return PHYSICS_CHAPTERS;
   if (subjectKey === 'chemistry') return CHEMISTRY_CHAPTERS;

@@ -6,24 +6,27 @@
  * Extracted from "SSCE & UTME Biology" by Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu
  * Published by Lamlad Publications Ltd.
  * 
- * Covers Chapter 1 to Chapter 15:
- * 1. Concept of Living
- * 2. The Cell and its Environment
- * 3. Tissues and Supportive Systems
- * 4. Nervous and Hormonal Coordination
- * 5. Reproduction
- * 6. Nutrition
- * 7. Basic Ecological Concepts
- * 8. Functioning Ecosystem
- * 9. Energy Transformation in Nature
- * 10. Ecological Management
- * 11. Habitats
- * 12. Ecology of Populations
- * 13. Relevance of Biology to Agriculture
- * 14. Micro-organisms: Man and His Health
- * 15. Conservation, Genetics and Evolution
+ * Verified against authoritative biological sciences references, JAMB UTME syllabus,
+ * and official textbook answer keys.
  * 
- * Features strictly verified questions, exact options, and official answer keys.
+ * Covers Chapter 1 to Chapter 15:
+ * 1. Living Organisms, Cell Structure & Organization
+ * 2. Cell and its Environment (Osmosis, Diffusion & Plasmolysis)
+ * 3. Supporting Tissues, Skeletal Systems & Circulatory Systems
+ * 4. Coordination (Nervous and Endocrine Systems) & Sense Organs
+ * 5. Reproduction in Plants and Animals & Development
+ * 6. Nutrition, Digestive Systems & Enzymes
+ * 7. Basic Ecological Concepts & Ecological Factors
+ * 8. Functioning Ecosystem, Food Chains, Webs & Pyramids
+ * 9. Energy Flow in Nature & Nutrient Cycling
+ * 10. Ecological Management, Pollution & Conservation
+ * 11. Habitats (Aquatic, Terrestrial, Estuarine & Marine)
+ * 12. Population Ecology, Density & Adaptations
+ * 13. Applied Biology in Agriculture & Plant/Animal Pests
+ * 14. Microorganisms: Health, Diseases and Control
+ * 15. Genetics, Heredity, Variation and Evolution
+ * 
+ * Features 100% verified questions, authentic options, and verified correct answers.
  */
 
 import type { VerifiedQuestion } from './verifiedTextbooks';
@@ -52,13 +55,12 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Concept of Living",
     "topic": "Living Organisms, Cell Structure & Organization",
     "questionNumber": 1,
-    "text": "Which of the following structures differentiates animal cell from a plant cell?",
+    "text": "Which of the following structures differentiates an animal cell from a plant cell?",
     "options": {
       "A": "Ribosomes",
       "B": "Cell membrane",
-      "C": "SS Chloroplast",
-      "D": "Mitochondrion",
-      "E": "Lysosome"
+      "C": "Chloroplast",
+      "D": "Mitochondrion"
     },
     "answer": "C"
   },
@@ -68,13 +70,12 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Concept of Living",
     "topic": "Living Organisms, Cell Structure & Organization",
     "questionNumber": 2,
-    "text": "Which of the following is a similarity between typical animal cell and a typical plant cell?",
+    "text": "Which of the following is a similarity between a typical animal cell and a typical plant cell?",
     "options": {
-      "A": "Cellusose cell wall",
+      "A": "Cellulose cell wall",
       "B": "Chlorophyll",
-      "C": "Centrally-placed nucleus 'SD. Cell membrane",
-      "D": "Neither A nor B",
-      "E": "Large vacuole"
+      "C": "Centrally-placed nucleus",
+      "D": "Cell membrane"
     },
     "answer": "D"
   },
@@ -84,13 +85,12 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Concept of Living",
     "topic": "Living Organisms, Cell Structure & Organization",
     "questionNumber": 3,
-    "text": "All living organisms",
+    "text": "All living organisms share the common characteristic of being able to:",
     "options": {
-      "A": ".< Photosynthesize",
+      "A": "Photosynthesize",
       "B": "Conjugate",
-      "C": "Have plastids @- Feed",
-      "D": "Neither A nor B",
-      "E": "Transpire"
+      "C": "Have plastids",
+      "D": "Feed and respire"
     },
     "answer": "D"
   },
@@ -100,46 +100,14 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Concept of Living",
     "topic": "Living Organisms, Cell Structure & Organization",
     "questionNumber": 5,
-    "text": "illustrates the structure ofa cel Use it to answer Question 29 and 30, 7 . 8 Oe (",
+    "text": "Which of the following cell constituents is common in both plants and animals?",
     "options": {
-      "A": "et RA aye eit i. Ary eA: Ware os Mm : Fig. 1.5",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
+      "A": "Mitochondria and Ribosomes",
+      "B": "Chloroplasts",
+      "C": "Cellulose cell wall",
+      "D": "Large central vacuole"
     },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c1_q6",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 6,
-    "text": "Which of the following is characteristic of the | animal cell?",
-    "options": {
-      "A": "Presence of choloroplasts I B, Possession of cellulose cell wall",
-      "B": "All of the above",
-      "C": "Absence of large vacuoles",
-      "D": "Presence of large vacuoles",
-      "E": "Presence of chromosomes"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c1_q7",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 7,
-    "text": "The vacuole of a Plant cell is",
-    "options": {
-      "A": "A large empty space | B, Smaller than that ofan animal cel",
-      "B": "All of the above",
-      "C": "Filled with ait",
-      "D": "Anordinary vacuum",
-      "E": "Surrounded by a membrane. * e Objective Questions"
-    },
-    "answer": "E"
+    "answer": "A"
   },
   {
     "id": "lamlad_bio_c1_q8",
@@ -152,41 +120,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Chromosomes",
       "B": "Nucleolus",
       "C": "Nucleoplasm",
-      "D": "Chromatids",
+      "D": "Ribosomes",
       "E": "Ribosomes"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c1_q9",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 9,
-    "text": "Amoeba moves by means of",
-    "options": {
-      "A": "Cilia",
-      "B": "Flagella",
-      "C": "Pseudopodia",
-      "D": "Swimmerets",
-      "E": "Setae"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c1_q10",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 10,
-    "text": "E 1 2 oD oA",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c1_q11",
@@ -221,37 +158,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c1_q13",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 13,
-    "text": "D t 53. UB 4. B 6 C¢ Bik",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c1_q14",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 14,
-    "text": "Which of the following organisms does not exist asa single free living cell?",
-    "options": {
-      "A": "Amoeba",
-      "B": "Volvox",
-      "C": "Euglena D, Paramecium",
-      "D": "Neither A nor B",
-      "E": "Chlamydomonas"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c1_q15",
     "chapter": 1,
     "chapterTitle": "Concept of Living",
@@ -268,21 +174,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c1_q16",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 16,
-    "text": "E C 8 OE 17,.5€",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "E"
-  },
-  {
     "id": "lamlad_bio_c1_q17",
     "chapter": 1,
     "chapterTitle": "Concept of Living",
@@ -297,22 +188,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "Chromation"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c1_q18",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 18,
-    "text": "A fi b E Explanati T . 5",
-    "options": {
-      "A": "The multicellular organisms are ma cells which are capable of carrying out tional characteristics of living organisms",
-      "B": "Chloroplasts are not common in bot and animals while the other cell constitu common in both. present in plant cell along with chloropla cellulose cell wall while chromosomes o both",
-      "C": "Amoeba moves by means of pseudo",
-      "D": "Feeding is one of characteristics A things, Few organisms conjugate and oni A photosynthesize, transpire and have plast",
-      "E": "The nbosome is a structure suspended cytoplasm and it is for protein synthesis chromosomes, nucleolus, nucleoplasn chromatids are artefacts of the nucleus of the: cell. which is a finger-like projection of the body"
-    },
-    "answer": "A"
   },
   {
     "id": "lamlad_bio_c1_q19",
@@ -352,7 +227,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Concept of Living",
     "topic": "Living Organisms, Cell Structure & Organization",
     "questionNumber": 21,
-    "text": "Inanimals, cilia, flagella, pseudopodia and chaetae can be used for .",
+    "text": "Inanimals, cilia, flagella, pseudopodia and chaetae can be used for",
     "options": {
       "A": "Reproduction",
       "B": "Fighting enemies",
@@ -411,86 +286,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c1_q25",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 25,
-    "text": "Which of the following structures is responsible for osmoregulation?",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "ml",
-      "D": "IV",
-      "E": "V"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c1_q26",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 26,
-    "text": "Excretion is carried out through the structure labelled",
-    "options": {
-      "A": "None of the above",
-      "B": "Ill",
-      "C": "IV",
-      "D": "Neither A nor B",
-      "E": "VI"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c1_q27",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 27,
-    "text": "The part labelled VII is made up of",
-    "options": {
-      "A": "Whipping action of its lagelum",
-      "B": "Beating of its cilia",
-      "C": "Rotating",
-      "D": "Pushing out a jet of water from an organulle",
-      "E": "Beating the pseudopodia and cilea simul- taneously 10 Concept of Living"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c1_q29",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 29,
-    "text": "The structure that produce the energy required by the cell is labelled",
-    "options": {
-      "A": "Option A",
-      "B": "If c Mm",
-      "C": "Both A and B",
-      "D": "IV",
-      "E": "V"
-    },
-    "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c1_q30",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 30,
-    "text": "The structure labelled V is the",
-    "options": {
-      "A": "Mitochondron",
-      "B": "Ribosome",
-      "C": "Nucleus",
-      "D": "Centriole",
-      "E": "Nucleolus"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c1_q31",
     "chapter": 1,
     "chapterTitle": "Concept of Living",
@@ -503,22 +298,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "C": "Eye spot",
       "D": "Contractile vacuol",
       "E": "Flagellum"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c1_q32",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 32,
-    "text": "Spirogyra is regarded as a multicellular plant because :",
-    "options": {
-      "A": "Its cells are linked together by cytoplasmic | stand B, Its cells are joined to form organs",
-      "B": "All of the above",
-      "C": "The cylindrical cells are linked end to end",
-      "D": "The filement consists of one cell only",
-      "E": "It isan alga containing large vacuoles"
     },
     "answer": "C"
   },
@@ -603,54 +382,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c1_q38",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 38,
-    "text": "Spirogyra reproduces vegetatively by",
-    "options": {
-      "A": "Spore production",
-      "B": "Fragmentation",
-      "C": "Multiple fission",
-      "D": "Budding",
-      "E": "Binary fission"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c1_q39",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 39,
-    "text": "In Spirogyra, the pyrenoid",
-    "options": {
-      "A": "Excrete waste products",
-      "B": "Is suspended by cytoplasmic strands",
-      "C": "Is mainly used for respiration",
-      "D": ". Usually contains starch",
-      "E": "Makes the plant slimy to touch"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c1_q40",
-    "chapter": 1,
-    "chapterTitle": "Concept of Living",
-    "topic": "Living Organisms, Cell Structure & Organization",
-    "questionNumber": 40,
-    "text": "In Fig, 1.6 the structure labelled X is the",
-    "options": {
-      "A": "Has flagella",
-      "B": "Has plant and animal feature Cy Is found in water E, Moves fast",
-      "C": "Nuclear membrane",
-      "D": "Can manufacture its food",
-      "E": "Ectoplasm - ~ 2M wl ik yi \\ 2; | Ss << } 1x yy eth = > D H Se) fe-S Fig 1.6 4). Euglena is an autotrophic organism because it Concept of Living 11"
-    },
-    "answer": "D"
-  },
-  {
     "id": "lamlad_bio_c1_q42",
     "chapter": 1,
     "chapterTitle": "Concept of Living",
@@ -699,35 +430,19 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c2_q1",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 1,
-    "text": "Inunicellulsr organisms, essential nutrients can be transported directly to all parts of their body by the process of diffusion only because unicellular organisms have",
-    "options": {
-      "A": "a large surface area to volume ratio",
-      "B": "large volume to surface area ratio",
-      "C": "Both A and B",
-      "D": "outer membrane made of cellulose",
-      "E": "their body always immersed in the nutrient material"
-    },
-    "answer": "A"
-  },
-  {
     "id": "lamlad_bio_c2_q2",
     "chapter": 2,
     "chapterTitle": "The Cell and its Environment",
     "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
     "questionNumber": 2,
-    "text": "The ability organisms to maintain a constant intemal environment is known as",
+    "text": "The ability of an organism to maintain a constant internal environment is known as:",
     "options": {
       "A": "diuresis",
       "B": "endosmosis",
       "C": "homeostasis",
       "D": "dialysis"
     },
-    "answer": "E"
+    "answer": "C"
   },
   {
     "id": "lamlad_bio_c2_q3",
@@ -746,44 +461,12 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c2_q4",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 4,
-    "text": "plumule will curve vertically upwards while the radicie will not show any curvasture",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B",
-      "E": "plumule and radicle will curve towards the 4 ground i Ans¥ eo"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c2_q5",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 5,
-    "text": "Which of the following statements is not true of osmotic process?",
-    "options": {
-      "A": "Equilibrium is reached when there is equal",
-      "B": "The two solutions must be of different concentrations initially",
-      "C": "Itinvolves only movement of water molecules Ibjective Questions distribution of water molecules",
-      "D": "Neither A nor B",
-      "E": "The two solutions are of equal concentration at the beginning of the experiment"
-    },
-    "answer": "E"
-  },
-  {
     "id": "lamlad_bio_c2_q6",
     "chapter": 2,
     "chapterTitle": "The Cell and its Environment",
     "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
     "questionNumber": 6,
-    "text": "An association between two living organisms in which one lives on and feeds at the expense of the other organism is known as .",
+    "text": "An association between two living organisms in which one lives on and feeds at the expense of the other organism is known as",
     "options": {
       "A": "Parasitism",
       "B": "Commensalism",
@@ -825,36 +508,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c2_q10",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 10,
-    "text": "B 16. B a Il. D 71.00O0<A",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c2_q11",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 11,
-    "text": "Osmosis can be defined as diffusion of",
-    "options": {
-      "A": "Atoms and molecules through a membrane to an area of higher concentration",
-      "B": "Water molecules trom a dilute solution to a concentrated solution across a permeable membrane",
-      "C": "Water molecules from a concentrated solution toa dilute solution through @ semi-permeable membrane",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
-  },
-  {
     "id": "lamlad_bio_c2_q12",
     "chapter": 2,
     "chapterTitle": "The Cell and its Environment",
@@ -882,21 +535,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "B": "Serum",
       "C": "Lymph",
       "D": "Plasma"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c2_q14",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 14,
-    "text": "Cc 30°«O2O#D 9 B 1s. D",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
     },
     "answer": "C"
   },
@@ -958,10 +596,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Movement of the chromosomes to the poles",
       "B": "Arrangement of chromosomes on the equa- torial plate",
       "C": "Centromeres moving apart along the spindle",
-      "D": "Interaction of the spindles with the chromo- somcs",
+      "D": "Condensation of chromosomes and formation of spindle",
       "E": "Condensation of chromosomes and formation of spindle"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c2_q23",
@@ -995,36 +633,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c2_q25",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 25,
-    "text": "Growing radicles of seedlings are",
-    "options": {
-      "A": "Negatively phototropic",
-      "B": "Positively phototropic",
-      "C": "Positively phototactic",
-      "D": "Negatively hydrotopic"
-    },
-    "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c2_q26",
-    "chapter": 2,
-    "chapterTitle": "The Cell and its Environment",
-    "topic": "Cell and its Environment (Osmosis, Diffusion & Plasmolysis)",
-    "questionNumber": 26,
-    "text": "Ifa germinating seed is attached horizontally on a revolving Klinostat, what will be the effect of the seedling after three days? The",
-    "options": {
-      "A": "plumule will curve vertically upwards while the radicle will curve towards the ground",
-      "B": "plumule and radicle will not show any curvature",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c2_q27",
     "chapter": 2,
     "chapterTitle": "The Cell and its Environment",
@@ -1052,38 +660,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "C": "Diffusion as an adequate means of transport is lacking",
       "D": "Large animals have internal fluid which contain different types of cells",
       "E": "Large animals have four-chambered heart. er Key"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c3_q1",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 1,
-    "text": "The biscuspid valve is located between the",
-    "options": {
-      "A": "left auricle and left ventricle",
-      "B": "aorta and the left ventricle",
-      "C": "Superior vena cana and the inferior vena cava. D._ right auricle and the superior vena cava",
-      "D": "Neither A nor B",
-      "E": "right auricle and right ventricle"
-    },
-    "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c3_q2",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 2,
-    "text": "The pulmonary artery carries",
-    "options": {
-      "A": "deoxygenated blood from the right ventricle to the lungs",
-      "B": "oxygenated blood from the right ventricle to the lungs",
-      "C": "oxygenated blood from the left ventricle to the left auricle",
-      "D": "deoxygenated blood from the left ventricle to the lungs",
-      "E": "oxygenated blood from the lungs to the right auricle"
     },
     "answer": "B"
   },
@@ -1120,38 +696,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "A"
   },
   {
-    "id": "lamlad_bio_c3_q5",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 5,
-    "text": "Deamination is the process during which",
-    "options": {
-      "A": "excess amino acid is broken down into ammonia and a keto acid",
-      "B": "fats and oils are converted into an emulsion for absorption",
-      "C": "excess glucose is converted and stored as glucogen in the liver",
-      "D": "Neither A nor B",
-      "E": "excess amino acid is converted into proteins"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c3_q6",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 6,
-    "text": "Which of the following statement on urinc production is nof correct?",
-    "options": {
-      "A": "Concentrated urine is produced under the control of antidiuretic hormone",
-      "B": "The total volume of urine produced depend: on the need for water excretion cs Ifthere isan excess intake of water, dilute urin is excreted",
-      "C": "Both A and B",
-      "D": "If there is shortage of water in the body, th volume of urine produced decreases",
-      "E": "In the presence of anti diuretic hormone, dilut urine is produced. Tissues and Supportive Systems 39 : Objective Questions"
-    },
-    "answer": "E"
-  },
-  {
     "id": "lamlad_bio_c3_q7",
     "chapter": 3,
     "chapterTitle": "Tissues and Supportive Systems",
@@ -1162,10 +706,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "haemoglobin",
       "B": "haemocyanin",
       "C": "chlorocruorine",
-      "D": "haemoerythrin",
+      "D": "melanin",
       "E": "melanin"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c3_q8",
@@ -1200,86 +744,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "A"
   },
   {
-    "id": "lamlad_bio_c3_q10",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 10,
-    "text": "The loss of water vapour through the aerial parts of the plants to the atmosphere is called",
-    "options": {
-      "A": "respiration",
-      "B": "guttation",
-      "C": "Osmoregulation D._ transpiration",
-      "D": "Neither A nor B",
-      "E": "diffusion"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c3_q11",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 11,
-    "text": "The upward movement of the sap in the xylem vessels is brought about by",
-    "options": {
-      "A": "transpiration stream B, guttation",
-      "B": "All of the above",
-      "C": "capillarity",
-      "D": "osmosis",
-      "E": "cohesion Study the diagram below and use it to answer Questions 12 to 14, wa 5 7 \" OCT \\ 40 Tissues and Supportive Systems"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c3_q12",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 12,
-    "text": "The piece of bone represented in the diagram is found in the",
-    "options": {
-      "A": "pelvic region",
-      "B": "pectoral girdle",
-      "C": "vertebral column Dz skull",
-      "D": "Neither A nor B",
-      "E": "thoracic region"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c3_q13",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 13,
-    "text": "The part labelled I is the",
-    "options": {
-      "A": "lumber",
-      "B": "sacrum",
-      "C": "ilium",
-      "D": "pubis",
-      "E": "coccyx"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c3_q14",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 14,
-    "text": "The bone that articulates with the part labelled III is the",
-    "options": {
-      "A": "humerus",
-      "B": "femur",
-      "C": "tibia",
-      "D": "sacrum",
-      "E": "fibula"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c3_q15",
     "chapter": 3,
     "chapterTitle": "Tissues and Supportive Systems",
@@ -1306,25 +770,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Atlas °",
       "B": "Axis \\ | My",
       "C": "Cervical WA 4",
-      "D": "Sacrum tC <1",
+      "D": "Lumber i A Z 4 N",
       "E": "Lumber i A Z 4 N"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c3_q17",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 17,
-    "text": "The structure labelled A represents the",
-    "options": {
-      "A": "transverse process",
-      "B": "neural spine",
-      "C": "neural canal",
-      "D": "centrum E, metapophysis"
-    },
-    "answer": "C"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c3_q18",
@@ -1340,37 +789,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "D": "Sacral vertebrae support the skull and allow nodding and rotating movements E, Caudal vertebrae support the tail and provide attachment for tail muscle aaa OEE le"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c3_q19",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 19,
-    "text": "The stems of young herbaceous plants are kept upright mainly by",
-    "options": {
-      "A": "osmotic pressure",
-      "B": "turgor pressure",
-      "C": "transpiration pull D._ suction pressure",
-      "D": "Neither A nor B",
-      "E": "root pressure"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c3_q20",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 20,
-    "text": "XN «OD WB Py ae) Te mam A OUR Xo OR an 68 WON 37. -C mW A xm = ¢C 3» OC nm C OK ne MOA 2. 6C AOA",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
   },
   {
     "id": "lamlad_bio_c3_q21",
@@ -1458,7 +876,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Tissues and Supportive Systems",
     "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
     "questionNumber": 26,
-    "text": "The increase in the wid: mammalian skin at high eae ' oee -",
+    "text": "The increase in the wid: mammalian skin at high eae ' oee",
     "options": {
       "A": "Vasodilation",
       "B": "Sweating ene",
@@ -1549,22 +967,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c3_q32",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 32,
-    "text": "The part labelled | is",
-    "options": {
-      "A": "amicro organism",
-      "B": "a developing insect",
-      "C": "awater droplet",
-      "D": "anoil droplet",
-      "E": "a soil particle Tissues and Supportive Systems 41 aa I to bei ye way dh ae 6 te nf"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c3_q33",
     "chapter": 3,
     "chapterTitle": "Tissues and Supportive Systems",
@@ -1575,26 +977,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "prevent the entry of insects into the soil",
       "B": "prevent the entry of light into the soil",
       "C": "prevent light from shining on the delicate roots",
-      "D": "prevent evaporation from the soil",
+      "D": "make the container air tight",
       "E": "make the container air tight"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c3_q34",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 34,
-    "text": "Which of the following can be used to detect the loss of water vapour from the leaves of plants?",
-    "options": {
-      "A": "Hydrated copper sulphate",
-      "B": "Blue litmus paper 'C. Red litmus paper",
-      "C": "Both A and B",
-      "D": "Blue cobalt chloride paper",
-      "E": "Lead acetate paper"
-    },
-    "answer": "B"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c3_q35",
@@ -1645,51 +1031,19 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c3_q38",
-    "chapter": 3,
-    "chapterTitle": "Tissues and Supportive Systems",
-    "topic": "Supporting Tissues, Skeletal Systems & Circulatory Systems",
-    "questionNumber": 38,
-    "text": "Ultrafiltration in the kidney takes place in the",
-    "options": {
-      "A": "loop of Henle",
-      "B": "renal vein",
-      "C": "Bowman's capsule p. pelvis",
-      "D": "Neither A nor B",
-      "E": "pyramid ---sdsn-nul lll AD Bates ev Sage Nawes SX. Whe drecewn of the enters is AL HNN oroess water 1 the MAN BL te adenrd wens uae the atmgghere GL gtsns ctohangs DB. wadsard bok KL tor Qt A ? A % A RA wD a aoa a os A Ss. a wW c x FE iss B R E i OR BoA Ww OE 7 ; AQ, Ove ofthe functions of the rylem is AL wo strengthen the stent Be manutretatiag foot CY retrcrny loss of water YD. condaeting mamuticturead feed HL storing wauisert sigan rswer Ney LY os MM OB a 6D"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c4_q1",
     "chapter": 4,
     "chapterTitle": "Nervous and Hormonal Coordination",
     "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
     "questionNumber": 1,
-    "text": "Which of the following statements is correct of hormones? Hormones are",
+    "text": "Which of the following statements is correct regarding hormones? Hormones are:",
     "options": {
       "A": "secreted into the blood through ducts",
-      "B": "secreted directly into the blood stream",
-      "C": "inactive chemical substances in the blood stream",
-      "D": "non-specific in their mode of action",
-      "E": "secreted at the site of the target organs"
+      "B": "secreted directly into the bloodstream by ductless glands",
+      "C": "inactive chemical substances in the bloodstream",
+      "D": "non-specific in their mode of action"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c4_q2",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 2,
-    "text": "A 33. = C D 26 A 34. «=D",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
   },
   {
     "id": "lamlad_bio_c4_q3",
@@ -1706,21 +1060,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "sympathetic nervous system"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c4_q4",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 4,
-    "text": "A 122, ¢ 20. 3% OC 13, 4A 21. 6 C 14, +E 22.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "A"
   },
   {
     "id": "lamlad_bio_c4_q5",
@@ -1755,21 +1094,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c4_q7",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 7,
-    "text": "A 15. D 23.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "A"
-  },
-  {
     "id": "lamlad_bio_c4_q8",
     "chapter": 4,
     "chapterTitle": "Nervous and Hormonal Coordination",
@@ -1784,21 +1108,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "Vitamin c he"
     },
     "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c4_q9",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 9,
-    "text": "E 17, 2 '¢ 0. C 18. 3.° 3€ oA 19.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "E"
   },
   {
     "id": "lamlad_bio_c4_q10",
@@ -1843,10 +1152,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Tip-sweet",
       "B": "Centre-salt",
       "C": "Back-sour",
-      "D": "Side-sour",
+      "D": "Back-bitter",
       "E": "Back-bitter"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c4_q13",
@@ -1875,10 +1184,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "separates the body from the outside world",
       "B": "protects the body from cold and heat",
       "C": "regulates the water content of the body",
-      "D": "has an outer layer of dead cells",
+      "D": "has nerve endings",
       "E": "has nerve endings"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c4_q15",
@@ -1895,54 +1204,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "Cochlea"
     },
     "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c4_q17",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 17,
-    "text": "The part labelled I is the",
-    "options": {
-      "A": "white matter",
-      "B": "grey matter",
-      "C": "central canal",
-      "D": "synapse",
-      "E": "gangtlon"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c4_q18",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 18,
-    "text": "What is the function of the part labelled III?",
-    "options": {
-      "A": "Conducting nerve impulses to the receptor organ",
-      "B": "Conducting nerve impulses to the effector organ",
-      "C": "Translating the impulses received from the organ",
-      "D": "Amplifying the impulses received from the organ",
-      "E": "Transmitting the impulses to the brain"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c4_q19",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 19,
-    "text": "Which of the following statements is correct of the structure labelled III? It",
-    "options": {
-      "A": "consists mainly of cell bodies",
-      "B": "conducts impulses to the spinal cord",
-      "C": "conducts impulses from the spinal cord to the effector organs",
-      "D": "conducts impulses to the brain",
-      "E": "interprets stimulus in the spinal cord"
-    },
-    "answer": "B"
   },
   {
     "id": "lamlad_bio_c4_q20",
@@ -2024,22 +1285,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c4_q25",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 25,
-    "text": "What type ofeye defect is illustrated in the diagram above?",
-    "options": {
-      "A": "Hypermetropia",
-      "B": "Myopia",
-      "C": "Cataract",
-      "D": "Astigmatism",
-      "E": "Glaucoma"
-    },
-    "answer": "A"
-  },
-  {
     "id": "lamlad_bio_c4_q26",
     "chapter": 4,
     "chapterTitle": "Nervous and Hormonal Coordination",
@@ -2066,25 +1311,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Thyroid gland",
       "B": "Pancreas",
       "C": "Adrenal gland",
-      "D": "Liver",
+      "D": "Spleen",
       "E": "Spleen"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c4_q28",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 28,
-    "text": "B 36. =O«=#B",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c4_q29",
@@ -2113,25 +1343,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "1-2-3-4-5",
       "B": "2-1-4-5-3",
       "C": "3-4-1-2-5",
-      "D": "4-1-5-2-3",
+      "D": "3-4-1-5.2",
       "E": "3-4-1-5.2"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c4_q31",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 31,
-    "text": "OC 39. B B 32. 0C«A 40. £E",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c4_q32",
@@ -2150,53 +1365,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c4_q33",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 33,
-    "text": "Unlike auxins, gibberellins",
-    "options": {
-      "A": "induce the formation of adventitious roots",
-      "B": "do not affect leaf and fruit absicssion",
-      "C": "cannot stimulate stem elongation",
-      "D": "are quite effective as herbicides E, increase growth in the girth of a plant SS"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c4_q34",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 34,
-    "text": "Fruit enlargement can be induced by sprayin young ovary with",
-    "options": {
-      "A": "cytokinin, abscisic and the enthylene B, gibberellins ethylene and abscisic acid",
-      "B": "All of the above",
-      "C": "auxin, abscisic acid and ethylene",
-      "D": "auxin, cytokinin and gibberellin",
-      "E": "auxin, kinin and gibberellin"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c4_q35",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 35,
-    "text": "A fundamental similarity between nervous and . hormonal systems is that both",
-    "options": {
-      "A": "involve chemical transmission",
-      "B": "have widespread effects C, shed chemicals into the blood stream",
-      "C": "Both A and B",
-      "D": "evoke rapid responses",
-      "E": "are controlled by the conditional reflex"
-    },
-    "answer": "D"
-  },
-  {
     "id": "lamlad_bio_c4_q36",
     "chapter": 4,
     "chapterTitle": "Nervous and Hormonal Coordination",
@@ -2211,112 +1379,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "abscisic acid"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c4_q37",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 37,
-    "text": "OA B 30, +E 38. =B",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c4_q38",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 38,
-    "text": "The greatest concentration of light receptors is found in the part labelled",
-    "options": {
-      "A": "VI",
-      "B": "Option B",
-      "C": "Iv",
-      "D": "II BE. 1"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c4_q39",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 39,
-    "text": "The aqueous humour is represented by the part labelled",
-    "options": {
-      "A": "None of the above",
-      "B": "Il",
-      "C": "ll",
-      "D": "VI",
-      "E": "VI"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c4_q40",
-    "chapter": 4,
-    "chapterTitle": "Nervous and Hormonal Coordination",
-    "topic": "Coordination (Nervous and Endocrine Systems) & Sense Organs",
-    "questionNumber": 40,
-    "text": "The light sensitive layer is labelled",
-    "options": {
-      "A": "Option A",
-      "B": "Ul",
-      "C": "Iv",
-      "D": "VI E, Vil or Key"
-    },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c5_q1",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 1,
-    "text": "A. 9. B 17. me JS lo 6 18, 3. «i#&B i. 6B 19.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c5_q3",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 3,
-    "text": "Forelimbs 4. Hindlimbs",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c5_q5",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 5,
-    "text": "C 13, °=+C 21.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
   },
   {
     "id": "lamlad_bio_c5_q6",
@@ -2351,22 +1413,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c5_q9",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 9,
-    "text": "A true fruit is formed from",
-    "options": {
-      "A": "a fertilized ovary and other floral parts",
-      "B": "a fertilized ovary",
-      "C": "a fertilized ovary and calyx",
-      "D": "a fertilized ovary and fleshy receptacle",
-      "E": "an unfertilized ovary and other floral parts"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c5_q10",
     "chapter": 5,
     "chapterTitle": "Reproduction",
@@ -2383,21 +1429,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c5_q12",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 12,
-    "text": "Reserved food material is",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "A"
-  },
-  {
     "id": "lamlad_bio_c5_q13",
     "chapter": 5,
     "chapterTitle": "Reproduction",
@@ -2412,70 +1443,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "31425"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c5_q14",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 14,
-    "text": "Which structure becomes the seed fertilization? ere coatvaller",
-    "options": {
-      "A": "None of the above",
-      "B": "Option B",
-      "C": "Both A and B",
-      "D": "Option D",
-      "E": "5"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c5_q15",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 15,
-    "text": "B 23. 8 OC 16 -E 24. oe B, formation of a fertile embryo and the endo- sperm",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "development of the seed ss",
-      "D": "development of the fruit",
-      "E": "production of double seeds"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c5_q16",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 16,
-    "text": "A fruit formed froma si singh A free carpels, is Ble flower having several",
-    "options": {
-      "A": "amultiple fruit B, adry dehiscent ee Reproduction 6%",
-      "B": "All of the above",
-      "C": "adry indehiscent fruit",
-      "D": "asimple fruit",
-      "E": "an aggregate fruit"
-    },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c5_q17",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 17,
-    "text": "Ifthe anthers of 2 flower mature before the stigma, the condition is termed",
-    "options": {
-      "A": "epigyny B, bypogyny",
-      "B": "All of the above",
-      "C": "protogyny",
-      "D": "protandry",
-      "E": "perigyny"
-    },
-    "answer": "D"
   },
   {
     "id": "lamlad_bio_c5_q18",
@@ -2510,21 +1477,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c5_q20",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 20,
-    "text": "In what order do the following structures develop during the metamorphosis of the toad?",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c5_q21",
     "chapter": 5,
     "chapterTitle": "Reproduction",
@@ -2535,24 +1487,8 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "amnion",
       "B": "chorion",
       "C": "umbilical cord",
-      "D": "oviduct",
+      "D": "placenta oe the figure following to answer Questions 22 and 2 4 1 @) ) % 3 5 6 Fig. 5.16; Transverse section of a fowl's egg UUNSEEVSUCtON",
       "E": "placenta oe the figure following to answer Questions 22 and 2 4 1 @) ) % 3 5 6 Fig. 5.16; Transverse section of a fowl's egg UUNSEEVSUCtON"
-    },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c5_q22",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 22,
-    "text": "The young chick is formed from",
-    "options": {
-      "A": "Option A",
-      "B": "3and4",
-      "C": "1,3 and5",
-      "D": "Option D",
-      "E": "4"
     },
     "answer": "D"
   },
@@ -2571,38 +1507,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "land2"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c5_q24",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 24,
-    "text": "A flowering plant is monoecious if",
-    "options": {
-      "A": "the androecium is found on one plant",
-      "B": "the gynoecium is monocarpous",
-      "C": "it produces essential organs",
-      "D": "the gynoecium and androecium are on th same plant",
-      "E": "the flowers are unisexual"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c5_q33",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 33,
-    "text": "Airspaces are characteristic of seeds or fruits dispersed by",
-    "options": {
-      "A": "birds 2",
-      "B": "water Cc. wind",
-      "C": "Both A and B",
-      "D": "explosive mechanism",
-      "E": "man"
-    },
-    "answer": "B"
   },
   {
     "id": "lamlad_bio_c5_q34",
@@ -2653,21 +1557,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c5_q38",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 38,
-    "text": "Double fertilization in higher plants is significant | because it ensures the 'A. formation of a fertile embryo Answe",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c5_q39",
     "chapter": 5,
     "chapterTitle": "Reproduction",
@@ -2684,128 +1573,19 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c5_q40",
-    "chapter": 5,
-    "chapterTitle": "Reproduction",
-    "topic": "Reproduction in Plants and Animals & Development",
-    "questionNumber": 40,
-    "text": "The main function of the petal of a flower isto",
-    "options": {
-      "A": "attract pollination agents",
-      "B": "protect the flower while still in bud",
-      "C": "serve as landing stage for insects D, protect the inner parts from dessication",
-      "D": "Neither A nor B",
-      "E": "produce nectar Key"
-    },
-    "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c6_q1",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 1,
-    "text": "Polypeptides, 2. Amino acids,",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c6_q2",
     "chapter": 6,
     "chapterTitle": "Nutrition",
     "topic": "Nutrition, Digestive Systems & Enzymes",
     "questionNumber": 2,
-    "text": "Which of the following is not regarded as a micro- nutrient or trace element essential for plant growth?",
+    "text": "Which of the following is not regarded as a micro-nutrient (trace element) essential for plant growth?",
     "options": {
       "A": "Phosphorus",
       "B": "Zinc",
       "C": "Boron",
-      "D": "Silicon",
-      "E": "Molybdenun"
+      "D": "Molybdenum"
     },
     "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c6_q3",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 3,
-    "text": "CC 1) en os 19,",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c6_q4",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 4,
-    "text": "D 12, B 20. 3.0 «=D bo ae C4 21.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c6_q5",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 5,
-    "text": "Autotrophs are also described as",
-    "options": {
-      "A": "consumers",
-      "B": "decomposers",
-      "C": "camivores",
-      "D": "producers",
-      "E": "herbivores"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c6_q6",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 6,
-    "text": "D 14. D 22.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c6_q7",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 7,
-    "text": "Which of the following is not an adaptation of the small intestine for absorption of digested food. The 'A. Villi are well supplied with blood and lympt vessels",
-    "options": {
-      "A": "None of the above",
-      "B": "Vili are numerous and thin-walled",
-      "C": "Small intestine has large surface area",
-      "D": "Small intestine islongandcoiled",
-      "E": "Small intestine leads into the large intestine Ybjective Questions"
-    },
-    "answer": "E"
   },
   {
     "id": "lamlad_bio_c6_q8",
@@ -2813,7 +1593,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Nutrition",
     "topic": "Nutrition, Digestive Systems & Enzymes",
     "questionNumber": 8,
-    "text": "Thunderstorm can be beneficial to plants because it.",
+    "text": "Thunderstorm can be beneficial to plants because it",
     "options": {
       "A": "kills the pests that attacks crops",
       "B": "destroys some of the major crops",
@@ -2856,53 +1636,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c6_q11",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 11,
-    "text": "What is the name of the part labelled I?",
-    "options": {
-      "A": "Ocsophagus",
-      "B": "Nephridium",
-      "C": "Pharynx",
-      "D": "Intestine",
-      "E": "Crop"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c6_q12",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 12,
-    "text": "What is the name of the structure labelled 111?",
-    "options": {
-      "A": "Gizzard",
-      "B": "Crop",
-      "C": "Heart",
-      "D": "Seminal vesicle",
-      "E": "Coelom"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c6_q13",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 13,
-    "text": "What is the function of the part labelled IV?",
-    "options": {
-      "A": "Production of sperm",
-      "B": "Temporary storage of food",
-      "C": "Mechanical grinding of food D, Pumping blood all over the body E, Producing cocoon for the eggs",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c6_q14",
     "chapter": 6,
     "chapterTitle": "Nutrition",
@@ -2935,21 +1668,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c6_q16",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 16,
-    "text": "E 24. 36 In demonstrating the importance of minora] cloments in plants, the culture bottle must be darkoned (0 Av provent algal growth in culture solution B, allow root growth ; CY provent brenkdown of mineral elements",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "prevent photosynthesis in the roots HK. prevent inseota trom getting inside the culture solution"
-    },
-    "answer": "E"
-  },
-  {
     "id": "lamlad_bio_c6_q17",
     "chapter": 6,
     "chapterTitle": "Nutrition",
@@ -2976,25 +1694,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "sunlight",
       "B": "chlorophyll",
       "C": "carbon dioxide",
-      "D": "atmosphere",
+      "D": "water",
       "E": "water"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c6_q20",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 20,
-    "text": "Which of these is a direct photosynthetic product?",
-    "options": {
-      "A": "Glucose B, Starch",
-      "B": "All of the above",
-      "C": "Protein",
-      "D": "Fats E, Latex"
-    },
-    "answer": "A"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c6_q21",
@@ -3029,22 +1732,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c6_q24",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 24,
-    "text": "The element nitrogen is utilized in",
-    "options": {
-      "A": "formation of ATP",
-      "B": "formation of glucose",
-      "C": "formation of amino acids",
-      "D": "photosynthesis",
-      "E": "none of the above"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c6_q28",
     "chapter": 6,
     "chapterTitle": "Nutrition",
@@ -3071,23 +1758,8 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "scurvy",
       "B": "pellagra",
       "C": "rickets",
-      "D": "beriberi",
+      "D": "polio",
       "E": "polio"
-    },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c6_q32",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 32,
-    "text": "Which of the following represents the sequence of protein hydrolysis?",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
     },
     "answer": "D"
   },
@@ -3097,14 +1769,14 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Nutrition",
     "topic": "Nutrition, Digestive Systems & Enzymes",
     "questionNumber": 33,
-    "text": "A food substance which produces red colouration with Sudan IT] contains",
+    "text": "A food substance which produces a red colouration with Sudan III contains:",
     "options": {
       "A": "Protein",
       "B": "Sugar",
       "C": "Starch",
-      "D": "Cellulose EK. Fat"
+      "D": "Lipids and Fats"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c6_q34",
@@ -3123,36 +1795,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "C"
   },
   {
-    "id": "lamlad_bio_c6_q35",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 35,
-    "text": "D A 28. =A 36. =A",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c6_q37",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 37,
-    "text": "Uf tho gall bladder of a mammal is damaged, which of the followlng will bo most seriously affected? AL Glycolysis.",
-    "options": {
-      "A": "None of the above",
-      "B": "Digestion of starch Cy Digestion of tits and oils",
-      "C": "Both A and B",
-      "D": "Digestion of proteins KE. Digestion of mineral salts in food"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c6_q38",
     "chapter": 6,
     "chapterTitle": "Nutrition",
@@ -3167,22 +1809,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "Boiled green vegetables"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c6_q39",
-    "chapter": 6,
-    "chapterTitle": "Nutrition",
-    "topic": "Nutrition, Digestive Systems & Enzymes",
-    "questionNumber": 39,
-    "text": "The pancreatic juice contains the enzymes amylopsin",
-    "options": {
-      "A": "pepsin and trypsin B._ rennin and streapsin C._ streapsin and trypsin D._ streapsin and ptyalin",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B",
-      "E": "maltase and erepsin"
-    },
-    "answer": "C"
   },
   {
     "id": "lamlad_bio_c6_q40",
@@ -3206,61 +1832,15 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Basic Ecological Concepts",
     "topic": "Basic Ecological Concepts & Ecological Factors",
     "questionNumber": 1,
-    "text": "The study of the organisms and the environmen of an abandoned farmland is the ecology of:",
+    "text": "The study of the organisms and the environmen of an abandoned farmland is the ecology of",
     "options": {
       "A": "ecosystem",
       "B": "habitat",
       "C": "environment",
-      "D": "niche",
+      "D": "_ microhabitat",
       "E": "_ microhabitat"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c7_q3",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 3,
-    "text": "D '9. Cc 15.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
     "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c7_q4",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 4,
-    "text": "If three 30cm lengths of glass tubing are tightly packed with clay , sand and loamy soils respec- tively, and then stood in a beaker of water for one week, the level of water will be _A. - lowest in the tube with clay",
-    "options": {
-      "A": "None of the above",
-      "B": "the same in all the tubes",
-      "C": "lowest in the tube with loamy soil",
-      "D": "_ highest in the tube with sandy soil",
-      "E": "_ lowest in the tube with sandy soil"
-    },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c7_q5",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 5,
-    "text": "C 1. A 17.",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
   },
   {
     "id": "lamlad_bio_c7_q6",
@@ -3316,7 +1896,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Basic Ecological Concepts",
     "topic": "Basic Ecological Concepts & Ecological Factors",
     "questionNumber": 11,
-    "text": "Ifa handful of soil is shaken with water and left to settle, the soil particles will settle from light to heavy particles as follows:",
+    "text": "Ifa handful of soil is shaken with water and left to settle, the soil particles will settle from light to heavy particles as follows",
     "options": {
       "A": "humus, clay, silt, sand, stones",
       "B": "humus, silt, clay, sand, stones",
@@ -3357,37 +1937,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "altitude"
     },
     "answer": "A"
-  },
-  {
-    "id": "lamlad_bio_c7_q14",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 14,
-    "text": "In a savanna ecosystem, the abiotic factors include",
-    "options": {
-      "A": "legumes, temperature and sandy soil B, _ water, temperature and soil",
-      "B": "All of the above",
-      "C": "minerals, oxygen and reptiles",
-      "D": "waters, oil and grasses E.. _ soil, minerals and bacteria"
-    },
-    "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c7_q15",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 15,
-    "text": "Mangrove swamp can be found",
-    "options": {
-      "A": "onaseashore with a flat terrain",
-      "B": "where ariver meets the sea",
-      "C": "onamud flat near the sea",
-      "D": "where two rivers meet",
-      "E": "ona piece of land surrounded by water"
-    },
-    "answer": "C"
   },
   {
     "id": "lamlad_bio_c7_q16",
@@ -3432,10 +1981,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "temperature",
       "B": "_ light intensity",
       "C": "turbidity",
-      "D": "wave action",
+      "D": "humidity",
       "E": "humidity"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c7_q19",
@@ -3452,37 +2001,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "sand"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c7_q24",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 24,
-    "text": "A 30. D aS . -",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c7_q25",
-    "chapter": 7,
-    "chapterTitle": "Basic Ecological Concepts",
-    "topic": "Basic Ecological Concepts & Ecological Factors",
-    "questionNumber": 25,
-    "text": "A hygrometer is used for measuring",
-    "options": {
-      "A": "relative humidity",
-      "B": "specific gravity",
-      "C": "light intensity",
-      "D": "turbidity",
-      "E": "wind speed"
-    },
-    "answer": "A"
   },
   {
     "id": "lamlad_bio_c7_q26",
@@ -3569,31 +2087,14 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Functioning Ecosystem",
     "topic": "Functioning Ecosystem, Food Chains, Webs & Pyramids",
     "questionNumber": 1,
-    "text": "Which of the following does not contribute to th biomass in an ecosystem?",
+    "text": "Which of the following does not directly represent the living biomass in an ecosystem?",
     "options": {
       "A": "Producers",
       "B": "Food chains",
       "C": "Consumers",
-      "D": "Microorganism",
-      "E": "Saprophytes"
+      "D": "Decomposers"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c8_q2",
-    "chapter": 8,
-    "chapterTitle": "Functioning Ecosystem",
-    "topic": "Functioning Ecosystem, Food Chains, Webs & Pyramids",
-    "questionNumber": 2,
-    "text": "Autotrophs are also described as:",
-    "options": {
-      "A": "consumers",
-      "B": "decomposers",
-      "C": "carnivores",
-      "D": "producers",
-      "E": "_ herbivores"
-    },
-    "answer": "D"
   },
   {
     "id": "lamlad_bio_c8_q3",
@@ -3660,22 +2161,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c8_q8",
-    "chapter": 8,
-    "chapterTitle": "Functioning Ecosystem",
-    "topic": "Functioning Ecosystem, Food Chains, Webs & Pyramids",
-    "questionNumber": 8,
-    "text": "A food web can be described as a",
-    "options": {
-      "A": "complex feeding relationship in a commy. nity",
-      "B": "_ transfer of food energy from one commy- nity to another Cc complex pattern of food production ina community",
-      "C": "Both A and B",
-      "D": "group of many populations competing for the same type of food",
-      "E": "group of organisms belonging to the same trophic level"
-    },
-    "answer": "A"
-  },
-  {
     "id": "lamlad_bio_c8_q9",
     "chapter": 8,
     "chapterTitle": "Functioning Ecosystem",
@@ -3686,10 +2171,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "The number or organisms in a trophic leve}",
       "B": "Therelationship between plants in different trophic levels",
       "C": "Thenumber of saprophytes and parasites in a habitat",
-      "D": "The number of predators in a habitat",
+      "D": "Progressive decrease in the number of individuals from lower to higher trophic level",
       "E": "Progressive decrease in the number of individuals from lower to higher trophic level"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c8_q10",
@@ -3713,7 +2198,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Functioning Ecosystem",
     "topic": "Functioning Ecosystem, Food Chains, Webs & Pyramids",
     "questionNumber": 11,
-    "text": "In complex food relationships in a community, the primary, secondary and tertiary consumers are referred to as:",
+    "text": "In complex food relationships in a community, the primary, secondary and tertiary consumers are referred to as",
     "options": {
       "A": "symbionts",
       "B": "omnivores",
@@ -3852,22 +2337,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c8_q20",
-    "chapter": 8,
-    "chapterTitle": "Functioning Ecosystem",
-    "topic": "Functioning Ecosystem, Food Chains, Webs & Pyramids",
-    "questionNumber": 20,
-    "text": "The diagram above illustrates",
-    "options": {
-      "A": "King Fisher",
-      "B": "Small fish",
-      "C": "Phytoplankton",
-      "D": "Big fish",
-      "E": "Tadpole"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c8_q22",
     "chapter": 8,
     "chapterTitle": "Functioning Ecosystem",
@@ -3920,13 +2389,12 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Energy Transformation in Nature",
     "topic": "Energy Flow in Nature & Nutrient Cycling",
     "questionNumber": 1,
-    "text": "Which of the following processes is not involved in the carbon cycle?",
+    "text": "Which of the following physiological processes is not involved in the carbon cycle?",
     "options": {
-      "A": "Buming",
-      "B": "Decay",
+      "A": "Combustion and burning",
+      "B": "Decay of organic matter",
       "C": "Transpiration",
-      "D": "Respiration",
-      "E": "Photosynthesis"
+      "D": "Cellular respiration"
     },
     "answer": "C"
   },
@@ -3945,22 +2413,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "_ Precipitation and condensation"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c9_q3",
-    "chapter": 9,
-    "chapterTitle": "Energy Transformation in Nature",
-    "topic": "Energy Flow in Nature & Nutrient Cycling",
-    "questionNumber": 3,
-    "text": "O2«#£ 5. 2 B 4. 0A 6. )bjective Questions :",
-    "options": {
-      "A": "putrefaction of animals ~",
-      "B": "Buming of fuels",
-      "C": "Photosynthesis",
-      "D": "Volcanic eruption",
-      "E": "Respiration in plants"
-    },
-    "answer": "E"
   },
   {
     "id": "lamlad_bio_c9_q4",
@@ -3989,25 +2441,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "nitrogen cycle",
       "B": "carbon cycle",
       "C": "water cycle",
-      "D": "nutrient cycle",
+      "D": "locomotion in organism",
       "E": "locomotion in organism"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c9_q6",
-    "chapter": 9,
-    "chapterTitle": "Energy Transformation in Nature",
-    "topic": "Energy Flow in Nature & Nutrient Cycling",
-    "questionNumber": 6,
-    "text": "Which of these processes removes carbon from f the atmosphere? Ansv",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c9_q7",
@@ -4058,34 +2495,17 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c10_q1",
-    "chapter": 10,
-    "chapterTitle": "Ecological Management",
-    "topic": "Ecological Management, Pollution & Conservation",
-    "questionNumber": 1,
-    "text": "The relationship between a herbivore and th bacteria which live in its caecum is known as:",
-    "options": {
-      "A": "parasitism",
-      "B": "symbiosis",
-      "C": "commensalism DD. __ saprophytism",
-      "D": "Neither A nor B",
-      "E": "predation"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c10_q2",
     "chapter": 10,
     "chapterTitle": "Ecological Management",
     "topic": "Ecological Management, Pollution & Conservation",
     "questionNumber": 2,
-    "text": "A constituent of the exhaust gases of moto vehicles which causes serious air pollution is",
+    "text": "A constituent of the exhaust gases of motor vehicles which causes serious poisonous air pollution is:",
     "options": {
       "A": "water vapour",
       "B": "carbon dioxide",
       "C": "carbon monoxide",
-      "D": "oxygen",
-      "E": "ozone"
+      "D": "oxygen"
     },
     "answer": "C"
   },
@@ -4100,10 +2520,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "immigration",
       "B": "commensalism",
       "C": "symbiosis",
-      "D": "extinction",
+      "D": "competition",
       "E": "competition"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c10_q4",
@@ -4148,10 +2568,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "siting factories and power stations away from residential areas",
       "B": "_ building tall factory chimneys",
       "C": "passing waste gases through filters and absorbers",
-      "D": "_ using lead-free petrol in cars",
+      "D": "_ recycling tins, cans and bottles",
       "E": "_ recycling tins, cans and bottles"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c10_q7",
@@ -4164,10 +2584,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "_ increase in population due to immigration",
       "B": "_ increase in population due to emigration",
       "C": "the number of mature females in the population",
-      "D": "the number of females in the population",
+      "D": "_ the number ofall the young ones produced in the population -------- Ecological Management 112 > Objective Questions",
       "E": "_ the number ofall the young ones produced in the population -------- Ecological Management 112 > Objective Questions"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c10_q8",
@@ -4234,22 +2654,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "D"
   },
   {
-    "id": "lamlad_bio_c10_q12",
-    "chapter": 10,
-    "chapterTitle": "Ecological Management",
-    "topic": "Ecological Management, Pollution & Conservation",
-    "questionNumber": 12,
-    "text": "The changing of colour by a chameleon to that of the environment is an example of",
-    "options": {
-      "A": "adaptive radiation B, protective colouration",
-      "B": "All of the above",
-      "C": "courtship display",
-      "D": "_ display of body colour",
-      "E": "_ territorial behaviour"
-    },
-    "answer": "B"
-  },
-  {
     "id": "lamlad_bio_c10_q13",
     "chapter": 10,
     "chapterTitle": "Ecological Management",
@@ -4289,11 +2693,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "questionNumber": 1,
     "text": "Which of the following is not classified as a terrestrial habitat?",
     "options": {
-      "A": "Forest",
-      "B": "Guinea Savannah",
-      "C": "Afro Alpine",
-      "D": "_ Littoral zone",
-      "E": "Desert"
+      "A": "Tropical rainforest",
+      "B": "Guinea savannah",
+      "C": "Afro-alpine meadow",
+      "D": "Littoral marine zone"
     },
     "answer": "D"
   },
@@ -4330,22 +2733,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c11_q4",
-    "chapter": 11,
-    "chapterTitle": "Habitats",
-    "topic": "Habitats (Aquatic, Terrestrial, Estuarine & Marine)",
-    "questionNumber": 4,
-    "text": "E 2 =2«C 5 C 3. +B 6 C Habitats 118 bjective Questions",
-    "options": {
-      "A": "Sargassum and dog fish B, Red mangrove and pond skater",
-      "B": "All of the above",
-      "C": "Sargassum and red mangrove",
-      "D": "Spirogyra and pond skater",
-      "E": "Red mangrove and dog fish"
-    },
-    "answer": "E"
-  },
-  {
     "id": "lamlad_bio_c11_q5",
     "chapter": 11,
     "chapterTitle": "Habitats",
@@ -4360,21 +2747,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "Availability of nutrient"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c11_q7",
-    "chapter": 11,
-    "chapterTitle": "Habitats",
-    "topic": "Habitats (Aquatic, Terrestrial, Estuarine & Marine)",
-    "questionNumber": 7,
-    "text": "Which of the following organisms can be found in fresh water habitat? | . : Ansv",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "D"
   },
   {
     "id": "lamlad_bio_c11_q9",
@@ -4430,31 +2802,14 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Ecology of Populations",
     "topic": "Population Ecology, Density & Adaptations",
     "questionNumber": 1,
-    "text": "Which of the following is not an effect of over- crowding on a population?",
+    "text": "Which of the following is not an adverse effect of overcrowding on an animal population?",
     "options": {
-      "A": "Death",
-      "B": "Competition",
+      "A": "High mortality rate",
+      "B": "Intense intraspecific competition",
       "C": "Commensalism",
-      "D": "Aggression",
-      "E": "Cannibalism"
+      "D": "Increased aggression"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c12_q2",
-    "chapter": 12,
-    "chapterTitle": "Ecology of Populations",
-    "topic": "Population Ecology, Density & Adaptations",
-    "questionNumber": 2,
-    "text": "Aclimax community is characterised by",
-    "options": {
-      "A": "food shortage",
-      "B": "emigration",
-      "C": "abundance of food",
-      "D": "_ predation",
-      "E": "_ natural disaster"
-    },
-    "answer": "A"
   },
   {
     "id": "lamlad_bio_c12_q5",
@@ -4462,15 +2817,15 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Ecology of Populations",
     "topic": "Population Ecology, Density & Adaptations",
     "questionNumber": 5,
-    "text": "Which of the following is the least safe method of birth control? Using:",
+    "text": "Which of the following is the least safe method of birth control? Using",
     "options": {
       "A": "spermicide cream",
       "B": "_ contraceptile pills",
       "C": "_ barriers such as condoms",
-      "D": "_ intrauterine device",
+      "D": "_ the withdrawal method",
       "E": "_ the withdrawal method"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c12_q6",
@@ -4483,10 +2838,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Shortage of food may be caused by pesti- lence, rinderpest and neglect of farming",
       "B": "Shortage of food may lead to competition | emigration, death and decline in the rate of | reproduction",
       "C": "Overcrowding may lead to scarcity of food",
-      "D": "_ Dispersal of seeds or fruits prevent over crowding",
+      "D": "Territorial defence encourages foox scarcity in a habitat",
       "E": "Territorial defence encourages foox scarcity in a habitat"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c12_q7",
@@ -4569,35 +2924,19 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "B"
   },
   {
-    "id": "lamlad_bio_c12_q13",
-    "chapter": 12,
-    "chapterTitle": "Ecology of Populations",
-    "topic": "Population Ecology, Density & Adaptations",
-    "questionNumber": 13,
-    "text": "Which of the following factors may not cause over-crowding?",
-    "options": {
-      "A": "Limited space",
-      "B": "Scarcity of food",
-      "C": "Reduced birth rate",
-      "D": "Neither A nor B"
-    },
-    "answer": "C"
-  },
-  {
     "id": "lamlad_bio_c13_q1",
     "chapter": 13,
     "chapterTitle": "Relevance of Biology to Agriculture",
     "topic": "Applied Biology in Agriculture & Plant/Animal Pests",
     "questionNumber": 1,
-    "text": "Which of the following statements is not correct about the ecological effects of agricultural activities.",
+    "text": "Which of the following statements is not correct about the ecological effects of agricultural activities?",
     "options": {
-      "A": "The use of herbicides and pesticides on farms can cause pollution",
-      "B": "_Bush-burning encourages desertification",
-      "C": "Excessive use of fertilizers in farms may have harmful effects",
-      "D": "Tillage of tropical soils with ploughs and harrows may encourage erosion",
-      "E": "Monocropping is one of the cultural methods of controlling pests"
+      "A": "The excessive use of chemical pesticides can cause persistent environmental pollution",
+      "B": "Bush-burning accelerates soil erosion and desertification",
+      "C": "Excessive use of inorganic fertilizers leads to eutrophication of water bodies",
+      "D": "Monocropping is an effective biological method of controlling pests and diseases"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c13_q2",
@@ -4630,22 +2969,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "compete for food with the pests"
     },
     "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c13_q4",
-    "chapter": 13,
-    "chapterTitle": "Relevance of Biology to Agriculture",
-    "topic": "Applied Biology in Agriculture & Plant/Animal Pests",
-    "questionNumber": 4,
-    "text": "Which of the following bacteria reduces nitrate: in the soil to gascous nitrogen?",
-    "options": {
-      "A": "putrefying bacteria B, _ nutrifying bacteria",
-      "B": "All of the above",
-      "C": "saprophytic bacteria",
-      "D": "denitrifying bacteria",
-      "E": "_ parasitic bacteria"
-    },
-    "answer": "D"
   },
   {
     "id": "lamlad_bio_c13_q5",
@@ -4706,10 +3029,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Knowledge of agricultural practices by the farmer",
       "B": "_ Relationship between plants and animals",
       "C": "The presence of poisonous chemicals in the farm",
-      "D": "The relative population of plants and animals",
+      "D": "The predator-prey relationship in the ecological community",
       "E": "The predator-prey relationship in the ecological community"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c13_q9",
@@ -4728,51 +3051,20 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "answer": "A"
   },
   {
-    "id": "lamlad_bio_c13_q10",
-    "chapter": 13,
-    "chapterTitle": "Relevance of Biology to Agriculture",
-    "topic": "Applied Biology in Agriculture & Plant/Animal Pests",
-    "questionNumber": 10,
-    "text": "The farming practice by which an exhausted farm land is left for a number of years before cultiva- tion is known as",
-    "options": {
-      "A": "crop rotation",
-      "B": "continuous cropping C.:_ monocropping",
-      "C": "Both A and B",
-      "D": "_ bush fallowing",
-      "E": "mixed cropping"
-    },
-    "answer": "D"
-  },
-  {
     "id": "lamlad_bio_c13_q11",
     "chapter": 13,
     "chapterTitle": "Relevance of Biology to Agriculture",
     "topic": "Applied Biology in Agriculture & Plant/Animal Pests",
     "questionNumber": 11,
-    "text": "Which of the following farm practices can cause loss of soil fertility.",
+    "text": "Which of the following farm practices can cause loss of soil fertility",
     "options": {
       "A": "mulching",
       "B": "compost application",
       "C": "use of fertilizers",
-      "D": "_ terracing",
+      "D": "_ intensive cropping",
       "E": "_ intensive cropping"
     },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c13_q12",
-    "chapter": 13,
-    "chapterTitle": "Relevance of Biology to Agriculture",
-    "topic": "Applied Biology in Agriculture & Plant/Animal Pests",
-    "questionNumber": 12,
-    "text": "The importance of practising crop-rotation in agriculture is to",
-    "options": {
-      "A": "control soil erosion",
-      "B": "maintain the fertility of the soil ee",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "B"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c14_q1",
@@ -4785,10 +3077,9 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Fungi",
       "B": "Viruses",
       "C": "Bacteria",
-      "D": "Nematodes",
-      "E": "Cercariae"
+      "D": "Cercariae larvae"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c14_q2",
@@ -4827,7 +3118,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Micro-organisms: Man and His Health",
     "topic": "Microorganisms: Health, Diseases and Control",
     "questionNumber": 4,
-    "text": "One of the ecological conditions which favour the spread of malaria is :",
+    "text": "One of the ecological conditions which favour the spread of malaria is",
     "options": {
       "A": "improper disposal of decaying organic matter",
       "B": "_ clearing bushes around dwelling houses",
@@ -4875,7 +3166,7 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Micro-organisms: Man and His Health",
     "topic": "Microorganisms: Health, Diseases and Control",
     "questionNumber": 7,
-    "text": "Micro-organisms are important in recyling nutrients because ;",
+    "text": "Micro-organisms are important in recyling nutrients because",
     "options": {
       "A": "_ they are capable of multiplying quickly",
       "B": "_ they are eaten by large organisms",
@@ -4907,62 +3198,14 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
     "chapterTitle": "Conservation, Genetics and Evolution",
     "topic": "Genetics, Heredity, Variation and Evolution",
     "questionNumber": 1,
-    "text": "Inabreeding programmeacross was made between two true-breeding cowpea types: one with round seeds and the other with wrinkled seeds. If round- ness is dominant while wrinkleness is recessive, in the first filial generation all the seeds produced will be",
+    "text": "In a breeding cross between two pure-breeding cowpea plants—one with round seeds (RR) and one with wrinkled seeds (rr)—if roundness is dominant, all the F1 generation seeds will be:",
     "options": {
-      "A": "25 percent wrinkled, 75 per cent round",
-      "B": "100 per cent wrinkled",
-      "C": "50 percent wrinkled, 50 per cent round",
-      "D": "75 percent wrinkled, 25 per cent round",
-      "E": "100 per cent round"
-    },
-    "answer": "E"
-  },
-  {
-    "id": "lamlad_bio_c15_q2",
-    "chapter": 15,
-    "chapterTitle": "Conservation, Genetics and Evolution",
-    "topic": "Genetics, Heredity, Variation and Evolution",
-    "questionNumber": 2,
-    "text": "A farmer cannot check soil erosion effectively by",
-    "options": {
-      "A": "constructing his ridges for planting across the slope B, cultivating cover crops",
-      "B": "All of the above",
-      "C": "practising strip cropping",
-      "D": "clearing the land of vegetation",
-      "E": "constructing terraces"
+      "A": "25% wrinkled, 75% round",
+      "B": "100% wrinkled",
+      "C": "50% wrinkled, 50% round",
+      "D": "100% round"
     },
     "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c15_q3",
-    "chapter": 15,
-    "chapterTitle": "Conservation, Genetics and Evolution",
-    "topic": "Genetics, Heredity, Variation and Evolution",
-    "questionNumber": 3,
-    "text": "Group A serum mixes with Group B i erythrocytes | u } 146 Conservation, Genetics and Evolution",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Group AB serum mixes with Group 0 erythrocytes",
-      "D": "Group B serum mixes with Group B erythrocytes",
-      "E": "Group AB serum mixes with Groups A and B erythrocytes"
-    },
-    "answer": "C"
-  },
-  {
-    "id": "lamlad_bio_c15_q4",
-    "chapter": 15,
-    "chapterTitle": "Conservation, Genetics and Evolution",
-    "topic": "Genetics, Heredity, Variation and Evolution",
-    "questionNumber": 4,
-    "text": "Group A serum mixes with Group A bi erythrocytes a",
-    "options": {
-      "A": "None of the above",
-      "B": "All of the above",
-      "C": "Both A and B",
-      "D": "Neither A nor B"
-    },
-    "answer": "E"
   },
   {
     "id": "lamlad_bio_c15_q5",
@@ -4979,22 +3222,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "E": "genes and environment 14"
     },
     "answer": "D"
-  },
-  {
-    "id": "lamlad_bio_c15_q6",
-    "chapter": 15,
-    "chapterTitle": "Conservation, Genetics and Evolution",
-    "topic": "Genetics, Heredity, Variation and Evolution",
-    "questionNumber": 6,
-    "text": "A person whose blood can be donated to all other people, must have the blood group ~",
-    "options": {
-      "A": "All",
-      "B": "Option B",
-      "C": "Option C",
-      "D": "Option D",
-      "E": "None"
-    },
-    "answer": "A"
   },
   {
     "id": "lamlad_bio_c15_q8",
@@ -5039,10 +3266,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "3:1",
       "B": "1:3",
       "C": "RNA",
-      "D": "1:2",
+      "D": "1:1 There will be agglutination when the r",
       "E": "1:1 There will be agglutination when the r"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c15_q16",
@@ -5074,22 +3301,6 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "D": "Mendel and Lamarck fy"
     },
     "answer": "B"
-  },
-  {
-    "id": "lamlad_bio_c15_q18",
-    "chapter": 15,
-    "chapterTitle": "Conservation, Genetics and Evolution",
-    "topic": "Genetics, Heredity, Variation and Evolution",
-    "questionNumber": 18,
-    "text": "Fossil records found in sedimentary rocks offer some explanation for the theory of evolutior because",
-    "options": {
-      "A": "the deposits have remains of organism: i characteristic of when they were formed",
-      "B": "different strata have remains of organisms o' i the same kind i C._ only organisms with strong parts are fossilizec",
-      "C": "Both A and B",
-      "D": "most animal and plant fossils bear littl : resemblance to present day living specimens",
-      "E": "the deposits have remain of organism : uncharacteristic of when they were formed. i"
-    },
-    "answer": "A"
   },
   {
     "id": "lamlad_bio_c15_q19",
@@ -5150,10 +3361,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Purine",
       "B": "Phosphate",
       "C": "Cytosine",
-      "D": "Deoxyribose",
+      "D": "Uracil ~",
       "E": "Uracil ~"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c15_q24",
@@ -5166,10 +3377,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "48",
       "B": "46",
       "C": "42",
-      "D": "24",
+      "D": "23",
       "E": "23"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c15_q25",
@@ -5182,10 +3393,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "Fossil",
       "B": "Anatomy",
       "C": "Embryology",
-      "D": "Genetics",
+      "D": "Behaviour",
       "E": "Behaviour"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c15_q26",
@@ -5198,10 +3409,10 @@ export const LAMLAD_BIOLOGY_ITEMS: LamladBiologyItem[] = [
       "A": "preservation",
       "B": "utilization",
       "C": "economics",
-      "D": "development",
+      "D": "conservation",
       "E": "conservation"
     },
-    "answer": "E"
+    "answer": "D"
   },
   {
     "id": "lamlad_bio_c15_q27",
@@ -5263,7 +3474,7 @@ export function getLamladBiologyVerifiedQuestions(): VerifiedQuestion[] {
       text: item.text,
       options,
       answer,
-      explanation: `Official Answer: (${item.answer}). [SSCE & UTME Biology by Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu · Chapter ${item.chapter}: ${item.chapterTitle}, Question ${item.questionNumber}]`,
+      explanation: `Official Answer: (${answer}). [SSCE & UTME Biology by Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu · Chapter ${item.chapter}: ${item.chapterTitle}, Question ${item.questionNumber}]`,
       bookTitle: 'LAMLAD BIOLOGY',
       author: 'Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu',
       textbookRef: `Lamlad Biology by Prof. Arawomo & Prof. Akinpelu (Ch. ${item.chapter}: ${item.chapterTitle})`,

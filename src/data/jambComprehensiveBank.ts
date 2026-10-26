@@ -1358,6 +1358,21 @@ function scatterBankQuestionOptions(
   }
 
   const correctIndex = entries.findIndex((e) => e.isCorrect);
+  const newAnswer = letters[correctIndex >= 0 ? correctIndex : 0];
+  const finalCorrectText = entries[correctIndex >= 0 ? correctIndex : 0]?.text || '';
+
+  let cleanExp = String(question.explanation || '').trim();
+  cleanExp = cleanExp
+    .replace(/^Correct\s+Answer:\s*\([A-D]\)\s*("[^"]*")?[.:]?\s*/i, '')
+    .replace(/^Official\s+Answer:\s*\([A-D]\)[.:]?\s*/i, '')
+    .replace(/^The\s+correct\s+option\s+is\s+[A-D][.:]?\s*/i, '')
+    .replace(/^Option\s+[A-D]\s+is\s+correct[.:]?\s*/i, '')
+    .trim();
+
+  const formattedExplanation = cleanExp
+    ? `Correct Answer: (${newAnswer}) "${finalCorrectText}". ${cleanExp}`
+    : `Correct Answer: (${newAnswer}) "${finalCorrectText}".`;
+
   return {
     ...question,
     options: {
@@ -1366,7 +1381,8 @@ function scatterBankQuestionOptions(
       C: entries[2].text,
       D: entries[3].text,
     },
-    answer: letters[correctIndex >= 0 ? correctIndex : 0],
+    answer: newAnswer,
+    explanation: formattedExplanation,
   };
 }
 
