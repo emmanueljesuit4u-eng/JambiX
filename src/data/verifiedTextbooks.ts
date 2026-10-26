@@ -13,6 +13,7 @@
 
 import { SubjectKey, normalizeSubjectKey, assembleUtmeTest, VerifiedQuestion, scatterQuestionOptions } from './jambPastQuestions';
 import { getPhysicsDemystifiedVerifiedQuestions } from './physicsDemystifiedBank';
+import { getLamladBiologyVerifiedQuestions } from './lamladBiologyBank';
 export type { VerifiedQuestion };
 
 export interface VerifiedTextbook {
@@ -1389,10 +1390,11 @@ const RAW_VERIFIED_QUESTIONS: VerifiedQuestion[] = [
 ];
 
 // Scatter options uniformly so correct answers are evenly spread across A, B, C, and D
-// Indexes Dr. Timothy's 1,848 Physics Demystified items (with authentic diagrams & answers) into the official question bank
+// Indexes Dr. Timothy's 1,848 Physics Demystified items and Profs. Arawomo & Akinpelu's Lamlad Biology items into the official question bank
 export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
   ...RAW_VERIFIED_QUESTIONS.map((q, idx) => scatterQuestionOptions(q, q.id + idx * 7)),
   ...getPhysicsDemystifiedVerifiedQuestions(),
+  ...getLamladBiologyVerifiedQuestions(),
 ];
 
 /**
