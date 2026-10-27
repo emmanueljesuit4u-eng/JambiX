@@ -45,6 +45,9 @@ import {
 } from './jambToughQuestionsBank';
 import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
 import { JAMBIX_CHEMISTRY_ITEMS } from './jambixChemistryBank';
+import { JAMBIX_MATHEMATICS_ITEMS } from './jambixMathematicsBank';
+import { JAMBIX_BIOLOGY_ITEMS } from './jambixBiologyBank';
+import { JAMBIX_ECONOMICS_ITEMS } from './jambixEconomicsBank';
 import { LAMLAD_BIOLOGY_ITEMS, toUtmeFourOptions } from './lamladBiologyBank';
 
 export const SEEN_SIGNATURES_STORAGE_KEY = 'jambix_seen_signatures_v2';
@@ -3945,36 +3948,131 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // LAMLAD BIOLOGY QUESTION BANK INTEGRATION
-  // Authored by Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu (Lamlad Publications Ltd.)
-  // Covers all 15 Core Syllabus Chapters. Guarantees:
-  // 1. Full 100% chapter and topic diversification across all UTME Biology concepts.
-  // 2. Verified official textbook answer keys.
-  // 3. Zero repetition of questions within or across test sessions.
+  // JAMBIX MATHEMATICS QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
+  // Fairly distributes across all syllabus topic clusters via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
-  if (subjectKey === 'biology' && LAMLAD_BIOLOGY_ITEMS.length > 0) {
-    // Group items by chapter to guarantee even coverage across all 15 chapters
-    const byChapter: Record<number, typeof LAMLAD_BIOLOGY_ITEMS> = {};
-    for (const item of LAMLAD_BIOLOGY_ITEMS) {
-      if (!byChapter[item.chapter]) byChapter[item.chapter] = [];
-      byChapter[item.chapter].push(item);
+  if (subjectKey === 'mathematics' && JAMBIX_MATHEMATICS_ITEMS.length > 0) {
+    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    const byTopic: Record<string, typeof JAMBIX_MATHEMATICS_ITEMS> = {};
+    for (const item of JAMBIX_MATHEMATICS_ITEMS) {
+      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      if (!byTopic[topicKey]) byTopic[topicKey] = [];
+      byTopic[topicKey].push(item);
     }
 
-    // Shuffle within each chapter
-    for (const ch of Object.keys(byChapter)) {
-      byChapter[Number(ch)] = shuffleArr(byChapter[Number(ch)]);
+    // 2. Shuffle within each topic
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    const pickedBioItems: typeof LAMLAD_BIOLOGY_ITEMS = [];
-    const chapterKeys = shuffleArr(Object.keys(byChapter).map(Number));
+    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    const topicKeys = shuffleArr(Object.keys(byTopic));
+    const pickedMathItems: typeof JAMBIX_MATHEMATICS_ITEMS = [];
 
-    // Round-robin selection across chapters for even topic distribution
+    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    let added = true;
+    while (pickedMathItems.length < targetCount && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (pickedMathItems.length >= targetCount) break;
+        const pool = byTopic[tKey];
+        const nextItem = pool.find((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+        });
+        if (nextItem) {
+          const sig = getQuestionCoreSignature(nextItem.text);
+          safeSessionUsed.add(sig);
+          pickedMathItems.push(nextItem);
+          const idx = pool.indexOf(nextItem);
+          if (idx !== -1) pool.splice(idx, 1);
+          added = true;
+        }
+      }
+    }
+
+    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
+    if (pickedMathItems.length < targetCount) {
+      const allShuffled = shuffleArr(JAMBIX_MATHEMATICS_ITEMS);
+      for (const item of allShuffled) {
+        if (pickedMathItems.length >= targetCount) break;
+        const sig = getQuestionCoreSignature(item.text);
+        if (!safeSessionUsed.has(sig)) {
+          safeSessionUsed.add(sig);
+          pickedMathItems.push(item);
+        }
+      }
+    }
+
+    // 6. Complete random shuffle of all selected questions so questions are diversified
+    const finalOrderedMath = shuffleArr(pickedMathItems);
+    const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
+
+    for (let i = 0; i < finalOrderedMath.length && picked.length < targetCount; i++) {
+      const item = finalOrderedMath[i];
+      const qNum = picked.length + 1;
+      const qId = 870000 + ((effYear % 100) * 1000) + qNum;
+
+      const vq: VerifiedQuestion = {
+        id: qId,
+        year: effYear,
+        questionNumber: qNum,
+        subject: 'Mathematics',
+        topic: item.topic,
+        text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+        options: {
+          A: item.options.A,
+          B: item.options.B,
+          C: item.options.C,
+          D: item.options.D,
+        },
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: 'JAMBIX MATHEMATICS QUESTION BANK',
+        author: 'JAMBIX UTME Preparatory Series',
+        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+        hasImage: false,
+      };
+      // Exactly preserve the author's answer and explanation without scrambling
+      picked.push(vq);
+    }
+
+    if (picked.length >= targetCount) {
+      return picked;
+    }
+  }
+
+  // =========================================================================
+  // JAMBIX BIOLOGY QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
+  // Fairly distributes across all syllabus topic clusters via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // =========================================================================
+  if (subjectKey === 'biology' && JAMBIX_BIOLOGY_ITEMS.length > 0) {
+    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    const byTopic: Record<string, typeof JAMBIX_BIOLOGY_ITEMS> = {};
+    for (const item of JAMBIX_BIOLOGY_ITEMS) {
+      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      if (!byTopic[topicKey]) byTopic[topicKey] = [];
+      byTopic[topicKey].push(item);
+    }
+
+    // 2. Shuffle within each topic
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey] = shuffleArr(byTopic[tKey]);
+    }
+
+    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    const topicKeys = shuffleArr(Object.keys(byTopic));
+    const pickedBioItems: typeof JAMBIX_BIOLOGY_ITEMS = [];
+
+    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
     let added = true;
     while (pickedBioItems.length < targetCount && added) {
       added = false;
-      for (const ch of chapterKeys) {
+      for (const tKey of topicKeys) {
         if (pickedBioItems.length >= targetCount) break;
-        const pool = byChapter[ch];
+        const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
           return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
@@ -3990,10 +4088,10 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // Fallback if needed to reach targetCount
+    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
     if (pickedBioItems.length < targetCount) {
-      const shuffledAll = shuffleArr([...LAMLAD_BIOLOGY_ITEMS]);
-      for (const item of shuffledAll) {
+      const allShuffled = shuffleArr(JAMBIX_BIOLOGY_ITEMS);
+      for (const item of allShuffled) {
         if (pickedBioItems.length >= targetCount) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
@@ -4003,20 +4101,15 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
+    // 6. Complete random shuffle of all selected questions so questions are diversified
     const finalOrderedBio = shuffleArr(pickedBioItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
-    const seenBioIds = new Set<number>();
 
     for (let i = 0; i < finalOrderedBio.length && picked.length < targetCount; i++) {
       const item = finalOrderedBio[i];
       const qNum = picked.length + 1;
-      let qId = 890000 + ((effYear % 100) * 1000) + qNum;
-      while (seenBioIds.has(qId)) {
-        qId += 50000;
-      }
-      seenBioIds.add(qId);
+      const qId = 890000 + ((effYear % 100) * 1000) + qNum;
 
-      const { options, answer } = toUtmeFourOptions(item);
       const vq: VerifiedQuestion = {
         id: qId,
         year: effYear,
@@ -4024,15 +4117,117 @@ export function generateUniqueSubjectQuestions(
         subject: 'Biology',
         topic: item.topic,
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
-        options,
-        answer,
-        explanation: `Official Answer: (${item.answer}). [Lamlad Biology by Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu · Chapter ${item.chapter}: ${item.chapterTitle}, Q${item.questionNumber}]`,
-        bookTitle: 'LAMLAD BIOLOGY',
-        author: 'Prof. G.A.O. Arawomo & Prof. A.I. Akinpelu',
-        textbookRef: `Lamlad Biology by Prof. Arawomo & Prof. Akinpelu (Ch. ${item.chapter}: ${item.chapterTitle})`,
+        options: {
+          A: item.options.A,
+          B: item.options.B,
+          C: item.options.C,
+          D: item.options.D,
+        },
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: 'JAMBIX BIOLOGY QUESTION BANK',
+        author: 'JAMBIX UTME Preparatory Series',
+        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
         hasImage: false,
       };
-      picked.push(scatterQuestionOptions(vq, baseSeed + qNum * 41 + difficultyTier * 17));
+      // Exactly preserve the author's answer and explanation without scrambling
+      picked.push(vq);
+    }
+
+    if (picked.length >= targetCount) {
+      return picked;
+    }
+  }
+
+  // =========================================================================
+  // JAMBIX ECONOMICS QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
+  // Fairly distributes across all syllabus topic clusters via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // =========================================================================
+  if (subjectKey === 'economics' && JAMBIX_ECONOMICS_ITEMS.length > 0) {
+    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    const byTopic: Record<string, typeof JAMBIX_ECONOMICS_ITEMS> = {};
+    for (const item of JAMBIX_ECONOMICS_ITEMS) {
+      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      if (!byTopic[topicKey]) byTopic[topicKey] = [];
+      byTopic[topicKey].push(item);
+    }
+
+    // 2. Shuffle within each topic
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey] = shuffleArr(byTopic[tKey]);
+    }
+
+    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    const topicKeys = shuffleArr(Object.keys(byTopic));
+    const pickedEconItems: typeof JAMBIX_ECONOMICS_ITEMS = [];
+
+    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    let added = true;
+    while (pickedEconItems.length < targetCount && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (pickedEconItems.length >= targetCount) break;
+        const pool = byTopic[tKey];
+        const nextItem = pool.find((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+        });
+        if (nextItem) {
+          const sig = getQuestionCoreSignature(nextItem.text);
+          safeSessionUsed.add(sig);
+          pickedEconItems.push(nextItem);
+          const idx = pool.indexOf(nextItem);
+          if (idx !== -1) pool.splice(idx, 1);
+          added = true;
+        }
+      }
+    }
+
+    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
+    if (pickedEconItems.length < targetCount) {
+      const allShuffled = shuffleArr(JAMBIX_ECONOMICS_ITEMS);
+      for (const item of allShuffled) {
+        if (pickedEconItems.length >= targetCount) break;
+        const sig = getQuestionCoreSignature(item.text);
+        if (!safeSessionUsed.has(sig)) {
+          safeSessionUsed.add(sig);
+          pickedEconItems.push(item);
+        }
+      }
+    }
+
+    // 6. Complete random shuffle of all selected questions so questions are diversified
+    const finalOrderedEcon = shuffleArr(pickedEconItems);
+    const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
+
+    for (let i = 0; i < finalOrderedEcon.length && picked.length < targetCount; i++) {
+      const item = finalOrderedEcon[i];
+      const qNum = picked.length + 1;
+      const qId = 910000 + ((effYear % 100) * 1000) + qNum;
+
+      const vq: VerifiedQuestion = {
+        id: qId,
+        year: effYear,
+        questionNumber: qNum,
+        subject: 'Economics',
+        topic: item.topic,
+        text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+        options: {
+          A: item.options.A,
+          B: item.options.B,
+          C: item.options.C,
+          D: item.options.D,
+        },
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: 'JAMBIX ECONOMICS QUESTION BANK',
+        author: 'JAMBIX UTME Preparatory Series',
+        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+        hasImage: false,
+      };
+      // Exactly preserve the author's answer and explanation without scrambling
+      picked.push(vq);
     }
 
     if (picked.length >= targetCount) {

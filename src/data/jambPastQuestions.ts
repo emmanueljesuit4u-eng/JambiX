@@ -2102,8 +2102,9 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
       questionNumber: idx + 1,
       id: qId,
     };
-    // For Physics and Chemistry: Preserve exact options, answer, and explanation as provided in the JAMBIX bank without scrambling
-    if (numberedQ.subject.toLowerCase() === 'physics' || numberedQ.subject.toLowerCase() === 'chemistry') {
+    // For Physics, Chemistry, Mathematics, Biology, and Economics: Preserve exact options, answer, and explanation as provided in the JAMBIX bank without scrambling
+    const subLower = numberedQ.subject.toLowerCase();
+    if (subLower === 'physics' || subLower === 'chemistry' || subLower === 'mathematics' || subLower === 'biology' || subLower === 'economics') {
       return numberedQ;
     }
     // Ensure all questions across Use of English and all other subjects have options randomly distributed across A, B, C, D

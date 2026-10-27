@@ -43,6 +43,9 @@ export interface CustomExtractedQuestion {
 
 import { PHYSICS_DEMYSTIFIED_ITEMS } from '../data/physicsDemystifiedBank';
 import { JAMBIX_CHEMISTRY_ITEMS } from '../data/jambixChemistryBank';
+import { JAMBIX_MATHEMATICS_ITEMS } from '../data/jambixMathematicsBank';
+import { JAMBIX_BIOLOGY_ITEMS } from '../data/jambixBiologyBank';
+import { JAMBIX_ECONOMICS_ITEMS } from '../data/jambixEconomicsBank';
 
 export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
   id: item.id || `phy_jambix_${idx + 1}`,
@@ -81,6 +84,72 @@ export const CHEMISTRY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_CHEM
   bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
   author: 'JAMBIX UTME Preparatory Series',
   textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
+export const MATHEMATICS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_MATHEMATICS_ITEMS.map((item, idx) => ({
+  id: item.id || `math_jambix_${idx + 1}`,
+  sourcePdfName: 'JAMBIX_MATHEMATICS_QUESTION_BANK.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Mathematics',
+  subjectKey: 'mathematics' as const,
+  topic: item.topic,
+  year: 2026,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: item.explanation,
+  bookTitle: 'JAMBIX MATHEMATICS QUESTION BANK',
+  author: 'JAMBIX UTME Preparatory Series',
+  textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
+export const BIOLOGY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_BIOLOGY_ITEMS.map((item, idx) => ({
+  id: item.id || `bio_jambix_${idx + 1}`,
+  sourcePdfName: 'JAMBIX_BIOLOGY_QUESTION_BANK.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Biology',
+  subjectKey: 'biology' as const,
+  topic: item.topic,
+  year: 2026,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: item.explanation,
+  bookTitle: 'JAMBIX BIOLOGY QUESTION BANK',
+  author: 'JAMBIX UTME Preparatory Series',
+  textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
+export const ECONOMICS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_ECONOMICS_ITEMS.map((item, idx) => ({
+  id: item.id || `econ_jambix_${idx + 1}`,
+  sourcePdfName: 'JAMBIX_ECONOMICS_QUESTION_BANK.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Economics',
+  subjectKey: 'economics' as const,
+  topic: item.topic,
+  year: 2026,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: item.explanation,
+  bookTitle: 'JAMBIX ECONOMICS QUESTION BANK',
+  author: 'JAMBIX UTME Preparatory Series',
+  textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
   isUserApproved: true,
   hasImage: item.hasImage,
   imageUrl: item.imageUrl,
@@ -255,8 +324,9 @@ export function convertToVerifiedQuestion(
     imageAlt: cq.imageAlt,
   };
 
-  if (isDemystified) {
-    // Preserve authentic textbook answer keys and option order from Dr. Timothy's textbook
+  const isAuthenticBank = isDemystified || cq.bookTitle?.includes('JAMBIX') || cq.sourcePdfName?.includes('JAMBIX');
+  if (isAuthenticBank) {
+    // Preserve authentic textbook answer keys and option order
     return baseQ;
   }
 
