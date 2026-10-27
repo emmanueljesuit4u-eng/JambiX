@@ -5,8 +5,9 @@
  * JAMBIX PHYSICS QUESTION BANK
  * TOPIC 1: MEASUREMENTS AND UNITS (QUESTIONS 1–100)
  * TOPIC 2: SCALARS AND VECTORS (QUESTIONS 101–200)
+ * TOPIC 3: MOTION (QUESTIONS 201–300)
  * Indexed directly from official syllabus specifications.
- * Total questions: 200
+ * Total questions: 300
  */
 
 export interface PhysicsDemystifiedItem {
@@ -3631,11 +3632,1812 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "explanation": "R² = 20² + 20² + 2 × 20 × 20 cos 60° = 1,600. Therefore, R = 40 N.",
     "page": 2,
     "hasImage": false
+  },
+  {
+    "id": "phy_unit3_201",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 201,
+    "text": "Which of the following defines speed?",
+    "options": {
+      "A": "Rate of change of displacement",
+      "B": "Rate of change of distance",
+      "C": "Rate of change of velocity",
+      "D": "Distance multiplied by time"
+    },
+    "answer": "B",
+    "explanation": "Average speed is the total distance travelled divided by the total time taken.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_202",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 202,
+    "text": "A car travels 180 m in 12 s. Calculate its average speed.",
+    "options": {
+      "A": "12 m/s",
+      "B": "15 m/s",
+      "C": "18 m/s",
+      "D": "A. 12 m/s\nB. 15 m/s\nC. 18 m/s\nD. 21 m/s"
+    },
+    "answer": "B",
+    "explanation": "Average speed = distance/time = 180/12 = 15 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_203",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 203,
+    "text": "A runner covers 400 m in 50 s. What is the runner's average speed?",
+    "options": {
+      "A": "4 m/s",
+      "B": "6 m/s",
+      "C": "8 m/s",
+      "D": "10 m/s"
+    },
+    "answer": "C",
+    "explanation": "Average speed = 400/50 = 8 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_204",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 204,
+    "text": "A car travels at a constant speed of 20 m/s for 15 s. Calculate the distance covered.",
+    "options": {
+      "A": "35 m",
+      "B": "100 m",
+      "C": "300 m",
+      "D": "A. 35 m\nB. 100 m\nC. 300 m\nD. 400 m"
+    },
+    "answer": "C",
+    "explanation": "Distance = speed × time = 20 × 15 = 300 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_205",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 205,
+    "text": "A body travels 100 m east in 20 s. Its average velocity is",
+    "options": {
+      "A": "5 m/s east",
+      "B": "5 m/s west",
+      "C": "20 m/s east",
+      "D": "2 m/s east"
+    },
+    "answer": "A",
+    "explanation": "Average velocity = displacement/time = 100/20 = 5 m/s east.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_206",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 206,
+    "text": "Which statement correctly distinguishes speed from velocity?",
+    "options": {
+      "A": "Speed has direction, but velocity does not.",
+      "B": "Speed is a scalar, while velocity is a vector.",
+      "C": "Both are vector quantities.",
+      "D": "Both must always be positive."
+    },
+    "answer": "B",
+    "explanation": "Speed has magnitude only, whereas velocity has both magnitude and direction.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_207",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 207,
+    "text": "A car increases its velocity from 5 m/s to 25 m/s in 4 s. Calculate its average acceleration.",
+    "options": {
+      "A": "4 m/s²",
+      "B": "5 m/s²",
+      "C": "6 m/s²",
+      "D": "7.5 m/s²"
+    },
+    "answer": "B",
+    "explanation": "Acceleration = (final velocity − initial velocity)/time = (25 − 5)/4 = 5 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_208",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 208,
+    "text": "A body starts from rest and accelerates uniformly at 3 m/s² for 6 s. Calculate its final velocity.",
+    "options": {
+      "A": "9 m/s",
+      "B": "12 m/s",
+      "C": "18 m/s",
+      "D": "21 m/s"
+    },
+    "answer": "C",
+    "explanation": "Using v = u + at, v = 0 + 3 × 6 = 18 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_209",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 209,
+    "text": "A car moving at 10 m/s accelerates uniformly at 2 m/s² for 5 s. Its final velocity is",
+    "options": {
+      "A": "10 m/s",
+      "B": "15 m/s",
+      "C": "20 m/s",
+      "D": "25 m/s"
+    },
+    "answer": "C",
+    "explanation": "v = u + at = 10 + 2 × 5 = 20 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_210",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 210,
+    "text": "A vehicle slows from 30 m/s to 10 m/s in 5 s. Calculate its acceleration.",
+    "options": {
+      "A": "−4 m/s²",
+      "B": "−2 m/s²",
+      "C": "2 m/s²",
+      "D": "4 m/s²"
+    },
+    "answer": "A",
+    "explanation": "a = (v − u)/t = (10 − 30)/5 = −4 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_211",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 211,
+    "text": "A body starts from rest and accelerates uniformly at 4 m/s² for 5 s. Calculate the distance covered.",
+    "options": {
+      "A": "20 m",
+      "B": "40 m",
+      "C": "50 m",
+      "D": "A. 20 m\nB. 40 m\nC. 50 m\nD. 100 m"
+    },
+    "answer": "C",
+    "explanation": "s = ut + ½at² = 0 + ½ × 4 × 25 = 50 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_212",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 212,
+    "text": "A car moving at 10 m/s accelerates uniformly at 2 m/s² for 4 s. Calculate the distance travelled.",
+    "options": {
+      "A": "24 m",
+      "B": "40 m",
+      "C": "48 m",
+      "D": "A. 24 m\nB. 40 m\nC. 48 m\nD. 56 m"
+    },
+    "answer": "D",
+    "explanation": "s = ut + ½at² = 10 × 4 + ½ × 2 × 16 = 56 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_213",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 213,
+    "text": "A body moving at 20 m/s is brought to rest uniformly in 4 s. Calculate its acceleration.",
+    "options": {
+      "A": "−10 m/s²",
+      "B": "−5 m/s²",
+      "C": "5 m/s²",
+      "D": "10 m/s²"
+    },
+    "answer": "B",
+    "explanation": "a = (0 − 20)/4 = −5 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_214",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 214,
+    "text": "A car travelling at 25 m/s is brought to rest with uniform deceleration of 5 m/s². Calculate its stopping time.",
+    "options": {
+      "A": "2 s",
+      "B": "4 s",
+      "C": "5 s",
+      "D": "10 s"
+    },
+    "answer": "C",
+    "explanation": "Using v = u + at, 0 = 25 − 5t. Therefore, t = 5 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_215",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 215,
+    "text": "A body starts from rest and moves with uniform acceleration of 2 m/s². How far does it travel in 10 s?",
+    "options": {
+      "A": "20 m",
+      "B": "50 m",
+      "C": "100 m",
+      "D": "200 m"
+    },
+    "answer": "C",
+    "explanation": "s = ½at² = ½ × 2 × 10² = 100 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_216",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 216,
+    "text": "A car increases its velocity from 10 m/s to 30 m/s over a distance of 100 m. Calculate its uniform acceleration.",
+    "options": {
+      "A": "2 m/s²",
+      "B": "4 m/s²",
+      "C": "5 m/s²",
+      "D": "8 m/s²"
+    },
+    "answer": "B",
+    "explanation": "Using v² = u² + 2as, a = (30² − 10²)/(2 × 100) = 800/200 = 4 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_217",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 217,
+    "text": "A body moving at 15 m/s accelerates at 3 m/s² over a distance of 40 m. Calculate its final velocity.",
+    "options": {
+      "A": "17 m/s",
+      "B": "19 m/s",
+      "C": "21 m/s",
+      "D": "25 m/s"
+    },
+    "answer": "B",
+    "explanation": "v² = u² + 2as = 225 + 2 × 3 × 40 = 465. Thus v = √465 ≈ 21.6 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_218",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 218,
+    "text": "A body moving at 15 m/s accelerates at 3 m/s² over a distance of 40 m. Calculate its final velocity to one decimal place.",
+    "options": {
+      "A": "17.1 m/s",
+      "B": "19.0 m/s",
+      "C": "21.6 m/s",
+      "D": "25.0 m/s"
+    },
+    "answer": "C",
+    "explanation": "v² = u² + 2as = 15² + 2 × 3 × 40 = 465. Therefore, v = √465 ≈ 21.6 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_219",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 219,
+    "text": "A car moving at 20 m/s decelerates uniformly at 2 m/s². Calculate the distance travelled before it stops.",
+    "options": {
+      "A": "50 m",
+      "B": "100 m",
+      "C": "150 m",
+      "D": "200 m"
+    },
+    "answer": "B",
+    "explanation": "Using v² = u² + 2as, 0 = 400 − 4s. Therefore, s = 100 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_220",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 220,
+    "text": "Which equation relates final velocity, initial velocity, acceleration and time?",
+    "options": {
+      "A": "v = u + at",
+      "B": "s = vt",
+      "C": "v² = u² − 2as in every situation",
+      "D": "a = vt"
+    },
+    "answer": "A",
+    "explanation": "The equation v = u + at applies to motion with constant acceleration.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_221",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 221,
+    "text": "A body starts from rest and reaches 24 m/s in 8 s under uniform acceleration. Calculate the acceleration.",
+    "options": {
+      "A": "2 m/s²",
+      "B": "3 m/s²",
+      "C": "4 m/s²",
+      "D": "6 m/s²"
+    },
+    "answer": "B",
+    "explanation": "a = (24 − 0)/8 = 3 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_222",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 222,
+    "text": "A train moving at 12 m/s accelerates uniformly at 1.5 m/s² for 8 s. Calculate its final velocity.",
+    "options": {
+      "A": "20 m/s",
+      "B": "22 m/s",
+      "C": "24 m/s",
+      "D": "26 m/s"
+    },
+    "answer": "A",
+    "explanation": "v = u + at = 12 + 1.5 × 8 = 24 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_223",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 223,
+    "text": "A body moving at 6 m/s accelerates uniformly at 2 m/s² for 7 s. Calculate its displacement.",
+    "options": {
+      "A": "42 m",
+      "B": "49 m",
+      "C": "84 m",
+      "D": "91 m"
+    },
+    "answer": "D",
+    "explanation": "s = ut + ½at² = 6 × 7 + ½ × 2 × 49 = 91 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_224",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 224,
+    "text": "A vehicle travels at a constant velocity of 18 m/s for 20 s. Calculate its displacement.",
+    "options": {
+      "A": "180 m",
+      "B": "240 m",
+      "C": "360 m",
+      "D": "400 m"
+    },
+    "answer": "C",
+    "explanation": "Displacement = velocity × time = 18 × 20 = 360 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_225",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 225,
+    "text": "A body travels 60 m in 5 s and then 40 m in 5 s. Calculate its average speed for the entire journey.",
+    "options": {
+      "A": "5 m/s",
+      "B": "8 m/s",
+      "C": "10 m/s",
+      "D": "20 m/s"
+    },
+    "answer": "C",
+    "explanation": "Total distance = 100 m; total time = 10 s. Average speed = 100/10 = 10 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_226",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 226,
+    "text": "A person walks 30 m east in 10 s and then 10 m west in 5 s. Calculate the average velocity for the entire journey.",
+    "options": {
+      "A": "1.33 m/s east",
+      "B": "2.67 m/s east",
+      "C": "4.00 m/s east",
+      "D": "4.00 m/s west"
+    },
+    "answer": "A",
+    "explanation": "Net displacement = 30 − 10 = 20 m east. Total time = 15 s. Average velocity = 20/15 ≈ 1.33 m/s east.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_227",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 227,
+    "text": "A body moves with uniform velocity. Its acceleration is",
+    "options": {
+      "A": "zero",
+      "B": "constant and positive",
+      "C": "constant and negative",
+      "D": "increasing continuously"
+    },
+    "answer": "A",
+    "explanation": "Acceleration is the rate of change of velocity. Constant velocity means there is no change in velocity.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_228",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 228,
+    "text": "A body has an initial velocity of 4 m/s and accelerates uniformly at 3 m/s² for 6 s. Calculate its final velocity.",
+    "options": {
+      "A": "18 m/s",
+      "B": "20 m/s",
+      "C": "22 m/s",
+      "D": "24 m/s"
+    },
+    "answer": "C",
+    "explanation": "v = u + at = 4 + 3 × 6 = 22 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_229",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 229,
+    "text": "A body starts from rest and accelerates uniformly at 5 m/s² for 4 s. Calculate its final velocity.",
+    "options": {
+      "A": "5 m/s",
+      "B": "10 m/s",
+      "C": "20 m/s",
+      "D": "25 m/s"
+    },
+    "answer": "C",
+    "explanation": "v = 0 + 5 × 4 = 20 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_230",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 230,
+    "text": "A vehicle slows from 28 m/s to 0 m/s in 7 s. Calculate its uniform acceleration.",
+    "options": {
+      "A": "−4 m/s²",
+      "B": "−3 m/s²",
+      "C": "3 m/s²",
+      "D": "4 m/s²"
+    },
+    "answer": "A",
+    "explanation": "a = (0 − 28)/7 = −4 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_231",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 231,
+    "text": "A body falls freely from rest for 3 s. Taking g = 10 m/s², calculate its final speed.",
+    "options": {
+      "A": "10 m/s",
+      "B": "20 m/s",
+      "C": "30 m/s",
+      "D": "A. 10 m/s\nB. 20 m/s\nC. 30 m/s\nD. 45 m/s"
+    },
+    "answer": "C",
+    "explanation": "v = u + gt = 0 + 10 × 3 = 30 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_232",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 232,
+    "text": "A stone is dropped from rest. Taking g = 10 m/s², how far does it fall in 4 s?",
+    "options": {
+      "A": "20 m",
+      "B": "40 m",
+      "C": "80 m",
+      "D": "160 m"
+    },
+    "answer": "C",
+    "explanation": "s = ½gt² = ½ × 10 × 16 = 80 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_233",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 233,
+    "text": "A stone is thrown vertically upward with a speed of 30 m/s. Taking g = 10 m/s², calculate the time taken to reach its highest point.",
+    "options": {
+      "A": "2 s",
+      "B": "3 s",
+      "C": "4 s",
+      "D": "6 s"
+    },
+    "answer": "B",
+    "explanation": "At the highest point, v = 0. Using v = u − gt, 0 = 30 − 10t, so t = 3 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_234",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 234,
+    "text": "A ball is thrown vertically upward with a speed of 20 m/s. Taking g = 10 m/s², calculate the maximum height reached.",
+    "options": {
+      "A": "10 m",
+      "B": "20 m",
+      "C": "30 m",
+      "D": "A. 10 m\nB. 20 m\nC. 30 m\nD. 40 m"
+    },
+    "answer": "B",
+    "explanation": "At maximum height, v = 0. Using v² = u² − 2gh, h = 400/20 = 20 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_235",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 235,
+    "text": "A stone is thrown vertically upward at 25 m/s. Taking g = 10 m/s², how long does it take to return to its starting level?",
+    "options": {
+      "A": "2.0 s",
+      "B": "2.5 s",
+      "C": "5.0 s",
+      "D": "10.0 s"
+    },
+    "answer": "C",
+    "explanation": "Time to rise = u/g = 25/10 = 2.5 s. Total flight time = 2 × 2.5 = 5.0 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_236",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 236,
+    "text": "At the highest point of the vertical motion of a ball thrown upward, its instantaneous velocity is",
+    "options": {
+      "A": "maximum",
+      "B": "zero",
+      "C": "equal to g",
+      "D": "infinite"
+    },
+    "answer": "B",
+    "explanation": "The ball momentarily stops moving upward before beginning its downward motion.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_237",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 237,
+    "text": "A body is projected vertically upward. Ignoring air resistance, its acceleration during the upward journey is",
+    "options": {
+      "A": "zero",
+      "B": "upward and increasing",
+      "C": "downward and constant",
+      "D": "Ignoring air resistance, its acceleration during the upward journey is\n\nA. zero\nB. upward and increasing\nC. downward and constant\nD. upward and constant"
+    },
+    "answer": "C",
+    "explanation": "Gravity provides a constant downward acceleration of magnitude g throughout the flight.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_238",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 238,
+    "text": "A ball is thrown vertically upward at 40 m/s. Taking g = 10 m/s², its velocity after 2 s is",
+    "options": {
+      "A": "10 m/s upward",
+      "B": "20 m/s upward",
+      "C": "20 m/s downward",
+      "D": "40 m/s upward"
+    },
+    "answer": "B",
+    "explanation": "Taking upward as positive, v = u − gt = 40 − 10 × 2 = 20 m/s upward.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_239",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 239,
+    "text": "A stone falls freely from rest. Taking g = 10 m/s², calculate its speed after falling 45 m.",
+    "options": {
+      "A": "15 m/s",
+      "B": "20 m/s",
+      "C": "30 m/s",
+      "D": "45 m/s"
+    },
+    "answer": "C",
+    "explanation": "v² = u² + 2gs = 0 + 2 × 10 × 45 = 900. Thus v = 30 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_240",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 240,
+    "text": "A ball is thrown vertically upward at 20 m/s. Taking g = 10 m/s², its height after 1 s is",
+    "options": {
+      "A": "5 m",
+      "B": "10 m",
+      "C": "15 m",
+      "D": "20 m"
+    },
+    "answer": "C",
+    "explanation": "h = ut − ½gt² = 20 × 1 − ½ × 10 × 1 = 15 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_241",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 241,
+    "text": "The gradient of a displacement–time graph represents",
+    "options": {
+      "A": "acceleration",
+      "B": "velocity",
+      "C": "distance",
+      "D": "force"
+    },
+    "answer": "B",
+    "explanation": "The gradient is change in displacement divided by change in time.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_242",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 242,
+    "text": "The gradient of a velocity–time graph represents",
+    "options": {
+      "A": "displacement",
+      "B": "speed",
+      "C": "acceleration",
+      "D": "momentum"
+    },
+    "answer": "C",
+    "explanation": "Acceleration is the rate of change of velocity with time.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_243",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 243,
+    "text": "The area under a velocity–time graph represents",
+    "options": {
+      "A": "acceleration",
+      "B": "displacement",
+      "C": "force",
+      "D": "power"
+    },
+    "answer": "B",
+    "explanation": "The signed area under a velocity–time graph gives displacement.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_244",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 244,
+    "text": "A velocity–time graph is a horizontal straight line above the time axis. This indicates",
+    "options": {
+      "A": "constant positive velocity",
+      "B": "constant positive acceleration",
+      "C": "increasing velocity",
+      "D": "decreasing velocity"
+    },
+    "answer": "A",
+    "explanation": "A horizontal line means velocity is constant, while its position above the axis indicates positive velocity.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_245",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 245,
+    "text": "A body starts from rest and accelerates uniformly at 4 m/s² for 5 s. What is the area under its velocity–time graph over this interval?",
+    "options": {
+      "A": "20 m",
+      "B": "40 m",
+      "C": "50 m",
+      "D": "100 m"
+    },
+    "answer": "C",
+    "explanation": "The graph forms a triangle. Its area = ½ × 5 × 20 = 50 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_246",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 246,
+    "text": "A body moves at 10 m/s for 8 s. The area under its velocity–time graph is",
+    "options": {
+      "A": "18 m",
+      "B": "40 m",
+      "C": "80 m",
+      "D": "100 m"
+    },
+    "answer": "C",
+    "explanation": "The area is a rectangle: displacement = 10 × 8 = 80 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_247",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 247,
+    "text": "A velocity–time graph rises uniformly from 5 m/s to 25 m/s over 4 s. Calculate the displacement.",
+    "options": {
+      "A": "40 m",
+      "B": "50 m",
+      "C": "60 m",
+      "D": "100 m"
+    },
+    "answer": "C",
+    "explanation": "Displacement = average velocity × time = [(5 + 25)/2] × 4 = 60 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_248",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 248,
+    "text": "A car moves at 20 m/s and decelerates uniformly to rest in 10 s. Calculate the distance travelled while stopping.",
+    "options": {
+      "A": "50 m",
+      "B": "100 m",
+      "C": "150 m",
+      "D": "200 m"
+    },
+    "answer": "B",
+    "explanation": "Average velocity = (20 + 0)/2 = 10 m/s. Distance = 10 × 10 = 100 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_249",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 249,
+    "text": "A body travels with constant acceleration. Which graph is a straight line?",
+    "options": {
+      "A": "Displacement against time",
+      "B": "Velocity against time",
+      "C": "Acceleration against velocity",
+      "D": "Distance against acceleration"
+    },
+    "answer": "B",
+    "explanation": "With constant acceleration, velocity changes linearly with time.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_250",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 250,
+    "text": "A body moves with uniform acceleration from 4 m/s to 16 m/s in 6 s. Calculate its average velocity during this interval.",
+    "options": {
+      "A": "6 m/s",
+      "B": "8 m/s",
+      "C": "10 m/s",
+      "D": "12 m/s"
+    },
+    "answer": "C",
+    "explanation": "For uniform acceleration, average velocity = (u + v)/2 = (4 + 16)/2 = 10 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_251",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 251,
+    "text": "A car travels at 12 m/s for 5 s and then at 20 m/s for 5 s. Calculate its average speed.",
+    "options": {
+      "A": "12 m/s",
+      "B": "14 m/s",
+      "C": "16 m/s",
+      "D": "A. 12 m/s\nB. 14 m/s\nC. 16 m/s\nD. 20 m/s"
+    },
+    "answer": "B",
+    "explanation": "Total distance = 12 × 5 + 20 × 5 = 160 m. Total time = 10 s. Average speed = 16 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_252",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 252,
+    "text": "A vehicle covers 60 km in 1.5 hours. Calculate its average speed.",
+    "options": {
+      "A": "30 km/h",
+      "B": "40 km/h",
+      "C": "45 km/h",
+      "D": "A. 30 km/h\nB. 40 km/h\nC. 45 km/h\nD. 90 km/h"
+    },
+    "answer": "B",
+    "explanation": "Average speed = 60/1.5 = 40 km/h.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_253",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 253,
+    "text": "A train travels 120 km at 60 km/h and another 120 km at 40 km/h. Calculate its average speed for the whole journey.",
+    "options": {
+      "A": "45 km/h",
+      "B": "48 km/h",
+      "C": "50 km/h",
+      "D": "52 km/h"
+    },
+    "answer": "B",
+    "explanation": "First time = 120/60 = 2 h. Second time = 120/40 = 3 h. Average speed = 240/5 = 48 km/h.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_254",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 254,
+    "text": "A car travels equal distances at 30 km/h and 60 km/h. Its average speed is",
+    "options": {
+      "A": "35 km/h",
+      "B": "40 km/h",
+      "C": "45 km/h",
+      "D": "50 km/h"
+    },
+    "answer": "B",
+    "explanation": "For equal distances, average speed = 2v₁v₂/(v₁ + v₂) = 2 × 30 × 60/90 = 40 km/h.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_255",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 255,
+    "text": "A vehicle travels for equal time intervals at 30 km/h and 60 km/h. Calculate its average speed.",
+    "options": {
+      "A": "35 km/h",
+      "B": "40 km/h",
+      "C": "45 km/h",
+      "D": "A. 35 km/h\nB. 40 km/h\nC. 45 km/h\nD. 50 km/h"
+    },
+    "answer": "C",
+    "explanation": "For equal time intervals, average speed = (30 + 60)/2 = 45 km/h.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_256",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 256,
+    "text": "A car travels 100 m in 5 s and then 200 m in 10 s. Calculate its average speed.",
+    "options": {
+      "A": "10 m/s",
+      "B": "15 m/s",
+      "C": "20 m/s",
+      "D": "A. 10 m/s\nB. 15 m/s\nC. 20 m/s\nD. 30 m/s"
+    },
+    "answer": "A",
+    "explanation": "Total distance = 300 m and total time = 15 s. Average speed = 300/15 = 20 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_257",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 257,
+    "text": "A body moves 40 m east in 4 s and then 20 m west in 2 s. Its average velocity for the journey is",
+    "options": {
+      "A": "0 m/s",
+      "B": "5 m/s east",
+      "C": "10 m/s east",
+      "D": "10 m/s west"
+    },
+    "answer": "C",
+    "explanation": "Net displacement = 40 − 20 = 20 m east. Total time = 6 s, so average velocity = 20/6 ≈ 3.33 m/s east.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_258",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 258,
+    "text": "A cyclist travels 15 km in 30 minutes. Calculate the average speed in km/h.",
+    "options": {
+      "A": "15 km/h",
+      "B": "20 km/h",
+      "C": "30 km/h",
+      "D": "45 km/h"
+    },
+    "answer": "C",
+    "explanation": "30 minutes = 0.5 h. Average speed = 15/0.5 = 30 km/h.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_259",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 259,
+    "text": "A car moves at 72 km/h. Express its speed in m/s.",
+    "options": {
+      "A": "10 m/s",
+      "B": "15 m/s",
+      "C": "20 m/s",
+      "D": "25 m/s"
+    },
+    "answer": "C",
+    "explanation": "72 × 1000/3600 = 20 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_260",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 260,
+    "text": "A cyclist moves at 5 m/s for 2 minutes. Calculate the distance travelled.",
+    "options": {
+      "A": "10 m",
+      "B": "60 m",
+      "C": "300 m",
+      "D": "A. 10 m\nB. 60 m\nC. 300 m\nD. 600 m"
+    },
+    "answer": "D",
+    "explanation": "2 minutes = 120 s. Distance = 5 × 120 = 600 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_261",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 261,
+    "text": "A body starts from rest and accelerates uniformly at 2 m/s². How long does it take to reach 20 m/s?",
+    "options": {
+      "A": "5 s",
+      "B": "10 s",
+      "C": "15 s",
+      "D": "20 s"
+    },
+    "answer": "B",
+    "explanation": "t = (v − u)/a = (20 − 0)/2 = 10 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_262",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 262,
+    "text": "A car increases its speed from 10 m/s to 30 m/s over 100 m. Calculate the acceleration.",
+    "options": {
+      "A": "2 m/s²",
+      "B": "4 m/s²",
+      "C": "5 m/s²",
+      "D": "8 m/s²"
+    },
+    "answer": "B",
+    "explanation": "a = (v² − u²)/(2s) = (900 − 100)/200 = 4 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_263",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 263,
+    "text": "A body moving at 25 m/s decelerates uniformly at 5 m/s². Calculate the distance travelled before it stops.",
+    "options": {
+      "A": "25 m",
+      "B": "50 m",
+      "C": "62.5 m",
+      "D": "125 m"
+    },
+    "answer": "C",
+    "explanation": "Using v² = u² + 2as, 0 = 625 − 10s. Therefore, s = 62.5 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_264",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 264,
+    "text": "A car travelling at 30 m/s is brought to rest over a distance of 90 m. Calculate its uniform acceleration.",
+    "options": {
+      "A": "−10 m/s²",
+      "B": "−5 m/s²",
+      "C": "5 m/s²",
+      "D": "10 m/s²"
+    },
+    "answer": "B",
+    "explanation": "a = (v² − u²)/(2s) = (0 − 900)/(180) = −5 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_265",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 265,
+    "text": "A body starts from rest and covers 72 m in 6 s under uniform acceleration. Calculate the acceleration.",
+    "options": {
+      "A": "2 m/s²",
+      "B": "3 m/s²",
+      "C": "4 m/s²",
+      "D": "6 m/s²"
+    },
+    "answer": "C",
+    "explanation": "s = ½at². Therefore, a = 2s/t² = 144/36 = 4 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_266",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 266,
+    "text": "A body has an initial velocity of 8 m/s and an acceleration of 2 m/s². How far does it travel in 5 s?",
+    "options": {
+      "A": "40 m",
+      "B": "45 m",
+      "C": "65 m",
+      "D": "90 m"
+    },
+    "answer": "C",
+    "explanation": "s = ut + ½at² = 8 × 5 + ½ × 2 × 25 = 65 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_267",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 267,
+    "text": "A body accelerates uniformly from 10 m/s to 30 m/s over 100 m. Calculate the time taken.",
+    "options": {
+      "A": "2.5 s",
+      "B": "4 s",
+      "C": "5 s",
+      "D": "10 s"
+    },
+    "answer": "C",
+    "explanation": "Average velocity = (10 + 30)/2 = 20 m/s. Time = 100/20 = 5 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_268",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 268,
+    "text": "A vehicle slows uniformly from 24 m/s to 12 m/s in 6 s. Calculate the distance travelled during this time.",
+    "options": {
+      "A": "36 m",
+      "B": "72 m",
+      "C": "108 m",
+      "D": "144 m"
+    },
+    "answer": "C",
+    "explanation": "Average velocity = (24 + 12)/2 = 18 m/s. Distance = 18 × 6 = 108 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_269",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 269,
+    "text": "A body starts from rest and accelerates at 3 m/s² for 4 s. It then moves at the attained constant velocity for 6 s. Calculate the total distance travelled.",
+    "options": {
+      "A": "24 m",
+      "B": "48 m",
+      "C": "78 m",
+      "D": "A. 24 m\nB. 48 m\nC. 78 m\nD. 120 m"
+    },
+    "answer": "C",
+    "explanation": "First distance = ½ × 3 × 4² = 24 m. Final velocity = 12 m/s. Second distance = 12 × 6 = 72 m. Total = 96 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_270",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 270,
+    "text": "A body starts from rest and accelerates at 3 m/s² for 4 s. It then moves at the attained constant velocity for 6 s. Calculate the total distance travelled.",
+    "options": {
+      "A": "24 m",
+      "B": "48 m",
+      "C": "72 m",
+      "D": "A. 24 m\nB. 48 m\nC. 72 m\nD. 96 m"
+    },
+    "answer": "D",
+    "explanation": "During acceleration, s₁ = ½ × 3 × 4² = 24 m and v = 12 m/s. During constant motion, s₂ = 12 × 6 = 72 m. Total distance = 24 + 72 = 96 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_271",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 271,
+    "text": "A car moves at 20 m/s for 10 s, then decelerates uniformly to rest in 5 s. Calculate the total distance travelled.",
+    "options": {
+      "A": "200 m",
+      "B": "225 m",
+      "C": "250 m",
+      "D": "A. 200 m\nB. 225 m\nC. 250 m\nD. 300 m"
+    },
+    "answer": "B",
+    "explanation": "Distance at constant speed = 20 × 10 = 200 m. Braking distance = average speed × time = (20/2) × 5 = 50 m. Total = 250 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_272",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 272,
+    "text": "A car moves at 20 m/s for 10 s, then decelerates uniformly to rest in 5 s. Calculate the total distance travelled.",
+    "options": {
+      "A": "200 m",
+      "B": "225 m",
+      "C": "250 m",
+      "D": "A. 200 m\nB. 225 m\nC. 250 m\nD. 300 m"
+    },
+    "answer": "C",
+    "explanation": "The first distance is 200 m. The braking distance is ½ × 20 × 5 = 50 m. Total distance = 250 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_273",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 273,
+    "text": "A body is projected vertically upward at 30 m/s. Taking g = 10 m/s², calculate its maximum height.",
+    "options": {
+      "A": "30 m",
+      "B": "45 m",
+      "C": "60 m",
+      "D": "90 m"
+    },
+    "answer": "B",
+    "explanation": "At the highest point, v = 0. Using v² = u² − 2gh, h = 900/20 = 45 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_274",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 274,
+    "text": "A ball is thrown vertically upward at 40 m/s. Taking g = 10 m/s², calculate the total time of flight back to the launch level.",
+    "options": {
+      "A": "2 s",
+      "B": "4 s",
+      "C": "6 s",
+      "D": "8 s"
+    },
+    "answer": "D",
+    "explanation": "Time to rise = u/g = 40/10 = 4 s. Total time = 2 × 4 = 8 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_275",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 275,
+    "text": "A stone is dropped from a height of 45 m. Taking g = 10 m/s², calculate the time taken to reach the ground.",
+    "options": {
+      "A": "1.5 s",
+      "B": "2 s",
+      "C": "3 s",
+      "D": "A. 1.5 s\nB. 2 s\nC. 3 s\nD. 4.5 s"
+    },
+    "answer": "C",
+    "explanation": "s = ½gt². Thus, 45 = 5t², so t² = 9 and t = 3 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_276",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 276,
+    "text": "A ball is thrown vertically upward at 20 m/s. Taking g = 10 m/s², what is its velocity after 3 s?",
+    "options": {
+      "A": "10 m/s upward",
+      "B": "10 m/s downward",
+      "C": "20 m/s upward",
+      "D": "30 m/s downward"
+    },
+    "answer": "B",
+    "explanation": "Taking upward as positive, v = 20 − 10 × 3 = −10 m/s. The negative sign indicates downward motion.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_277",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 277,
+    "text": "A stone is dropped from rest. Taking g = 10 m/s², what distance does it fall during the third second?",
+    "options": {
+      "A": "5 m",
+      "B": "15 m",
+      "C": "25 m",
+      "D": "30 m"
+    },
+    "answer": "B",
+    "explanation": "Distance in the third second = distance in 3 s minus distance in 2 s = ½ × 10 × 9 − ½ × 10 × 4 = 45 − 20 = 25 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_278",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 278,
+    "text": "A freely falling body starts from rest. The distances covered in successive equal time intervals are in the ratio",
+    "options": {
+      "A": "1:1:1",
+      "B": "1:2:3",
+      "C": "1:3:5",
+      "D": "1:4:9"
+    },
+    "answer": "C",
+    "explanation": "For uniformly accelerated motion from rest, distances in successive equal time intervals follow the odd-number sequence 1, 3, 5, 7, and so on.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_279",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 279,
+    "text": "A body is projected vertically upward. Ignoring air resistance, its speed when it returns to the point of projection is",
+    "options": {
+      "A": "zero",
+      "B": "half its initial speed",
+      "C": "equal to its initial speed",
+      "D": "Ignoring air resistance, its speed when it returns to the point of projection is\n\nA. zero\nB. half its initial speed\nC. equal to its initial speed\nD. twice its initial speed"
+    },
+    "answer": "C",
+    "explanation": "With negligible air resistance, mechanical energy is conserved, so the body returns with the same speed but in the opposite direction.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_280",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 280,
+    "text": "A ball is thrown vertically upward at 30 m/s. Taking g = 10 m/s², calculate its height after 2 s.",
+    "options": {
+      "A": "20 m",
+      "B": "40 m",
+      "C": "50 m",
+      "D": "60 m"
+    },
+    "answer": "C",
+    "explanation": "h = ut − ½gt² = 30 × 2 − ½ × 10 × 4 = 60 − 20 = 40 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_281",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 281,
+    "text": "A projectile is launched horizontally from a height. Neglecting air resistance, its horizontal acceleration is",
+    "options": {
+      "A": "zero",
+      "B": "g",
+      "C": "2g",
+      "D": "dependent on its mass"
+    },
+    "answer": "A",
+    "explanation": "Gravity acts vertically downward. With air resistance neglected, there is no horizontal force and therefore no horizontal acceleration.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_282",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 282,
+    "text": "A projectile is launched horizontally at 15 m/s from a cliff 20 m high. Taking g = 10 m/s², how long does it take to reach the ground?",
+    "options": {
+      "A": "1 s",
+      "B": "2 s",
+      "C": "3 s",
+      "D": "4 s"
+    },
+    "answer": "B",
+    "explanation": "Vertical motion gives h = ½gt². Thus, 20 = 5t², so t = 2 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_283",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 283,
+    "text": "A projectile is launched horizontally at 15 m/s from a cliff 20 m high. Taking g = 10 m/s², how far horizontally does it travel before reaching the ground?",
+    "options": {
+      "A": "15 m",
+      "B": "20 m",
+      "C": "30 m",
+      "D": "45 m"
+    },
+    "answer": "C",
+    "explanation": "Time of flight = 2 s. Horizontal distance = 15 × 2 = 30 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_284",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 284,
+    "text": "A projectile is launched horizontally from a height of 45 m. Taking g = 10 m/s², calculate its time of flight.",
+    "options": {
+      "A": "1.5 s",
+      "B": "2 s",
+      "C": "3 s",
+      "D": "4.5 s"
+    },
+    "answer": "C",
+    "explanation": "h = ½gt², so 45 = 5t². Therefore, t = 3 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_285",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 285,
+    "text": "A projectile is launched horizontally at 20 m/s from a height of 45 m. Taking g = 10 m/s², calculate its horizontal range.",
+    "options": {
+      "A": "30 m",
+      "B": "45 m",
+      "C": "60 m",
+      "D": "90 m"
+    },
+    "answer": "C",
+    "explanation": "Time of flight = √(2h/g) = √(90/10) = 3 s. Range = 20 × 3 = 60 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_286",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 286,
+    "text": "A projectile is launched horizontally at 10 m/s from a height of 80 m. Taking g = 10 m/s², calculate its time of flight.",
+    "options": {
+      "A": "2 s",
+      "B": "4 s",
+      "C": "6 s",
+      "D": "8 s"
+    },
+    "answer": "B",
+    "explanation": "h = ½gt², so 80 = 5t². Therefore, t² = 16 and t = 4 s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_287",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 287,
+    "text": "A projectile is launched horizontally at 10 m/s from a height of 80 m. Taking g = 10 m/s², calculate its horizontal range.",
+    "options": {
+      "A": "20 m",
+      "B": "40 m",
+      "C": "80 m",
+      "D": "100 m"
+    },
+    "answer": "B",
+    "explanation": "The time of flight is 4 s. Horizontal range = 10 × 4 = 40 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_288",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 288,
+    "text": "For a projectile launched horizontally, which component of velocity remains constant when air resistance is neglected?",
+    "options": {
+      "A": "Vertical component",
+      "B": "Horizontal component",
+      "C": "Resultant velocity",
+      "D": "Acceleration due to gravity"
+    },
+    "answer": "B",
+    "explanation": "Horizontal acceleration is zero, so the horizontal velocity remains constant.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_289",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 289,
+    "text": "A projectile is launched horizontally at 25 m/s. After 2 s, its horizontal displacement is",
+    "options": {
+      "A": "25 m",
+      "B": "40 m",
+      "C": "50 m",
+      "D": "100 m"
+    },
+    "answer": "C",
+    "explanation": "Horizontal displacement = horizontal velocity × time = 25 × 2 = 50 m.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_290",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 290,
+    "text": "A projectile is launched horizontally. After 3 s, its vertical speed is, taking g = 10 m/s²,",
+    "options": {
+      "A": "10 m/s",
+      "B": "20 m/s",
+      "C": "30 m/s",
+      "D": "45 m/s"
+    },
+    "answer": "C",
+    "explanation": "Initial vertical velocity is zero. Vertical speed = gt = 10 × 3 = 30 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_291",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 291,
+    "text": "A body moves in a circle of radius 2 m at a constant speed of 6 m/s. Calculate its centripetal acceleration.",
+    "options": {
+      "A": "3 m/s²",
+      "B": "12 m/s²",
+      "C": "18 m/s²",
+      "D": "36 m/s²"
+    },
+    "answer": "C",
+    "explanation": "Centripetal acceleration = v²/r = 36/2 = 18 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_292",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 292,
+    "text": "A stone moves in a circle of radius 4 m at a speed of 8 m/s. Calculate its centripetal acceleration.",
+    "options": {
+      "A": "2 m/s²",
+      "B": "8 m/s²",
+      "C": "16 m/s²",
+      "D": "32 m/s²"
+    },
+    "answer": "C",
+    "explanation": "a = v²/r = 64/4 = 16 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_293",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 293,
+    "text": "A body moves in a circle at constant speed. Which statement is correct?",
+    "options": {
+      "A": "Its velocity is constant.",
+      "B": "Its acceleration is zero.",
+      "C": "Its velocity changes because its direction changes.",
+      "D": "Which statement is correct?\n\nA. Its velocity is constant.\nB. Its acceleration is zero.\nC. Its velocity changes because its direction changes.\nD. Its speed must increase continuously."
+    },
+    "answer": "C",
+    "explanation": "Velocity is a vector. In circular motion, its direction changes continuously even when speed is constant.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_294",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 294,
+    "text": "A particle completes one revolution of a circular path of radius 7 m. Its displacement is",
+    "options": {
+      "A": "0 m",
+      "B": "7 m",
+      "C": "14 m",
+      "D": "44 m"
+    },
+    "answer": "A",
+    "explanation": "After one complete revolution, the particle returns to its starting point, so its displacement is zero.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_295",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 295,
+    "text": "A particle completes one revolution of a circular track of radius 7 m in 14 s. Using π = 22/7, calculate its average speed.",
+    "options": {
+      "A": "1 m/s",
+      "B": "2 m/s",
+      "C": "3 m/s",
+      "D": "A. 1 m/s\nB. 2 m/s\nC. 3 m/s\nD. 4 m/s"
+    },
+    "answer": "B",
+    "explanation": "Circumference = 2πr = 44 m. Average speed = 44/14 ≈ 3.14 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_296",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 296,
+    "text": "A particle moves in a circle of radius 7 m and completes one revolution in 14 s. Using π = 22/7, calculate its average speed.",
+    "options": {
+      "A": "1 m/s",
+      "B": "2 m/s",
+      "C": "3.14 m/s",
+      "D": "A. 1 m/s\nB. 2 m/s\nC. 3.14 m/s\nD. 4 m/s"
+    },
+    "answer": "C",
+    "explanation": "Distance in one revolution = 2πr = 44 m. Average speed = 44/14 ≈ 3.14 m/s.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_297",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 297,
+    "text": "A body moves in a circular path of radius 5 m at 10 m/s. Calculate its centripetal acceleration.",
+    "options": {
+      "A": "2 m/s²",
+      "B": "10 m/s²",
+      "C": "20 m/s²",
+      "D": "50 m/s²"
+    },
+    "answer": "C",
+    "explanation": "a = v²/r = 100/5 = 20 m/s².",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_298",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 298,
+    "text": "A body moves in a circle at constant speed. The direction of its centripetal acceleration is",
+    "options": {
+      "A": "tangential to the circle",
+      "B": "away from the centre",
+      "C": "towards the centre",
+      "D": "The direction of its centripetal acceleration is\n\nA. tangential to the circle\nB. away from the centre\nC. towards the centre\nD. along the direction of motion"
+    },
+    "answer": "C",
+    "explanation": "Centripetal acceleration continually changes the direction of velocity and points towards the centre of the circular path.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_299",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 299,
+    "text": "A wheel completes 120 revolutions in one minute. Calculate its frequency.",
+    "options": {
+      "A": "0.5 Hz",
+      "B": "1 Hz",
+      "C": "2 Hz",
+      "D": "120 Hz"
+    },
+    "answer": "C",
+    "explanation": "Frequency = revolutions per second = 120/60 = 2 Hz.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit3_300",
+    "originalChapter": 3,
+    "chapterTitle": "Topic 3: Motion",
+    "topic": "Motion",
+    "bookQuestionNum": 300,
+    "text": "A body moves in a circular path and completes one revolution in 4 s. Its frequency is",
+    "options": {
+      "A": "0.25 Hz",
+      "B": "0.5 Hz",
+      "C": "2 Hz",
+      "D": "4 Hz"
+    },
+    "answer": "A",
+    "explanation": "Frequency = 1/period = 1/4 = 0.25 Hz.",
+    "page": 3,
+    "hasImage": false
   }
 ];
 
 export const JAMBIX_PHYSICS_100_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_200_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
+export const JAMBIX_PHYSICS_300_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 
 export function getPhysicsDemystifiedVerifiedQuestions() {
   return PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
