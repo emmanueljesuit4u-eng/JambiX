@@ -89,7 +89,7 @@ export const CHEMISTRY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_CHEM
 }));
 
 /**
- * Get all indexed custom questions from local storage + built-in extracted Physics Demystified bank
+ * Get all indexed custom questions from local storage (uploaded by candidate)
  */
 export function getLocalCustomQuestions(): CustomExtractedQuestion[] {
   let userCustom: CustomExtractedQuestion[] = [];
@@ -104,23 +104,7 @@ export function getLocalCustomQuestions(): CustomExtractedQuestion[] {
     }
   }
 
-  // Combine user uploads and Physics Demystified bank without duplicate IDs
-  const seenIds = new Set(userCustom.map((q) => q.id));
-  const combined = [...userCustom];
-  for (const q of PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS) {
-    if (!seenIds.has(q.id)) {
-      combined.push(q);
-      seenIds.add(q.id);
-    }
-  }
-  for (const q of CHEMISTRY_CUSTOM_QUESTIONS) {
-    if (!seenIds.has(q.id)) {
-      combined.push(q);
-      seenIds.add(q.id);
-    }
-  }
-
-  return combined;
+  return userCustom;
 }
 
 /**

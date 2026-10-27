@@ -3717,74 +3717,96 @@ export function generateUniqueSubjectQuestions(
   const numChapters = chapterGens.length;
   const config = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.english;
 
-  // Step 0: Progressive Toughness Injection: As students take more 2-hour tests (Mock 1 -> Mock 2 -> Mock 3 -> Mock 4...),
-  // the proportion of authentic, high-rigor historical UTME questions escalates systematically:
-  // - Mock 1 (Tier 0): ~15-20% tough questions (baseline syllabus rigor, 6-8 of 40)
-  // - Mock 2 (Tier 1): ~35-40% tough questions (14-16 of 40)
-  // - Mock 3 (Tier 2): ~55-60% very tough questions (22-24 of 40)
-  // - Mock 4 (Tier 3): ~75-80% advanced mastery questions (30-32 of 40)
-  // - Mock 5+ (Tier 4+): 88-100% highest-rigor historical problem sets (36-40 of 40)
-  // For Physics: Draw directly from the 1,848 verified questions extracted from "Physics Demystified by Dr. Timothy"
-  // covering all 27 syllabus topics. Guarantees:
-  // 1. Both questions WITH diagrams (circuits, mechanics, instruments, ray diagrams, graphs) and normal text questions.
-  // 2. Progressive toughness: The more tests taken (higher difficultyTier), the tougher the problem sets.
-  // 3. Strictly verified 100% accurate textbook answers.
+  const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
+  const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
+
+  // High-entropy seeded pseudo-random number generator for uniform distribution across tests
+  let randState = Math.abs(
+    (baseSeed * 1664525 + chosenYear * 22695477 + difficultyTier * 45381669 + Math.floor(Math.random() * 10000000)) | 0
+  ) || 1234567;
+  const nextRand = () => {
+    randState = (randState * 1103515245 + 12345) | 0;
+    return (randState >>> 0) / 4294967296;
+  };
+
+  const shuffleArr = <T>(arr: T[]): T[] => {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(nextRand() * (i + 1));
+      const tmp = copy[i];
+      copy[i] = copy[j];
+      copy[j] = tmp;
+    }
+    return copy;
+  };
+
   // =========================================================================
-  // JAMBIX PHYSICS QUESTION BANK (TOPIC 1: MEASUREMENTS AND UNITS)
-  // Indexed 100 questions. Pulls 40 questions randomly per test without duplicate.
-  // Preserves exact answers (A-D) and explanations without altering.
+  // JAMBIX PHYSICS QUESTION BANK (TOPICS 1-3: 300 QUESTIONS)
+  // TOPIC 1: MEASUREMENTS AND UNITS (Q1–100)
+  // TOPIC 2: SCALARS AND VECTORS (Q101–200)
+  // TOPIC 3: MOTION (Q201–300)
+  // Fairly distributes questions across ALL topics via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
-    const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
-    const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
+    // 1. Group items by topic/chapter
+    const byTopic: Record<string, typeof PHYSICS_DEMYSTIFIED_ITEMS> = {};
+    for (const item of PHYSICS_DEMYSTIFIED_ITEMS) {
+      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      if (!byTopic[topicKey]) byTopic[topicKey] = [];
+      byTopic[topicKey].push(item);
+    }
 
-    // Seeded pseudo-random generator
-    let randState = Math.abs((baseSeed * 1103515245 + chosenYear * 12345 + difficultyTier * 31337 + Math.floor(Math.random() * 1000000)) | 0);
-    const nextRand = () => {
-      randState = (randState * 1664525 + 1013904223) | 0;
-      return (randState >>> 0) / 4294967296;
-    };
+    // 2. Shuffle within each topic
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey] = shuffleArr(byTopic[tKey]);
+    }
 
-    const shuffleArr = <T>(arr: T[]): T[] => {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(nextRand() * (i + 1));
-        const tmp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = tmp;
-      }
-      return copy;
-    };
-
-    const shuffledBank = shuffleArr(PHYSICS_DEMYSTIFIED_ITEMS);
+    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedPhysicsItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
-    // 1. First pass: prioritize questions not yet seen in previous tests
-    for (const item of shuffledBank) {
-      if (pickedPhysicsItems.length >= targetCount) break;
-      const coreSig = getQuestionCoreSignature(item.text);
-      if (!safeSessionUsed.has(coreSig) && !safeExclude.has(coreSig)) {
-        safeSessionUsed.add(coreSig);
-        pickedPhysicsItems.push(item);
+    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    let added = true;
+    while (pickedPhysicsItems.length < targetCount && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (pickedPhysicsItems.length >= targetCount) break;
+        const pool = byTopic[tKey];
+        const nextItem = pool.find((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+        });
+        if (nextItem) {
+          const sig = getQuestionCoreSignature(nextItem.text);
+          safeSessionUsed.add(sig);
+          pickedPhysicsItems.push(nextItem);
+          const idx = pool.indexOf(nextItem);
+          if (idx !== -1) pool.splice(idx, 1);
+          added = true;
+        }
       }
     }
 
-    // 2. Second pass: backfill if needed to reach targetCount (e.g. 40) without session duplicates
+    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
     if (pickedPhysicsItems.length < targetCount) {
-      for (const item of shuffledBank) {
+      const allShuffled = shuffleArr(PHYSICS_DEMYSTIFIED_ITEMS);
+      for (const item of allShuffled) {
         if (pickedPhysicsItems.length >= targetCount) break;
-        const coreSig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(coreSig)) {
-          safeSessionUsed.add(coreSig);
+        const sig = getQuestionCoreSignature(item.text);
+        if (!safeSessionUsed.has(sig)) {
+          safeSessionUsed.add(sig);
           pickedPhysicsItems.push(item);
         }
       }
     }
 
+    // 6. Complete random shuffle of all selected questions so questions are diversified
+    const finalOrderedPhysics = shuffleArr(pickedPhysicsItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
-    for (let i = 0; i < pickedPhysicsItems.length && picked.length < targetCount; i++) {
-      const item = pickedPhysicsItems[i];
+    for (let i = 0; i < finalOrderedPhysics.length && picked.length < targetCount; i++) {
+      const item = finalOrderedPhysics[i];
       const qNum = picked.length + 1;
       const qId = 880000 + ((effYear % 100) * 1000) + qNum;
 
@@ -3818,61 +3840,78 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX CHEMISTRY QUESTION BANK (TOPIC: ORGANIC CHEMISTRY)
-  // Indexed 100 questions. Pulls 40 questions randomly per test without duplicate.
-  // Preserves exact answers (A-D) and explanations without altering.
+  // JAMBIX CHEMISTRY QUESTION BANK (TOPIC: ORGANIC CHEMISTRY - 100 QUESTIONS)
+  // Fairly distributes across all 5 syllabus topic clusters via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
   if (subjectKey === 'chemistry' && JAMBIX_CHEMISTRY_ITEMS.length > 0) {
-    const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
-    const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
-
-    // Seeded pseudo-random generator
-    let randState = Math.abs((baseSeed * 1103515245 + chosenYear * 12345 + difficultyTier * 31337 + Math.floor(Math.random() * 1000000)) | 0);
-    const nextRand = () => {
-      randState = (randState * 1664525 + 1013904223) | 0;
-      return (randState >>> 0) / 4294967296;
+    const getChemTopicCluster = (item: typeof JAMBIX_CHEMISTRY_ITEMS[0]) => {
+      const qNum = item.bookQuestionNum;
+      if (qNum <= 25) return 'Nomenclature, Hydrocarbons & Isomerism';
+      if (qNum <= 45) return 'Alcohols, Phenols, Ethers & Carbonyls';
+      if (qNum <= 60) return 'Carboxylic Acids, Esters & Aromatic Compounds';
+      if (qNum <= 75) return 'Nitrogen Compounds: Amines & Amides';
+      return 'Polymers, Biomolecules & Purification';
     };
 
-    const shuffleArr = <T>(arr: T[]): T[] => {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(nextRand() * (i + 1));
-        const tmp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = tmp;
-      }
-      return copy;
-    };
+    // 1. Group items into the 5 syllabus topic clusters
+    const byTopic: Record<string, typeof JAMBIX_CHEMISTRY_ITEMS> = {};
+    for (const item of JAMBIX_CHEMISTRY_ITEMS) {
+      const cluster = getChemTopicCluster(item);
+      if (!byTopic[cluster]) byTopic[cluster] = [];
+      byTopic[cluster].push(item);
+    }
 
-    const shuffledBank = shuffleArr(JAMBIX_CHEMISTRY_ITEMS);
+    // 2. Shuffle within each cluster
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey] = shuffleArr(byTopic[tKey]);
+    }
+
+    // 3. Shuffle cluster keys
+    const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedChemistryItems: typeof JAMBIX_CHEMISTRY_ITEMS = [];
 
-    // 1. First pass: prioritize questions not yet seen in previous tests
-    for (const item of shuffledBank) {
-      if (pickedChemistryItems.length >= targetCount) break;
-      const coreSig = getQuestionCoreSignature(item.text);
-      if (!safeSessionUsed.has(coreSig) && !safeExclude.has(coreSig)) {
-        safeSessionUsed.add(coreSig);
-        pickedChemistryItems.push(item);
+    // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
+    let added = true;
+    while (pickedChemistryItems.length < targetCount && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (pickedChemistryItems.length >= targetCount) break;
+        const pool = byTopic[tKey];
+        const nextItem = pool.find((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+        });
+        if (nextItem) {
+          const sig = getQuestionCoreSignature(nextItem.text);
+          safeSessionUsed.add(sig);
+          pickedChemistryItems.push(nextItem);
+          const idx = pool.indexOf(nextItem);
+          if (idx !== -1) pool.splice(idx, 1);
+          added = true;
+        }
       }
     }
 
-    // 2. Second pass: backfill if needed to reach targetCount (e.g. 40) without session duplicates
+    // 5. Pass 2: Fallback across all questions without session duplicates
     if (pickedChemistryItems.length < targetCount) {
-      for (const item of shuffledBank) {
+      const allShuffled = shuffleArr(JAMBIX_CHEMISTRY_ITEMS);
+      for (const item of allShuffled) {
         if (pickedChemistryItems.length >= targetCount) break;
-        const coreSig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(coreSig)) {
-          safeSessionUsed.add(coreSig);
+        const sig = getQuestionCoreSignature(item.text);
+        if (!safeSessionUsed.has(sig)) {
+          safeSessionUsed.add(sig);
           pickedChemistryItems.push(item);
         }
       }
     }
 
+    // 6. Complete random shuffle of all selected questions so questions are diversified
+    const finalOrderedChem = shuffleArr(pickedChemistryItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
-    for (let i = 0; i < pickedChemistryItems.length && picked.length < targetCount; i++) {
-      const item = pickedChemistryItems[i];
+    for (let i = 0; i < finalOrderedChem.length && picked.length < targetCount; i++) {
+      const item = finalOrderedChem[i];
       const qNum = picked.length + 1;
       const qId = 890000 + ((effYear % 100) * 1000) + qNum;
 
@@ -3881,7 +3920,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Chemistry',
-        topic: item.topic,
+        topic: getChemTopicCluster(item),
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
@@ -3914,26 +3953,6 @@ export function generateUniqueSubjectQuestions(
   // 3. Zero repetition of questions within or across test sessions.
   // =========================================================================
   if (subjectKey === 'biology' && LAMLAD_BIOLOGY_ITEMS.length > 0) {
-    const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
-    const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
-
-    let randState = Math.abs((baseSeed * 1664525 + chosenYear * 22695477 + difficultyTier * 45381669) | 0);
-    const nextRand = () => {
-      randState = (randState * 1103515245 + 12345) | 0;
-      return (randState >>> 0) / 4294967296;
-    };
-
-    const shuffleArr = <T>(arr: T[]): T[] => {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(nextRand() * (i + 1));
-        const tmp = copy[i];
-        copy[i] = copy[j];
-        copy[j] = tmp;
-      }
-      return copy;
-    };
-
     // Group items by chapter to guarantee even coverage across all 15 chapters
     const byChapter: Record<number, typeof LAMLAD_BIOLOGY_ITEMS> = {};
     for (const item of LAMLAD_BIOLOGY_ITEMS) {
@@ -4078,9 +4097,10 @@ export function generateUniqueSubjectQuestions(
   let attempts = 0;
   const maxAttempts = targetCount * 60;
 
-  // Round-Robin chapter stepper to guarantee 100% even diversification across all chapters!
-  let currentChapter = 0;
-  let variantOffset = Math.abs(baseSeed % 20) + difficultyTier * 7;
+  // Randomize starting chapter and chapter visitation sequence for complete randomization across tests
+  const startChapter = numChapters > 0 ? Math.floor(nextRand() * numChapters) : 0;
+  let currentChapter = startChapter;
+  let variantOffset = Math.abs(baseSeed % 100) + Math.floor(nextRand() * 50) + difficultyTier * 7;
 
   // Pass 1: Draw evenly across all chapters, skipping questions seen in previous tests
   while (picked.length < targetCount && attempts < maxAttempts) {
@@ -4088,7 +4108,7 @@ export function generateUniqueSubjectQuestions(
     const qNum = picked.length + 1;
     const effYear = typeof year === 'number' ? year : 1978 + ((chosenYear - 1978 + attempts) % 49);
     const effSeed = baseSeed + attempts * 19 + qNum * 7 + difficultyTier * 113;
-    const vIdx = variantOffset + Math.floor(attempts / numChapters);
+    const vIdx = variantOffset + Math.floor(attempts / Math.max(1, numChapters));
 
     const candidate = generateQuestionForChapter(
       subjectKey,
@@ -4148,7 +4168,7 @@ export function generateUniqueSubjectQuestions(
   while (picked.length < targetCount && failsafeAttempt < 800) {
     failsafeAttempt++;
     const qNum = picked.length + 1;
-    const chIdx = (currentChapter + failsafeAttempt) % numChapters;
+    const chIdx = (currentChapter + failsafeAttempt) % Math.max(1, numChapters);
     const effYear = typeof year === 'number' ? year : 1978 + ((chosenYear - 1978 + failsafeAttempt * 3) % 49);
     const effSeed = baseSeed + failsafeAttempt * 43 + qNum * 17 + difficultyTier * 137;
     const vIdx = variantOffset + failsafeAttempt + difficultyTier * 5;
@@ -4231,16 +4251,23 @@ export function generateUniqueSubjectQuestions(
     }
   }
 
+  // Shuffle the final picked array to guarantee questions from different chapters/topics are mixed randomly!
+  // This completely eliminates questions always starting with Chapter 0 or appearing in rigid sequential order.
+  const finalOrderedPicked = shuffleArr(picked);
+
   const seenSubIds = new Set<number>();
-  return picked.map((q, idx) => {
+  return finalOrderedPicked.map((q, idx) => {
     let qId = q.id;
     if (!qId || seenSubIds.has(qId)) {
       qId = 800000 + (idx + 1) * 100 + (Math.abs(baseSeed) % 97);
     }
     seenSubIds.add(qId);
+    const qNum = idx + 1;
     return {
       ...q,
       id: qId,
+      questionNumber: qNum,
+      text: q.text.replace(/^\[JAMB UTME\s+(?:Q\d+|\d{4}\s+Q\d+)\]/i, `[JAMB UTME Q${qNum}]`),
     };
   });
 }

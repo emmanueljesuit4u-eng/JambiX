@@ -324,7 +324,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           }))
         : questions;
 
-      // Inject custom PDF questions if toggle is active
+      // Inject user-uploaded custom PDF questions if toggle is active
       if (includeCustomPdfQuestions && !isLekkiNovel) {
         const customQs = getLocalCustomQuestions();
         if (customQs.length > 0) {
@@ -339,22 +339,37 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
               subGroups[q.subject].push(q);
             });
 
+            // Randomly shuffle matching custom questions
+            const shuffledCustom = [...matchingCustom].sort(() => Math.random() - 0.5);
+
             const injected: VerifiedQuestion[] = [];
             for (const sub of Object.keys(subGroups)) {
-              const subCustom = matchingCustom.filter((cq) => cq.subject.toLowerCase() === sub.toLowerCase());
+              const subCustom = shuffledCustom.filter((cq) => cq.subject.toLowerCase() === sub.toLowerCase());
               const group = subGroups[sub];
               if (subCustom.length > 0) {
                 const injectCount = Math.min(subCustom.length, Math.floor(group.length * 0.35));
+                const slotIndices = Array.from({ length: group.length }, (_, i) => i)
+                  .sort(() => Math.random() - 0.5)
+                  .slice(0, injectCount);
+
                 for (let k = 0; k < injectCount; k++) {
-                  group[k] = {
+                  const targetSlot = slotIndices[k];
+                  group[targetSlot] = {
                     ...subCustom[k],
-                    questionNumber: group[k].questionNumber,
-                    subjectQuestionNumber: group[k].subjectQuestionNumber,
-                    subjectTotalQuestions: group[k].subjectTotalQuestions,
+                    questionNumber: group[targetSlot].questionNumber,
+                    subjectQuestionNumber: group[targetSlot].subjectQuestionNumber,
+                    subjectTotalQuestions: group[targetSlot].subjectTotalQuestions,
                   };
                 }
+                const shuffledGroup = [...group].sort(() => Math.random() - 0.5);
+                shuffledGroup.forEach((q, idx) => {
+                  q.questionNumber = idx + 1;
+                  q.subjectQuestionNumber = idx + 1;
+                });
+                injected.push(...shuffledGroup);
+              } else {
+                injected.push(...group);
               }
-              injected.push(...group);
             }
             processedQuestions = injected;
           }

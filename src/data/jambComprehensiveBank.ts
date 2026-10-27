@@ -848,10 +848,10 @@ export function getPrescribedNovelQuestions(
     (q) => q.novel === 'The Lekki Headmaster'
   );
 
-  // Deterministic shuffle of The Lekki Headmaster questions based on seed
+  // Random shuffle of The Lekki Headmaster questions
   const candidatePool = [...lekkiQuestions];
   for (let i = candidatePool.length - 1; i > 0; i--) {
-    const j = Math.abs((seed * (i + 13)) % (i + 1));
+    const j = Math.floor(Math.random() * (i + 1));
     [candidatePool[i], candidatePool[j]] = [candidatePool[j], candidatePool[i]];
   }
 
@@ -969,7 +969,7 @@ export function getPrescribedNovelQuestions(
     }
   }
 
-  return picked;
+  return [...picked].sort(() => Math.random() - 0.5);
 }
 
 // Helper to pull 45 distinct questions from General English Bank
@@ -1030,10 +1030,10 @@ export function getGeneralEnglishQuestions(
     }
   });
 
-  // Shuffle items within each bucket deterministically, placing tough questions first as difficultyTier increases
-  buckets.forEach((b, bIdx) => {
+  // Shuffle items within each bucket, placing tough questions first as difficultyTier increases
+  buckets.forEach((b) => {
     for (let i = b.items.length - 1; i > 0; i--) {
-      const j = Math.abs((seed * (i + 17 + bIdx * 5)) % (i + 1));
+      const j = Math.floor(Math.random() * (i + 1));
       [b.items[i], b.items[j]] = [b.items[j], b.items[i]];
     }
 
@@ -1047,11 +1047,14 @@ export function getGeneralEnglishQuestions(
     }
   });
 
+  // Randomize bucket traversal order to ensure fresh topic sequences
+  const shuffledBuckets = [...buckets].sort(() => Math.random() - 0.5);
+
   const picked: VerifiedQuestion[] = [];
 
   // Pass 1: Round-robin across all 8 topic buckets to guarantee 100% topic diversification!
   for (let step = 0; step < count * 3 && picked.length < count; step++) {
-    const bucket = buckets[step % buckets.length];
+    const bucket = shuffledBuckets[step % shuffledBuckets.length];
     const unseenItem = bucket.items.find((item) => {
       const core = item.text.trim().toLowerCase();
       return !localTexts.has(core) && !excluded.has(core);
@@ -1080,7 +1083,7 @@ export function getGeneralEnglishQuestions(
 
   // Pass 2: Check any remaining items in allGeneral that have NOT been seen in previous tests
   if (picked.length < count) {
-    const allGeneral = [...ENGLISH_GENERAL_BANK];
+    const allGeneral = [...ENGLISH_GENERAL_BANK].sort(() => Math.random() - 0.5);
     for (let i = 0; i < allGeneral.length && picked.length < count; i++) {
       const item = allGeneral[i];
       const core = item.text.trim().toLowerCase();
@@ -1125,7 +1128,8 @@ export function getGeneralEnglishQuestions(
     }
   }
 
-  return picked;
+  // Shuffle picked questions so topics are distributed naturally throughout Section B
+  return [...picked].sort(() => Math.random() - 0.5);
 }
 
 function generateDynamicEnglishQuestion(
