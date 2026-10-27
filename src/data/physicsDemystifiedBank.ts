@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  * 
  * JAMBIX PHYSICS QUESTION BANK
- * TOPIC 1: MEASUREMENTS AND UNITS
- * QUESTIONS 1–100
+ * TOPIC 1: MEASUREMENTS AND UNITS (QUESTIONS 1–100)
+ * TOPIC 2: SCALARS AND VECTORS (QUESTIONS 101–200)
  * Indexed directly from official syllabus specifications.
- * Total questions: 100
+ * Total questions: 200
  */
 
 export interface PhysicsDemystifiedItem {
@@ -1831,10 +1831,1811 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "explanation": "Convert 540 g to 0.540 kg and 200 cm³ to 0.0002 m³. Density = 0.540/0.0002 = 2,700 kg/m³.",
     "page": 1,
     "hasImage": false
+  },
+  {
+    "id": "phy_unit2_101",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 101,
+    "text": "Which of the following is a vector quantity?",
+    "options": {
+      "A": "Mass",
+      "B": "Speed",
+      "C": "Work",
+      "D": "Displacement"
+    },
+    "answer": "D",
+    "explanation": "Displacement has both magnitude and direction.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_102",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 102,
+    "text": "Which of the following is a scalar quantity?",
+    "options": {
+      "A": "Force",
+      "B": "Momentum",
+      "C": "Energy",
+      "D": "Acceleration"
+    },
+    "answer": "C",
+    "explanation": "Energy has magnitude but no direction.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_103",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 103,
+    "text": "Two forces of 6 N and 8 N act at right angles to each other. Calculate their resultant.",
+    "options": {
+      "A": "2 N",
+      "B": "10 N",
+      "C": "14 N",
+      "D": "48 N"
+    },
+    "answer": "B",
+    "explanation": "For perpendicular forces, R = √(6² + 8²) = √100 = 10 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_104",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 104,
+    "text": "Two forces of 12 N and 5 N act in the same direction. Their resultant is",
+    "options": {
+      "A": "7 N",
+      "B": "17 N",
+      "C": "60 N",
+      "D": "2.4 N"
+    },
+    "answer": "B",
+    "explanation": "Forces acting in the same direction are added: R = 12 + 5 = 17 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_105",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 105,
+    "text": "Two forces of 15 N and 9 N act along the same straight line in opposite directions. Calculate their resultant magnitude.",
+    "options": {
+      "A": "6 N",
+      "B": "9 N",
+      "C": "15 N",
+      "D": "24 N"
+    },
+    "answer": "A",
+    "explanation": "The resultant magnitude is the difference: R = 15 − 9 = 6 N. It acts in the direction of the 15 N force.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_106",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 106,
+    "text": "A force of 10 N acts east while another force of 10 N acts west. The resultant force is",
+    "options": {
+      "A": "20 N east",
+      "B": "20 N west",
+      "C": "10 N east",
+      "D": "0 N"
+    },
+    "answer": "D",
+    "explanation": "The forces are equal and opposite, so they cancel.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_107",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 107,
+    "text": "A person walks 3 m east and then 4 m north. What is the magnitude of the displacement?",
+    "options": {
+      "A": "1 m",
+      "B": "5 m",
+      "C": "7 m",
+      "D": "12 m"
+    },
+    "answer": "B",
+    "explanation": "The movements are perpendicular. Displacement = √(3² + 4²) = 5 m.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_108",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 108,
+    "text": "A body moves 8 m north and then 6 m south. Its displacement is",
+    "options": {
+      "A": "14 m north",
+      "B": "14 m south",
+      "C": "2 m north",
+      "D": "2 m south"
+    },
+    "answer": "C",
+    "explanation": "Taking north as positive, displacement = 8 − 6 = 2 m north.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_109",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 109,
+    "text": "Which statement correctly distinguishes distance from displacement?",
+    "options": {
+      "A": "Both are always equal.",
+      "B": "Distance is a vector, while displacement is a scalar.",
+      "C": "Distance is the total path length, while displacement is the change in position.",
+      "D": "Distance can be negative, while displacement must be positive."
+    },
+    "answer": "C",
+    "explanation": "Distance measures the complete path travelled; displacement depends on the initial and final positions.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_110",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 110,
+    "text": "A student walks 5 m east and then 5 m west, returning to the starting point. The total distance travelled is",
+    "options": {
+      "A": "0 m",
+      "B": "5 m",
+      "C": "10 m",
+      "D": "25 m"
+    },
+    "answer": "C",
+    "explanation": "Total distance = 5 + 5 = 10 m, although the displacement is zero.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_111",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 111,
+    "text": "A vector has a magnitude of 12 units and makes an angle of 30° with the positive x-axis. Its horizontal component is",
+    "options": {
+      "A": "3 units",
+      "B": "6 units",
+      "C": "6√3 units",
+      "D": "12√3 units"
+    },
+    "answer": "C",
+    "explanation": "Horizontal component = 12 cos 30° = 12 × √3/2 = 6√3 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_112",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 112,
+    "text": "A force of 20 N acts at 60° to the horizontal. Calculate its horizontal component.",
+    "options": {
+      "A": "5 N",
+      "B": "10 N",
+      "C": "10√3 N",
+      "D": "20 N"
+    },
+    "answer": "B",
+    "explanation": "Horizontal component = 20 cos 60° = 20 × 0.5 = 10 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_113",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 113,
+    "text": "A force of 20 N acts at 30° above the horizontal. Its vertical component is",
+    "options": {
+      "A": "10 N",
+      "B": "10√3 N",
+      "C": "20 N",
+      "D": "5 N"
+    },
+    "answer": "A",
+    "explanation": "Vertical component = 20 sin 30° = 20 × 0.5 = 10 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_114",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 114,
+    "text": "A vector has horizontal and vertical components of 6 units and 8 units respectively. Its magnitude is",
+    "options": {
+      "A": "2 units",
+      "B": "7 units",
+      "C": "10 units",
+      "D": "14 units"
+    },
+    "answer": "C",
+    "explanation": "Magnitude = √(6² + 8²) = √100 = 10 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_115",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 115,
+    "text": "A force of 50 N acts at 37° to the horizontal. If sin 37° = 0.6 and cos 37° = 0.8, calculate its horizontal component.",
+    "options": {
+      "A": "20 N",
+      "B": "30 N",
+      "C": "40 N",
+      "D": "50 N"
+    },
+    "answer": "C",
+    "explanation": "Horizontal component = 50 cos 37° = 50 × 0.8 = 40 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_116",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 116,
+    "text": "Two perpendicular forces of 9 N and 12 N act on a body. Calculate the angle the resultant makes with the 9 N force.",
+    "options": {
+      "A": "36.9°",
+      "B": "45°",
+      "C": "53.1°",
+      "D": "60°"
+    },
+    "answer": "C",
+    "explanation": "tan θ = 12/9 = 4/3. Therefore, θ ≈ 53.1°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_117",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 117,
+    "text": "Two forces of 10 N each act at an angle of 60° to each other. Calculate the magnitude of their resultant.",
+    "options": {
+      "A": "10 N",
+      "B": "10√2 N",
+      "C": "10√3 N",
+      "D": "20 N"
+    },
+    "answer": "C",
+    "explanation": "R = √(10² + 10² + 2 × 10 × 10 cos 60°) = √300 = 10√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_118",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 118,
+    "text": "Two equal forces act at right angles to each other. If each force is 5 N, their resultant is",
+    "options": {
+      "A": "5 N",
+      "B": "5√2 N",
+      "C": "10 N",
+      "D": "25 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(5² + 5²) = √50 = 5√2 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_119",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 119,
+    "text": "The resultant of two forces is maximum when the angle between them is",
+    "options": {
+      "A": "0°",
+      "B": "45°",
+      "C": "90°",
+      "D": "180°"
+    },
+    "answer": "A",
+    "explanation": "When the forces act in the same direction, their magnitudes add to give the maximum resultant.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_120",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 120,
+    "text": "The resultant of two forces is minimum when the angle between them is",
+    "options": {
+      "A": "0°",
+      "B": "60°",
+      "C": "90°",
+      "D": "180°"
+    },
+    "answer": "D",
+    "explanation": "Oppositely directed forces subtract. The resultant magnitude is |F₁ − F₂|, which is the minimum possible.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_121",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 121,
+    "text": "Two forces of 7 N and 3 N act at an angle of 180° to each other. Calculate their resultant magnitude.",
+    "options": {
+      "A": "0 N",
+      "B": "4 N",
+      "C": "10 N",
+      "D": "21 N"
+    },
+    "answer": "B",
+    "explanation": "R = |7 − 3| = 4 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_122",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 122,
+    "text": "Two forces of 8 N and 6 N act at right angles. The magnitude of their resultant is",
+    "options": {
+      "A": "2 N",
+      "B": "10 N",
+      "C": "14 N",
+      "D": "48 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(8² + 6²) = √100 = 10 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_123",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 123,
+    "text": "A force of 30 N acts at 60° to the horizontal. Its vertical component is",
+    "options": {
+      "A": "15 N",
+      "B": "15√3 N",
+      "C": "30 N",
+      "D": "60 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 30 sin 60° = 30 × √3/2 = 15√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_124",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 124,
+    "text": "A vector has components of 5 units horizontally and 12 units vertically. Calculate its magnitude.",
+    "options": {
+      "A": "7 units",
+      "B": "13 units",
+      "C": "17 units",
+      "D": "60 units"
+    },
+    "answer": "B",
+    "explanation": "Magnitude = √(5² + 12²) = √169 = 13 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_125",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 125,
+    "text": "A force of 40 N acts at 30° above the horizontal. Calculate its horizontal component.",
+    "options": {
+      "A": "10 N",
+      "B": "20 N",
+      "C": "20√3 N",
+      "D": "40 N"
+    },
+    "answer": "C",
+    "explanation": "Horizontal component = 40 cos 30° = 40 × √3/2 = 20√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_126",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 126,
+    "text": "A force of 40 N acts at 30° above the horizontal. Calculate its vertical component.",
+    "options": {
+      "A": "10 N",
+      "B": "20 N",
+      "C": "20√3 N",
+      "D": "40 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 40 sin 30° = 40 × 0.5 = 20 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_127",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 127,
+    "text": "A force of 25 N acts due north and a force of 7 N acts due south. What is the resultant?",
+    "options": {
+      "A": "32 N north",
+      "B": "32 N south",
+      "C": "18 N north",
+      "D": "18 N south"
+    },
+    "answer": "C",
+    "explanation": "The forces act in opposite directions. Resultant = 25 − 7 = 18 N north.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_128",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 128,
+    "text": "A person walks 6 km east and 8 km north. What is the magnitude of the displacement?",
+    "options": {
+      "A": "2 km",
+      "B": "10 km",
+      "C": "14 km",
+      "D": "48 km"
+    },
+    "answer": "B",
+    "explanation": "Displacement = √(6² + 8²) = √100 = 10 km.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_129",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 129,
+    "text": "A person walks 10 m east, then 10 m north, then 10 m west. What is the final displacement from the starting point?",
+    "options": {
+      "A": "10 m north",
+      "B": "10 m south",
+      "C": "30 m",
+      "D": "0 m"
+    },
+    "answer": "A",
+    "explanation": "The east and west movements cancel, leaving a displacement of 10 m north.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_130",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 130,
+    "text": "Which of the following pairs consists entirely of vector quantities?",
+    "options": {
+      "A": "Speed and distance",
+      "B": "Mass and weight",
+      "C": "Force and acceleration",
+      "D": "Energy and momentum"
+    },
+    "answer": "C",
+    "explanation": "Both force and acceleration have magnitude and direction.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_131",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 131,
+    "text": "A force of 15 N acts east and a force of 20 N acts north. Calculate the magnitude of the resultant.",
+    "options": {
+      "A": "5 N",
+      "B": "25 N",
+      "C": "35 N",
+      "D": "300 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(15² + 20²) = √625 = 25 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_132",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 132,
+    "text": "Two forces of 12 N and 16 N act at right angles. Calculate the angle the resultant makes with the 12 N force.",
+    "options": {
+      "A": "36.9°",
+      "B": "45°",
+      "C": "53.1°",
+      "D": "90°"
+    },
+    "answer": "C",
+    "explanation": "tan θ = 16/12 = 4/3, giving θ ≈ 53.1°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_133",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 133,
+    "text": "A vector of magnitude 10 units makes an angle of 60° with the positive x-axis. Its x-component is",
+    "options": {
+      "A": "5 units",
+      "B": "5√3 units",
+      "C": "10 units",
+      "D": "10√3 units"
+    },
+    "answer": "A",
+    "explanation": "x-component = 10 cos 60° = 10 × 0.5 = 5 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_134",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 134,
+    "text": "A vector of magnitude 10 units makes an angle of 60° with the positive x-axis. Its y-component is",
+    "options": {
+      "A": "5 units",
+      "B": "5√3 units",
+      "C": "10 units",
+      "D": "10√3 units"
+    },
+    "answer": "B",
+    "explanation": "y-component = 10 sin 60° = 10 × √3/2 = 5√3 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_135",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 135,
+    "text": "Two forces of 6 N and 8 N act at an angle of 90°. What is the angle between their resultant and the 6 N force?",
+    "options": {
+      "A": "36.9°",
+      "B": "45°",
+      "C": "53.1°",
+      "D": "60°"
+    },
+    "answer": "C",
+    "explanation": "tan θ = 8/6 = 4/3. Therefore, θ ≈ 53.1°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_136",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 136,
+    "text": "A force of 10 N acts east and another force of 10 N acts at 60° north of east. Calculate the magnitude of their resultant.",
+    "options": {
+      "A": "10 N",
+      "B": "10√2 N",
+      "C": "10√3 N",
+      "D": "20 N"
+    },
+    "answer": "C",
+    "explanation": "R = √(10² + 10² + 2 × 10 × 10 cos 60°) = √300 = 10√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_137",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 137,
+    "text": "Two vectors have equal magnitudes of 10 units and act in opposite directions. Their resultant is",
+    "options": {
+      "A": "0 units",
+      "B": "10 units",
+      "C": "20 units",
+      "D": "100 units"
+    },
+    "answer": "A",
+    "explanation": "Equal vectors in opposite directions cancel completely.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_138",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 138,
+    "text": "A vector is represented by 3 units east and 4 units north. Its direction relative to east is approximately",
+    "options": {
+      "A": "36.9° north of east",
+      "B": "53.1° north of east",
+      "C": "60° north of east",
+      "D": "90° north of east"
+    },
+    "answer": "B",
+    "explanation": "tan θ = 4/3, so θ ≈ 53.1°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_139",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 139,
+    "text": "A displacement vector has components of 8 m east and 6 m south. Its magnitude is",
+    "options": {
+      "A": "2 m",
+      "B": "10 m",
+      "C": "14 m",
+      "D": "48 m"
+    },
+    "answer": "B",
+    "explanation": "Magnitude = √(8² + 6²) = √100 = 10 m.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_140",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 140,
+    "text": "Which statement about vector addition is correct?",
+    "options": {
+      "A": "Vector addition always involves adding magnitudes directly.",
+      "B": "The direction of each vector must be considered.",
+      "C": "Vectors can only be added if they have equal magnitudes.",
+      "D": "C. Vectors can only be added if they have equal magnitudes.\nD. The resultant is always larger than either vector."
+    },
+    "answer": "B",
+    "explanation": "Vector addition depends on both magnitude and direction. Magnitudes can be added directly only in specific cases, such as vectors acting in the same direction.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_141",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 141,
+    "text": "Two forces of 9 N and 12 N act in the same direction. Their resultant is",
+    "options": {
+      "A": "3 N",
+      "B": "9 N",
+      "C": "12 N",
+      "D": "21 N"
+    },
+    "answer": "D",
+    "explanation": "Resultant = 9 + 12 = 21 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_142",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 142,
+    "text": "Two forces of 18 N and 11 N act in opposite directions. Calculate the resultant magnitude.",
+    "options": {
+      "A": "7 N",
+      "B": "11 N",
+      "C": "18 N",
+      "D": "29 N"
+    },
+    "answer": "A",
+    "explanation": "Resultant magnitude = 18 − 11 = 7 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_143",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 143,
+    "text": "Two perpendicular vectors have magnitudes of 5 units and 12 units. Their resultant has magnitude",
+    "options": {
+      "A": "7 units",
+      "B": "13 units",
+      "C": "17 units",
+      "D": "60 units"
+    },
+    "answer": "B",
+    "explanation": "R = √(5² + 12²) = 13 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_144",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 144,
+    "text": "A force of 50 N acts at 37° above the horizontal. If sin 37° = 0.6 and cos 37° = 0.8, its vertical component is",
+    "options": {
+      "A": "20 N",
+      "B": "30 N",
+      "C": "40 N",
+      "D": "50 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 50 sin 37° = 50 × 0.6 = 30 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_145",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 145,
+    "text": "A force of 50 N acts at 37° above the horizontal. If cos 37° = 0.8, its horizontal component is",
+    "options": {
+      "A": "20 N",
+      "B": "30 N",
+      "C": "40 N",
+      "D": "50 N"
+    },
+    "answer": "C",
+    "explanation": "Horizontal component = 50 cos 37° = 50 × 0.8 = 40 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_146",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 146,
+    "text": "A vector has a horizontal component of 9 units and a vertical component of 12 units. The angle it makes with the horizontal is approximately",
+    "options": {
+      "A": "36.9°",
+      "B": "45°",
+      "C": "53.1°",
+      "D": "60°"
+    },
+    "answer": "C",
+    "explanation": "tan θ = 12/9 = 4/3, giving θ ≈ 53.1°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_147",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 147,
+    "text": "Two forces of 10 N each act at an angle of 120° to each other. Calculate the magnitude of their resultant.",
+    "options": {
+      "A": "0 N",
+      "B": "10 N",
+      "C": "10√3 N",
+      "D": "20 N"
+    },
+    "answer": "B",
+    "explanation": "R² = 10² + 10² + 2 × 10 × 10 cos 120° = 200 − 100 = 100. Thus R = 10 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_148",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 148,
+    "text": "Two forces of 10 N each act at an angle of 90° to each other. Their resultant is",
+    "options": {
+      "A": "10 N",
+      "B": "10√2 N",
+      "C": "20 N",
+      "D": "100 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(10² + 10²) = √200 = 10√2 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_149",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 149,
+    "text": "Two forces of 10 N each act at an angle of 60° to each other. Their resultant is",
+    "options": {
+      "A": "10 N",
+      "B": "10√2 N",
+      "C": "10√3 N",
+      "D": "20 N"
+    },
+    "answer": "C",
+    "explanation": "R² = 100 + 100 + 200 cos 60° = 300. Therefore, R = 10√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_150",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 150,
+    "text": "Two forces of 10 N each act in opposite directions. Their resultant magnitude is",
+    "options": {
+      "A": "0 N",
+      "B": "10 N",
+      "C": "10√2 N",
+      "D": "20 N"
+    },
+    "answer": "A",
+    "explanation": "Equal and opposite forces cancel.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_151",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 151,
+    "text": "A force of 24 N acts east and a force of 7 N acts north. Calculate the magnitude of the resultant.",
+    "options": {
+      "A": "17 N",
+      "B": "25 N",
+      "C": "31 N",
+      "D": "168 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(24² + 7²) = √625 = 25 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_152",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 152,
+    "text": "A body is acted upon by two perpendicular forces of 15 N and 20 N. The resultant is",
+    "options": {
+      "A": "5 N",
+      "B": "25 N",
+      "C": "35 N",
+      "D": "300 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(15² + 20²) = 25 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_153",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 153,
+    "text": "A vector has components of 12 units west and 5 units south. Its magnitude is",
+    "options": {
+      "A": "7 units",
+      "B": "13 units",
+      "C": "17 units",
+      "D": "60 units"
+    },
+    "answer": "B",
+    "explanation": "Magnitude = √(12² + 5²) = √169 = 13 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_154",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 154,
+    "text": "A force of 100 N acts at 30° to the horizontal. Its horizontal component is",
+    "options": {
+      "A": "25 N",
+      "B": "50 N",
+      "C": "50√3 N",
+      "D": "100 N"
+    },
+    "answer": "C",
+    "explanation": "Horizontal component = 100 cos 30° = 50√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_155",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 155,
+    "text": "A force of 100 N acts at 30° to the horizontal. Its vertical component is",
+    "options": {
+      "A": "25 N",
+      "B": "50 N",
+      "C": "50√3 N",
+      "D": "100 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 100 sin 30° = 50 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_156",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 156,
+    "text": "Two vectors have magnitudes of 8 units and 15 units and act at right angles. Calculate the magnitude of their resultant.",
+    "options": {
+      "A": "7 units",
+      "B": "17 units",
+      "C": "23 units",
+      "D": "120 units"
+    },
+    "answer": "B",
+    "explanation": "R = √(8² + 15²) = √289 = 17 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_157",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 157,
+    "text": "Two forces of 6 N and 8 N act at right angles. The angle the resultant makes with the 8 N force is approximately",
+    "options": {
+      "A": "36.9°",
+      "B": "45°",
+      "C": "53.1°",
+      "D": "90°"
+    },
+    "answer": "A",
+    "explanation": "Relative to the 8 N force, tan θ = 6/8 = 0.75. Therefore, θ ≈ 36.9°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_158",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 158,
+    "text": "A person walks 12 m north and 5 m east. Calculate the magnitude of the displacement.",
+    "options": {
+      "A": "7 m",
+      "B": "13 m",
+      "C": "17 m",
+      "D": "60 m"
+    },
+    "answer": "B",
+    "explanation": "Displacement = √(12² + 5²) = 13 m.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_159",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 159,
+    "text": "A student walks 4 m east, 3 m north and 4 m west. What is the magnitude of the displacement?",
+    "options": {
+      "A": "0 m",
+      "B": "3 m",
+      "C": "8 m",
+      "D": "11 m"
+    },
+    "answer": "B",
+    "explanation": "The east and west movements cancel, leaving a displacement of 3 m north.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_160",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 160,
+    "text": "A person travels one complete lap of a circular track and returns to the starting point. The displacement is",
+    "options": {
+      "A": "equal to the circumference",
+      "B": "equal to the diameter",
+      "C": "zero",
+      "D": "equal to twice the circumference"
+    },
+    "answer": "C",
+    "explanation": "The initial and final positions are identical, so displacement is zero.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_161",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 161,
+    "text": "Which of the following quantities can be negative depending on the chosen direction or reference?",
+    "options": {
+      "A": "Distance travelled",
+      "B": "Speed",
+      "C": "Displacement component",
+      "D": "Mass"
+    },
+    "answer": "C",
+    "explanation": "A displacement component may be negative when it points opposite to the chosen positive direction.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_162",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 162,
+    "text": "A force of 20 N acts at 45° above the horizontal. Its horizontal component is",
+    "options": {
+      "A": "10 N",
+      "B": "10√2 N",
+      "C": "20 N",
+      "D": "20√2 N"
+    },
+    "answer": "B",
+    "explanation": "Horizontal component = 20 cos 45° = 20/√2 = 10√2 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_163",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 163,
+    "text": "A force of 20 N acts at 45° above the horizontal. Its vertical component is",
+    "options": {
+      "A": "10 N",
+      "B": "10√2 N",
+      "C": "20 N",
+      "D": "20√2 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 20 sin 45° = 10√2 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_164",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 164,
+    "text": "Two equal vectors have a resultant equal to either vector's magnitude. The angle between them is",
+    "options": {
+      "A": "0°",
+      "B": "60°",
+      "C": "90°",
+      "D": "120°"
+    },
+    "answer": "D",
+    "explanation": "For equal vectors of magnitude F, R² = 2F²(1 + cos θ). If R = F, then 1 = 2(1 + cos θ), giving cos θ = −1/2 and θ = 120°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_165",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 165,
+    "text": "Two forces of equal magnitude F act at an angle of 90°. The resultant magnitude is",
+    "options": {
+      "A": "F",
+      "B": "√2F",
+      "C": "2F",
+      "D": "F/2"
+    },
+    "answer": "B",
+    "explanation": "R = √(F² + F²) = √2F.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_166",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 166,
+    "text": "Two forces of equal magnitude F act at an angle of 120°. The resultant magnitude is",
+    "options": {
+      "A": "0",
+      "B": "F",
+      "C": "√2F",
+      "D": "2F"
+    },
+    "answer": "B",
+    "explanation": "R² = F² + F² + 2F² cos 120° = 2F² − F² = F². Thus R = F.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_167",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 167,
+    "text": "Two forces of equal magnitude F act at an angle of 60°. The resultant magnitude is",
+    "options": {
+      "A": "F",
+      "B": "√2F",
+      "C": "√3F",
+      "D": "2F"
+    },
+    "answer": "D",
+    "explanation": "R² = F² + F² + 2F² cos 60° = 3F². Therefore, R = √3F.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_168",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 168,
+    "text": "Two forces of equal magnitude F act at an angle of 60°. What is the correct resultant magnitude?",
+    "options": {
+      "A": "F",
+      "B": "√2F",
+      "C": "√3F",
+      "D": "2F"
+    },
+    "answer": "C",
+    "explanation": "R² = F² + F² + 2F² cos 60° = 3F², so R = √3F.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_169",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 169,
+    "text": "A vector has components of 7 units east and 24 units north. Calculate its magnitude.",
+    "options": {
+      "A": "17 units",
+      "B": "25 units",
+      "C": "31 units",
+      "D": "168 units"
+    },
+    "answer": "B",
+    "explanation": "Magnitude = √(7² + 24²) = √625 = 25 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_170",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 170,
+    "text": "A force of 60 N acts at 60° above the horizontal. Calculate its vertical component.",
+    "options": {
+      "A": "15 N",
+      "B": "30 N",
+      "C": "30√3 N",
+      "D": "60 N"
+    },
+    "answer": "C",
+    "explanation": "Vertical component = 60 sin 60° = 60 × √3/2 = 30√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_171",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 171,
+    "text": "A force of 60 N acts at 60° above the horizontal. Calculate its horizontal component.",
+    "options": {
+      "A": "15 N",
+      "B": "30 N",
+      "C": "30√3 N",
+      "D": "60 N"
+    },
+    "answer": "B",
+    "explanation": "Horizontal component = 60 cos 60° = 30 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_172",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 172,
+    "text": "A vector of magnitude 20 units points due west. If east is the positive x-direction, its x-component is",
+    "options": {
+      "A": "+20 units",
+      "B": "−20 units",
+      "C": "0 units",
+      "D": "+10 units"
+    },
+    "answer": "B",
+    "explanation": "West is opposite to the positive east direction, so the x-component is negative.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_173",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 173,
+    "text": "A vector of magnitude 15 units points due north. If north is the positive y-direction, its y-component is",
+    "options": {
+      "A": "−15 units",
+      "B": "0 units",
+      "C": "+15 units",
+      "D": "+30 units"
+    },
+    "answer": "C",
+    "explanation": "The vector points in the positive y-direction, so its y-component is +15 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_174",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 174,
+    "text": "Two forces of 30 N and 40 N act at right angles. Calculate the resultant magnitude.",
+    "options": {
+      "A": "10 N",
+      "B": "50 N",
+      "C": "70 N",
+      "D": "1,200 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(30² + 40²) = √2,500 = 50 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_175",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 175,
+    "text": "Two forces of 30 N and 40 N act in the same direction. Their resultant is",
+    "options": {
+      "A": "10 N",
+      "B": "30 N",
+      "C": "50 N",
+      "D": "70 N"
+    },
+    "answer": "D",
+    "explanation": "Resultant = 30 + 40 = 70 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_176",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 176,
+    "text": "Two forces of 40 N and 30 N act in opposite directions. Their resultant magnitude is",
+    "options": {
+      "A": "10 N",
+      "B": "30 N",
+      "C": "40 N",
+      "D": "70 N"
+    },
+    "answer": "A",
+    "explanation": "Resultant magnitude = |40 − 30| = 10 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_177",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 177,
+    "text": "A force of 80 N acts at 37° to the horizontal. Given cos 37° = 0.8, calculate its horizontal component.",
+    "options": {
+      "A": "32 N",
+      "B": "48 N",
+      "C": "64 N",
+      "D": "80 N"
+    },
+    "answer": "C",
+    "explanation": "Horizontal component = 80 × 0.8 = 64 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_178",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 178,
+    "text": "A force of 80 N acts at 37° to the horizontal. Given sin 37° = 0.6, calculate its vertical component.",
+    "options": {
+      "A": "32 N",
+      "B": "48 N",
+      "C": "64 N",
+      "D": "80 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 80 × 0.6 = 48 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_179",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 179,
+    "text": "A vector has a horizontal component of 15 units and a vertical component of 20 units. Its magnitude is",
+    "options": {
+      "A": "5 units",
+      "B": "25 units",
+      "C": "35 units",
+      "D": "300 units"
+    },
+    "answer": "B",
+    "explanation": "Magnitude = √(15² + 20²) = √625 = 25 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_180",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 180,
+    "text": "Two forces act at a point. Their magnitudes are 3 N and 4 N. Which of the following could be the magnitude of their resultant?",
+    "options": {
+      "A": "0 N",
+      "B": "2 N",
+      "C": "8 N",
+      "D": "10 N"
+    },
+    "answer": "B",
+    "explanation": "The resultant magnitude must lie between |4 − 3| = 1 N and 4 + 3 = 7 N. A magnitude of 2 N is possible.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_181",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 181,
+    "text": "Two vectors have magnitudes of 5 units and 9 units. Which value cannot be the magnitude of their resultant?",
+    "options": {
+      "A": "4 units",
+      "B": "5 units",
+      "C": "9 units",
+      "D": "15 units"
+    },
+    "answer": "D",
+    "explanation": "The resultant must lie between |9 − 5| = 4 units and 9 + 5 = 14 units. Therefore, 15 units is impossible.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_182",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 182,
+    "text": "Two forces of 5 N and 12 N act at right angles. Their resultant is",
+    "options": {
+      "A": "7 N",
+      "B": "13 N",
+      "C": "17 N",
+      "D": "60 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(5² + 12²) = 13 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_183",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 183,
+    "text": "Two vectors have magnitudes of 8 units and 15 units. What is the maximum possible magnitude of their resultant?",
+    "options": {
+      "A": "7 units",
+      "B": "15 units",
+      "C": "17 units",
+      "D": "23 units"
+    },
+    "answer": "D",
+    "explanation": "The maximum resultant occurs when the vectors act in the same direction: R = 8 + 15 = 23 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_184",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 184,
+    "text": "Two vectors have magnitudes of 8 units and 15 units. What is the minimum possible magnitude of their resultant?",
+    "options": {
+      "A": "0 units",
+      "B": "7 units",
+      "C": "8 units",
+      "D": "23 units"
+    },
+    "answer": "B",
+    "explanation": "The minimum resultant occurs when the vectors act in opposite directions: R = 15 − 8 = 7 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_185",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 185,
+    "text": "A vector has components of 5 units east and 5 units north. Its direction relative to east is",
+    "options": {
+      "A": "30°",
+      "B": "45°",
+      "C": "60°",
+      "D": "90°"
+    },
+    "answer": "B",
+    "explanation": "tan θ = 5/5 = 1, so θ = 45° north of east.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_186",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 186,
+    "text": "A force of 100 N acts at 60° to the horizontal. Its horizontal component is",
+    "options": {
+      "A": "25 N",
+      "B": "50 N",
+      "C": "50√3 N",
+      "D": "100 N"
+    },
+    "answer": "B",
+    "explanation": "Horizontal component = 100 cos 60° = 50 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_187",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 187,
+    "text": "A force of 100 N acts at 60° to the horizontal. Its vertical component is",
+    "options": {
+      "A": "25 N",
+      "B": "50 N",
+      "C": "50√3 N",
+      "D": "100 N"
+    },
+    "answer": "C",
+    "explanation": "Vertical component = 100 sin 60° = 50√3 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_188",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 188,
+    "text": "A vector of magnitude 20 units makes an angle of 30° with the positive x-axis. Its x-component is",
+    "options": {
+      "A": "10 units",
+      "B": "10√3 units",
+      "C": "20 units",
+      "D": "20√3 units"
+    },
+    "answer": "B",
+    "explanation": "x-component = 20 cos 30° = 10√3 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_189",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 189,
+    "text": "A vector of magnitude 20 units makes an angle of 30° with the positive x-axis. Its y-component is",
+    "options": {
+      "A": "10 units",
+      "B": "10√3 units",
+      "C": "20 units",
+      "D": "20√3 units"
+    },
+    "answer": "A",
+    "explanation": "y-component = 20 sin 30° = 10 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_190",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 190,
+    "text": "A force of 12 N acts east and another force of 5 N acts north. The magnitude of the resultant is",
+    "options": {
+      "A": "7 N",
+      "B": "13 N",
+      "C": "17 N",
+      "D": "60 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(12² + 5²) = √169 = 13 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_191",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 191,
+    "text": "Two forces of 12 N and 5 N act at right angles. Calculate the angle between the resultant and the 12 N force.",
+    "options": {
+      "A": "22.6°",
+      "B": "30°",
+      "C": "45°",
+      "D": "67.4°"
+    },
+    "answer": "A",
+    "explanation": "tan θ = 5/12. Therefore, θ ≈ 22.6°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_192",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 192,
+    "text": "A person walks 9 m east and 12 m north. The magnitude of the displacement is",
+    "options": {
+      "A": "3 m",
+      "B": "15 m",
+      "C": "21 m",
+      "D": "108 m"
+    },
+    "answer": "B",
+    "explanation": "Displacement = √(9² + 12²) = √225 = 15 m.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_193",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 193,
+    "text": "A body moves 15 m east and then 20 m west. Its displacement is",
+    "options": {
+      "A": "35 m east",
+      "B": "35 m west",
+      "C": "5 m east",
+      "D": "5 m west"
+    },
+    "answer": "D",
+    "explanation": "The westward distance exceeds the eastward distance by 20 − 15 = 5 m.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_194",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 194,
+    "text": "A person travels 6 m north, 8 m east and 6 m south. What is the magnitude of the displacement?",
+    "options": {
+      "A": "0 m",
+      "B": "6 m",
+      "C": "8 m",
+      "D": "20 m"
+    },
+    "answer": "C",
+    "explanation": "The northward and southward movements cancel, leaving 8 m east.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_195",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 195,
+    "text": "Which of the following is correct about the resultant of two perpendicular vectors?",
+    "options": {
+      "A": "It is always equal to their sum.",
+      "B": "It is always equal to their difference.",
+      "C": "Its magnitude is found using Pythagoras' theorem.",
+      "D": "It is always zero."
+    },
+    "answer": "C",
+    "explanation": "For perpendicular vectors A and B, the resultant magnitude is R = √(A² + B²).",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_196",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 196,
+    "text": "A force of 10 N acts east, while a force of 10 N acts north. What is the direction of the resultant relative to east?",
+    "options": {
+      "A": "30° north of east",
+      "B": "45° north of east",
+      "C": "60° north of east",
+      "D": "90° north of east"
+    },
+    "answer": "B",
+    "explanation": "The components are equal, so tan θ = 10/10 = 1 and θ = 45°.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_197",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 197,
+    "text": "A vector has components of 4 units west and 3 units north. Its magnitude is",
+    "options": {
+      "A": "1 unit",
+      "B": "5 units",
+      "C": "7 units",
+      "D": "12 units"
+    },
+    "answer": "B",
+    "explanation": "Magnitude = √(4² + 3²) = √25 = 5 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_198",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 198,
+    "text": "Two forces of 20 N each act at an angle of 90°. Their resultant magnitude is",
+    "options": {
+      "A": "20 N",
+      "B": "20√2 N",
+      "C": "40 N",
+      "D": "400 N"
+    },
+    "answer": "B",
+    "explanation": "R = √(20² + 20²) = √800 = 20√2 N.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_199",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 199,
+    "text": "Two forces of 20 N each act at an angle of 180°. Their resultant is",
+    "options": {
+      "A": "0 N",
+      "B": "20 N",
+      "C": "20√2 N",
+      "D": "40 N"
+    },
+    "answer": "A",
+    "explanation": "The forces are equal and opposite, so their resultant is zero.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "phy_unit2_200",
+    "originalChapter": 2,
+    "chapterTitle": "Topic 2: Scalars and Vectors",
+    "topic": "Scalars and Vectors",
+    "bookQuestionNum": 200,
+    "text": "Two forces of 20 N each act at an angle of 60°. Calculate their resultant magnitude.",
+    "options": {
+      "A": "20 N",
+      "B": "20√2 N",
+      "C": "20√3 N",
+      "D": "40 N"
+    },
+    "answer": "D",
+    "explanation": "R² = 20² + 20² + 2 × 20 × 20 cos 60° = 1,600. Therefore, R = 40 N.",
+    "page": 2,
+    "hasImage": false
   }
 ];
 
 export const JAMBIX_PHYSICS_100_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
+export const JAMBIX_PHYSICS_200_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 
 export function getPhysicsDemystifiedVerifiedQuestions() {
   return PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
@@ -1854,7 +3655,7 @@ export function getPhysicsDemystifiedVerifiedQuestions() {
     explanation: item.explanation,
     bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
     author: 'JAMBIX UTME Preparatory Series',
-    textbookRef: 'Topic 1: Measurements and Units',
+    textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
     hasImage: false,
   }));
 }

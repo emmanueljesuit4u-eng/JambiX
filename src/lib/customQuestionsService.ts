@@ -57,7 +57,7 @@ export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = P
   explanation: item.explanation,
   bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
   author: 'JAMBIX UTME Preparatory Series',
-  textbookRef: 'Topic 1: Measurements and Units',
+  textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
   isUserApproved: true,
   hasImage: item.hasImage,
   imageUrl: item.imageUrl,
