@@ -3728,36 +3728,17 @@ export function generateUniqueSubjectQuestions(
   // 1. Both questions WITH diagrams (circuits, mechanics, instruments, ray diagrams, graphs) and normal text questions.
   // 2. Progressive toughness: The more tests taken (higher difficultyTier), the tougher the problem sets.
   // 3. Strictly verified 100% accurate textbook answers.
+  // =========================================================================
+  // JAMBIX PHYSICS QUESTION BANK (TOPIC 1: MEASUREMENTS AND UNITS)
+  // Indexed 100 questions. Pulls 40 questions randomly per test without duplicate.
+  // Preserves exact answers (A-D) and explanations without altering.
+  // =========================================================================
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
     const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
     const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
 
-    // Toughness evaluation function for Physics Demystified items
-    const getPhysicsToughness = (item: typeof PHYSICS_DEMYSTIFIED_ITEMS[0]): number => {
-      let score = 0;
-      // High-rigor syllabus chapters
-      if ([2, 4, 6, 8, 9, 10, 12, 13, 16, 18, 21, 23, 24, 25, 26].includes(item.originalChapter)) score += 2;
-      // Questions with diagrams require spatial interpretation
-      if (item.hasImage) score += 2;
-      // Multi-step calculations & numerical units
-      if (/\b(?:\d+\.?\d*\s*(?:ms|m\/s|m\/s²|kg|N|J|W|Ω|V|A|Hz|rad|°C|K|μF|pF|cm|mm|Pa|atm))\b/i.test(item.text)) score += 3;
-      if (/(\bcalculate\b|\bdetermine\b|\bfind\b|\bevaluate\b|\bratio\b|\bpercentage\b|\befficiency\b)/i.test(item.text)) score += 2;
-      if (/[=+\-*/^√]/.test(item.text)) score += 2;
-      if (item.explanation && item.explanation.length > 80 && /[=+\-*/^]/.test(item.explanation)) score += 2;
-      return score;
-    };
-
-    // Number of diagram questions (guarantees 5 to 8 diagrams per 40 questions)
-    const targetDiagramCount = Math.min(
-      Math.floor(targetCount * 0.35),
-      Math.max(5, 5 + difficultyTier)
-    );
-
-    const diagramPool = PHYSICS_DEMYSTIFIED_ITEMS.filter((item) => item.hasImage && item.imageUrl);
-    const textPool = PHYSICS_DEMYSTIFIED_ITEMS.filter((item) => !item.hasImage);
-
-    // Deterministic pseudo-random generator seeded by session, year, and difficulty tier
-    let randState = Math.abs((baseSeed * 1103515245 + chosenYear * 12345 + difficultyTier * 31337) | 0);
+    // Seeded pseudo-random generator
+    let randState = Math.abs((baseSeed * 1103515245 + chosenYear * 12345 + difficultyTier * 31337 + Math.floor(Math.random() * 1000000)) | 0);
     const nextRand = () => {
       randState = (randState * 1664525 + 1013904223) | 0;
       return (randState >>> 0) / 4294967296;
@@ -3774,59 +3755,11 @@ export function generateUniqueSubjectQuestions(
       return copy;
     };
 
-    // Sort pools by progressive difficulty tier:
-    // - Tier 0 (Mock 1): Balanced baseline (~20% tough calculations, 80% foundational)
-    // - Tier 1 (Mock 2): ~40% tough calculations & quantitative analysis
-    // - Tier 2 (Mock 3): ~60% multi-step calculations, circuits, kinematics graphs
-    // - Tier 3 (Mock 4): ~75-80% advanced problems, optics, AC resonance, nuclear
-    // - Tier 4+ (Mock 5+): 88-100% highest-rigor problems across all 27 chapters
-    const rankPoolByTier = (pool: typeof PHYSICS_DEMYSTIFIED_ITEMS) => {
-      const withScores = pool.map((item) => ({ item, score: getPhysicsToughness(item), rand: nextRand() }));
-      withScores.sort((a, b) => {
-        if (difficultyTier >= 3) {
-          return (b.score - a.score) * 2 + (b.rand - a.rand);
-        } else if (difficultyTier === 2) {
-          const isToughA = a.score >= 5 ? 1 : 0;
-          const isToughB = b.score >= 5 ? 1 : 0;
-          if (isToughA !== isToughB) return isToughB - isToughA;
-          return b.rand - a.rand;
-        } else if (difficultyTier === 1) {
-          const isModerateA = a.score >= 3 && a.score <= 7 ? 1 : 0;
-          const isModerateB = b.score >= 3 && b.score <= 7 ? 1 : 0;
-          if (isModerateA !== isModerateB) return isModerateB - isModerateA;
-          return b.rand - a.rand;
-        }
-        const isFoundationalA = a.score <= 4 ? 1 : 0;
-        const isFoundationalB = b.score <= 4 ? 1 : 0;
-        if (isFoundationalA !== isFoundationalB) return isFoundationalB - isFoundationalA;
-        return b.rand - a.rand;
-      });
-      return withScores.map((x) => x.item);
-    };
-
-    const prioritizedDiagrams = rankPoolByTier(diagramPool);
-    const prioritizedText = rankPoolByTier(textPool);
-
+    const shuffledBank = shuffleArr(PHYSICS_DEMYSTIFIED_ITEMS);
     const pickedPhysicsItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
-    // 1. Pull required diagram questions (unseen first, tracking diagram signatures)
-    for (const item of prioritizedDiagrams) {
-      if (pickedPhysicsItems.length >= targetDiagramCount) break;
-      const coreSig = getQuestionCoreSignature(item.text);
-      const diagSig = (item.imageUrl || item.id).trim().toLowerCase();
-      if (
-        !safeSessionUsed.has(coreSig) &&
-        !safeExclude.has(coreSig) &&
-        (!sessionUsedDiagrams || !sessionUsedDiagrams.has(diagSig))
-      ) {
-        safeSessionUsed.add(coreSig);
-        if (sessionUsedDiagrams) sessionUsedDiagrams.add(diagSig);
-        pickedPhysicsItems.push(item);
-      }
-    }
-
-    // 2. Pull required normal text questions (unseen first)
-    for (const item of prioritizedText) {
+    // 1. First pass: prioritize questions not yet seen in previous tests
+    for (const item of shuffledBank) {
       if (pickedPhysicsItems.length >= targetCount) break;
       const coreSig = getQuestionCoreSignature(item.text);
       if (!safeSessionUsed.has(coreSig) && !safeExclude.has(coreSig)) {
@@ -3835,10 +3768,9 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 3. Fallback: If unseen pool is exhausted, backfill from remaining pool without session duplicate
+    // 2. Second pass: backfill if needed to reach targetCount (e.g. 40) without session duplicates
     if (pickedPhysicsItems.length < targetCount) {
-      const combinedAll = shuffleArr([...prioritizedDiagrams, ...prioritizedText]);
-      for (const item of combinedAll) {
+      for (const item of shuffledBank) {
         if (pickedPhysicsItems.length >= targetCount) break;
         const coreSig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(coreSig)) {
@@ -3848,19 +3780,12 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 4. Shuffle picked items so diagram and text questions are evenly distributed
-    const finalOrderedItems = shuffleArr(pickedPhysicsItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
-    const seenPhysIds = new Set<number>();
 
-    for (let i = 0; i < finalOrderedItems.length && picked.length < targetCount; i++) {
-      const item = finalOrderedItems[i];
+    for (let i = 0; i < pickedPhysicsItems.length && picked.length < targetCount; i++) {
+      const item = pickedPhysicsItems[i];
       const qNum = picked.length + 1;
-      let qId = 880000 + ((effYear % 100) * 1000) + qNum;
-      while (seenPhysIds.has(qId)) {
-        qId += 50000;
-      }
-      seenPhysIds.add(qId);
+      const qId = 880000 + ((effYear % 100) * 1000) + qNum;
 
       const vq: VerifiedQuestion = {
         id: qId,
@@ -3869,18 +3794,21 @@ export function generateUniqueSubjectQuestions(
         subject: 'Physics',
         topic: item.topic,
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
-        options: item.options,
+        options: {
+          A: item.options.A,
+          B: item.options.B,
+          C: item.options.C,
+          D: item.options.D,
+        },
         answer: item.answer,
-        explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
-        bookTitle: 'PHYSICS DEMYSTIFIED',
-        author: 'Dr. Aifuwa Timothy',
-        textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
-        hasImage: item.hasImage,
-        imageUrl: item.imageUrl,
-        imageCaption: item.imageCaption,
-        imageAlt: item.imageAlt,
+        explanation: item.explanation,
+        bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
+        author: 'JAMBIX UTME Preparatory Series',
+        textbookRef: 'Topic 1: Measurements and Units',
+        hasImage: false,
       };
-      picked.push(scatterQuestionOptions(vq, baseSeed + qNum * 37 + difficultyTier * 13));
+      // Exactly preserve the author's answer and explanation without scrambling
+      picked.push(vq);
     }
 
     if (picked.length >= targetCount) {

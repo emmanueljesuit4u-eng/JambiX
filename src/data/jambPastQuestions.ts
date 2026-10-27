@@ -138,8 +138,8 @@ export const SUBJECT_CONFIGS: Record<SubjectKey, SubjectConfig> = {
     key: 'physics',
     name: 'Physics',
     category: 'Sciences',
-    bookTitle: 'PHYSICS DEMYSTIFIED',
-    author: 'Dr. Aifuwa Timothy',
+    bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
+    author: 'JAMBIX UTME Preparatory Series',
     fullQuestionsPerTest: 40,
     standardChapters: [
       { chapter: 1, title: 'Measurement, Scalars and Vectors', startPage: 1 },
@@ -1406,10 +1406,10 @@ export function generateQuestionForYear(
     return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
   }
 
-  // For Physics: Pull directly from authentic Physics Demystified by Dr. Timothy (with cropped diagrams)
+  // For Physics: Pull directly from JAMBIX PHYSICS QUESTION BANK (100 verified questions)
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
     const qNum = qIndex + 1;
-    // Deterministic selection based on year and index across all 1,848 items
+    // Deterministic selection based on year and index: no repeats within year, and no question repeats consecutively for more than 2 years
     const itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % PHYSICS_DEMYSTIFIED_ITEMS.length;
     const item = PHYSICS_DEMYSTIFIED_ITEMS[itemIdx];
     const subCode = SUBJECT_ID_OFFSETS.physics || 920000;
@@ -1422,19 +1422,21 @@ export function generateQuestionForYear(
       subject: 'Physics',
       topic: item.topic,
       text: `[JAMB UTME ${year} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
-      options: item.options,
+      options: {
+        A: item.options.A,
+        B: item.options.B,
+        C: item.options.C,
+        D: item.options.D,
+      },
       answer: item.answer,
-      explanation: `${item.explanation} [Physics Demystified by Dr. Timothy · Chapter ${item.originalChapter}: ${item.chapterTitle}, p. ${item.page}]`,
-      bookTitle: 'PHYSICS DEMYSTIFIED',
-      author: 'Dr. Aifuwa Timothy',
-      textbookRef: `Physics Demystified by Dr. Timothy (Ch. ${item.originalChapter}: ${item.chapterTitle})`,
-      hasImage: item.hasImage,
-      imageUrl: item.imageUrl,
-      imageCaption: item.imageCaption,
-      imageAlt: item.imageAlt,
+      explanation: item.explanation,
+      bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
+      author: 'JAMBIX UTME Preparatory Series',
+      textbookRef: 'Topic 1: Measurements and Units',
+      hasImage: false,
     };
 
-    return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
+    return baseQuestion;
   }
 
   const config = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.english;
@@ -2066,6 +2068,10 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
       questionNumber: idx + 1,
       id: qId,
     };
+    // For Physics: Preserve exact options, answer, and explanation as provided in the JAMBIX bank without scrambling
+    if (numberedQ.subject.toLowerCase() === 'physics') {
+      return numberedQ;
+    }
     // Ensure all questions across Use of English and all other subjects have options randomly distributed across A, B, C, D
     return scatterQuestionOptions(numberedQ, baseSeed * 1000 + (qId || idx) * 37 + idx * 13);
   });
