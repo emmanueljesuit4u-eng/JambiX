@@ -44,6 +44,7 @@ import {
   ToughSubjectQuestion,
 } from './jambToughQuestionsBank';
 import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
+import { JAMBIX_CHEMISTRY_ITEMS } from './jambixChemistryBank';
 import { LAMLAD_BIOLOGY_ITEMS, toUtmeFourOptions } from './lamladBiologyBank';
 
 export const SEEN_SIGNATURES_STORAGE_KEY = 'jambix_seen_signatures_v2';
@@ -3805,6 +3806,94 @@ export function generateUniqueSubjectQuestions(
         bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
+        hasImage: false,
+      };
+      // Exactly preserve the author's answer and explanation without scrambling
+      picked.push(vq);
+    }
+
+    if (picked.length >= targetCount) {
+      return picked;
+    }
+  }
+
+  // =========================================================================
+  // JAMBIX CHEMISTRY QUESTION BANK (TOPIC: ORGANIC CHEMISTRY)
+  // Indexed 100 questions. Pulls 40 questions randomly per test without duplicate.
+  // Preserves exact answers (A-D) and explanations without altering.
+  // =========================================================================
+  if (subjectKey === 'chemistry' && JAMBIX_CHEMISTRY_ITEMS.length > 0) {
+    const safeExclude = excludeSignatures instanceof Set ? excludeSignatures : new Set<string>();
+    const safeSessionUsed = sessionUsedTexts instanceof Set ? sessionUsedTexts : new Set<string>();
+
+    // Seeded pseudo-random generator
+    let randState = Math.abs((baseSeed * 1103515245 + chosenYear * 12345 + difficultyTier * 31337 + Math.floor(Math.random() * 1000000)) | 0);
+    const nextRand = () => {
+      randState = (randState * 1664525 + 1013904223) | 0;
+      return (randState >>> 0) / 4294967296;
+    };
+
+    const shuffleArr = <T>(arr: T[]): T[] => {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(nextRand() * (i + 1));
+        const tmp = copy[i];
+        copy[i] = copy[j];
+        copy[j] = tmp;
+      }
+      return copy;
+    };
+
+    const shuffledBank = shuffleArr(JAMBIX_CHEMISTRY_ITEMS);
+    const pickedChemistryItems: typeof JAMBIX_CHEMISTRY_ITEMS = [];
+
+    // 1. First pass: prioritize questions not yet seen in previous tests
+    for (const item of shuffledBank) {
+      if (pickedChemistryItems.length >= targetCount) break;
+      const coreSig = getQuestionCoreSignature(item.text);
+      if (!safeSessionUsed.has(coreSig) && !safeExclude.has(coreSig)) {
+        safeSessionUsed.add(coreSig);
+        pickedChemistryItems.push(item);
+      }
+    }
+
+    // 2. Second pass: backfill if needed to reach targetCount (e.g. 40) without session duplicates
+    if (pickedChemistryItems.length < targetCount) {
+      for (const item of shuffledBank) {
+        if (pickedChemistryItems.length >= targetCount) break;
+        const coreSig = getQuestionCoreSignature(item.text);
+        if (!safeSessionUsed.has(coreSig)) {
+          safeSessionUsed.add(coreSig);
+          pickedChemistryItems.push(item);
+        }
+      }
+    }
+
+    const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
+
+    for (let i = 0; i < pickedChemistryItems.length && picked.length < targetCount; i++) {
+      const item = pickedChemistryItems[i];
+      const qNum = picked.length + 1;
+      const qId = 890000 + ((effYear % 100) * 1000) + qNum;
+
+      const vq: VerifiedQuestion = {
+        id: qId,
+        year: effYear,
+        questionNumber: qNum,
+        subject: 'Chemistry',
+        topic: item.topic,
+        text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+        options: {
+          A: item.options.A,
+          B: item.options.B,
+          C: item.options.C,
+          D: item.options.D,
+        },
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
+        author: 'JAMBIX UTME Preparatory Series',
+        textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
         hasImage: false,
       };
       // Exactly preserve the author's answer and explanation without scrambling

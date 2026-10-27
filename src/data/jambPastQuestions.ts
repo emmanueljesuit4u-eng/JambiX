@@ -31,6 +31,7 @@ import {
   JAMB_IMAGE_QUESTIONS_DATA,
 } from './jambImageQuestions';
 import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
+import { JAMBIX_CHEMISTRY_ITEMS } from './jambixChemistryBank';
 
 export type SubjectKey =
   | 'english'
@@ -175,8 +176,8 @@ export const SUBJECT_CONFIGS: Record<SubjectKey, SubjectConfig> = {
     key: 'chemistry',
     name: 'Chemistry',
     category: 'Sciences',
-    bookTitle: 'NEW SCHOOL CHEMISTRY',
-    author: 'Osei Yaw Ababio',
+    bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
+    author: 'JAMBIX UTME Preparatory Series',
     fullQuestionsPerTest: 40,
     standardChapters: [
       { chapter: 1, title: 'Separation Techniques & Criteria for Purity', startPage: 1 },
@@ -1439,6 +1440,39 @@ export function generateQuestionForYear(
     return baseQuestion;
   }
 
+  // For Chemistry: Pull directly from JAMBIX CHEMISTRY QUESTION BANK (100 verified questions)
+  if (subjectKey === 'chemistry' && JAMBIX_CHEMISTRY_ITEMS.length > 0) {
+    const qNum = qIndex + 1;
+    // Deterministic selection based on year and index: no repeats within year, and no question repeats consecutively for more than 2 years
+    const itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_CHEMISTRY_ITEMS.length;
+    const item = JAMBIX_CHEMISTRY_ITEMS[itemIdx];
+    const subCode = SUBJECT_ID_OFFSETS.chemistry || 930000;
+    const id = subCode + (year * 100) + qNum;
+
+    const baseQuestion: VerifiedQuestion = {
+      id,
+      year,
+      questionNumber: qNum,
+      subject: 'Chemistry',
+      topic: item.topic,
+      text: `[JAMB UTME ${year} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+      options: {
+        A: item.options.A,
+        B: item.options.B,
+        C: item.options.C,
+        D: item.options.D,
+      },
+      answer: item.answer,
+      explanation: item.explanation,
+      bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
+      author: 'JAMBIX UTME Preparatory Series',
+      textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
+      hasImage: false,
+    };
+
+    return baseQuestion;
+  }
+
   const config = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.english;
   const templates = TEMPLATE_MAP[subjectKey] || TEMPLATE_MAP.english;
 
@@ -2068,8 +2102,8 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
       questionNumber: idx + 1,
       id: qId,
     };
-    // For Physics: Preserve exact options, answer, and explanation as provided in the JAMBIX bank without scrambling
-    if (numberedQ.subject.toLowerCase() === 'physics') {
+    // For Physics and Chemistry: Preserve exact options, answer, and explanation as provided in the JAMBIX bank without scrambling
+    if (numberedQ.subject.toLowerCase() === 'physics' || numberedQ.subject.toLowerCase() === 'chemistry') {
       return numberedQ;
     }
     // Ensure all questions across Use of English and all other subjects have options randomly distributed across A, B, C, D

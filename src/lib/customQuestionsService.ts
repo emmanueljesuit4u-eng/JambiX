@@ -42,6 +42,7 @@ export interface CustomExtractedQuestion {
 }
 
 import { PHYSICS_DEMYSTIFIED_ITEMS } from '../data/physicsDemystifiedBank';
+import { JAMBIX_CHEMISTRY_ITEMS } from '../data/jambixChemistryBank';
 
 export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
   id: item.id || `phy_jambix_${idx + 1}`,
@@ -58,6 +59,28 @@ export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = P
   bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
   author: 'JAMBIX UTME Preparatory Series',
   textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
+export const CHEMISTRY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_CHEMISTRY_ITEMS.map((item, idx) => ({
+  id: item.id || `chem_jambix_${idx + 1}`,
+  sourcePdfName: 'JAMBIX_CHEMISTRY_QUESTION_BANK.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Chemistry',
+  subjectKey: 'chemistry' as const,
+  topic: item.topic,
+  year: 2026,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: item.explanation,
+  bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
+  author: 'JAMBIX UTME Preparatory Series',
+  textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
   isUserApproved: true,
   hasImage: item.hasImage,
   imageUrl: item.imageUrl,
@@ -85,6 +108,12 @@ export function getLocalCustomQuestions(): CustomExtractedQuestion[] {
   const seenIds = new Set(userCustom.map((q) => q.id));
   const combined = [...userCustom];
   for (const q of PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS) {
+    if (!seenIds.has(q.id)) {
+      combined.push(q);
+      seenIds.add(q.id);
+    }
+  }
+  for (const q of CHEMISTRY_CUSTOM_QUESTIONS) {
     if (!seenIds.has(q.id)) {
       combined.push(q);
       seenIds.add(q.id);

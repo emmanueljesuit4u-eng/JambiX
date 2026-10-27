@@ -13,6 +13,7 @@
 
 import { SubjectKey, normalizeSubjectKey, assembleUtmeTest, VerifiedQuestion, scatterQuestionOptions } from './jambPastQuestions';
 import { getPhysicsDemystifiedVerifiedQuestions } from './physicsDemystifiedBank';
+import { getChemistryDemystifiedVerifiedQuestions } from './jambixChemistryBank';
 import { getLamladBiologyVerifiedQuestions } from './lamladBiologyBank';
 export type { VerifiedQuestion };
 
@@ -1394,6 +1395,7 @@ const RAW_VERIFIED_QUESTIONS: VerifiedQuestion[] = [
 export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
   ...RAW_VERIFIED_QUESTIONS.map((q, idx) => scatterQuestionOptions(q, q.id + idx * 7)),
   ...getPhysicsDemystifiedVerifiedQuestions(),
+  ...getChemistryDemystifiedVerifiedQuestions(),
   ...getLamladBiologyVerifiedQuestions(),
 ];
 
