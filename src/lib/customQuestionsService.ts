@@ -46,6 +46,7 @@ import { JAMBIX_CHEMISTRY_ITEMS } from '../data/jambixChemistryBank';
 import { JAMBIX_MATHEMATICS_ITEMS } from '../data/jambixMathematicsBank';
 import { JAMBIX_BIOLOGY_ITEMS } from '../data/jambixBiologyBank';
 import { JAMBIX_ECONOMICS_ITEMS } from '../data/jambixEconomicsBank';
+import { JAMBIX_COMMERCE_ITEMS } from '../data/jambixCommerceBank';
 
 export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
   id: item.id || `phy_jambix_${idx + 1}`,
@@ -148,6 +149,28 @@ export const ECONOMICS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_ECON
   answer: item.answer,
   explanation: item.explanation,
   bookTitle: 'JAMBIX ECONOMICS QUESTION BANK',
+  author: 'JAMBIX UTME Preparatory Series',
+  textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
+export const COMMERCE_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_COMMERCE_ITEMS.map((item, idx) => ({
+  id: item.id || `comm_jambix_${idx + 1}`,
+  sourcePdfName: 'JAMBIX_COMMERCE_QUESTION_BANK.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Commerce',
+  subjectKey: 'commerce' as const,
+  topic: item.topic,
+  year: 2026,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: item.explanation,
+  bookTitle: 'JAMBIX COMMERCE QUESTION BANK',
   author: 'JAMBIX UTME Preparatory Series',
   textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
   isUserApproved: true,
