@@ -49,6 +49,7 @@ import { JAMBIX_MATHEMATICS_ITEMS } from './jambixMathematicsBank';
 import { JAMBIX_BIOLOGY_ITEMS } from './jambixBiologyBank';
 import { JAMBIX_ECONOMICS_ITEMS } from './jambixEconomicsBank';
 import { JAMBIX_COMMERCE_ITEMS } from './jambixCommerceBank';
+import { JAMBIX_GOVERNMENT_ITEMS } from './jambixGovernmentBank';
 import { LAMLAD_BIOLOGY_ITEMS, toUtmeFourOptions } from './lamladBiologyBank';
 
 export const SEEN_SIGNATURES_STORAGE_KEY = 'jambix_seen_signatures_v2';
@@ -4319,6 +4320,102 @@ export function generateUniqueSubjectQuestions(
         answer: item.answer,
         explanation: item.explanation,
         bookTitle: 'JAMBIX COMMERCE QUESTION BANK',
+        author: 'JAMBIX UTME Preparatory Series',
+        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+        hasImage: false,
+      };
+      // Exactly preserve the author's answer and explanation without scrambling
+      picked.push(vq);
+    }
+
+    if (picked.length >= targetCount) {
+      return picked;
+    }
+  }
+
+  // =========================================================================
+  // JAMBIX GOVERNMENT QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
+  // Fairly distributes across all syllabus topic clusters via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // =========================================================================
+  if (subjectKey === 'government' && JAMBIX_GOVERNMENT_ITEMS.length > 0) {
+    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    const byTopic: Record<string, typeof JAMBIX_GOVERNMENT_ITEMS> = {};
+    for (const item of JAMBIX_GOVERNMENT_ITEMS) {
+      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      if (!byTopic[topicKey]) byTopic[topicKey] = [];
+      byTopic[topicKey].push(item);
+    }
+
+    // 2. Shuffle within each topic
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey] = shuffleArr(byTopic[tKey]);
+    }
+
+    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    const topicKeys = shuffleArr(Object.keys(byTopic));
+    const pickedGovtItems: typeof JAMBIX_GOVERNMENT_ITEMS = [];
+
+    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    let added = true;
+    while (pickedGovtItems.length < targetCount && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (pickedGovtItems.length >= targetCount) break;
+        const pool = byTopic[tKey];
+        const nextItem = pool.find((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+        });
+        if (nextItem) {
+          const sig = getQuestionCoreSignature(nextItem.text);
+          safeSessionUsed.add(sig);
+          pickedGovtItems.push(nextItem);
+          const idx = pool.indexOf(nextItem);
+          if (idx !== -1) pool.splice(idx, 1);
+          added = true;
+        }
+      }
+    }
+
+    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
+    if (pickedGovtItems.length < targetCount) {
+      const allShuffled = shuffleArr(JAMBIX_GOVERNMENT_ITEMS);
+      for (const item of allShuffled) {
+        if (pickedGovtItems.length >= targetCount) break;
+        const sig = getQuestionCoreSignature(item.text);
+        if (!safeSessionUsed.has(sig)) {
+          safeSessionUsed.add(sig);
+          pickedGovtItems.push(item);
+        }
+      }
+    }
+
+    // 6. Complete random shuffle of all selected questions so questions are diversified
+    const finalOrderedGovt = shuffleArr(pickedGovtItems);
+    const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
+
+    for (let i = 0; i < finalOrderedGovt.length && picked.length < targetCount; i++) {
+      const item = finalOrderedGovt[i];
+      const qNum = picked.length + 1;
+      const qId = 930000 + ((effYear % 100) * 1000) + qNum;
+
+      const vq: VerifiedQuestion = {
+        id: qId,
+        year: effYear,
+        questionNumber: qNum,
+        subject: 'Government',
+        topic: item.topic,
+        text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+        options: {
+          A: item.options.A,
+          B: item.options.B,
+          C: item.options.C,
+          D: item.options.D,
+        },
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: 'JAMBIX GOVERNMENT QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
         hasImage: false,
