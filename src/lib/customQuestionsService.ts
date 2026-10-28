@@ -49,6 +49,7 @@ import { JAMBIX_ECONOMICS_ITEMS } from '../data/jambixEconomicsBank';
 import { JAMBIX_COMMERCE_ITEMS } from '../data/jambixCommerceBank';
 import { JAMBIX_GOVERNMENT_ITEMS } from '../data/jambixGovernmentBank';
 import { JAMBIX_LITERATURE_ITEMS } from '../data/jambixLiteratureBank';
+import { JAMBIX_ACCOUNTS_ITEMS } from '../data/jambixAccountsBank';
 
 export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
   id: item.id || `phy_jambix_${idx + 1}`,
@@ -217,6 +218,28 @@ export const LITERATURE_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_LIT
   answer: item.answer,
   explanation: item.explanation,
   bookTitle: 'JAMBIX LITERATURE IN ENGLISH QUESTION BANK',
+  author: 'JAMBIX UTME Preparatory Series',
+  textbookRef: item.chapterTitle || '200 Tough Questions Across All Topics',
+  isUserApproved: true,
+  hasImage: item.hasImage,
+  imageUrl: item.imageUrl,
+  imageCaption: item.imageCaption,
+  imageAlt: item.imageAlt,
+}));
+
+export const ACCOUNTS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_ACCOUNTS_ITEMS.map((item, idx) => ({
+  id: item.id || `acc_jambix_${idx + 1}`,
+  sourcePdfName: 'JAMBIX_PRINCIPLES_OF_ACCOUNTS_QUESTION_BANK.pdf',
+  extractedAt: 'Indexed Official Syllabus Bank',
+  subject: 'Principles of Accounts',
+  subjectKey: 'accounts' as const,
+  topic: item.topic,
+  year: 2026,
+  text: item.text,
+  options: item.options,
+  answer: item.answer,
+  explanation: item.explanation,
+  bookTitle: 'JAMBIX PRINCIPLES OF ACCOUNTS QUESTION BANK',
   author: 'JAMBIX UTME Preparatory Series',
   textbookRef: item.chapterTitle || '200 Tough Questions Across All Topics',
   isUserApproved: true,
