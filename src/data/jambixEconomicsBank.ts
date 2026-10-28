@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  * 
  * JAMBIX ECONOMICS QUESTION BANK
- * 100 TOUGH JAMB UTME-STYLE QUESTIONS ACROSS ALL TOPICS (QUESTIONS 1–100)
+ * 200 TOUGH JAMB UTME-STYLE QUESTIONS (SET 1 & SET 3) ACROSS ALL TOPICS (QUESTIONS 1–100)
  * Indexed directly from official syllabus specifications.
- * Total questions: 100
+ * Total questions: 200
  */
 
 export interface JambixEconomicsItem {
@@ -1830,5 +1830,1805 @@ export const JAMBIX_ECONOMICS_ITEMS: JambixEconomicsItem[] = [
     explanation: "Prices rise by (230 − 200)/200 × 100% = 15%, faster than the 10% salary increase. The real salary index changes by 1.10/1.15 − 1 ≈ −4.35%, so purchasing power falls by approximately 4.35%.",
     page: 10,
     hasImage: false
+  },
+  {
+    "id": "econ_set3_1",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Market Equilibrium & Price Determination",
+    "bookQuestionNum": 1,
+    "text": "The demand and supply functions of a commodity are Qd = 300 − 5P and Qs = 30 + 4P. Calculate the equilibrium price and quantity.",
+    "options": {
+      "A": "P = ₦20, Q = 130",
+      "B": "P = ₦30, Q = 150",
+      "C": "P = ₦40, Q = 170",
+      "D": "P = ₦50, Q = 200"
+    },
+    "answer": "B",
+    "explanation": "Equating demand and supply gives 300 − 5P = 30 + 4P. Therefore, 270 = 9P, so P = 30. Substitution gives Q = 150.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_2",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Market Equilibrium & Price Determination",
+    "bookQuestionNum": 2,
+    "text": "The demand function for a product is Qd = 200 − 3P, while its supply function is Qs = 20 + 2P. Find the equilibrium price and quantity.",
+    "options": {
+      "A": "P = ₦30, Q = 90",
+      "B": "P = ₦36, Q = 92",
+      "C": "P = ₦40, Q = 80",
+      "D": "P = ₦45, Q = 65"
+    },
+    "answer": "B",
+    "explanation": "200 − 3P = 20 + 2P, so 180 = 5P and P = 36. Quantity = 200 − 3(36) = 92.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_3",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Price Legislation: Price Ceiling & Shortages",
+    "bookQuestionNum": 3,
+    "text": "The demand function is Qd = 180 − 2P and the supply function is Qs = 20 + P. If the market price is fixed at ₦20, calculate the shortage.",
+    "options": {
+      "A": "60 units",
+      "B": "80 units",
+      "C": "100 units",
+      "D": "120 units"
+    },
+    "answer": "C",
+    "explanation": "At P = 20, Qd = 140 and Qs = 40. Shortage = 140 − 40 = 100 units.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_4",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Price Legislation: Price Floor & Surpluses",
+    "bookQuestionNum": 4,
+    "text": "The demand function is Qd = 160 − 2P and the supply function is Qs = 10 + 2P. If the government fixes the price at ₦50, what surplus will occur?",
+    "options": {
+      "A": "30 units",
+      "B": "40 units",
+      "C": "50 units",
+      "D": "60 units"
+    },
+    "answer": "C",
+    "explanation": "At P = 50, Qd = 60 and Qs = 110. Surplus = 110 − 60 = 50 units.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_5",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Elasticity of Demand: Midpoint Price Elasticity",
+    "bookQuestionNum": 5,
+    "text": "The price of a product rises from ₦10 to ₦14, while quantity demanded falls from 120 to 80 units. Using the midpoint method, calculate the absolute price elasticity of demand.",
+    "options": {
+      "A": "0.80",
+      "B": "1.00",
+      "C": "1.20",
+      "D": "1.50"
+    },
+    "answer": "C",
+    "explanation": "Percentage change in quantity = 40/100 × 100 = 40%. Percentage change in price = 4/12 × 100 = 33.33%. Elasticity = 40/33.33 ≈ 1.20.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_6",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Theory of Revenue: Total Revenue & Elasticity",
+    "bookQuestionNum": 6,
+    "text": "A trader sells 100 units at ₦40 each. After reducing the price to ₦32, sales rise to 150 units. Calculate the change in total revenue.",
+    "options": {
+      "A": "₦400 decrease",
+      "B": "₦400 increase",
+      "C": "₦800 increase",
+      "D": "₦1,200 increase"
+    },
+    "answer": "C",
+    "explanation": "Initial revenue = 100 × 40 = ₦4,000. New revenue = 150 × 32 = ₦4,800. The increase is ₦800.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_7",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Elasticity of Demand: Income Elasticity",
+    "bookQuestionNum": 7,
+    "text": "Household income rises from ₦100,000 to ₦120,000, while demand for a product rises from 50 units to 60 units. Using the original values, calculate income elasticity of demand.",
+    "options": {
+      "A": "0.5",
+      "B": "1.0",
+      "C": "1.5",
+      "D": "2.0"
+    },
+    "answer": "B",
+    "explanation": "Quantity demanded rises by 20%, and income rises by 20%. Income elasticity = 20%/20% = 1.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_8",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Elasticity of Demand: Cross Elasticity",
+    "bookQuestionNum": 8,
+    "text": "The price of commodity X rises from ₦20 to ₦25, while demand for commodity Y increases from 80 to 100 units. Using the original values, calculate cross elasticity of demand for Y with respect to X.",
+    "options": {
+      "A": "−1.0",
+      "B": "−0.5",
+      "C": "0.5",
+      "D": "1.0"
+    },
+    "answer": "D",
+    "explanation": "Demand for Y rises by 25%, and the price of X rises by 25%. Cross elasticity = 25/25 = 1.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_9",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Theory of Supply: Price Elasticity of Supply",
+    "bookQuestionNum": 9,
+    "text": "The price of a commodity rises from ₦10 to ₦12, while quantity supplied increases from 50 to 70 units. Using the original values, calculate price elasticity of supply.",
+    "options": {
+      "A": "0.5",
+      "B": "1.0",
+      "C": "2.0",
+      "D": "3.0"
+    },
+    "answer": "C",
+    "explanation": "Quantity supplied rises by 40%, while price rises by 20%. Elasticity of supply = 40/20 = 2.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_10",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Elasticity of Demand: Point Price Elasticity",
+    "bookQuestionNum": 10,
+    "text": "The demand function for a commodity is Q = 150 − 3P. Calculate the absolute price elasticity of demand when P = ₦30.",
+    "options": {
+      "A": "0.5",
+      "B": "1.0",
+      "C": "1.5",
+      "D": "3.0"
+    },
+    "answer": "C",
+    "explanation": "At P = 30, Q = 60. Point elasticity = |(dQ/dP)(P/Q)| = |−3 × 30/60| = 1.5.",
+    "page": 1,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_11",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Price Determination: Impact of Taxes",
+    "bookQuestionNum": 11,
+    "text": "The demand function is Qd = 200 − 2Pb and the supply function is Qs = 20 + 2Ps. The government imposes a tax of ₦10 per unit, so Pb = Ps + 10. Find the equilibrium quantity after the tax.",
+    "options": {
+      "A": "80 units",
+      "B": "90 units",
+      "C": "100 units",
+      "D": "110 units"
+    },
+    "answer": "C",
+    "explanation": "200 − 2(Ps + 10) = 20 + 2Ps. Therefore, 160 = 4Ps, so Ps = ₦40 and Pb = ₦50. Quantity = 20 + 2(40) = 100 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_12",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Price Determination: Impact of Subsidies",
+    "bookQuestionNum": 12,
+    "text": "The government pays a subsidy of ₦10 per unit to producers. Demand is Qd = 150 − 2Pb and supply is Qs = 30 + 2Ps, where Ps = Pb + 10. Calculate the government's total subsidy expenditure at equilibrium.",
+    "options": {
+      "A": "₦500",
+      "B": "₦800",
+      "C": "₦1,000",
+      "D": "₦1,500"
+    },
+    "answer": "C",
+    "explanation": "150 − 2Pb = 30 + 2(Pb + 10), giving Pb = ₦25 and Ps = ₦35. Quantity = 100 units. Subsidy expenditure = 100 × ₦10 = ₦1,000.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_13",
+    "originalChapter": 3,
+    "chapterTitle": "Theory of Consumer Behaviour",
+    "topic": "Theory of Consumer Behaviour: Consumer Surplus",
+    "bookQuestionNum": 13,
+    "text": "The inverse demand function for a product is P = 100 − Q. If the market price is ₦40, calculate consumer surplus.",
+    "options": {
+      "A": "₦900",
+      "B": "₦1,200",
+      "C": "₦1,800",
+      "D": "₦3,000"
+    },
+    "answer": "C",
+    "explanation": "At P = 40, Q = 60. Consumer surplus = ½ × (100 − 40) × 60 = ₦1,800.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_14",
+    "originalChapter": 2,
+    "chapterTitle": "Theory of Demand and Supply",
+    "topic": "Theory of Supply: Producer Surplus",
+    "bookQuestionNum": 14,
+    "text": "The inverse supply function for a commodity is P = 10 + Q. If the market price is ₦50, calculate producer surplus.",
+    "options": {
+      "A": "₦400",
+      "B": "₦600",
+      "C": "₦800",
+      "D": "₦1,200"
+    },
+    "answer": "C",
+    "explanation": "At P = 50, Q = 40. Producer surplus = ½ × (50 − 10) × 40 = ₦800.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_15",
+    "originalChapter": 3,
+    "chapterTitle": "Theory of Consumer Behaviour",
+    "topic": "Theory of Consumer Behaviour: Equi-Marginal Principle",
+    "bookQuestionNum": 15,
+    "text": "A consumer has marginal utility of 36 utils for good X, whose price is ₦6. If marginal utility of good Y is 30 utils, what price of Y satisfies the marginal utility per naira rule?",
+    "options": {
+      "A": "₦4",
+      "B": "₦5",
+      "C": "₦6",
+      "D": "₦8"
+    },
+    "answer": "B",
+    "explanation": "MUx/Px = 36/6 = 6. For equilibrium, MUy/Py = 6, so 30/Py = 6 and Py = ₦5.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_16",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Production: Marginal Product",
+    "bookQuestionNum": 16,
+    "text": "A firm produces 48 units with four workers and 55 units with five workers. Calculate the marginal product of the fifth worker.",
+    "options": {
+      "A": "5 units",
+      "B": "7 units",
+      "C": "11 units",
+      "D": "55 units"
+    },
+    "answer": "B",
+    "explanation": "Marginal product = change in total output = 55 − 48 = 7 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_17",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Production: Average Labour Productivity",
+    "bookQuestionNum": 17,
+    "text": "A firm produces 280 units using 14 workers. Calculate average labour productivity.",
+    "options": {
+      "A": "14 units per worker",
+      "B": "18 units per worker",
+      "C": "20 units per worker",
+      "D": "28 units per worker"
+    },
+    "answer": "C",
+    "explanation": "Average product = total output/number of workers = 280/14 = 20 units.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_18",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Production: Returns to Scale",
+    "bookQuestionNum": 18,
+    "text": "A firm's output increases from 200 units to 460 units after all its inputs are doubled. This represents",
+    "options": {
+      "A": "decreasing returns to scale",
+      "B": "constant returns to scale",
+      "C": "increasing returns to scale",
+      "D": "negative returns to scale"
+    },
+    "answer": "C",
+    "explanation": "Doubling all inputs would produce 400 units under constant returns to scale. Output of 460 units indicates increasing returns to scale.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_19",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Costs: Average Variable Cost",
+    "bookQuestionNum": 19,
+    "text": "A firm's total cost is ₦400 at zero output and ₦1,400 at an output of 20 units. Calculate average variable cost.",
+    "options": {
+      "A": "₦20",
+      "B": "₦40",
+      "C": "₦50",
+      "D": "₦70"
+    },
+    "answer": "C",
+    "explanation": "Fixed cost = ₦400. Variable cost = 1,400 − 400 = ₦1,000. Average variable cost = 1,000/20 = ₦50.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_20",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Costs: Marginal Cost",
+    "bookQuestionNum": 20,
+    "text": "Total cost increases from ₦1,800 to ₦2,040 when output increases from 30 to 36 units. Calculate marginal cost over this interval.",
+    "options": {
+      "A": "₦30",
+      "B": "₦35",
+      "C": "₦40",
+      "D": "₦240"
+    },
+    "answer": "C",
+    "explanation": "Change in total cost = ₦240 and change in output = 6 units. Marginal cost = 240/6 = ₦40.",
+    "page": 2,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_21",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Costs: Average Total Cost",
+    "bookQuestionNum": 21,
+    "text": "A firm has fixed costs of ₦1,600 and an average variable cost of ₦35 when producing 80 units. Calculate average total cost.",
+    "options": {
+      "A": "₦35",
+      "B": "₦45",
+      "C": "₦55",
+      "D": "₦75"
+    },
+    "answer": "C",
+    "explanation": "Total variable cost = 80 × 35 = ₦2,800. Total cost = 1,600 + 2,800 = ₦4,400. Average total cost = 4,400/80 = ₦55.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_22",
+    "originalChapter": 5,
+    "chapterTitle": "Market Structures & Pricing",
+    "topic": "Theory of Revenue: Profit Maximisation",
+    "bookQuestionNum": 22,
+    "text": "A firm sells 120 units at ₦80 each. Its average total cost is ₦65. Calculate total profit.",
+    "options": {
+      "A": "₦1,200",
+      "B": "₦1,500",
+      "C": "₦1,800",
+      "D": "₦9,600"
+    },
+    "answer": "C",
+    "explanation": "Profit per unit = 80 − 65 = ₦15. Total profit = 120 × 15 = ₦1,800.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_23",
+    "originalChapter": 5,
+    "chapterTitle": "Market Structures & Pricing",
+    "topic": "Market Structures: Break-Even Analysis",
+    "bookQuestionNum": 23,
+    "text": "A firm has fixed costs of ₦1,500, a selling price of ₦60 per unit, and average variable cost of ₦35. Calculate its break-even output.",
+    "options": {
+      "A": "40 units",
+      "B": "50 units",
+      "C": "60 units",
+      "D": "75 units"
+    },
+    "answer": "C",
+    "explanation": "Contribution per unit = 60 − 35 = ₦25. Break-even output = 1,500/25 = 60 units.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_24",
+    "originalChapter": 5,
+    "chapterTitle": "Market Structures & Pricing",
+    "topic": "Market Structures: Profit Maximisation Rule",
+    "bookQuestionNum": 24,
+    "text": "The marginal revenue from selling an additional unit is ₦40, while marginal cost is ₦55. Assuming profit maximisation and that marginal cost is rising relative to marginal revenue, the firm should generally",
+    "options": {
+      "A": "increase output",
+      "B": "reduce output",
+      "C": "keep increasing output indefinitely",
+      "D": "set marginal cost to zero"
+    },
+    "answer": "B",
+    "explanation": "The additional unit adds ₦40 to revenue but ₦55 to cost. Producing it reduces profit by ₦15.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_25",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Market Failure: Externalities & Marginal Social Cost",
+    "bookQuestionNum": 25,
+    "text": "A factory's private production cost is ₦300 per unit, while pollution imposes an external cost of ₦40 per unit. Calculate marginal social cost if these figures represent the relevant marginal costs.",
+    "options": {
+      "A": "₦260",
+      "B": "₦300",
+      "C": "₦340",
+      "D": "₦12,000"
+    },
+    "answer": "C",
+    "explanation": "Marginal social cost = marginal private cost + marginal external cost = 300 + 40 = ₦340.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_26",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "National Income Accounting: Expenditure Approach",
+    "bookQuestionNum": 26,
+    "text": "An economy records consumption of ₦650 billion, investment of ₦120 billion, government spending of ₦180 billion, exports of ₦100 billion and imports of ₦120 billion. Calculate GDP using the expenditure method.",
+    "options": {
+      "A": "₦810 billion",
+      "B": "₦910 billion",
+      "C": "₦930 billion",
+      "D": "₦1,170 billion"
+    },
+    "answer": "C",
+    "explanation": "GDP = C + I + G + (X − M) = 650 + 120 + 180 + (100 − 120) = ₦930 billion.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_27",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "National Income Accounting: Net National Income",
+    "bookQuestionNum": 27,
+    "text": "A country's GDP is ₦1,400 billion, and net factor income from abroad is ₦50 billion. Depreciation is ₦100 billion. Using the traditional national-accounting relationship, calculate net national income.",
+    "options": {
+      "A": "₦1,250 billion",
+      "B": "₦1,350 billion",
+      "C": "₦1,450 billion",
+      "D": "₦1,550 billion"
+    },
+    "answer": "B",
+    "explanation": "GNI = 1,400 + 50 = ₦1,450 billion. Net national income after depreciation = 1,450 − 100 = ₦1,350 billion.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_28",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "National Income Accounting: Value-Added Method",
+    "bookQuestionNum": 28,
+    "text": "A farmer sells wheat for ₦100,000 to a miller. The miller sells flour for ₦180,000 to a baker, who sells bread for ₦300,000 to consumers. Calculate total value added across these stages.",
+    "options": {
+      "A": "₦100,000",
+      "B": "₦180,000",
+      "C": "₦200,000",
+      "D": "₦300,000"
+    },
+    "answer": "D",
+    "explanation": "Value added is ₦100,000 by the farmer, ₦80,000 by the miller and ₦120,000 by the baker. Total = ₦300,000.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_29",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "National Income Accounting: Real vs Nominal GDP",
+    "bookQuestionNum": 29,
+    "text": "Nominal GDP is ₦1.8 trillion and the GDP deflator is 150, using a base-year index of 100. Calculate real GDP.",
+    "options": {
+      "A": "₦900 billion",
+      "B": "₦1.2 trillion",
+      "C": "₦1.5 trillion",
+      "D": "₦2.7 trillion"
+    },
+    "answer": "B",
+    "explanation": "Real GDP = nominal GDP ÷ (deflator/100) = 1.8/1.5 = ₦1.2 trillion.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_30",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Inflation: Measuring Inflation Rate",
+    "bookQuestionNum": 30,
+    "text": "The consumer price index rises from 180 to 207. Calculate the inflation rate.",
+    "options": {
+      "A": "10%",
+      "B": "12%",
+      "C": "15%",
+      "D": "27%"
+    },
+    "answer": "C",
+    "explanation": "Inflation = (207 − 180)/180 × 100% = 15%.",
+    "page": 3,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_31",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Inflation: Purchasing Power & Real Wages",
+    "bookQuestionNum": 31,
+    "text": "A worker's nominal salary rises from ₦100,000 to ₦112,000, while the CPI rises from 120 to 144. Calculate the percentage change in the worker's real purchasing power.",
+    "options": {
+      "A": "6.67% decrease",
+      "B": "6.67% increase",
+      "C": "12% decrease",
+      "D": "20% increase"
+    },
+    "answer": "A",
+    "explanation": "The real salary index changes in the ratio (112,000/144)/(100,000/120) = 0.9333. Therefore, purchasing power falls by approximately 6.67%.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_32",
+    "originalChapter": 12,
+    "chapterTitle": "Economic Integration & Development",
+    "topic": "Economic Growth: Real GDP Growth Rate",
+    "bookQuestionNum": 32,
+    "text": "Real GDP rises from ₦2.5 trillion to ₦2.8 trillion. Calculate the growth rate.",
+    "options": {
+      "A": "8%",
+      "B": "10%",
+      "C": "12%",
+      "D": "15%"
+    },
+    "answer": "C",
+    "explanation": "Growth rate = (2.8 − 2.5)/2.5 × 100% = 12%.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_33",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "National Income: Per Capita Income",
+    "bookQuestionNum": 33,
+    "text": "A country has national income of ₦9.6 trillion and a population of 32 million. Calculate per capita national income.",
+    "options": {
+      "A": "₦30,000",
+      "B": "₦120,000",
+      "C": "₦300,000",
+      "D": "₦3,000,000"
+    },
+    "answer": "C",
+    "explanation": "Per capita income = ₦9.6 trillion/32 million = ₦300,000 per person.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_34",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Population: Growth Rate & Net Emigration",
+    "bookQuestionNum": 34,
+    "text": "A country records a birth rate of 28 per 1,000 people, a death rate of 9 per 1,000, and net emigration of 4 per 1,000. Calculate the annual population growth rate, ignoring other changes.",
+    "options": {
+      "A": "1.0%",
+      "B": "1.5%",
+      "C": "1.9%",
+      "D": "2.3%"
+    },
+    "answer": "B",
+    "explanation": "Net increase = 28 − 9 − 4 = 15 per 1,000. This is equivalent to 1.5%.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_35",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour & Unemployment: Measuring Unemployment",
+    "bookQuestionNum": 35,
+    "text": "A country has 2.4 million unemployed people and 21.6 million employed people. Calculate the unemployment rate.",
+    "options": {
+      "A": "8%",
+      "B": "10%",
+      "C": "11.1%",
+      "D": "12%"
+    },
+    "answer": "B",
+    "explanation": "Labour force = 2.4 + 21.6 = 24 million. Unemployment rate = 2.4/24 × 100% = 10%.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_36",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour & Unemployment: Labour Force Participation",
+    "bookQuestionNum": 36,
+    "text": "A country has a labour force of 36 million and a working-age population of 45 million. Calculate the labour force participation rate.",
+    "options": {
+      "A": "60%",
+      "B": "75%",
+      "C": "80%",
+      "D": "90%"
+    },
+    "answer": "C",
+    "explanation": "Participation rate = 36/45 × 100% = 80%.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_37",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Population: Dependency Ratio",
+    "bookQuestionNum": 37,
+    "text": "A country has 12 million dependants and 30 million people of working age. Calculate the dependency ratio.",
+    "options": {
+      "A": "25%",
+      "B": "30%",
+      "C": "40%",
+      "D": "60%"
+    },
+    "answer": "C",
+    "explanation": "Dependency ratio = dependants/working-age population × 100% = 12/30 × 100% = 40%.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_38",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "Macroeconomic Theory: Investment Multiplier",
+    "bookQuestionNum": 38,
+    "text": "The marginal propensity to consume is 0.75. If investment increases by ₦50 billion, calculate the change in equilibrium income using the simple Keynesian multiplier.",
+    "options": {
+      "A": "₦50 billion",
+      "B": "₦100 billion",
+      "C": "₦150 billion",
+      "D": "₦200 billion"
+    },
+    "answer": "D",
+    "explanation": "Multiplier = 1/(1 − 0.75) = 4. Change in income = 4 × ₦50 billion = ₦200 billion.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_39",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "Macroeconomic Theory: Tax Multiplier",
+    "bookQuestionNum": 39,
+    "text": "The marginal propensity to consume is 0.8. If lump-sum taxes rise by ₦30 billion, calculate the change in equilibrium income under the simple Keynesian model.",
+    "options": {
+      "A": "A decrease of ₦30 billion",
+      "B": "A decrease of ₦60 billion",
+      "C": "A decrease of ₦120 billion",
+      "D": "An increase of ₦120 billion"
+    },
+    "answer": "C",
+    "explanation": "Tax multiplier = −MPC/(1 − MPC) = −0.8/0.2 = −4. Change in income = −4 × ₦30 billion = −₦120 billion.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_40",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "Macroeconomic Theory: Equilibrium Income",
+    "bookQuestionNum": 40,
+    "text": "Consumption is described by C = 100 + 0.8Y, and planned investment is ₦150 billion. If the economy is in equilibrium and there is no government or foreign trade, calculate equilibrium income.",
+    "options": {
+      "A": "₦750 billion",
+      "B": "₦1,000 billion",
+      "C": "₦1,250 billion",
+      "D": "₦1,500 billion"
+    },
+    "answer": "C",
+    "explanation": "Y = C + I = 100 + 0.8Y + 150. Thus, 0.2Y = 250 and Y = ₦1,250 billion.",
+    "page": 4,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_41",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "Macroeconomic Theory: Consumption and Saving",
+    "bookQuestionNum": 41,
+    "text": "Consumption is C = 40 + 0.75Y. If income is ₦400 billion, calculate saving.",
+    "options": {
+      "A": "₦40 billion",
+      "B": "₦60 billion",
+      "C": "₦100 billion",
+      "D": "₦300 billion"
+    },
+    "answer": "B",
+    "explanation": "C = 40 + 0.75(400) = ₦340 billion. Saving = income − consumption = 400 − 340 = ₦60 billion.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_42",
+    "originalChapter": 7,
+    "chapterTitle": "National Income & Macroeconomic aggregates",
+    "topic": "Circular Flow of Income: Injections and Leakages",
+    "bookQuestionNum": 42,
+    "text": "Investment is ₦75 billion, government expenditure ₦50 billion, exports ₦25 billion, saving ₦60 billion, taxation ₦40 billion and imports ₦50 billion. Under the injections-leakages approach, the economy is",
+    "options": {
+      "A": "experiencing excess injections of ₦25 billion",
+      "B": "experiencing excess leakages of ₦25 billion",
+      "C": "at equilibrium because injections equal leakages",
+      "D": "experiencing excess injections of ₦150 billion"
+    },
+    "answer": "C",
+    "explanation": "Injections = 75 + 50 + 25 = ₦150 billion. Leakages = 60 + 40 + 50 = ₦150 billion.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_43",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Money & Banking: Quantity Theory of Money (Fisher Equation)",
+    "bookQuestionNum": 43,
+    "text": "The money supply is ₦800 billion and velocity is 3. Using MV = PY, calculate nominal national expenditure.",
+    "options": {
+      "A": "₦800 billion",
+      "B": "₦1.2 trillion",
+      "C": "₦2.0 trillion",
+      "D": "₦2.4 trillion"
+    },
+    "answer": "D",
+    "explanation": "MV = 800 billion × 3 = ₦2.4 trillion.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_44",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Money & Banking: Deposit Multiplier",
+    "bookQuestionNum": 44,
+    "text": "If the required cash reserve ratio is 8%, calculate the simple deposit multiplier, assuming no cash leakage and full redepositing of loans.",
+    "options": {
+      "A": "8",
+      "B": "10",
+      "C": "12.5",
+      "D": "20"
+    },
+    "answer": "C",
+    "explanation": "Deposit multiplier = 1/0.08 = 12.5.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_45",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Money & Banking: Credit Creation",
+    "bookQuestionNum": 45,
+    "text": "A bank receives a new cash deposit of ₦2 million. If the reserve requirement is 8%, what is the maximum total deposit creation supported by the deposit under the simple multiplier model?",
+    "options": {
+      "A": "₦2 million",
+      "B": "₦16 million",
+      "C": "₦23 million",
+      "D": "₦25 million"
+    },
+    "answer": "D",
+    "explanation": "Multiplier = 1/0.08 = 12.5. Maximum total deposits = ₦2 million × 12.5 = ₦25 million. The additional deposit creation is ₦23 million.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_46",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Money & Banking: Excess Reserves",
+    "bookQuestionNum": 46,
+    "text": "A bank has deposits of ₦80 million and reserves of ₦14 million. If the required reserve ratio is 12.5%, calculate excess reserves.",
+    "options": {
+      "A": "₦2 million",
+      "B": "₦4 million",
+      "C": "₦10 million",
+      "D": "₦14 million"
+    },
+    "answer": "B",
+    "explanation": "Required reserves = 12.5% × ₦80 million = ₦10 million. Excess reserves = ₦14 million − ₦10 million = ₦4 million.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_47",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Money & Banking: Fisher Effect & Real Interest Rate",
+    "bookQuestionNum": 47,
+    "text": "The nominal interest rate is 15% and the inflation rate is 10%. Calculate the exact real interest rate using the Fisher relationship.",
+    "options": {
+      "A": "4.00%",
+      "B": "4.55%",
+      "C": "5.00%",
+      "D": "5.50%"
+    },
+    "answer": "B",
+    "explanation": "Real rate = (1.15/1.10) − 1 ≈ 0.04545, or 4.55%.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_48",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Inflation: Weighted Price Index",
+    "bookQuestionNum": 48,
+    "text": "A price index uses weights of 40, 35 and 25. The price relatives of the three commodities are 110, 120 and 140. Calculate the weighted index.",
+    "options": {
+      "A": "117",
+      "B": "120",
+      "C": "121",
+      "D": "125"
+    },
+    "answer": "C",
+    "explanation": "Weighted index = [40(110) + 35(120) + 25(140)]/100 = 121.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_49",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Inflation: Real Purchasing Power of Money",
+    "bookQuestionNum": 49,
+    "text": "If the CPI rises from 100 to 125, what is the purchasing power of ₦100 expressed in base-year naira?",
+    "options": {
+      "A": "₦75",
+      "B": "₦80",
+      "C": "₦100",
+      "D": "₦125"
+    },
+    "answer": "B",
+    "explanation": "Real purchasing power = ₦100/(125/100) = ₦80 in base-year purchasing power.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_50",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Public Finance: Deficit-to-GDP Ratio",
+    "bookQuestionNum": 50,
+    "text": "Government expenditure is ₦9 trillion, revenue is ₦7.2 trillion, and GDP is ₦36 trillion. Calculate the budget deficit as a percentage of GDP.",
+    "options": {
+      "A": "4%",
+      "B": "5%",
+      "C": "6%",
+      "D": "8%"
+    },
+    "answer": "B",
+    "explanation": "Deficit = 9 − 7.2 = ₦1.8 trillion. Deficit-to-GDP ratio = 1.8/36 × 100% = 5%.",
+    "page": 5,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_51",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Public Finance: Progressive Income Taxation",
+    "bookQuestionNum": 51,
+    "text": "A tax system charges 5% on the first ₦200,000 of taxable income and 10% on the next portion. If taxable income is ₦400,000, calculate the total tax and average tax rate.",
+    "options": {
+      "A": "₦20,000 and 5%",
+      "B": "₦30,000 and 7.5%",
+      "C": "₦40,000 and 10%",
+      "D": "₦50,000 and 12.5%"
+    },
+    "answer": "B",
+    "explanation": "Tax on first ₦200,000 = ₦10,000. Tax on the next ₦200,000 = ₦20,000. Total tax = ₦30,000; average rate = 30,000/400,000 × 100% = 7.5%.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_52",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Public Finance: Value-Added Tax (VAT)",
+    "bookQuestionNum": 52,
+    "text": "A business charges output VAT of ₦42,000 and has eligible input VAT of ₦26,500. Calculate the net VAT payable, ignoring other adjustments.",
+    "options": {
+      "A": "₦15,000",
+      "B": "₦15,500",
+      "C": "₦26,500",
+      "D": "₦68,500"
+    },
+    "answer": "B",
+    "explanation": "Net VAT = output VAT − eligible input VAT = 42,000 − 26,500 = ₦15,500.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_53",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Public Finance: Public Debt & Debt Servicing",
+    "bookQuestionNum": 53,
+    "text": "A government has public debt of ₦6.5 trillion and pays an annual interest rate of 11%. Calculate the annual interest bill.",
+    "options": {
+      "A": "₦65 billion",
+      "B": "₦650 billion",
+      "C": "₦715 billion",
+      "D": "₦1.1 trillion"
+    },
+    "answer": "C",
+    "explanation": "Annual interest = 0.11 × ₦6.5 trillion = ₦0.715 trillion = ₦715 billion.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_54",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Public Finance: Government Subsidies",
+    "bookQuestionNum": 54,
+    "text": "A government pays a subsidy of ₦25 per unit on 1.2 million units. Calculate its total subsidy expenditure.",
+    "options": {
+      "A": "₦3 million",
+      "B": "₦12 million",
+      "C": "₦30 million",
+      "D": "₦300 million"
+    },
+    "answer": "C",
+    "explanation": "Total subsidy = ₦25 × 1,200,000 = ₦30,000,000.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_55",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Money & Banking: Excess Reserves",
+    "bookQuestionNum": 55,
+    "text": "A bank has deposits of ₦120 million and reserves of ₦18 million. If the required reserve ratio is 10%, calculate excess reserves.",
+    "options": {
+      "A": "₦3 million",
+      "B": "₦6 million",
+      "C": "₦12 million",
+      "D": "₦18 million"
+    },
+    "answer": "B",
+    "explanation": "Required reserves = 10% × ₦120 million = ₦12 million. Excess reserves = 18 − 12 = ₦6 million.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_56",
+    "originalChapter": 10,
+    "chapterTitle": "Monetary & Fiscal Policy",
+    "topic": "Monetary Policy: Open Market Operations (OMO)",
+    "bookQuestionNum": 56,
+    "text": "When a central bank sells government securities in the open market, the intended immediate effect is generally to",
+    "options": {
+      "A": "increase commercial bank reserves",
+      "B": "reduce commercial bank reserves",
+      "C": "increase bank lending without limit",
+      "D": "abolish the demand for money"
+    },
+    "answer": "B",
+    "explanation": "Purchasers pay for the securities, withdrawing funds from the banking system and helping tighten monetary conditions.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_57",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Finance: Foreign Exchange Rates",
+    "bookQuestionNum": 57,
+    "text": "The exchange rate rises from ₦1,200 per US dollar to ₦1,500 per US dollar. By what percentage has the naira cost of one US dollar increased?",
+    "options": {
+      "A": "15%",
+      "B": "20%",
+      "C": "25%",
+      "D": "30%"
+    },
+    "answer": "C",
+    "explanation": "Percentage increase = (1,500 − 1,200)/1,200 × 100% = 25%.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_58",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Finance: Foreign Exchange Transactions",
+    "bookQuestionNum": 58,
+    "text": "An importer must pay US$3,750 at an exchange rate of ₦1,480 per dollar. The bank adds a transaction fee of 0.8% of the naira cost. Calculate the total payment.",
+    "options": {
+      "A": "₦5,550,000",
+      "B": "₦5,594,400",
+      "C": "₦5,600,000",
+      "D": "₦5,650,000"
+    },
+    "answer": "B",
+    "explanation": "Base cost = 3,750 × ₦1,480 = ₦5,550,000. Fee = 0.008 × 5,550,000 = ₦44,400. Total = ₦5,594,400.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_59",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Tariffs",
+    "bookQuestionNum": 59,
+    "text": "An imported machine is valued at US$240 before tax. An ad valorem tariff of 15% is imposed. What is its price after the tariff, ignoring freight and other charges?",
+    "options": {
+      "A": "US$255",
+      "B": "US$264",
+      "C": "US$276",
+      "D": "US$300"
+    },
+    "answer": "C",
+    "explanation": "Tariff = 15% × US$240 = US$36. Price after tariff = 240 + 36 = US$276.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_60",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Terms of Trade",
+    "bookQuestionNum": 60,
+    "text": "A country's export price index is 144 and its import price index is 120. Calculate the net barter terms of trade index.",
+    "options": {
+      "A": "80",
+      "B": "100",
+      "C": "120",
+      "D": "144"
+    },
+    "answer": "C",
+    "explanation": "Terms of trade = export price index/import price index × 100 = 144/120 × 100 = 120.",
+    "page": 6,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_61",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Balance of Payments (Current Account)",
+    "bookQuestionNum": 61,
+    "text": "A country records a goods trade deficit of ₦75 billion, a net services surplus of ₦40 billion, net primary income of −₦10 billion and net transfers of ₦15 billion. Calculate its current account balance.",
+    "options": {
+      "A": "A deficit of ₦30 billion",
+      "B": "A deficit of ₦20 billion",
+      "C": "A surplus of ₦30 billion",
+      "D": "A surplus of ₦40 billion"
+    },
+    "answer": "A",
+    "explanation": "Current account = −75 + 40 − 10 + 15 = −₦30 billion.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_62",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Balance of Trade",
+    "bookQuestionNum": 62,
+    "text": "A country exports goods worth ₦870 billion and imports goods worth ₦950 billion. Calculate its visible trade balance.",
+    "options": {
+      "A": "A surplus of ₦80 billion",
+      "B": "A deficit of ₦80 billion",
+      "C": "A deficit of ₦950 billion",
+      "D": "A surplus of ₦1,820 billion"
+    },
+    "answer": "B",
+    "explanation": "Visible trade balance = exports − imports = 870 − 950 = −₦80 billion.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_63",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Comparative Advantage",
+    "bookQuestionNum": 63,
+    "text": "Country A can produce 20 units of cloth or 10 units of wine with the same resources. Country B can produce 12 units of cloth or 8 units of wine. Which country has a comparative advantage in wine?",
+    "options": {
+      "A": "Country A",
+      "B": "Country B",
+      "C": "Both countries equally",
+      "D": "Neither country"
+    },
+    "answer": "B",
+    "explanation": "In A, one unit of wine costs 2 units of cloth. In B, one unit of wine costs 12/8 = 1.5 units of cloth. B has the lower opportunity cost of wine.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_64",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Absolute Advantage",
+    "bookQuestionNum": 64,
+    "text": "Country A can produce either 30 units of cloth or 15 units of wine per worker daily. Country B can produce either 20 units of cloth or 20 units of wine. Which statement is correct?",
+    "options": {
+      "A": "A has an absolute advantage in both goods.",
+      "B": "B has an absolute advantage in both goods.",
+      "C": "A has an absolute advantage in cloth, while B has an absolute advantage in wine.",
+      "D": "Neither country has an absolute advantage."
+    },
+    "answer": "C",
+    "explanation": "A produces more cloth (30 versus 20), while B produces more wine (20 versus 15) per worker daily.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_65",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Finance: Currency Appreciation",
+    "bookQuestionNum": 65,
+    "text": "A currency appreciates against foreign currencies. Other things remaining constant, which effect is most likely?",
+    "options": {
+      "A": "Imports become cheaper in domestic currency.",
+      "B": "Imports become more expensive in domestic currency.",
+      "C": "Exports become automatically cheaper to foreign buyers.",
+      "D": "Foreign travel becomes impossible."
+    },
+    "answer": "A",
+    "explanation": "An appreciation raises the foreign-currency value of the domestic currency, reducing the domestic-currency cost of imports, other things being equal.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_66",
+    "originalChapter": 12,
+    "chapterTitle": "Economic Integration & Development",
+    "topic": "Economic Integration: Customs Union",
+    "bookQuestionNum": 66,
+    "text": "Which of the following is a key characteristic of a customs union?",
+    "options": {
+      "A": "No international trade among its members",
+      "B": "A common external tariff toward non-member countries",
+      "C": "Separate external tariffs with no common policy",
+      "D": "A ban on exports from member countries"
+    },
+    "answer": "B",
+    "explanation": "A customs union removes internal trade barriers among members and establishes a common external tariff.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_67",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Quotas vs Tariffs",
+    "bookQuestionNum": 67,
+    "text": "An import quota differs from a tariff because a quota directly restricts the",
+    "options": {
+      "A": "quantity or value of imports",
+      "B": "income of every domestic consumer",
+      "C": "number of local producers",
+      "D": "exchange rate in every market"
+    },
+    "answer": "A",
+    "explanation": "An import quota places a limit on imports, while a tariff imposes a tax on them.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_68",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Trade: Visible Trade Balance",
+    "bookQuestionNum": 68,
+    "text": "A country's total imports are ₦400 billion, total exports are ₦500 billion, and net income and transfers from abroad are zero. Calculate the visible trade balance.",
+    "options": {
+      "A": "A deficit of ₦100 billion",
+      "B": "A surplus of ₦100 billion",
+      "C": "A surplus of ₦900 billion",
+      "D": "A balanced trade account"
+    },
+    "answer": "B",
+    "explanation": "Visible trade balance = exports − imports = 500 − 400 = ₦100 billion.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_69",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Finance: Cross Currency Exchange",
+    "bookQuestionNum": 69,
+    "text": "If one euro exchanges for US$1.10 and one US dollar exchanges for ₦1,500, calculate the naira equivalent of €200.",
+    "options": {
+      "A": "₦220,000",
+      "B": "₦250,000",
+      "C": "₦330,000",
+      "D": "₦300,000"
+    },
+    "answer": "C",
+    "explanation": "€200 = US$220. At ₦1,500 per dollar, the amount is 220 × ₦1,500 = ₦330,000.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_70",
+    "originalChapter": 11,
+    "chapterTitle": "International Trade & Finance",
+    "topic": "International Finance: International Monetary Fund (IMF)",
+    "bookQuestionNum": 70,
+    "text": "The main objective of the International Monetary Fund is most closely associated with",
+    "options": {
+      "A": "promoting international monetary cooperation and supporting balance-of-payments stability",
+      "B": "replacing all domestic tax authorities",
+      "C": "managing every private business in member countries",
+      "D": "setting the retail price of every commodity worldwide"
+    },
+    "answer": "A",
+    "explanation": "The IMF works to support international monetary cooperation and financial stability, including assistance to countries facing external financing problems.",
+    "page": 7,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_71",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour & Productivity: Labour Productivity",
+    "bookQuestionNum": 71,
+    "text": "A firm produces 1,800 units using 45 workers. Calculate average labour productivity.",
+    "options": {
+      "A": "30 units per worker",
+      "B": "35 units per worker",
+      "C": "40 units per worker",
+      "D": "45 units per worker"
+    },
+    "answer": "C",
+    "explanation": "Average labour productivity = 1,800/45 = 40 units per worker.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_72",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour Market: Marginal Revenue Product (MRP)",
+    "bookQuestionNum": 72,
+    "text": "An additional worker enables a competitive firm to produce six extra units. Each unit sells for ₦200. Assuming the marginal revenue from each additional unit equals the market price, calculate the worker's marginal revenue product.",
+    "options": {
+      "A": "₦200",
+      "B": "₦600",
+      "C": "₦1,000",
+      "D": "₦1,200"
+    },
+    "answer": "D",
+    "explanation": "Marginal revenue product = marginal product × marginal revenue = 6 × ₦200 = ₦1,200.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_73",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour Market: Real Wages",
+    "bookQuestionNum": 73,
+    "text": "A worker's nominal wage rises by 10%, but the general price level rises by 25%. Using the ratio of wage and price growth factors, what happens to real wages?",
+    "options": {
+      "A": "They rise by 15%.",
+      "B": "They fall by 12%.",
+      "C": "They fall by 15%.",
+      "D": "They remain constant."
+    },
+    "answer": "B",
+    "explanation": "Real wage factor = 1.10/1.25 = 0.88. Real wages therefore fall by 12%.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_74",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Population: Rule of 70 Doubling Time",
+    "bookQuestionNum": 74,
+    "text": "A country's population grows at 2.5% annually. Using the Rule of 70, estimate the number of years needed for its population to double.",
+    "options": {
+      "A": "14 years",
+      "B": "20 years",
+      "C": "28 years",
+      "D": "35 years"
+    },
+    "answer": "C",
+    "explanation": "Approximate doubling time = 70/growth rate = 70/2.5 = 28 years.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_75",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Population: Geometric Population Projection",
+    "bookQuestionNum": 75,
+    "text": "A country has a population of 12 million and grows at 3% annually. Assuming a constant rate, estimate its population after two years.",
+    "options": {
+      "A": "12.36 million",
+      "B": "12.60 million",
+      "C": "12.73 million",
+      "D": "13.20 million"
+    },
+    "answer": "C",
+    "explanation": "Population = 12(1.03)² = 12.7308 million, approximately 12.73 million.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_76",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Population: Dependency Ratio",
+    "bookQuestionNum": 76,
+    "text": "A country has 20 million young dependants, 8 million elderly dependants and 56 million people of working age. Calculate the dependency ratio.",
+    "options": {
+      "A": "28%",
+      "B": "40%",
+      "C": "50%",
+      "D": "56%"
+    },
+    "answer": "C",
+    "explanation": "Dependency ratio = (20 + 8)/56 × 100% = 50%.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_77",
+    "originalChapter": 12,
+    "chapterTitle": "Economic Integration & Development",
+    "topic": "Economic Growth: Real GDP Per Capita Growth",
+    "bookQuestionNum": 77,
+    "text": "Real GDP grows by 8% while population grows by 3%. Using the exact ratio of growth factors, calculate the approximate growth rate of real GDP per capita.",
+    "options": {
+      "A": "3.00%",
+      "B": "4.85%",
+      "C": "5.00%",
+      "D": "11.00%"
+    },
+    "answer": "B",
+    "explanation": "Per capita growth factor = 1.08/1.03 ≈ 1.04854. Therefore, real GDP per capita grows by approximately 4.85%.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_78",
+    "originalChapter": 12,
+    "chapterTitle": "Economic Integration & Development",
+    "topic": "Economic Development: Human Development Index (HDI)",
+    "bookQuestionNum": 78,
+    "text": "Which combination of indicators is used in the Human Development Index?",
+    "options": {
+      "A": "Inflation, exports and government debt",
+      "B": "Health, education and standard of living",
+      "C": "Rainfall, population density and exports",
+      "D": "Interest rate, tax revenue and unemployment only"
+    },
+    "answer": "B",
+    "explanation": "The HDI combines life expectancy, education indicators and gross national income per capita.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_79",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour & Unemployment: Measuring Unemployment",
+    "bookQuestionNum": 79,
+    "text": "A country has 1.8 million unemployed people and 28.2 million employed people. Calculate the unemployment rate.",
+    "options": {
+      "A": "5%",
+      "B": "6%",
+      "C": "6.4%",
+      "D": "8%"
+    },
+    "answer": "B",
+    "explanation": "Labour force = 1.8 + 28.2 = 30 million. Unemployment rate = 1.8/30 × 100% = 6%.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_80",
+    "originalChapter": 13,
+    "chapterTitle": "Agriculture & Industrialization",
+    "topic": "Agriculture: Seasonality in Agriculture",
+    "bookQuestionNum": 80,
+    "text": "Agricultural output is largely seasonal because it depends heavily on",
+    "options": {
+      "A": "planting periods, rainfall and biological growth cycles",
+      "B": "the number of banks in a city",
+      "C": "daily changes in foreign exchange rates alone",
+      "D": "the number of factories in every state"
+    },
+    "answer": "A",
+    "explanation": "Agricultural production often depends on seasonal weather conditions and crop-development cycles.",
+    "page": 8,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_81",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Factors of Production: Supply of Land",
+    "bookQuestionNum": 81,
+    "text": "The total physical supply of land is conventionally treated as perfectly inelastic because",
+    "options": {
+      "A": "its total quantity cannot be increased through production",
+      "B": "land has no alternative uses",
+      "C": "all land has identical fertility",
+      "D": "the price of land never changes"
+    },
+    "answer": "A",
+    "explanation": "The total physical quantity of land is fixed, although the amount offered for a particular use may change.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_82",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Production: Returns to Scale",
+    "bookQuestionNum": 82,
+    "text": "A firm's output rises from 100 units to 240 units when all its inputs are doubled. This is evidence of",
+    "options": {
+      "A": "decreasing returns to scale",
+      "B": "constant returns to scale",
+      "C": "increasing returns to scale",
+      "D": "diminishing marginal utility"
+    },
+    "answer": "C",
+    "explanation": "With constant returns, doubling inputs would double output to 200 units. Output of 240 is more than double.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_83",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Costs: Economies of Scale",
+    "bookQuestionNum": 83,
+    "text": "A firm's average cost falls from ₦500 to ₦360 per unit as output rises from 100 to 200 units. Calculate the percentage reduction in average cost.",
+    "options": {
+      "A": "14%",
+      "B": "20%",
+      "C": "28%",
+      "D": "40%"
+    },
+    "answer": "C",
+    "explanation": "Reduction = ₦140. Percentage reduction = 140/500 × 100% = 28%.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_84",
+    "originalChapter": 9,
+    "chapterTitle": "Population, Labour & Unemployment",
+    "topic": "Labour Market: Economic Rent & Transfer Earnings",
+    "bookQuestionNum": 84,
+    "text": "A worker earns ₦80,000 per month in a job but would accept ₦50,000 per month in the next best available alternative. Ignoring other factors, calculate the worker's economic rent.",
+    "options": {
+      "A": "₦20,000",
+      "B": "₦30,000",
+      "C": "₦50,000",
+      "D": "₦80,000"
+    },
+    "answer": "B",
+    "explanation": "Economic rent = actual earnings − transfer earnings = ₦80,000 − ₦50,000 = ₦30,000.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_85",
+    "originalChapter": 1,
+    "chapterTitle": "Basic Economic Concepts & Methodology",
+    "topic": "Basic Concepts: Opportunity Cost on PPC",
+    "bookQuestionNum": 85,
+    "text": "A production possibility schedule shows that producing 10 units of X allows 80 units of Y, while producing 20 units of X allows 50 units of Y. Calculate the opportunity cost per additional unit of X over this interval.",
+    "options": {
+      "A": "2 units of Y",
+      "B": "3 units of Y",
+      "C": "5 units of Y",
+      "D": "30 units of Y"
+    },
+    "answer": "B",
+    "explanation": "Increasing X by 10 units reduces Y by 30 units. Opportunity cost per extra X = 30/10 = 3 units of Y.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_86",
+    "originalChapter": 1,
+    "chapterTitle": "Basic Economic Concepts & Methodology",
+    "topic": "Production Possibility Curve (PPC): Outward Shift",
+    "bookQuestionNum": 86,
+    "text": "Which situation illustrates an outward shift of a production possibility curve?",
+    "options": {
+      "A": "A temporary movement from one point on the curve to another",
+      "B": "An increase in productive capacity caused by improved technology",
+      "C": "A fall in output because resources are destroyed",
+      "D": "A rise in the market price of one good only"
+    },
+    "answer": "B",
+    "explanation": "Better technology or an increase in productive resources can expand the economy's production possibilities.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_87",
+    "originalChapter": 4,
+    "chapterTitle": "Theory of Production & Costs",
+    "topic": "Theory of Costs: External Economies of Scale",
+    "bookQuestionNum": 87,
+    "text": "Which of the following best describes external economies of scale?",
+    "options": {
+      "A": "A firm's own expansion reduces its costs solely through its internal organisation.",
+      "B": "Firms benefit from advantages created by growth of the industry or surrounding area.",
+      "C": "A firm stops production entirely.",
+      "D": "A rise in output always increases the average cost of every firm."
+    },
+    "answer": "B",
+    "explanation": "Shared infrastructure, specialised suppliers and a larger skilled labour pool can reduce costs for firms in a growing industrial area.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_88",
+    "originalChapter": 13,
+    "chapterTitle": "Agriculture & Industrialization",
+    "topic": "Industrial Location: Localisation of Industries",
+    "bookQuestionNum": 88,
+    "text": "When many firms in the same or related industries cluster in one geographical location, the process is known as",
+    "options": {
+      "A": "industrial localisation",
+      "B": "inflation",
+      "C": "nationalisation",
+      "D": "devaluation"
+    },
+    "answer": "A",
+    "explanation": "Industrial localisation is the concentration of related or similar industries in a particular area.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_89",
+    "originalChapter": 15,
+    "chapterTitle": "Statistical Methods & Applied Economics",
+    "topic": "Statistical Methods: Weighted Arithmetic Mean",
+    "bookQuestionNum": 89,
+    "text": "The values 2, 4 and 6 occur with frequencies 3, 5 and 2 respectively. Calculate the arithmetic mean.",
+    "options": {
+      "A": "3.0",
+      "B": "3.8",
+      "C": "4.0",
+      "D": "4.5"
+    },
+    "answer": "B",
+    "explanation": "Weighted total = 2(3) + 4(5) + 6(2) = 38. Total frequency = 10. Mean = 38/10 = 3.8.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_90",
+    "originalChapter": 8,
+    "chapterTitle": "Money, Banking & Inflation",
+    "topic": "Inflation: Laspeyres-Style CPI Basket",
+    "bookQuestionNum": 90,
+    "text": "A fixed basket contains 4 units of rice, 2 units of oil and 6 units of soap. Base-year prices are ₦200, ₦700 and ₦100 respectively. Current prices are ₦250, ₦800 and ₦120. Calculate the consumer price index, using the base year as 100.",
+    "options": {
+      "A": "110",
+      "B": "115",
+      "C": "120",
+      "D": "125"
+    },
+    "answer": "B",
+    "explanation": "Base basket cost = 4(200) + 2(700) + 6(100) = ₦3,000. Current basket cost = 4(250) + 2(800) + 6(120) = ₦3,450. CPI = 3,450/3,000 × 100 = 115.",
+    "page": 9,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_91",
+    "originalChapter": 15,
+    "chapterTitle": "Statistical Methods & Applied Economics",
+    "topic": "Statistical Methods: Population Variance",
+    "bookQuestionNum": 91,
+    "text": "Calculate the population variance of the numbers 1, 3, 5, 7 and 9.",
+    "options": {
+      "A": "4",
+      "B": "6",
+      "C": "8",
+      "D": "10"
+    },
+    "answer": "C",
+    "explanation": "Mean = 5. The squared deviations sum to 16 + 4 + 0 + 4 + 16 = 40. Population variance = 40/5 = 8.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_92",
+    "originalChapter": 15,
+    "chapterTitle": "Statistical Methods & Applied Economics",
+    "topic": "Statistical Methods: Median of Data Set",
+    "bookQuestionNum": 92,
+    "text": "Find the median of the data set 3, 5, 5, 7, 10 and 12.",
+    "options": {
+      "A": "5",
+      "B": "6",
+      "C": "7",
+      "D": "8"
+    },
+    "answer": "B",
+    "explanation": "There are six ordered values. The median is the average of the third and fourth values: (5 + 7)/2 = 6.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_93",
+    "originalChapter": 15,
+    "chapterTitle": "Statistical Methods & Applied Economics",
+    "topic": "Statistical Methods: Probability Without Replacement",
+    "bookQuestionNum": 93,
+    "text": "A box contains 15 good bulbs and 5 defective bulbs. Two bulbs are selected randomly without replacement. Find the probability that both are good.",
+    "options": {
+      "A": "7/20",
+      "B": "3/8",
+      "C": "21/38",
+      "D": "3/4"
+    },
+    "answer": "C",
+    "explanation": "Probability = (15/20)(14/19) = 210/380 = 21/38.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_94",
+    "originalChapter": 15,
+    "chapterTitle": "Statistical Methods & Applied Economics",
+    "topic": "Statistical Methods: Probability of Events",
+    "bookQuestionNum": 94,
+    "text": "Two fair six-sided dice are thrown. Find the probability that their sum is 8.",
+    "options": {
+      "A": "1/9",
+      "B": "5/36",
+      "C": "1/6",
+      "D": "1/4"
+    },
+    "answer": "B",
+    "explanation": "The favourable outcomes are (2,6), (3,5), (4,4), (5,3) and (6,2), giving 5 outcomes out of 36.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_95",
+    "originalChapter": 15,
+    "chapterTitle": "Statistical Methods & Applied Economics",
+    "topic": "Statistical Methods: Combinations",
+    "bookQuestionNum": 95,
+    "text": "In how many ways can a committee of four people be chosen from seven people?",
+    "options": {
+      "A": "21",
+      "B": "28",
+      "C": "35",
+      "D": "840"
+    },
+    "answer": "C",
+    "explanation": "Number of selections = ⁷C₄ = 7!/(4!3!) = 35.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_96",
+    "originalChapter": 3,
+    "chapterTitle": "Theory of Consumer Behaviour",
+    "topic": "Theory of Consumer Behaviour: Equi-Marginal Principle",
+    "bookQuestionNum": 96,
+    "text": "A consumer's marginal utility of X is 42 utils and the price of X is ₦7. If marginal utility of Y is 30 utils, what price of Y equalises marginal utility per naira?",
+    "options": {
+      "A": "₦4",
+      "B": "₦5",
+      "C": "₦6",
+      "D": "₦7"
+    },
+    "answer": "C",
+    "explanation": "MUx/Px = 42/7 = 6. For equilibrium, 30/Py = 6, giving Py = ₦5.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_97",
+    "originalChapter": 5,
+    "chapterTitle": "Market Structures & Pricing",
+    "topic": "Market Structures: Monopoly Profit Maximisation",
+    "bookQuestionNum": 97,
+    "text": "A monopolist faces the inverse demand function P = 50 − 0.5Q and has constant marginal cost of ₦10. Assuming no other relevant cost changes, what output maximises profit?",
+    "options": {
+      "A": "20 units",
+      "B": "30 units",
+      "C": "40 units",
+      "D": "50 units"
+    },
+    "answer": "C",
+    "explanation": "Total revenue = 50Q − 0.5Q², so marginal revenue = 50 − Q. Set MR = MC: 50 − Q = 10. Therefore, Q = 40 units.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_98",
+    "originalChapter": 5,
+    "chapterTitle": "Market Structures & Pricing",
+    "topic": "Market Structures: Break-Even Output",
+    "bookQuestionNum": 98,
+    "text": "A firm has fixed costs of ₦3,000, a selling price of ₦120 per unit, and average variable cost of ₦70. Calculate its break-even output.",
+    "options": {
+      "A": "40 units",
+      "B": "50 units",
+      "C": "60 units",
+      "D": "75 units"
+    },
+    "answer": "C",
+    "explanation": "Contribution per unit = ₦120 − ₦70 = ₦50. Break-even output = 3,000/50 = 60 units.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_99",
+    "originalChapter": 6,
+    "chapterTitle": "Market Failure & Public Finance",
+    "topic": "Public Finance: Debt-to-GDP Ratio",
+    "bookQuestionNum": 99,
+    "text": "A country's public debt is ₦7.5 trillion and its GDP is ₦25 trillion. Calculate its debt-to-GDP ratio.",
+    "options": {
+      "A": "20%",
+      "B": "25%",
+      "C": "30%",
+      "D": "35%"
+    },
+    "answer": "C",
+    "explanation": "Debt-to-GDP ratio = 7.5/25 × 100% = 30%.",
+    "page": 10,
+    "hasImage": false
+  },
+  {
+    "id": "econ_set3_100",
+    "originalChapter": 12,
+    "chapterTitle": "Economic Integration & Development",
+    "topic": "Economic Growth: Real GDP Per Capita Growth",
+    "bookQuestionNum": 100,
+    "text": "An economy's real GDP rises by 10% while its population rises by 4%. Using the exact ratio of growth factors, calculate the approximate growth rate of real GDP per capita.",
+    "options": {
+      "A": "4.00%",
+      "B": "5.77%",
+      "C": "6.00%",
+      "D": "14.00%"
+    },
+    "answer": "B",
+    "explanation": "Per capita growth factor = 1.10/1.04 ≈ 1.05769. Therefore, real GDP per capita rises by approximately 5.77%.",
+    "page": 10,
+    "hasImage": false
   }
 ];
