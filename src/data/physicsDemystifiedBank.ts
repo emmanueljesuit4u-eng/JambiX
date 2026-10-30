@@ -6,8 +6,9 @@
  * TOPIC 1: MEASUREMENTS AND UNITS (QUESTIONS 1–100)
  * TOPIC 2: SCALARS AND VECTORS (QUESTIONS 101–200)
  * TOPIC 3: MOTION (QUESTIONS 201–300)
+ * TOPIC 4: ALTERNATING CURRENT (AC) CIRCUITS (QUESTIONS 301–500)
  * Indexed directly from official syllabus specifications.
- * Total questions: 300
+ * Total questions: 500
  */
 
 export interface PhysicsDemystifiedItem {
@@ -5432,12 +5433,3613 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "explanation": "Frequency = 1/period = 1/4 = 0.25 Hz.",
     "page": 3,
     "hasImage": false
+  },
+  {
+    "id": "phy_ac_301",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 301,
+    "text": "What distinguishes alternating current from direct current?",
+    "options": {
+      "A": "Alternating current always has a greater magnitude.",
+      "B": "Alternating current periodically reverses direction.",
+      "C": "Alternating current cannot flow through a resistor.",
+      "D": "Alternating current has no measurable frequency."
+    },
+    "answer": "B",
+    "explanation": "AC periodically changes direction and usually varies in magnitude, while steady DC flows in one direction.",
+    "page": 76,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_302",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 302,
+    "text": "The number of complete cycles of an alternating current per second is called",
+    "options": {
+      "A": "amplitude",
+      "B": "impedance",
+      "C": "frequency",
+      "D": "reactance"
+    },
+    "answer": "C",
+    "explanation": "Frequency is measured in hertz (Hz), where 1 Hz represents one cycle per second.",
+    "page": 76,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_303",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 303,
+    "text": "The period of an alternating current is",
+    "options": {
+      "A": "the maximum current in a cycle",
+      "B": "the time taken to complete one cycle",
+      "C": "the number of cycles per second",
+      "D": "the resistance of the circuit"
+    },
+    "answer": "B",
+    "explanation": "Period is the time for one complete cycle and is measured in seconds.",
+    "page": 76,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_304",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 304,
+    "text": "Which expression relates frequency f to period T?",
+    "options": {
+      "A": "f = T",
+      "B": "f = 2T",
+      "C": "f = 1/T",
+      "D": "f = T²"
+    },
+    "answer": "C",
+    "explanation": "Frequency and period are reciprocals.",
+    "page": 76,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_305",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 305,
+    "text": "The angular frequency of an alternating voltage is given by",
+    "options": {
+      "A": "ω = f/2π",
+      "B": "ω = 2πf",
+      "C": "ω = 1/f",
+      "D": "ω = π/f"
+    },
+    "answer": "B",
+    "explanation": "Angular frequency measures the rate of change of phase in radians per second.",
+    "page": 77,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_306",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 306,
+    "text": "Which graph represents a sinusoidal alternating voltage?",
+    "options": {
+      "A": "A straight horizontal line at a constant positive value",
+      "B": "A curve that varies periodically above and below zero",
+      "C": "A line that increases continuously without repeating",
+      "D": "A curve that remains entirely at zero"
+    },
+    "answer": "B",
+    "explanation": "A sinusoidal AC voltage alternates between positive and negative values in a repeating cycle.",
+    "page": 77,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_307",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 307,
+    "text": "The maximum value reached by an alternating voltage is called its",
+    "options": {
+      "A": "RMS value",
+      "B": "average value",
+      "C": "peak value",
+      "D": "frequency"
+    },
+    "answer": "C",
+    "explanation": "Peak value is the maximum instantaneous magnitude reached during a cycle.",
+    "page": 77,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_308",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 308,
+    "text": "The root-mean-square value of an alternating current is the value of steady DC that produces the same",
+    "options": {
+      "A": "frequency",
+      "B": "heating effect in the same resistance over the same time",
+      "C": "direction of flow",
+      "D": "peak magnitude"
+    },
+    "answer": "B",
+    "explanation": "RMS current is the effective value used for comparing the heating effects of AC and DC.",
+    "page": 77,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_309",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 309,
+    "text": "Which device commonly generates alternating voltage using electromagnetic induction?",
+    "options": {
+      "A": "Transformer",
+      "B": "AC generator",
+      "C": "Capacitor",
+      "D": "Rectifier"
+    },
+    "answer": "B",
+    "explanation": "An AC generator converts mechanical energy into electrical energy through electromagnetic induction.",
+    "page": 78,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_310",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 310,
+    "text": "Which component is primarily used to convert AC into unidirectional current?",
+    "options": {
+      "A": "Capacitor",
+      "B": "Inductor",
+      "C": "Rectifier",
+      "D": "Transformer"
+    },
+    "answer": "C",
+    "explanation": "A rectifier, commonly made with diodes, converts alternating voltage into a unidirectional output.",
+    "page": 78,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_311",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 311,
+    "text": "In a purely resistive AC circuit, the current and voltage are",
+    "options": {
+      "A": "90° out of phase",
+      "B": "180° out of phase",
+      "C": "in phase",
+      "D": "always of equal magnitude"
+    },
+    "answer": "C",
+    "explanation": "In a pure resistor, current and voltage reach their zero and peak values simultaneously.",
+    "page": 78,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_312",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 312,
+    "text": "In a purely inductive AC circuit, the current",
+    "options": {
+      "A": "leads the voltage by 90°",
+      "B": "lags the voltage by 90°",
+      "C": "is always in phase with the voltage",
+      "D": "leads the voltage by 180°"
+    },
+    "answer": "B",
+    "explanation": "An inductor opposes changes in current, causing current to lag voltage by a quarter cycle.",
+    "page": 78,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_313",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 313,
+    "text": "In a purely capacitive AC circuit, the current",
+    "options": {
+      "A": "lags the voltage by 90°",
+      "B": "leads the voltage by 90°",
+      "C": "is always in phase with the voltage",
+      "D": "lags the voltage by 180°"
+    },
+    "answer": "B",
+    "explanation": "In an ideal capacitor, current reaches its peak a quarter cycle before voltage.",
+    "page": 79,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_314",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 314,
+    "text": "The power factor of a purely resistive AC circuit is",
+    "options": {
+      "A": "0",
+      "B": "0.5",
+      "C": "1",
+      "D": "−1"
+    },
+    "answer": "C",
+    "explanation": "Voltage and current are in phase, so the phase angle is zero and cos 0° = 1.",
+    "page": 79,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_315",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 315,
+    "text": "The average value of an ideal sinusoidal alternating current over one complete cycle is",
+    "options": {
+      "A": "equal to its peak value",
+      "B": "half its peak value",
+      "C": "zero",
+      "D": "its RMS value"
+    },
+    "answer": "C",
+    "explanation": "The positive and negative halves of a complete sinusoidal cycle cancel.",
+    "page": 79,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_316",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 316,
+    "text": "What is the SI unit of RMS current?",
+    "options": {
+      "A": "Volt",
+      "B": "Ampere",
+      "C": "Ohm",
+      "D": "Watt"
+    },
+    "answer": "B",
+    "explanation": "RMS current is still a measure of electric current and is expressed in amperes.",
+    "page": 79,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_317",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 317,
+    "text": "A complete cycle of sinusoidal AC corresponds to a phase change of",
+    "options": {
+      "A": "π/4 radians",
+      "B": "π/2 radians",
+      "C": "π radians",
+      "D": "2π radians"
+    },
+    "answer": "D",
+    "explanation": "One complete revolution in phase is 360°, equivalent to 2π radians.",
+    "page": 80,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_318",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 318,
+    "text": "Which quantity measures the maximum displacement of an AC waveform from zero?",
+    "options": {
+      "A": "Period",
+      "B": "Amplitude",
+      "C": "Impedance",
+      "D": "Power factor"
+    },
+    "answer": "B",
+    "explanation": "For a sinusoidal waveform, amplitude is its peak magnitude measured from the zero reference.",
+    "page": 80,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_319",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 319,
+    "text": "Two sinusoidal voltages have the same frequency but different phase angles. They differ in their",
+    "options": {
+      "A": "number of cycles per second",
+      "B": "relative positions within their cycles",
+      "C": "SI unit",
+      "D": "definition of RMS value"
+    },
+    "answer": "B",
+    "explanation": "Phase difference indicates how far one waveform leads or lags another.",
+    "page": 80,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_320",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 320,
+    "text": "Which quantity is measured in radians per second?",
+    "options": {
+      "A": "Resistance",
+      "B": "Angular frequency",
+      "C": "Capacitance",
+      "D": "Power factor"
+    },
+    "answer": "B",
+    "explanation": "Angular frequency is the rate of change of angular phase with time.",
+    "page": 80,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_321",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 321,
+    "text": "An AC supply has a frequency of 50 Hz. Calculate its period.",
+    "options": {
+      "A": "0.002 s",
+      "B": "0.02 s",
+      "C": "0.2 s",
+      "D": "2 s"
+    },
+    "answer": "B",
+    "explanation": "T = 1/f = 1/50 = 0.02 s.",
+    "page": 81,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_322",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 322,
+    "text": "The period of an alternating current is 0.04 s. Calculate its frequency.",
+    "options": {
+      "A": "4 Hz",
+      "B": "20 Hz",
+      "C": "25 Hz",
+      "D": "40 Hz"
+    },
+    "answer": "C",
+    "explanation": "f = 1/T = 1/0.04 = 25 Hz.",
+    "page": 81,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_323",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 323,
+    "text": "An alternating voltage completes one cycle in 5 ms. What is its frequency?",
+    "options": {
+      "A": "50 Hz",
+      "B": "100 Hz",
+      "C": "200 Hz",
+      "D": "500 Hz"
+    },
+    "answer": "C",
+    "explanation": "5 ms = 0.005 s. Therefore, f = 1/0.005 = 200 Hz.",
+    "page": 81,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_324",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 324,
+    "text": "A sinusoidal voltage has a frequency of 120 Hz. What is its period, approximately?",
+    "options": {
+      "A": "0.00083 s",
+      "B": "0.00833 s",
+      "C": "0.0833 s",
+      "D": "8.33 s"
+    },
+    "answer": "B",
+    "explanation": "T = 1/120 ≈ 0.00833 s.",
+    "page": 81,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_325",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 325,
+    "text": "Calculate the angular frequency of a 50 Hz AC supply.",
+    "options": {
+      "A": "50π rad/s",
+      "B": "100π rad/s",
+      "C": "200π rad/s",
+      "D": "500π rad/s"
+    },
+    "answer": "B",
+    "explanation": "ω = 2πf = 2π × 50 = 100π rad/s.",
+    "page": 82,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_326",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 326,
+    "text": "What is the angular frequency of a 60 Hz AC supply?",
+    "options": {
+      "A": "60π rad/s",
+      "B": "100π rad/s",
+      "C": "120π rad/s",
+      "D": "240π rad/s"
+    },
+    "answer": "C",
+    "explanation": "ω = 2π × 60 = 120π rad/s.",
+    "page": 82,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_327",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 327,
+    "text": "An AC source has an angular frequency of 50π rad/s. Calculate its frequency.",
+    "options": {
+      "A": "12.5 Hz",
+      "B": "25 Hz",
+      "C": "50 Hz",
+      "D": "100 Hz"
+    },
+    "answer": "B",
+    "explanation": "f = ω/(2π) = 50π/(2π) = 25 Hz.",
+    "page": 82,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_328",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 328,
+    "text": "An AC waveform completes 400 cycles in 8 seconds. Calculate its frequency.",
+    "options": {
+      "A": "20 Hz",
+      "B": "40 Hz",
+      "C": "50 Hz",
+      "D": "100 Hz"
+    },
+    "answer": "C",
+    "explanation": "f = number of cycles/time = 400/8 = 50 Hz.",
+    "page": 82,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_329",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 329,
+    "text": "How many complete cycles are produced by a 50 Hz source in 10 seconds?",
+    "options": {
+      "A": "50",
+      "B": "100",
+      "C": "250",
+      "D": "500"
+    },
+    "answer": "D",
+    "explanation": "Number of cycles = frequency × time = 50 × 10 = 500.",
+    "page": 83,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_330",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 330,
+    "text": "An alternating source operates at 25 Hz. How many cycles occur in 2 minutes?",
+    "options": {
+      "A": "300",
+      "B": "750",
+      "C": "1,500",
+      "D": "3,000"
+    },
+    "answer": "D",
+    "explanation": "Two minutes = 120 s. Number of cycles = 25 × 120 = 3,000.",
+    "page": 83,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_331",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 331,
+    "text": "A sinusoidal voltage has a peak value of 100 V. Calculate its RMS value.",
+    "options": {
+      "A": "50 V",
+      "B": "60.0 V",
+      "C": "70.7 V",
+      "D": "100 V"
+    },
+    "answer": "C",
+    "explanation": "Vrms = Vpeak/√2 = 100/√2 ≈ 70.7 V.",
+    "page": 83,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_332",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 332,
+    "text": "The RMS voltage of a sinusoidal supply is 220 V. Calculate its peak value.",
+    "options": {
+      "A": "110 V",
+      "B": "155.6 V",
+      "C": "220 V",
+      "D": "311 V"
+    },
+    "answer": "D",
+    "explanation": "Vpeak = √2 × 220 ≈ 311 V.",
+    "page": 83,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_333",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 333,
+    "text": "A sinusoidal voltage has a peak value of 340 V. What is its RMS value, approximately?",
+    "options": {
+      "A": "120 V",
+      "B": "170 V",
+      "C": "240.4 V",
+      "D": "340 V"
+    },
+    "answer": "C",
+    "explanation": "Vrms = 340/√2 ≈ 240.4 V.",
+    "page": 84,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_334",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 334,
+    "text": "The RMS voltage of an AC supply is 50 V. Find its peak voltage.",
+    "options": {
+      "A": "25.0 V",
+      "B": "35.4 V",
+      "C": "50.0 V",
+      "D": "70.7 V"
+    },
+    "answer": "D",
+    "explanation": "Vpeak = √2 × 50 ≈ 70.7 V.",
+    "page": 84,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_335",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 335,
+    "text": "The peak current in a sinusoidal circuit is 14.14 A. Calculate its RMS current.",
+    "options": {
+      "A": "5 A",
+      "B": "7.07 A",
+      "C": "10 A",
+      "D": "14.14 A"
+    },
+    "answer": "C",
+    "explanation": "Irms = Ipeak/√2 = 14.14/1.414 ≈ 10 A.",
+    "page": 84,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_336",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 336,
+    "text": "A sinusoidal current has an RMS value of 3 A. Its peak value is approximately",
+    "options": {
+      "A": "1.5 A",
+      "B": "2.12 A",
+      "C": "4.24 A",
+      "D": "6 A"
+    },
+    "answer": "C",
+    "explanation": "Ipeak = √2 × 3 ≈ 4.24 A.",
+    "page": 84,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_337",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 337,
+    "text": "The peak current in a circuit is 8 A. Calculate the RMS current.",
+    "options": {
+      "A": "2.83 A",
+      "B": "4.00 A",
+      "C": "5.66 A",
+      "D": "8.00 A"
+    },
+    "answer": "C",
+    "explanation": "Irms = 8/√2 ≈ 5.66 A.",
+    "page": 85,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_338",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 338,
+    "text": "The RMS voltage of an AC source is 120 V. What is its peak voltage?",
+    "options": {
+      "A": "60 V",
+      "B": "84.9 V",
+      "C": "120 V",
+      "D": "169.7 V"
+    },
+    "answer": "D",
+    "explanation": "Vpeak = √2 × 120 ≈ 169.7 V.",
+    "page": 85,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_339",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 339,
+    "text": "An alternating voltage is represented by v = 100 sin ωt. Find the instantaneous voltage when ωt = 30°.",
+    "options": {
+      "A": "25 V",
+      "B": "50 V",
+      "C": "70.7 V",
+      "D": "100 V"
+    },
+    "answer": "B",
+    "explanation": "v = 100 sin 30° = 100 × 0.5 = 50 V.",
+    "page": 85,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_340",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 340,
+    "text": "An alternating voltage is represented by v = 120 sin ωt. Calculate its instantaneous value when ωt = 60°.",
+    "options": {
+      "A": "60 V",
+      "B": "84.9 V",
+      "C": "103.9 V",
+      "D": "120 V"
+    },
+    "answer": "C",
+    "explanation": "v = 120 sin 60° = 120 × 0.866 ≈ 103.9 V.",
+    "page": 85,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_341",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 341,
+    "text": "If v = 200 sin ωt, what is the voltage when ωt = 90°?",
+    "options": {
+      "A": "0 V",
+      "B": "100 V",
+      "C": "141.4 V",
+      "D": "200 V"
+    },
+    "answer": "D",
+    "explanation": "sin 90° = 1, so v = 200 V.",
+    "page": 86,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_342",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 342,
+    "text": "If v = 200 sin ωt, what is the voltage when ωt = 180°?",
+    "options": {
+      "A": "−200 V",
+      "B": "−100 V",
+      "C": "0 V",
+      "D": "200 V"
+    },
+    "answer": "C",
+    "explanation": "sin 180° = 0.",
+    "page": 86,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_343",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 343,
+    "text": "If an ideal sinusoidal AC voltage has a peak value of 80 V, its average over one complete cycle is",
+    "options": {
+      "A": "0 V",
+      "B": "25.5 V",
+      "C": "40 V",
+      "D": "56.6 V"
+    },
+    "answer": "A",
+    "explanation": "The positive and negative portions cancel when averaged over a complete cycle.",
+    "page": 86,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_344",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 344,
+    "text": "A sinusoidal voltage has a peak value of 100 V. Calculate its average value over the positive half-cycle.",
+    "options": {
+      "A": "31.8 V",
+      "B": "50.0 V",
+      "C": "63.7 V",
+      "D": "70.7 V"
+    },
+    "answer": "C",
+    "explanation": "Half-cycle average = 2Vpeak/π = 200/π ≈ 63.7 V.",
+    "page": 86,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_345",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 345,
+    "text": "An AC voltage has a peak value of 50 V. What is its peak-to-peak value?",
+    "options": {
+      "A": "25 V",
+      "B": "50 V",
+      "C": "70.7 V",
+      "D": "100 V"
+    },
+    "answer": "D",
+    "explanation": "For a symmetrical sinusoidal wave, peak-to-peak voltage = 2Vpeak = 100 V.",
+    "page": 87,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_346",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 346,
+    "text": "A 100 V RMS supply is connected across a 40 Ω resistor. Calculate the RMS current.",
+    "options": {
+      "A": "0.4 A",
+      "B": "2.0 A",
+      "C": "2.5 A",
+      "D": "4.0 A"
+    },
+    "answer": "C",
+    "explanation": "Irms = Vrms/R = 100/40 = 2.5 A.",
+    "page": 87,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_347",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 347,
+    "text": "A 50 V RMS supply is connected across a 100 Ω resistor. The RMS current is",
+    "options": {
+      "A": "0.25 A",
+      "B": "0.5 A",
+      "C": "2 A",
+      "D": "5 A"
+    },
+    "answer": "B",
+    "explanation": "Irms = 50/100 = 0.5 A.",
+    "page": 87,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_348",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 348,
+    "text": "A 220 V RMS supply is connected to a 110 Ω resistor. Calculate the current.",
+    "options": {
+      "A": "0.5 A",
+      "B": "1 A",
+      "C": "2 A",
+      "D": "4 A"
+    },
+    "answer": "C",
+    "explanation": "Irms = Vrms/R = 220/110 = 2 A.",
+    "page": 87,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_349",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 349,
+    "text": "A sinusoidal voltage has a peak value of 12 V and is connected across a 6 Ω resistor. Calculate the peak current.",
+    "options": {
+      "A": "0.5 A",
+      "B": "1 A",
+      "C": "2 A",
+      "D": "4 A"
+    },
+    "answer": "C",
+    "explanation": "Ipeak = Vpeak/R = 12/6 = 2 A.",
+    "page": 88,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_350",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 350,
+    "text": "A sinusoidal voltage has a peak value of 15 V and is connected across a 10 Ω resistor. What is the RMS current?",
+    "options": {
+      "A": "0.75 A",
+      "B": "1.06 A",
+      "C": "1.50 A",
+      "D": "2.12 A"
+    },
+    "answer": "B",
+    "explanation": "Ipeak = 15/10 = 1.5 A. Irms = 1.5/√2 ≈ 1.06 A.",
+    "page": 88,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_351",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 351,
+    "text": "A 100 V RMS supply is connected across a 20 Ω resistor. Calculate the average power consumed.",
+    "options": {
+      "A": "100 W",
+      "B": "250 W",
+      "C": "500 W",
+      "D": "2,000 W"
+    },
+    "answer": "C",
+    "explanation": "P = Vrms²/R = 100²/20 = 500 W.",
+    "page": 88,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_352",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 352,
+    "text": "A 200 V RMS supply is connected across a 100 Ω resistor. Calculate the average power.",
+    "options": {
+      "A": "200 W",
+      "B": "400 W",
+      "C": "800 W",
+      "D": "2,000 W"
+    },
+    "answer": "B",
+    "explanation": "P = V²/R = 200²/100 = 400 W.",
+    "page": 88,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_353",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 353,
+    "text": "A resistor of 5 Ω carries an RMS current of 4 A. Calculate the average power.",
+    "options": {
+      "A": "20 W",
+      "B": "40 W",
+      "C": "80 W",
+      "D": "100 W"
+    },
+    "answer": "C",
+    "explanation": "P = I²R = 4² × 5 = 80 W.",
+    "page": 89,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_354",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 354,
+    "text": "A purely resistive load draws 2 A from a 120 V RMS supply. Calculate its average power.",
+    "options": {
+      "A": "60 W",
+      "B": "120 W",
+      "C": "240 W",
+      "D": "480 W"
+    },
+    "answer": "C",
+    "explanation": "For a pure resistor, P = VI = 120 × 2 = 240 W.",
+    "page": 89,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_355",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 355,
+    "text": "An AC circuit has an RMS voltage of 100 V, RMS current of 2 A and power factor of 0.5. Find the average power.",
+    "options": {
+      "A": "50 W",
+      "B": "100 W",
+      "C": "150 W",
+      "D": "200 W"
+    },
+    "answer": "B",
+    "explanation": "P = VI cos φ = 100 × 2 × 0.5 = 100 W.",
+    "page": 89,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_356",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 356,
+    "text": "An AC circuit has an RMS voltage of 50 V, RMS current of 4 A and power factor of 0.8. Calculate its average power.",
+    "options": {
+      "A": "100 W",
+      "B": "120 W",
+      "C": "160 W",
+      "D": "200 W"
+    },
+    "answer": "C",
+    "explanation": "P = 50 × 4 × 0.8 = 160 W.",
+    "page": 89,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_357",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 357,
+    "text": "A pure resistor is connected to an AC supply. Its power factor is",
+    "options": {
+      "A": "0",
+      "B": "0.5",
+      "C": "0.707",
+      "D": "1"
+    },
+    "answer": "D",
+    "explanation": "Voltage and current are in phase in a pure resistor.",
+    "page": 90,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_358",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 358,
+    "text": "An ideal capacitor is connected to a sinusoidal AC supply. Its average power consumption over a complete cycle is",
+    "options": {
+      "A": "zero",
+      "B": "equal to its peak voltage",
+      "C": "equal to its RMS current",
+      "D": "infinite"
+    },
+    "answer": "A",
+    "explanation": "An ideal capacitor stores energy during part of a cycle and returns it during another part, giving zero average real power.",
+    "page": 90,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_359",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 359,
+    "text": "An ideal inductor is connected to a sinusoidal AC supply. Its average real power consumption is",
+    "options": {
+      "A": "always equal to VI",
+      "B": "zero",
+      "C": "equal to I²XL",
+      "D": "infinite"
+    },
+    "answer": "B",
+    "explanation": "An ideal inductor stores energy in its magnetic field and returns it to the source, consuming no average real power.",
+    "page": 90,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_360",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 360,
+    "text": "The peak voltage of a sinusoidal supply is 100 V. Which value is closest to its RMS voltage?",
+    "options": {
+      "A": "50 V",
+      "B": "63.7 V",
+      "C": "70.7 V",
+      "D": "100 V"
+    },
+    "answer": "C",
+    "explanation": "Vrms = 100/√2 ≈ 70.7 V.",
+    "page": 90,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_361",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 361,
+    "text": "The inductive reactance of an inductor is given by",
+    "options": {
+      "A": "XL = 1/(2πfL)",
+      "B": "XL = 2πfL",
+      "C": "XL = f/L",
+      "D": "XL = L/f"
+    },
+    "answer": "B",
+    "explanation": "Inductive reactance is proportional to frequency and inductance.",
+    "page": 91,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_362",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 362,
+    "text": "The capacitive reactance of a capacitor is",
+    "options": {
+      "A": "XC = 2πfC",
+      "B": "XC = 2πf/C",
+      "C": "XC = 1/(2πfC)",
+      "D": "XC = C/f"
+    },
+    "answer": "C",
+    "explanation": "Capacitive reactance decreases as frequency or capacitance increases.",
+    "page": 91,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_363",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 363,
+    "text": "An inductor of 0.1 H is connected to a 50 Hz supply. Calculate its inductive reactance.",
+    "options": {
+      "A": "3.14 Ω",
+      "B": "15.7 Ω",
+      "C": "31.4 Ω",
+      "D": "62.8 Ω"
+    },
+    "answer": "C",
+    "explanation": "XL = 2πfL = 2π × 50 × 0.1 ≈ 31.4 Ω.",
+    "page": 91,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_364",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 364,
+    "text": "An inductor of 0.2 H is connected to a 50 Hz supply. Calculate its inductive reactance.",
+    "options": {
+      "A": "15.7 Ω",
+      "B": "31.4 Ω",
+      "C": "62.8 Ω",
+      "D": "125.6 Ω"
+    },
+    "answer": "C",
+    "explanation": "XL = 2π × 50 × 0.2 ≈ 62.8 Ω.",
+    "page": 91,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_365",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 365,
+    "text": "An inductor of 0.5 H operates at 60 Hz. Calculate its inductive reactance.",
+    "options": {
+      "A": "30 Ω",
+      "B": "94.2 Ω",
+      "C": "188.5 Ω",
+      "D": "377 Ω"
+    },
+    "answer": "C",
+    "explanation": "XL = 2π × 60 × 0.5 ≈ 188.5 Ω.",
+    "page": 92,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_366",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 366,
+    "text": "Calculate the inductive reactance of a 0.05 H inductor at 100 Hz.",
+    "options": {
+      "A": "7.85 Ω",
+      "B": "15.7 Ω",
+      "C": "31.4 Ω",
+      "D": "62.8 Ω"
+    },
+    "answer": "C",
+    "explanation": "XL = 2π × 100 × 0.05 ≈ 31.4 Ω.",
+    "page": 92,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_367",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 367,
+    "text": "A 100 μF capacitor is connected to a 50 Hz AC supply. Calculate its capacitive reactance.",
+    "options": {
+      "A": "3.18 Ω",
+      "B": "15.9 Ω",
+      "C": "31.8 Ω",
+      "D": "63.7 Ω"
+    },
+    "answer": "C",
+    "explanation": "XC = 1/(2π × 50 × 100 × 10⁻⁶) ≈ 31.8 Ω.",
+    "page": 92,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_368",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 368,
+    "text": "A 50 μF capacitor is connected to a 50 Hz supply. Calculate its capacitive reactance.",
+    "options": {
+      "A": "15.9 Ω",
+      "B": "31.8 Ω",
+      "C": "63.7 Ω",
+      "D": "127.3 Ω"
+    },
+    "answer": "C",
+    "explanation": "XC = 1/(2π × 50 × 50 × 10⁻⁶) ≈ 63.7 Ω.",
+    "page": 92,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_369",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 369,
+    "text": "A 100 μF capacitor operates at 100 Hz. Its capacitive reactance is approximately",
+    "options": {
+      "A": "7.96 Ω",
+      "B": "15.9 Ω",
+      "C": "31.8 Ω",
+      "D": "63.7 Ω"
+    },
+    "answer": "B",
+    "explanation": "XC = 1/(2π × 100 × 100 × 10⁻⁶) ≈ 15.9 Ω.",
+    "page": 93,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_370",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 370,
+    "text": "Calculate the capacitive reactance of a 10 μF capacitor at 50 Hz.",
+    "options": {
+      "A": "31.8 Ω",
+      "B": "63.7 Ω",
+      "C": "159 Ω",
+      "D": "318 Ω"
+    },
+    "answer": "D",
+    "explanation": "XC = 1/(2π × 50 × 10 × 10⁻⁶) ≈ 318.3 Ω.",
+    "page": 93,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_371",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 371,
+    "text": "If the frequency of an AC supply doubles while inductance remains constant, inductive reactance",
+    "options": {
+      "A": "halves",
+      "B": "doubles",
+      "C": "remains constant",
+      "D": "becomes zero"
+    },
+    "answer": "B",
+    "explanation": "Since XL = 2πfL, doubling f doubles XL.",
+    "page": 93,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_372",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 372,
+    "text": "If the frequency of an AC supply doubles while capacitance remains constant, capacitive reactance",
+    "options": {
+      "A": "doubles",
+      "B": "halves",
+      "C": "remains constant",
+      "D": "becomes infinite"
+    },
+    "answer": "B",
+    "explanation": "Since XC = 1/(2πfC), doubling f halves XC.",
+    "page": 93,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_373",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 373,
+    "text": "If the inductance of a coil doubles at constant frequency, its inductive reactance",
+    "options": {
+      "A": "doubles",
+      "B": "halves",
+      "C": "becomes zero",
+      "D": "remains constant"
+    },
+    "answer": "A",
+    "explanation": "Inductive reactance is directly proportional to inductance.",
+    "page": 94,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_374",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 374,
+    "text": "If the capacitance of a capacitor doubles at constant frequency, its capacitive reactance",
+    "options": {
+      "A": "doubles",
+      "B": "halves",
+      "C": "remains constant",
+      "D": "becomes infinite"
+    },
+    "answer": "B",
+    "explanation": "Capacitive reactance is inversely proportional to capacitance.",
+    "page": 94,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_375",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 375,
+    "text": "A capacitor is connected to a constant RMS AC voltage. If supply frequency increases, the current through the capacitor generally",
+    "options": {
+      "A": "decreases",
+      "B": "increases",
+      "C": "becomes zero",
+      "D": "remains unchanged"
+    },
+    "answer": "B",
+    "explanation": "Increasing frequency reduces capacitive reactance, so I = V/XC increases.",
+    "page": 94,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_376",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 376,
+    "text": "An ideal inductor is connected to a constant RMS AC voltage. If frequency increases, its current generally",
+    "options": {
+      "A": "increases",
+      "B": "decreases",
+      "C": "remains constant",
+      "D": "becomes infinite"
+    },
+    "answer": "B",
+    "explanation": "Increasing frequency raises inductive reactance, so the current falls.",
+    "page": 94,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_377",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 377,
+    "text": "A coil has inductive reactance of 40 Ω at 50 Hz. What is its reactance at 100 Hz, assuming its inductance remains constant?",
+    "options": {
+      "A": "10 Ω",
+      "B": "20 Ω",
+      "C": "80 Ω",
+      "D": "160 Ω"
+    },
+    "answer": "C",
+    "explanation": "Doubling frequency doubles the inductive reactance: 40 × 2 = 80 Ω.",
+    "page": 95,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_378",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 378,
+    "text": "A capacitor has reactance of 120 Ω at 25 Hz. What is its reactance at 50 Hz?",
+    "options": {
+      "A": "30 Ω",
+      "B": "60 Ω",
+      "C": "120 Ω",
+      "D": "240 Ω"
+    },
+    "answer": "B",
+    "explanation": "Doubling the frequency halves capacitive reactance.",
+    "page": 95,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_379",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 379,
+    "text": "The induced voltage in an ideal inductor is related to",
+    "options": {
+      "A": "the rate of change of current",
+      "B": "the total mass of the conductor",
+      "C": "the colour of the wire",
+      "D": "the resistance of a separate capacitor only"
+    },
+    "answer": "A",
+    "explanation": "The inductor's voltage is proportional to the rate of change of current through it.",
+    "page": 95,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_380",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 380,
+    "text": "An ideal capacitor stores energy mainly in its",
+    "options": {
+      "A": "magnetic field",
+      "B": "electric field",
+      "C": "gravitational field",
+      "D": "mechanical rotation"
+    },
+    "answer": "B",
+    "explanation": "Energy is stored in the electric field between its plates.",
+    "page": 95,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_381",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 381,
+    "text": "Inductive reactance is measured in",
+    "options": {
+      "A": "farads",
+      "B": "henries",
+      "C": "ohms",
+      "D": "watts"
+    },
+    "answer": "C",
+    "explanation": "Reactance is an opposition to AC and has the same unit as resistance.",
+    "page": 96,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_382",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 382,
+    "text": "Capacitance is measured in",
+    "options": {
+      "A": "henries",
+      "B": "farads",
+      "C": "ohms",
+      "D": "teslas"
+    },
+    "answer": "B",
+    "explanation": "The SI unit of capacitance is the farad (F).",
+    "page": 96,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_383",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 383,
+    "text": "Inductance is measured in",
+    "options": {
+      "A": "henries",
+      "B": "farads",
+      "C": "joules",
+      "D": "amperes"
+    },
+    "answer": "A",
+    "explanation": "The SI unit of inductance is the henry (H).",
+    "page": 96,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_384",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 384,
+    "text": "After the charging transient has ended, an ideal capacitor connected to a steady DC source behaves like",
+    "options": {
+      "A": "a short circuit",
+      "B": "an open circuit",
+      "C": "a perfect resistor of zero resistance",
+      "D": "an AC generator"
+    },
+    "answer": "B",
+    "explanation": "Once fully charged under steady DC conditions, an ideal capacitor passes no continuous current.",
+    "page": 96,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_385",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 385,
+    "text": "After switching transients have ended, an ideal inductor connected to steady DC behaves like",
+    "options": {
+      "A": "an open circuit",
+      "B": "a short circuit",
+      "C": "a capacitor",
+      "D": "a transformer"
+    },
+    "answer": "B",
+    "explanation": "For steady DC, the ideal inductor's reactance is zero after current becomes constant, assuming negligible winding resistance.",
+    "page": 97,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_386",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 386,
+    "text": "At a fixed frequency, the reactance of a capacitor can be reduced by",
+    "options": {
+      "A": "decreasing its capacitance",
+      "B": "increasing its capacitance",
+      "C": "removing the AC source",
+      "D": "increasing its resistance"
+    },
+    "answer": "B",
+    "explanation": "XC = 1/(2πfC), so increasing capacitance reduces reactance.",
+    "page": 97,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_387",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 387,
+    "text": "At a fixed frequency, the inductive reactance of a coil can be increased by",
+    "options": {
+      "A": "reducing its inductance",
+      "B": "increasing its inductance",
+      "C": "reducing current only",
+      "D": "connecting a lower resistance in parallel"
+    },
+    "answer": "B",
+    "explanation": "XL increases in direct proportion to L.",
+    "page": 97,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_388",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 388,
+    "text": "Two capacitors are connected in series. Which quantity is the same for both capacitors in the ideal steady-state AC circuit?",
+    "options": {
+      "A": "Capacitance",
+      "B": "Charge magnitude",
+      "C": "Voltage magnitude",
+      "D": "Reactance"
+    },
+    "answer": "B",
+    "explanation": "Series capacitors carry the same current and have equal charge magnitudes, although their voltage drops may differ.",
+    "page": 97,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_389",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 389,
+    "text": "Two capacitors of capacitances 6 μF and 3 μF are connected in series. What is their equivalent capacitance?",
+    "options": {
+      "A": "2 μF",
+      "B": "3 μF",
+      "C": "9 μF",
+      "D": "18 μF"
+    },
+    "answer": "A",
+    "explanation": "For series capacitors, 1/C = 1/6 + 1/3 = 1/2, so C = 2 μF.",
+    "page": 98,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_390",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 390,
+    "text": "Two capacitors of 4 μF and 6 μF are connected in parallel. Calculate their equivalent capacitance.",
+    "options": {
+      "A": "2 μF",
+      "B": "5 μF",
+      "C": "10 μF",
+      "D": "24 μF"
+    },
+    "answer": "C",
+    "explanation": "Parallel capacitances add: C = 4 + 6 = 10 μF.",
+    "page": 98,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_391",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 391,
+    "text": "Two ideal inductors of 2 H and 3 H are connected in series without mutual inductance. What is their equivalent inductance?",
+    "options": {
+      "A": "1 H",
+      "B": "1.2 H",
+      "C": "5 H",
+      "D": "6 H"
+    },
+    "answer": "C",
+    "explanation": "Series inductances add when mutual inductance is neglected.",
+    "page": 98,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_392",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 392,
+    "text": "A 20 μF capacitor is connected to a 50 Hz supply. Calculate its reactance.",
+    "options": {
+      "A": "31.8 Ω",
+      "B": "79.6 Ω",
+      "C": "159 Ω",
+      "D": "318 Ω"
+    },
+    "answer": "C",
+    "explanation": "XC = 1/(2π × 50 × 20 × 10⁻⁶) ≈ 159 Ω.",
+    "page": 98,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_393",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 393,
+    "text": "A 0.3 H inductor is connected to a 50 Hz supply. Calculate its reactance.",
+    "options": {
+      "A": "47.1 Ω",
+      "B": "62.8 Ω",
+      "C": "94.2 Ω",
+      "D": "188.5 Ω"
+    },
+    "answer": "C",
+    "explanation": "XL = 2π × 50 × 0.3 ≈ 94.2 Ω.",
+    "page": 99,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_394",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 394,
+    "text": "A 100 V RMS supply is connected across a capacitor whose reactance is 50 Ω. Calculate the RMS current.",
+    "options": {
+      "A": "0.5 A",
+      "B": "1 A",
+      "C": "2 A",
+      "D": "5 A"
+    },
+    "answer": "C",
+    "explanation": "I = V/XC = 100/50 = 2 A.",
+    "page": 99,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_395",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 395,
+    "text": "An inductor has a reactance of 100 Ω and is connected to a 200 V RMS supply. Calculate its current.",
+    "options": {
+      "A": "0.5 A",
+      "B": "1 A",
+      "C": "2 A",
+      "D": "4 A"
+    },
+    "answer": "C",
+    "explanation": "I = V/XL = 200/100 = 2 A.",
+    "page": 99,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_396",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 396,
+    "text": "Which statement is correct for an ideal capacitor in sinusoidal AC?",
+    "options": {
+      "A": "Voltage leads current by 90°.",
+      "B": "Current leads voltage by 90°.",
+      "C": "Current and voltage are always in phase.",
+      "D": "Current lags voltage by 180°."
+    },
+    "answer": "B",
+    "explanation": "In a pure capacitor, current leads voltage by one-quarter cycle.",
+    "page": 99,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_397",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 397,
+    "text": "In an ideal inductor, the voltage",
+    "options": {
+      "A": "lags the current by 90°",
+      "B": "leads the current by 90°",
+      "C": "is always zero",
+      "D": "remains constant regardless of frequency"
+    },
+    "answer": "B",
+    "explanation": "The current lags the inductor voltage by 90°.",
+    "page": 100,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_398",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 398,
+    "text": "The energy stored in a capacitor is given by",
+    "options": {
+      "A": "E = CV",
+      "B": "E = ½CV²",
+      "C": "E = C/V",
+      "D": "E = 2CV²"
+    },
+    "answer": "B",
+    "explanation": "Capacitor energy is proportional to capacitance and the square of voltage.",
+    "page": 100,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_399",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 399,
+    "text": "The magnetic energy stored in an inductor carrying current I is",
+    "options": {
+      "A": "LI",
+      "B": "½LI²",
+      "C": "L/I²",
+      "D": "2LI"
+    },
+    "answer": "B",
+    "explanation": "The stored magnetic energy is E = ½LI².",
+    "page": 100,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_400",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 400,
+    "text": "In a charged capacitor connected to an ideal AC source, the stored energy is maximum when",
+    "options": {
+      "A": "the instantaneous capacitor voltage has its maximum magnitude",
+      "B": "the capacitor voltage is zero",
+      "C": "the current has its maximum magnitude",
+      "D": "frequency becomes zero"
+    },
+    "answer": "A",
+    "explanation": "Capacitor energy is ½Cv², so it is largest when the magnitude of voltage is largest.",
+    "page": 100,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_401",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 401,
+    "text": "The impedance of a series AC circuit represents",
+    "options": {
+      "A": "resistance alone",
+      "B": "the combined opposition due to resistance and reactance",
+      "C": "capacitance alone",
+      "D": "frequency alone"
+    },
+    "answer": "B",
+    "explanation": "Impedance combines resistance and reactance and is measured in ohms.",
+    "page": 101,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_402",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 402,
+    "text": "A series RL circuit has resistance 6 Ω and inductive reactance 8 Ω. Calculate its impedance.",
+    "options": {
+      "A": "2 Ω",
+      "B": "7 Ω",
+      "C": "10 Ω",
+      "D": "14 Ω"
+    },
+    "answer": "C",
+    "explanation": "Z = √(R² + XL²) = √(36 + 64) = 10 Ω.",
+    "page": 101,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_403",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 403,
+    "text": "A series RL circuit has resistance 3 Ω and inductive reactance 4 Ω. What is its impedance?",
+    "options": {
+      "A": "1 Ω",
+      "B": "5 Ω",
+      "C": "7 Ω",
+      "D": "12 Ω"
+    },
+    "answer": "B",
+    "explanation": "Z = √(3² + 4²) = 5 Ω.",
+    "page": 101,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_404",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 404,
+    "text": "A series RC circuit has resistance 8 Ω and capacitive reactance 6 Ω. Calculate its impedance.",
+    "options": {
+      "A": "2 Ω",
+      "B": "6 Ω",
+      "C": "10 Ω",
+      "D": "14 Ω"
+    },
+    "answer": "C",
+    "explanation": "Z = √(R² + XC²) = √(64 + 36) = 10 Ω.",
+    "page": 101,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_405",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 405,
+    "text": "A series RLC circuit has R = 6 Ω, XL = 10 Ω and XC = 2 Ω. Calculate the impedance.",
+    "options": {
+      "A": "6 Ω",
+      "B": "8 Ω",
+      "C": "10 Ω",
+      "D": "18 Ω"
+    },
+    "answer": "C",
+    "explanation": "Net reactance = 10 − 2 = 8 Ω. Z = √(6² + 8²) = 10 Ω.",
+    "page": 102,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_406",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 406,
+    "text": "A series RLC circuit has R = 5 Ω, XL = 13 Ω and XC = 8 Ω. Find its impedance.",
+    "options": {
+      "A": "5 Ω",
+      "B": "√50 Ω",
+      "C": "13 Ω",
+      "D": "21 Ω"
+    },
+    "answer": "B",
+    "explanation": "Net reactance = 13 − 8 = 5 Ω. Therefore, Z = √(5² + 5²) = √50 ≈ 7.07 Ω.",
+    "page": 102,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_407",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 407,
+    "text": "A series RL circuit has R = 12 Ω and XL = 9 Ω. Calculate its impedance.",
+    "options": {
+      "A": "3 Ω",
+      "B": "15 Ω",
+      "C": "21 Ω",
+      "D": "108 Ω"
+    },
+    "answer": "B",
+    "explanation": "Z = √(12² + 9²) = √225 = 15 Ω.",
+    "page": 102,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_408",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 408,
+    "text": "A series RLC circuit has R = 3 Ω and XL = XC = 4 Ω. What is its impedance?",
+    "options": {
+      "A": "0 Ω",
+      "B": "3 Ω",
+      "C": "5 Ω",
+      "D": "11 Ω"
+    },
+    "answer": "B",
+    "explanation": "At resonance the net reactance is zero, so impedance equals resistance.",
+    "page": 102,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_409",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 409,
+    "text": "A series RLC circuit has R = 6 Ω, XL = 8 Ω and XC = 4 Ω. Calculate its impedance.",
+    "options": {
+      "A": "5.0 Ω",
+      "B": "7.21 Ω",
+      "C": "10 Ω",
+      "D": "18 Ω"
+    },
+    "answer": "B",
+    "explanation": "Net reactance = 8 − 4 = 4 Ω. Z = √(6² + 4²) = √52 ≈ 7.21 Ω.",
+    "page": 103,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_410",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 410,
+    "text": "An AC supply of 100 V RMS is connected to a circuit with impedance 20 Ω. Calculate the current.",
+    "options": {
+      "A": "2 A",
+      "B": "5 A",
+      "C": "10 A",
+      "D": "20 A"
+    },
+    "answer": "B",
+    "explanation": "I = V/Z = 100/20 = 5 A.",
+    "page": 103,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_411",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 411,
+    "text": "A 120 V RMS supply is connected to a circuit with impedance 10 Ω. Find the RMS current.",
+    "options": {
+      "A": "6 A",
+      "B": "10 A",
+      "C": "12 A",
+      "D": "120 A"
+    },
+    "answer": "C",
+    "explanation": "I = 120/10 = 12 A.",
+    "page": 103,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_412",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 412,
+    "text": "A 240 V RMS supply is connected to an impedance of 48 Ω. Calculate the current.",
+    "options": {
+      "A": "2 A",
+      "B": "4 A",
+      "C": "5 A",
+      "D": "10 A"
+    },
+    "answer": "C",
+    "explanation": "I = 240/48 = 5 A.",
+    "page": 103,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_413",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 413,
+    "text": "A series RL circuit has R = 8 Ω and XL = 6 Ω. If the supply voltage is 100 V RMS, calculate the current.",
+    "options": {
+      "A": "5 A",
+      "B": "8 A",
+      "C": "10 A",
+      "D": "12.5 A"
+    },
+    "answer": "C",
+    "explanation": "Z = √(8² + 6²) = 10 Ω. Current = 100/10 = 10 A.",
+    "page": 104,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_414",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 414,
+    "text": "A series RC circuit has R = 12 Ω and XC = 5 Ω. The supply voltage is 130 V RMS. Calculate the current.",
+    "options": {
+      "A": "5 A",
+      "B": "10 A",
+      "C": "12 A",
+      "D": "13 A"
+    },
+    "answer": "B",
+    "explanation": "Z = √(12² + 5²) = 13 Ω. Current = 130/13 = 10 A.",
+    "page": 104,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_415",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 415,
+    "text": "A series circuit has resistance 4 Ω and net reactance 3 Ω. Calculate its impedance magnitude.",
+    "options": {
+      "A": "1 Ω",
+      "B": "5 Ω",
+      "C": "7 Ω",
+      "D": "12 Ω"
+    },
+    "answer": "B",
+    "explanation": "Z = √(4² + 3²) = 5 Ω.",
+    "page": 104,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_416",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 416,
+    "text": "In a series RLC circuit, XL is greater than XC. The circuit is predominantly",
+    "options": {
+      "A": "capacitive",
+      "B": "inductive",
+      "C": "purely resistive",
+      "D": "open-circuit"
+    },
+    "answer": "B",
+    "explanation": "Net reactance is positive when XL exceeds XC.",
+    "page": 104,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_417",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 417,
+    "text": "In a series RLC circuit, XC is greater than XL. The circuit is predominantly",
+    "options": {
+      "A": "inductive",
+      "B": "capacitive",
+      "C": "purely resistive",
+      "D": "a short circuit"
+    },
+    "answer": "B",
+    "explanation": "Net reactance is capacitive when XC exceeds XL.",
+    "page": 105,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_418",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 418,
+    "text": "At series resonance in an ideal RLC circuit,",
+    "options": {
+      "A": "XL = XC",
+      "B": "XL = R",
+      "C": "XC = R",
+      "D": "Z = 0 for every circuit"
+    },
+    "answer": "A",
+    "explanation": "Equal inductive and capacitive reactances cancel each other.",
+    "page": 105,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_419",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 419,
+    "text": "The power factor of a series RLC circuit is",
+    "options": {
+      "A": "Z/R",
+      "B": "R/Z",
+      "C": "XL/XC",
+      "D": "XC/XL"
+    },
+    "answer": "B",
+    "explanation": "cos φ = R/Z for a series RLC circuit.",
+    "page": 105,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_420",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 420,
+    "text": "A series circuit has resistance 8 Ω and impedance 10 Ω. Calculate its power factor.",
+    "options": {
+      "A": "0.2",
+      "B": "0.6",
+      "C": "0.8",
+      "D": "1.25"
+    },
+    "answer": "C",
+    "explanation": "Power factor = R/Z = 8/10 = 0.8.",
+    "page": 105,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_421",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 421,
+    "text": "A series circuit has resistance 6 Ω and impedance 10 Ω. Find its power factor.",
+    "options": {
+      "A": "0.4",
+      "B": "0.6",
+      "C": "0.8",
+      "D": "1.67"
+    },
+    "answer": "B",
+    "explanation": "Power factor = 6/10 = 0.6.",
+    "page": 106,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_422",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 422,
+    "text": "An AC circuit operates at 100 V RMS and 2 A RMS with a power factor of 0.5. Calculate real power.",
+    "options": {
+      "A": "50 W",
+      "B": "100 W",
+      "C": "150 W",
+      "D": "200 W"
+    },
+    "answer": "B",
+    "explanation": "P = VI cos φ = 100 × 2 × 0.5 = 100 W.",
+    "page": 106,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_423",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 423,
+    "text": "A load draws 4 A from a 230 V RMS supply at a power factor of 0.8. Calculate its real power.",
+    "options": {
+      "A": "184 W",
+      "B": "460 W",
+      "C": "736 W",
+      "D": "920 W"
+    },
+    "answer": "C",
+    "explanation": "P = 230 × 4 × 0.8 = 736 W.",
+    "page": 106,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_424",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 424,
+    "text": "A load draws 5 A from a 120 V RMS supply at unity power factor. Calculate its real power.",
+    "options": {
+      "A": "24 W",
+      "B": "120 W",
+      "C": "300 W",
+      "D": "600 W"
+    },
+    "answer": "D",
+    "explanation": "P = 120 × 5 × 1 = 600 W.",
+    "page": 106,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_425",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 425,
+    "text": "An ideal purely reactive circuit draws 5 A from a 120 V RMS source. Its average real power consumption is",
+    "options": {
+      "A": "0 W",
+      "B": "120 W",
+      "C": "300 W",
+      "D": "600 W"
+    },
+    "answer": "A",
+    "explanation": "For an ideal pure inductor or capacitor, the power factor is zero, so average real power is zero.",
+    "page": 107,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_426",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 426,
+    "text": "In a series RLC circuit at resonance, the impedance is",
+    "options": {
+      "A": "equal to R",
+      "B": "equal to XL + XC",
+      "C": "equal to zero in every practical circuit",
+      "D": "infinite"
+    },
+    "answer": "A",
+    "explanation": "At resonance, XL − XC = 0 and Z = √(R² + 0²) = R.",
+    "page": 107,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_427",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 427,
+    "text": "For a series RLC circuit connected to a fixed RMS voltage, the current is maximum at resonance because",
+    "options": {
+      "A": "resistance becomes zero",
+      "B": "impedance becomes minimum",
+      "C": "capacitance becomes zero",
+      "D": "frequency becomes zero"
+    },
+    "answer": "B",
+    "explanation": "At resonance, the reactances cancel and impedance is reduced to the circuit resistance.",
+    "page": 107,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_428",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 428,
+    "text": "In a series RLC circuit operating below its resonant frequency, which statement is generally correct?",
+    "options": {
+      "A": "XL is greater than XC.",
+      "B": "XC is greater than XL.",
+      "C": "XL and XC are always both zero.",
+      "D": "The circuit is necessarily purely resistive."
+    },
+    "answer": "B",
+    "explanation": "Below resonance, inductive reactance decreases and capacitive reactance increases relative to their values at resonance.",
+    "page": 107,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_429",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 429,
+    "text": "In a series RLC circuit operating above resonance, the circuit is generally",
+    "options": {
+      "A": "capacitive",
+      "B": "inductive",
+      "C": "purely resistive at every frequency",
+      "D": "open-circuit"
+    },
+    "answer": "B",
+    "explanation": "Above resonance, XL exceeds XC.",
+    "page": 108,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_430",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 430,
+    "text": "The resonant frequency of an ideal LC circuit is",
+    "options": {
+      "A": "f₀ = 2π√LC",
+      "B": "f₀ = 1/(2π√LC)",
+      "C": "f₀ = √LC",
+      "D": "f₀ = R/(2πL)"
+    },
+    "answer": "B",
+    "explanation": "The formula follows from the condition XL = XC.",
+    "page": 108,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_431",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 431,
+    "text": "A circuit contains L = 0.1 H and C = 100 μF. Calculate its resonant frequency approximately.",
+    "options": {
+      "A": "5.03 Hz",
+      "B": "15.9 Hz",
+      "C": "50.3 Hz",
+      "D": "503 Hz"
+    },
+    "answer": "C",
+    "explanation": "f₀ = 1/(2π√LC). Here LC = 10⁻⁵, so f₀ ≈ 50.3 Hz.",
+    "page": 108,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_432",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 432,
+    "text": "An LC circuit has L = 0.25 H and C = 100 μF. Calculate its resonant frequency.",
+    "options": {
+      "A": "15.9 Hz",
+      "B": "31.8 Hz",
+      "C": "50.3 Hz",
+      "D": "100 Hz"
+    },
+    "answer": "B",
+    "explanation": "LC = 0.25 × 100 × 10⁻⁶ = 2.5 × 10⁻⁵. Therefore f₀ = 1/(2π × 0.005) ≈ 31.8 Hz.",
+    "page": 108,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_433",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 433,
+    "text": "A circuit has L = 0.4 H and C = 25 μF. Its resonant frequency is approximately",
+    "options": {
+      "A": "25.2 Hz",
+      "B": "50.3 Hz",
+      "C": "100.6 Hz",
+      "D": "159 Hz"
+    },
+    "answer": "B",
+    "explanation": "LC = 0.4 × 25 × 10⁻⁶ = 10⁻⁵, giving f₀ ≈ 50.3 Hz.",
+    "page": 109,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_434",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 434,
+    "text": "An LC circuit has an inductance of 0.1 H. Approximately what capacitance is required for resonance at 50 Hz?",
+    "options": {
+      "A": "10 μF",
+      "B": "50 μF",
+      "C": "101 μF",
+      "D": "500 μF"
+    },
+    "answer": "C",
+    "explanation": "C = 1/[(2πf)²L] ≈ 1/[(314.16)² × 0.1] ≈ 101 × 10⁻⁶ F.",
+    "page": 109,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_435",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 435,
+    "text": "If inductance increases while capacitance remains constant, resonant frequency",
+    "options": {
+      "A": "increases",
+      "B": "decreases",
+      "C": "remains constant",
+      "D": "becomes infinite"
+    },
+    "answer": "B",
+    "explanation": "Since f₀ is inversely proportional to √L, increasing inductance lowers the resonant frequency.",
+    "page": 109,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_436",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 436,
+    "text": "If capacitance increases while inductance remains constant, the resonant frequency",
+    "options": {
+      "A": "increases",
+      "B": "decreases",
+      "C": "remains constant",
+      "D": "becomes equal to resistance"
+    },
+    "answer": "B",
+    "explanation": "Resonant frequency is inversely proportional to √C.",
+    "page": 109,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_437",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 437,
+    "text": "Which condition produces resonance in a series RLC circuit?",
+    "options": {
+      "A": "XL = XC",
+      "B": "XL = R",
+      "C": "XC = R",
+      "D": "R = 0 in every real circuit"
+    },
+    "answer": "A",
+    "explanation": "Resonance occurs when the inductive and capacitive reactances cancel.",
+    "page": 110,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_438",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 438,
+    "text": "At series resonance, the power factor is",
+    "options": {
+      "A": "zero",
+      "B": "0.5",
+      "C": "1",
+      "D": "infinite"
+    },
+    "answer": "C",
+    "explanation": "The circuit behaves as purely resistive at resonance, so current and voltage are in phase.",
+    "page": 110,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_439",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 439,
+    "text": "The quality factor of a resonant circuit is associated with",
+    "options": {
+      "A": "the sharpness of its resonance",
+      "B": "its physical colour",
+      "C": "the number of resistors in the circuit only",
+      "D": "the mass of the circuit"
+    },
+    "answer": "A",
+    "explanation": "A higher quality factor generally indicates a sharper resonance and narrower bandwidth.",
+    "page": 110,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_440",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 440,
+    "text": "For a series RLC circuit, the quality factor at resonance can be expressed as",
+    "options": {
+      "A": "Q = R/(ω₀L)",
+      "B": "Q = ω₀L/R",
+      "C": "Q = Rω₀L",
+      "D": "Q = R + XL + XC"
+    },
+    "answer": "B",
+    "explanation": "For an ideal series RLC circuit, Q = ω₀L/R = 1/(ω₀CR).",
+    "page": 110,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_441",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 441,
+    "text": "The bandwidth of a resonant circuit is the difference between its",
+    "options": {
+      "A": "peak and RMS voltage",
+      "B": "upper and lower half-power frequencies",
+      "C": "resistance and capacitance",
+      "D": "positive and negative peak currents"
+    },
+    "answer": "B",
+    "explanation": "Bandwidth is Δf = f₂ − f₁, measured between the relevant half-power frequencies.",
+    "page": 111,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_442",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 442,
+    "text": "An AC circuit has real power of 600 W and apparent power of 1,000 VA. Calculate its power factor.",
+    "options": {
+      "A": "0.4",
+      "B": "0.6",
+      "C": "1.0",
+      "D": "1.67"
+    },
+    "answer": "B",
+    "explanation": "Power factor = real power/apparent power = 600/1,000 = 0.6.",
+    "page": 111,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_443",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 443,
+    "text": "Apparent power in an AC circuit is calculated from",
+    "options": {
+      "A": "Vrms × Irms",
+      "B": "Vrms/Irms",
+      "C": "Vrms² × Irms",
+      "D": "resistance × frequency"
+    },
+    "answer": "A",
+    "explanation": "Apparent power is S = VrmsIrms and is measured in volt-amperes (VA).",
+    "page": 111,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_444",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 444,
+    "text": "The SI-derived unit commonly used for reactive power is",
+    "options": {
+      "A": "joule",
+      "B": "watt",
+      "C": "volt-ampere reactive",
+      "D": "farad"
+    },
+    "answer": "C",
+    "explanation": "Reactive power is expressed in var, short for volt-ampere reactive.",
+    "page": 111,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_445",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 445,
+    "text": "Which component dissipates real electrical energy as heat in an ideal AC circuit?",
+    "options": {
+      "A": "Pure resistance",
+      "B": "Ideal inductance only",
+      "C": "Ideal capacitance only",
+      "D": "An ideal transformer with no losses"
+    },
+    "answer": "A",
+    "explanation": "A resistor converts electrical energy into heat, unlike ideal inductors and capacitors, which store and return energy.",
+    "page": 112,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_446",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 446,
+    "text": "A resistor of 10 Ω carries an RMS current of 3 A. Calculate the average power.",
+    "options": {
+      "A": "30 W",
+      "B": "60 W",
+      "C": "90 W",
+      "D": "300 W"
+    },
+    "answer": "C",
+    "explanation": "P = I²R = 3² × 10 = 90 W.",
+    "page": 112,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_447",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 447,
+    "text": "A 100 V RMS supply is connected across a 25 Ω resistor. Calculate power.",
+    "options": {
+      "A": "100 W",
+      "B": "200 W",
+      "C": "400 W",
+      "D": "2,500 W"
+    },
+    "answer": "C",
+    "explanation": "P = V²/R = 100²/25 = 400 W.",
+    "page": 112,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_448",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 448,
+    "text": "A resistor of 60 Ω is connected to a 120 V RMS supply. Calculate the power consumed.",
+    "options": {
+      "A": "120 W",
+      "B": "240 W",
+      "C": "360 W",
+      "D": "720 W"
+    },
+    "answer": "B",
+    "explanation": "P = V²/R = 120²/60 = 240 W.",
+    "page": 112,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_449",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 449,
+    "text": "A series circuit has R = 4 Ω and net reactance = 3 Ω. It is connected to a 100 V RMS supply. Calculate its current.",
+    "options": {
+      "A": "10 A",
+      "B": "15 A",
+      "C": "20 A",
+      "D": "25 A"
+    },
+    "answer": "C",
+    "explanation": "Z = √(4² + 3²) = 5 Ω. Thus I = 100/5 = 20 A.",
+    "page": 113,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_450",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 450,
+    "text": "For the circuit in Question 149, calculate the real power.",
+    "options": {
+      "A": "400 W",
+      "B": "800 W",
+      "C": "1,200 W",
+      "D": "1,600 W"
+    },
+    "answer": "D",
+    "explanation": "Power factor = R/Z = 4/5 = 0.8. Therefore P = VI cos φ = 100 × 20 × 0.8 = 1,600 W.",
+    "page": 113,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_451",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 451,
+    "text": "A transformer operates mainly on the principle of",
+    "options": {
+      "A": "electrolysis",
+      "B": "mutual induction",
+      "C": "photoelectric emission",
+      "D": "radioactive decay"
+    },
+    "answer": "B",
+    "explanation": "A changing current in the primary produces changing magnetic flux that induces voltage in the secondary.",
+    "page": 113,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_452",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 452,
+    "text": "A transformer with more turns in the secondary than in the primary is called a",
+    "options": {
+      "A": "step-down transformer",
+      "B": "step-up transformer",
+      "C": "rectifier",
+      "D": "capacitor"
+    },
+    "answer": "B",
+    "explanation": "A step-up transformer increases AC voltage by using more turns in the secondary winding.",
+    "page": 113,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_453",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 453,
+    "text": "A transformer with fewer turns in the secondary than in the primary is a",
+    "options": {
+      "A": "step-up transformer",
+      "B": "step-down transformer",
+      "C": "generator",
+      "D": "synchronous motor"
+    },
+    "answer": "B",
+    "explanation": "A step-down transformer reduces voltage.",
+    "page": 114,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_454",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 454,
+    "text": "For an ideal transformer, the voltage-turns relationship is",
+    "options": {
+      "A": "Vs/Vp = Np/Ns",
+      "B": "Vs/Vp = Ns/Np",
+      "C": "VsVp = NsNp",
+      "D": "Vs + Vp = Ns + Np"
+    },
+    "answer": "B",
+    "explanation": "The ratio of secondary to primary voltage equals the ratio of secondary to primary turns in an ideal transformer.",
+    "page": 114,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_455",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 455,
+    "text": "A transformer has 1,000 primary turns and 250 secondary turns. If the primary voltage is 240 V, calculate the secondary voltage.",
+    "options": {
+      "A": "30 V",
+      "B": "60 V",
+      "C": "120 V",
+      "D": "960 V"
+    },
+    "answer": "B",
+    "explanation": "Vs = Vp × Ns/Np = 240 × 250/1,000 = 60 V.",
+    "page": 114,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_456",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 456,
+    "text": "A transformer has 100 primary turns and 200 secondary turns. If the primary voltage is 12 V, what is the secondary voltage?",
+    "options": {
+      "A": "6 V",
+      "B": "12 V",
+      "C": "24 V",
+      "D": "48 V"
+    },
+    "answer": "C",
+    "explanation": "Vs = 12 × 200/100 = 24 V.",
+    "page": 114,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_457",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 457,
+    "text": "A transformer has a turns ratio Ns:Np of 10:1 and a primary voltage of 12 V. Calculate the ideal secondary voltage.",
+    "options": {
+      "A": "1.2 V",
+      "B": "12 V",
+      "C": "120 V",
+      "D": "240 V"
+    },
+    "answer": "C",
+    "explanation": "Vs/Vp = 10, so Vs = 10 × 12 = 120 V.",
+    "page": 115,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_458",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 458,
+    "text": "A transformer has 500 primary turns and 100 secondary turns. The primary voltage is 240 V. What is the secondary voltage?",
+    "options": {
+      "A": "24 V",
+      "B": "48 V",
+      "C": "120 V",
+      "D": "1,200 V"
+    },
+    "answer": "B",
+    "explanation": "Vs = 240 × 100/500 = 48 V.",
+    "page": 115,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_459",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 459,
+    "text": "In an ideal transformer, if the voltage is stepped up, the output current",
+    "options": {
+      "A": "increases in the same ratio",
+      "B": "decreases in the inverse ratio",
+      "C": "remains equal to the primary current in every case",
+      "D": "becomes zero"
+    },
+    "answer": "B",
+    "explanation": "Ideally, input power equals output power, so a higher secondary voltage corresponds to a lower secondary current.",
+    "page": 115,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_460",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 460,
+    "text": "An ideal transformer has a primary voltage of 240 V, a secondary voltage of 24 V and a secondary current of 5 A. Calculate the primary current.",
+    "options": {
+      "A": "0.05 A",
+      "B": "0.5 A",
+      "C": "5 A",
+      "D": "50 A"
+    },
+    "answer": "B",
+    "explanation": "VpIp = VsIs. Ip = 24 × 5/240 = 0.5 A.",
+    "page": 115,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_461",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 461,
+    "text": "An ideal transformer has primary voltage 100 V, secondary voltage 400 V and primary current 8 A. Calculate the secondary current.",
+    "options": {
+      "A": "0.5 A",
+      "B": "2 A",
+      "C": "8 A",
+      "D": "32 A"
+    },
+    "answer": "B",
+    "explanation": "VpIp = VsIs, so Is = 100 × 8/400 = 2 A.",
+    "page": 116,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_462",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 462,
+    "text": "A transformer receives 1,000 W of power and operates at 80% efficiency. Calculate its output power.",
+    "options": {
+      "A": "200 W",
+      "B": "800 W",
+      "C": "1,000 W",
+      "D": "1,250 W"
+    },
+    "answer": "B",
+    "explanation": "Output power = 0.80 × 1,000 = 800 W.",
+    "page": 116,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_463",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 463,
+    "text": "A transformer takes in 1,000 W and delivers 900 W. Calculate its efficiency.",
+    "options": {
+      "A": "10%",
+      "B": "50%",
+      "C": "90%",
+      "D": "110%"
+    },
+    "answer": "C",
+    "explanation": "Efficiency = output/input × 100 = 900/1,000 × 100 = 90%.",
+    "page": 116,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_464",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 464,
+    "text": "A transformer receives 1,000 W and delivers 850 W. Calculate its power loss.",
+    "options": {
+      "A": "85 W",
+      "B": "100 W",
+      "C": "150 W",
+      "D": "1,850 W"
+    },
+    "answer": "C",
+    "explanation": "Power loss = input power − output power = 1,000 − 850 = 150 W.",
+    "page": 116,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_465",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 465,
+    "text": "A conventional transformer does not operate continuously from a steady DC supply because",
+    "options": {
+      "A": "DC has an excessively high frequency",
+      "B": "steady DC does not produce continuously changing magnetic flux",
+      "C": "DC has no electric current",
+      "D": "the secondary winding has no resistance"
+    },
+    "answer": "B",
+    "explanation": "A transformer requires changing magnetic flux to induce a sustained voltage in the secondary.",
+    "page": 117,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_466",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 466,
+    "text": "Transformer cores are laminated mainly to reduce",
+    "options": {
+      "A": "copper resistance",
+      "B": "eddy current losses",
+      "C": "the number of turns",
+      "D": "primary voltage"
+    },
+    "answer": "B",
+    "explanation": "Thin insulated laminations restrict circulating currents within the core and reduce associated heating.",
+    "page": 117,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_467",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 467,
+    "text": "A transformer core is commonly made of a material with low hysteresis loss because the core",
+    "options": {
+      "A": "must be repeatedly magnetised and demagnetised by AC",
+      "B": "must permanently remain magnetised in one direction",
+      "C": "should prevent all magnetic flux",
+      "D": "must act as the secondary winding"
+    },
+    "answer": "A",
+    "explanation": "Soft magnetic materials with narrow hysteresis loops reduce energy lost during repeated magnetisation.",
+    "page": 117,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_468",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 468,
+    "text": "Copper loss in transformer windings is mainly due to",
+    "options": {
+      "A": "I²R heating",
+      "B": "gravitational potential energy",
+      "C": "sound waves",
+      "D": "the capacitance of free space"
+    },
+    "answer": "A",
+    "explanation": "Current through the resistance of the windings produces heat.",
+    "page": 117,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_469",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 469,
+    "text": "Eddy current losses occur mainly in the",
+    "options": {
+      "A": "insulating paint on the transformer case",
+      "B": "conducting core material",
+      "C": "secondary terminal label",
+      "D": "external wooden support"
+    },
+    "answer": "B",
+    "explanation": "Changing magnetic flux induces circulating currents in conductive parts of the core.",
+    "page": 118,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_470",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 470,
+    "text": "Hysteresis loss in a transformer core is associated with",
+    "options": {
+      "A": "repeated reversal of magnetisation",
+      "B": "the resistance of external lamps only",
+      "C": "the colour of the core",
+      "D": "the number of connected sockets"
+    },
+    "answer": "A",
+    "explanation": "Energy is lost during repeated magnetisation cycles.",
+    "page": 118,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_471",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 471,
+    "text": "High-voltage transmission reduces power loss in transmission cables mainly because it",
+    "options": {
+      "A": "increases the resistance of the cables",
+      "B": "reduces the current required for a given transmitted power",
+      "C": "eliminates the need for conductors",
+      "D": "makes the voltage zero at the power station"
+    },
+    "answer": "B",
+    "explanation": "For fixed power, raising voltage reduces current, lowering I²R losses in the transmission lines.",
+    "page": 118,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_472",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 472,
+    "text": "A power station transmits 100 kW at 10 kV. Calculate the current, assuming unity power factor.",
+    "options": {
+      "A": "1 A",
+      "B": "10 A",
+      "C": "100 A",
+      "D": "1,000 A"
+    },
+    "answer": "B",
+    "explanation": "P = VI. I = 100,000/10,000 = 10 A.",
+    "page": 118,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_473",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 473,
+    "text": "The same 100 kW is transmitted at 100 kV with unity power factor. Calculate the current.",
+    "options": {
+      "A": "0.1 A",
+      "B": "1 A",
+      "C": "10 A",
+      "D": "100 A"
+    },
+    "answer": "B",
+    "explanation": "I = P/V = 100,000/100,000 = 1 A.",
+    "page": 119,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_474",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 474,
+    "text": "A transmission line has resistance 2 Ω and carries 10 A. Calculate the power lost as heat.",
+    "options": {
+      "A": "20 W",
+      "B": "100 W",
+      "C": "200 W",
+      "D": "400 W"
+    },
+    "answer": "C",
+    "explanation": "P_loss = I²R = 10² × 2 = 200 W.",
+    "page": 119,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_475",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 475,
+    "text": "A line resistance of 4 Ω carries a current of 5 A. What is the power loss?",
+    "options": {
+      "A": "20 W",
+      "B": "50 W",
+      "C": "100 W",
+      "D": "200 W"
+    },
+    "answer": "C",
+    "explanation": "P_loss = I²R = 5² × 4 = 100 W.",
+    "page": 119,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_476",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 476,
+    "text": "For the same transmitted power and line resistance, increasing the transmission voltage by a factor of 10 reduces the line's I²R power loss by a factor of",
+    "options": {
+      "A": "2",
+      "B": "10",
+      "C": "100",
+      "D": "1,000"
+    },
+    "answer": "C",
+    "explanation": "Current becomes one-tenth as large. Since loss is proportional to I², the loss becomes one-hundredth as large.",
+    "page": 119,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_477",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 477,
+    "text": "A transformer at a distribution substation is used mainly to",
+    "options": {
+      "A": "convert DC into AC",
+      "B": "reduce high transmission voltage to a more suitable distribution voltage",
+      "C": "make the supply frequency zero",
+      "D": "generate electricity from nothing"
+    },
+    "answer": "B",
+    "explanation": "Step-down transformers lower high transmission voltages before power reaches consumers.",
+    "page": 120,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_478",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 478,
+    "text": "Which expression gives transformer efficiency?",
+    "options": {
+      "A": "Input power/output power × 100%",
+      "B": "Output power/input power × 100%",
+      "C": "Output voltage × input voltage",
+      "D": "Primary turns + secondary turns"
+    },
+    "answer": "B",
+    "explanation": "Efficiency is the useful output power divided by the input power, multiplied by 100%.",
+    "page": 120,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_479",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 479,
+    "text": "A transformer has 2,000 primary turns and 500 secondary turns. Its turns ratio Ns/Np is",
+    "options": {
+      "A": "0.25",
+      "B": "0.5",
+      "C": "2",
+      "D": "4"
+    },
+    "answer": "A",
+    "explanation": "Ns/Np = 500/2,000 = 0.25.",
+    "page": 120,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_480",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 480,
+    "text": "A transformer has 1,500 primary turns and 300 secondary turns. What is the voltage ratio Vs/Vp for an ideal transformer?",
+    "options": {
+      "A": "0.2",
+      "B": "0.5",
+      "C": "5",
+      "D": "10"
+    },
+    "answer": "A",
+    "explanation": "Vs/Vp = Ns/Np = 300/1,500 = 0.2.",
+    "page": 120,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_481",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 481,
+    "text": "An AC generator produces alternating voltage because",
+    "options": {
+      "A": "its magnetic flux linkage changes periodically as the coil rotates",
+      "B": "its coil is permanently stationary in a constant field",
+      "C": "it contains only a capacitor",
+      "D": "its output voltage is always DC"
+    },
+    "answer": "A",
+    "explanation": "Rotating the coil in a magnetic field changes the magnetic flux linkage, inducing an alternating emf.",
+    "page": 121,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_482",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 482,
+    "text": "Which device is commonly used to maintain contact with the rotating coil in an AC generator?",
+    "options": {
+      "A": "Split-ring commutator only",
+      "B": "Slip rings and brushes",
+      "C": "A rectifier bridge only",
+      "D": "A capacitor bank only"
+    },
+    "answer": "B",
+    "explanation": "In an ordinary AC generator, slip rings maintain connections to the rotating coil while allowing alternating output.",
+    "page": 121,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_483",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 483,
+    "text": "The principal purpose of a split-ring commutator in a simple DC generator is to",
+    "options": {
+      "A": "reverse the coil connections every half-turn to produce a unidirectional output",
+      "B": "increase the frequency without limit",
+      "C": "eliminate magnetic flux",
+      "D": "convert resistance into capacitance"
+    },
+    "answer": "A",
+    "explanation": "The split-ring commutator reverses the external connection each half-turn, producing a pulsating unidirectional output.",
+    "page": 121,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_484",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 484,
+    "text": "The RMS value of an AC current is useful because it",
+    "options": {
+      "A": "equals the average current over every complete sinusoidal cycle",
+      "B": "gives the equivalent steady DC current for the same heating effect",
+      "C": "is always equal to the peak current",
+      "D": "is independent of the waveform in all cases"
+    },
+    "answer": "B",
+    "explanation": "RMS values provide an effective measure of an AC signal's heating capability.",
+    "page": 121,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_485",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 485,
+    "text": "The mains frequency in Nigeria is commonly",
+    "options": {
+      "A": "5 Hz",
+      "B": "25 Hz",
+      "C": "50 Hz",
+      "D": "100 Hz"
+    },
+    "answer": "C",
+    "explanation": "Nigeria's standard mains supply frequency is 50 Hz.",
+    "page": 122,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_486",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 486,
+    "text": "A 50 Hz AC source operates for 0.5 seconds. How many complete cycles occur?",
+    "options": {
+      "A": "10",
+      "B": "25",
+      "C": "50",
+      "D": "100"
+    },
+    "answer": "B",
+    "explanation": "Number of cycles = ft = 50 × 0.5 = 25.",
+    "page": 122,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_487",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 487,
+    "text": "Calculate the period of a 60 Hz AC source.",
+    "options": {
+      "A": "0.00167 s",
+      "B": "0.0167 s",
+      "C": "0.167 s",
+      "D": "16.7 s"
+    },
+    "answer": "B",
+    "explanation": "T = 1/60 ≈ 0.0167 s.",
+    "page": 122,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_488",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 488,
+    "text": "Two sinusoidal voltages are exactly 180° out of phase. When one reaches its positive peak, the other",
+    "options": {
+      "A": "reaches its positive peak",
+      "B": "is necessarily zero",
+      "C": "reaches its negative peak",
+      "D": "has twice the frequency"
+    },
+    "answer": "C",
+    "explanation": "A phase difference of 180° means the waveforms have opposite instantaneous values when their peak magnitudes are equal.",
+    "page": 122,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_489",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 489,
+    "text": "Two sinusoidal voltages of the same frequency differ in phase by 90°. Their peaks are separated by",
+    "options": {
+      "A": "one-eighth of a period",
+      "B": "one-quarter of a period",
+      "C": "one-half of a period",
+      "D": "one complete period"
+    },
+    "answer": "B",
+    "explanation": "90° is one-quarter of 360°, so the time difference is T/4.",
+    "page": 123,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_490",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 490,
+    "text": "The instantaneous voltage of a sinusoidal source is represented by v = Vpeak sin ωt. What is v at t = T/4, assuming the waveform starts at zero and rises positively?",
+    "options": {
+      "A": "−Vpeak",
+      "B": "0",
+      "C": "Vpeak/2",
+      "D": "Vpeak"
+    },
+    "answer": "D",
+    "explanation": "At t = T/4, the phase is 90°, so sin 90° = 1.",
+    "page": 123,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_491",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 491,
+    "text": "For the waveform in Question 190, what is the voltage at t = T/2?",
+    "options": {
+      "A": "−Vpeak",
+      "B": "0",
+      "C": "Vpeak/2",
+      "D": "Vpeak"
+    },
+    "answer": "B",
+    "explanation": "At half a period, the phase is 180° and sin 180° = 0.",
+    "page": 123,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_492",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 492,
+    "text": "For the waveform in Question 190, what is the voltage at t = 3T/4?",
+    "options": {
+      "A": "−Vpeak",
+      "B": "0",
+      "C": "Vpeak/2",
+      "D": "Vpeak"
+    },
+    "answer": "A",
+    "explanation": "At three-quarters of a period, the phase is 270°, where the sine value is −1.",
+    "page": 123,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_493",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 493,
+    "text": "A sinusoidal AC waveform has a period of 0.02 s. After how much time does it repeat the same phase for the first time?",
+    "options": {
+      "A": "0.005 s",
+      "B": "0.01 s",
+      "C": "0.02 s",
+      "D": "0.04 s"
+    },
+    "answer": "C",
+    "explanation": "The waveform repeats after one complete period.",
+    "page": 124,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_494",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 494,
+    "text": "A circuit's current leads its voltage. Which component is most consistent with this behaviour?",
+    "options": {
+      "A": "An ideal inductor",
+      "B": "An ideal capacitor",
+      "C": "A pure resistor",
+      "D": "An ideal wire"
+    },
+    "answer": "B",
+    "explanation": "In a pure capacitor, current leads voltage by 90°.",
+    "page": 124,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_495",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 495,
+    "text": "A circuit's current lags its voltage. Which component is most consistent with this behaviour?",
+    "options": {
+      "A": "An ideal capacitor",
+      "B": "An ideal inductor",
+      "C": "A pure resistor",
+      "D": "An ideal wire"
+    },
+    "answer": "B",
+    "explanation": "In a pure inductor, current lags voltage by 90°.",
+    "page": 124,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_496",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 496,
+    "text": "Two AC loads use the same real power at the same supply voltage. Load A has power factor 1, while Load B has power factor 0.5. Which is correct?",
+    "options": {
+      "A": "Load B draws half the current of Load A.",
+      "B": "Load B draws twice the current of Load A.",
+      "C": "Both must draw the same current.",
+      "D": "Load A necessarily has twice the resistance of Load B."
+    },
+    "answer": "B",
+    "explanation": "For fixed real power and voltage, I = P/(V cos φ). Halving the power factor doubles the current.",
+    "page": 124,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_497",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 497,
+    "text": "A load uses 2 kW of real power from a 200 V RMS supply at a power factor of 0.8. Calculate its RMS current.",
+    "options": {
+      "A": "6.25 A",
+      "B": "10 A",
+      "C": "12.5 A",
+      "D": "16 A"
+    },
+    "answer": "C",
+    "explanation": "I = P/(V cos φ) = 2,000/(200 × 0.8) = 12.5 A.",
+    "page": 125,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_498",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 498,
+    "text": "A load uses 2 kW from a 400 V RMS supply at a power factor of 0.8. Calculate the current.",
+    "options": {
+      "A": "3.125 A",
+      "B": "6.25 A",
+      "C": "8 A",
+      "D": "12.5 A"
+    },
+    "answer": "B",
+    "explanation": "I = 2,000/(400 × 0.8) = 6.25 A.",
+    "page": 125,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_499",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 499,
+    "text": "A series RLC circuit has R = 30 Ω, XL = 50 Ω and XC = 10 Ω. Calculate the impedance.",
+    "options": {
+      "A": "30 Ω",
+      "B": "40 Ω",
+      "C": "50 Ω",
+      "D": "90 Ω"
+    },
+    "answer": "C",
+    "explanation": "Net reactance = 50 − 10 = 40 Ω. Z = √(30² + 40²) = √2,500 = 50 Ω.",
+    "page": 125,
+    "hasImage": false
+  },
+  {
+    "id": "phy_ac_500",
+    "originalChapter": 4,
+    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
+    "topic": "Alternating Current (AC) Circuits",
+    "bookQuestionNum": 500,
+    "text": "A series RLC circuit has R = 30 Ω, XL = 50 Ω and XC = 10 Ω. It is connected to a 200 V RMS source. Calculate the real power consumed.",
+    "options": {
+      "A": "240 W",
+      "B": "480 W",
+      "C": "600 W",
+      "D": "800 W"
+    },
+    "answer": "B",
+    "explanation": "From Question 199, Z = 50 Ω, so I = 200/50 = 4 A. Real power = I²R = 4² × 30 = 480 W.",
+    "page": 125,
+    "hasImage": false
   }
 ];
 
 export const JAMBIX_PHYSICS_100_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_200_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_300_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
+export const JAMBIX_PHYSICS_500_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 
 export function getPhysicsDemystifiedVerifiedQuestions() {
   return PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({

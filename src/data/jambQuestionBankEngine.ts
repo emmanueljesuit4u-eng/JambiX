@@ -3748,12 +3748,10 @@ export function generateUniqueSubjectQuestions(
   };
 
   // =========================================================================
-  // JAMBIX PHYSICS QUESTION BANK (TOPICS 1-3: 300 QUESTIONS)
-  // TOPIC 1: MEASUREMENTS AND UNITS (Q1–100)
-  // TOPIC 2: SCALARS AND VECTORS (Q101–200)
-  // TOPIC 3: MOTION (Q201–300)
-  // Fairly distributes questions across ALL topics via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX PHYSICS QUESTION BANK (TOPICS 1-3 & AC CIRCUITS: 500 QUESTIONS)
+  // Fairly distributes across available question bank topics, and balances with
+  // all other syllabus chapters (Heat, Optics, Waves, Electricity, Magnetism, Modern Physics)
+  // so the test covers diverse topics across the entire syllabus.
   // =========================================================================
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
     // 1. Group items by topic/chapter
@@ -3773,12 +3771,19 @@ export function generateUniqueSubjectQuestions(
     const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedPhysicsItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
+    // Fair quota from PHYSICS_DEMYSTIFIED_ITEMS (which covers 4 topics):
+    // In a 40-question test, pull up to 10 questions (2-3 per topic) so the remaining 30 questions are
+    // drawn across all the other 16 chapters of the Physics syllabus.
+    const physicsQuota = targetCount <= 4
+      ? targetCount
+      : Math.min(10, Math.max(3, Math.round(targetCount * 0.25)));
+
     // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
     let added = true;
-    while (pickedPhysicsItems.length < targetCount && added) {
+    while (pickedPhysicsItems.length < physicsQuota && added) {
       added = false;
       for (const tKey of topicKeys) {
-        if (pickedPhysicsItems.length >= targetCount) break;
+        if (pickedPhysicsItems.length >= physicsQuota) break;
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
@@ -3795,11 +3800,11 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedPhysicsItems.length < targetCount) {
+    // 5. Pass 2: Fallback across all topics to satisfy quota without session duplicates
+    if (pickedPhysicsItems.length < physicsQuota) {
       const allShuffled = shuffleArr(PHYSICS_DEMYSTIFIED_ITEMS);
       for (const item of allShuffled) {
-        if (pickedPhysicsItems.length >= targetCount) break;
+        if (pickedPhysicsItems.length >= physicsQuota) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
           safeSessionUsed.add(sig);
@@ -3847,12 +3852,17 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX CHEMISTRY QUESTION BANK (TOPIC: ORGANIC CHEMISTRY - 100 QUESTIONS)
-  // Fairly distributes across all 5 syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX CHEMISTRY QUESTION BANK (TOPIC 1: ORGANIC & TOPIC 2: ANALYTICAL — 300 QUESTIONS)
+  // Fairly distributes across all 35+ topic clusters via round-robin, and balances with
+  // all other syllabus chapters (Separation, Gas Laws, Bonding, Acids/Bases/Salts,
+  // Redox, Electrolysis, Metals, Non-metals, Environmental Chemistry, etc.)
+  // so the test covers diverse topics across the entire syllabus.
   // =========================================================================
   if (subjectKey === 'chemistry' && JAMBIX_CHEMISTRY_ITEMS.length > 0) {
-    const getChemTopicCluster = (item: typeof JAMBIX_CHEMISTRY_ITEMS[0]) => {
+    const getChemTopic = (item: typeof JAMBIX_CHEMISTRY_ITEMS[0]) => {
+      if (item.originalChapter === 2 || item.bookQuestionNum > 100) {
+        return item.topic || 'Analytical Chemistry';
+      }
       const qNum = item.bookQuestionNum;
       if (qNum <= 25) return 'Nomenclature, Hydrocarbons & Isomerism';
       if (qNum <= 45) return 'Alcohols, Phenols, Ethers & Carbonyls';
@@ -3861,12 +3871,12 @@ export function generateUniqueSubjectQuestions(
       return 'Polymers, Biomolecules & Purification';
     };
 
-    // 1. Group items into the 5 syllabus topic clusters
+    // 1. Group items across all Organic and Analytical Chemistry topic clusters
     const byTopic: Record<string, typeof JAMBIX_CHEMISTRY_ITEMS> = {};
     for (const item of JAMBIX_CHEMISTRY_ITEMS) {
-      const cluster = getChemTopicCluster(item);
-      if (!byTopic[cluster]) byTopic[cluster] = [];
-      byTopic[cluster].push(item);
+      const topicKey = getChemTopic(item);
+      if (!byTopic[topicKey]) byTopic[topicKey] = [];
+      byTopic[topicKey].push(item);
     }
 
     // 2. Shuffle within each cluster
@@ -3874,16 +3884,23 @@ export function generateUniqueSubjectQuestions(
       byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    // 3. Shuffle cluster keys
+    // 3. Shuffle cluster keys so tests don't always pick topics in the same order
     const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedChemistryItems: typeof JAMBIX_CHEMISTRY_ITEMS = [];
 
+    // Fair quota from JAMBIX_CHEMISTRY_ITEMS (which covers Organic & Analytical Chemistry across 35+ topics):
+    // In a 40-question test, pull up to 18 questions across diverse topics so the remaining questions are
+    // drawn across all the other chapters of the Chemistry syllabus (Separation, Gas Laws, Bonding, Acids/Bases/Salts, Redox, etc.).
+    const chemistryQuota = targetCount <= 4
+      ? targetCount
+      : Math.min(18, Math.max(3, Math.round(targetCount * 0.45)));
+
     // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
     let added = true;
-    while (pickedChemistryItems.length < targetCount && added) {
+    while (pickedChemistryItems.length < chemistryQuota && added) {
       added = false;
       for (const tKey of topicKeys) {
-        if (pickedChemistryItems.length >= targetCount) break;
+        if (pickedChemistryItems.length >= chemistryQuota) break;
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
@@ -3901,10 +3918,10 @@ export function generateUniqueSubjectQuestions(
     }
 
     // 5. Pass 2: Fallback across all questions without session duplicates
-    if (pickedChemistryItems.length < targetCount) {
+    if (pickedChemistryItems.length < chemistryQuota) {
       const allShuffled = shuffleArr(JAMBIX_CHEMISTRY_ITEMS);
       for (const item of allShuffled) {
-        if (pickedChemistryItems.length >= targetCount) break;
+        if (pickedChemistryItems.length >= chemistryQuota) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
           safeSessionUsed.add(sig);
@@ -3927,7 +3944,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Chemistry',
-        topic: getChemTopicCluster(item),
+        topic: getChemTopic(item),
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
@@ -3939,7 +3956,7 @@ export function generateUniqueSubjectQuestions(
         explanation: item.explanation,
         bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
-        textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
+        textbookRef: item.chapterTitle || 'Topic: Chemistry',
         hasImage: false,
       };
       // Exactly preserve the author's answer and explanation without scrambling
@@ -4053,10 +4070,10 @@ export function generateUniqueSubjectQuestions(
   // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
   if (subjectKey === 'biology' && JAMBIX_BIOLOGY_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    // 1. Group items by topic to guarantee even, fair distribution across all topics
     const byTopic: Record<string, typeof JAMBIX_BIOLOGY_ITEMS> = {};
     for (const item of JAMBIX_BIOLOGY_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      const topicKey = item.topic || item.chapterTitle || `Topic ${item.originalChapter}`;
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
@@ -4131,7 +4148,7 @@ export function generateUniqueSubjectQuestions(
         explanation: item.explanation,
         bookTitle: 'JAMBIX BIOLOGY QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
-        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+        textbookRef: item.chapterTitle || '300 Tough Questions Across All Topics',
         hasImage: false,
       };
       // Exactly preserve the author's answer and explanation without scrambling
@@ -4632,13 +4649,15 @@ export function generateUniqueSubjectQuestions(
   // - Mock 5+ (Tier 4+): 88-100% highest-rigor historical problem sets (36-40 of 40)
   const toughBank = TOUGH_QUESTIONS_BY_SUBJECT[subjectKey] || [];
   if (toughBank.length > 0) {
-    const targetToughCount = Math.min(
-      targetCount,
+    const currentBaseCount = picked.length;
+    const remainingSlots = targetCount - currentBaseCount;
+    const targetToughCount = remainingSlots > 0 ? Math.min(
+      remainingSlots,
       Math.max(
-        6 + difficultyTier * 8,
-        Math.round(targetCount * Math.min(1.0, 0.15 + difficultyTier * 0.20))
+        Math.min(remainingSlots, 4 + difficultyTier * 4),
+        Math.round(remainingSlots * Math.min(1.0, 0.15 + difficultyTier * 0.20))
       )
-    );
+    ) : 0;
 
     // Sort available tough questions based on candidate's current progression tier:
     // Higher tiers prioritize 'mastery' and 'very_tough' problems from 1978-2026
@@ -4653,7 +4672,7 @@ export function generateUniqueSubjectQuestions(
     });
 
     for (const tq of sortedTough) {
-      if (picked.length >= targetToughCount || picked.length >= targetCount) break;
+      if (picked.length >= currentBaseCount + targetToughCount || picked.length >= targetCount) break;
       const coreSig = getQuestionCoreSignature(tq.text);
       if (!sessionUsedTexts.has(coreSig) && !excludeSignatures.has(coreSig)) {
         sessionUsedTexts.add(coreSig);
