@@ -8,7 +8,8 @@
  * TOPIC 3: MOTION (QUESTIONS 201–300)
  * TOPIC 4: ALTERNATING CURRENT (AC) CIRCUITS (QUESTIONS 301–500)
  * Indexed directly from official syllabus specifications.
- * Total questions: 500
+ * Total questions: 600
+ * TOPIC 5: MECHANICS, GRAVITATION, WORK, ENERGY & PROPERTIES OF MATTER (QUESTIONS 501–600)
  */
 
 export interface PhysicsDemystifiedItem {
@@ -9033,13 +9034,1815 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "explanation": "From Question 199, Z = 50 Ω, so I = 200/50 = 4 A. Real power = I²R = 4² × 30 = 480 W.",
     "page": 125,
     "hasImage": false
+  },
+{
+    "id": "phy_gen_501",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 501,
+    "text": "Which of the following is the SI base unit of length?",
+    "options": {
+      "A": "Centimetre",
+      "B": "Metre",
+      "C": "Kilometre",
+      "D": "Millimetre"
+    },
+    "answer": "B",
+    "explanation": "The metre (m) is the SI base unit of length. Centimetres and kilometres are multiples or submultiples of the metre.",
+    "page": 202,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_502",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 502,
+    "text": "What is the dimensional formula of force?",
+    "options": {
+      "A": "[MLT⁻¹]",
+      "B": "[MLT⁻²]",
+      "C": "[ML²T⁻²]",
+      "D": "[ML⁻¹T⁻²]"
+    },
+    "answer": "B",
+    "explanation": "Force = mass × acceleration. Mass has dimension [M], while acceleration has dimension [LT⁻²]. Therefore, force has dimension [MLT⁻²].",
+    "page": 202,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_503",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 503,
+    "text": "The dimensional formula of pressure is",
+    "options": {
+      "A": "[MLT⁻²]",
+      "B": "[ML⁻¹T⁻²]",
+      "C": "[ML²T⁻²]",
+      "D": "[M⁰LT⁻¹]"
+    },
+    "answer": "B",
+    "explanation": "Pressure = force/area. Its dimension is [MLT⁻²]/[L²] = [ML⁻¹T⁻²].",
+    "page": 203,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_504",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 504,
+    "text": "A vernier caliper has a main scale reading of 2.3 cm. If its sixth vernier division coincides with a main scale mark and its least count is 0.01 cm, what is the measured length?",
+    "options": {
+      "A": "2.30 cm",
+      "B": "2.33 cm",
+      "C": "2.36 cm",
+      "D": "2.60 cm"
+    },
+    "answer": "C",
+    "explanation": "Total reading = main scale reading + vernier reading = 2.3 + (6 × 0.01) = 2.36 cm.",
+    "page": 203,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_505",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 505,
+    "text": "A micrometer screw gauge has a pitch of 0.5 mm and 50 divisions on its circular scale. If the main scale reading is 5.5 mm and the circular scale reading is 32 divisions, determine the total reading.",
+    "options": {
+      "A": "5.32 mm",
+      "B": "5.50 mm",
+      "C": "5.82 mm",
+      "D": "6.32 mm"
+    },
+    "answer": "C",
+    "explanation": "Least count = 0.5/50 = 0.01 mm. Total reading = 5.5 + (32 × 0.01) = 5.82 mm.",
+    "page": 204,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_506",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 506,
+    "text": "A student measures a length as 24.5 cm when its accepted value is 25.0 cm. What is the percentage error?",
+    "options": {
+      "A": "0.5%",
+      "B": "1%",
+      "C": "2%",
+      "D": "5%"
+    },
+    "answer": "C",
+    "explanation": "Percentage error = (absolute error/accepted value) × 100 = (0.5/25) × 100 = 2%.",
+    "page": 204,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_507",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 507,
+    "text": "Which of the following quantities has the SI unit kg m⁻³?",
+    "options": {
+      "A": "Pressure",
+      "B": "Density",
+      "C": "Force",
+      "D": "Energy"
+    },
+    "answer": "B",
+    "explanation": "Density is mass per unit volume. Its SI unit is kg/m³.",
+    "page": 205,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_508",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 508,
+    "text": "What is the dimensional formula of the universal gravitational constant, G?",
+    "options": {
+      "A": "[M⁻¹L³T⁻²]",
+      "B": "[ML³T⁻²]",
+      "C": "[ML⁻²T⁻²]",
+      "D": "[M⁻¹L²T⁻¹]"
+    },
+    "answer": "A",
+    "explanation": "From F = Gm₁m₂/r², G = Fr²/(m₁m₂). Substituting dimensions gives [MLT⁻² × L²/M²] = [M⁻¹L³T⁻²].",
+    "page": 205,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_509",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 509,
+    "text": "Which of the following is the SI unit of power?",
+    "options": {
+      "A": "Joule",
+      "B": "Newton",
+      "C": "Watt",
+      "D": "Pascal"
+    },
+    "answer": "C",
+    "explanation": "Power is the rate of doing work or transferring energy. Its SI unit is the watt, equivalent to one joule per second.",
+    "page": 206,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_510",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Units, Dimensions & Measurements",
+    "topic": "Units, Dimensions & Measurements",
+    "bookQuestionNum": 510,
+    "text": "Which of the following quantities is dimensionless?",
+    "options": {
+      "A": "Force",
+      "B": "Pressure",
+      "C": "Strain",
+      "D": "Momentum"
+    },
+    "answer": "C",
+    "explanation": "Strain is the ratio of change in length to original length. Both have the same dimension, so strain has no dimension.",
+    "page": 206,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_511",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Scalars, Vectors & Moments",
+    "topic": "Scalars, Vectors & Moments",
+    "bookQuestionNum": 511,
+    "text": "Which of the following is a scalar quantity?",
+    "options": {
+      "A": "Displacement",
+      "B": "Velocity",
+      "C": "Momentum",
+      "D": "Temperature"
+    },
+    "answer": "D",
+    "explanation": "Temperature has magnitude but no direction. Displacement, velocity and momentum are vector quantities.",
+    "page": 207,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_512",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Scalars, Vectors & Moments",
+    "topic": "Scalars, Vectors & Moments",
+    "bookQuestionNum": 512,
+    "text": "Two perpendicular forces of 6 N and 8 N act on a body. What is their resultant force?",
+    "options": {
+      "A": "2 N",
+      "B": "10 N",
+      "C": "14 N",
+      "D": "48 N"
+    },
+    "answer": "B",
+    "explanation": "For perpendicular forces, resultant = √(6² + 8²) = √100 = 10 N.",
+    "page": 207,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_513",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Scalars, Vectors & Moments",
+    "topic": "Scalars, Vectors & Moments",
+    "bookQuestionNum": 513,
+    "text": "A force of 10 N acts at 30° above the horizontal. What is its vertical component?",
+    "options": {
+      "A": "2.5 N",
+      "B": "5 N",
+      "C": "8.66 N",
+      "D": "10 N"
+    },
+    "answer": "B",
+    "explanation": "Vertical component = 10 sin 30° = 10 × 0.5 = 5 N.",
+    "page": 208,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_514",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Scalars, Vectors & Moments",
+    "topic": "Scalars, Vectors & Moments",
+    "bookQuestionNum": 514,
+    "text": "A force of 10 N moves an object through 3 m at an angle of 60° to the direction of motion. How much work is done?",
+    "options": {
+      "A": "10 J",
+      "B": "15 J",
+      "C": "20 J",
+      "D": "30 J"
+    },
+    "answer": "B",
+    "explanation": "Work = Fs cos θ = 10 × 3 × cos 60° = 30 × 0.5 = 15 J.",
+    "page": 208,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_515",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Scalars, Vectors & Moments",
+    "topic": "Scalars, Vectors & Moments",
+    "bookQuestionNum": 515,
+    "text": "A force of 20 N acts perpendicularly at the end of a 0.5 m lever. What is the moment of the force about the pivot?",
+    "options": {
+      "A": "5 Nm",
+      "B": "10 Nm",
+      "C": "20 Nm",
+      "D": "40 Nm"
+    },
+    "answer": "B",
+    "explanation": "Moment = force × perpendicular distance = 20 × 0.5 = 10 Nm.",
+    "page": 209,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_516",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 516,
+    "text": "A car increases its velocity from 5 m/s to 25 m/s in 4 seconds. What is its acceleration?",
+    "options": {
+      "A": "4 m/s²",
+      "B": "5 m/s²",
+      "C": "6 m/s²",
+      "D": "10 m/s²"
+    },
+    "answer": "B",
+    "explanation": "Acceleration = change in velocity/time = (25 − 5)/4 = 5 m/s².",
+    "page": 209,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_517",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 517,
+    "text": "The gradient of a displacement-time graph represents",
+    "options": {
+      "A": "acceleration.",
+      "B": "velocity.",
+      "C": "force.",
+      "D": "momentum."
+    },
+    "answer": "B",
+    "explanation": "The gradient of a displacement-time graph is the change in displacement divided by the time taken, which is velocity.",
+    "page": 210,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_518",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 518,
+    "text": "A projectile is launched at 20 m/s at an angle of 30° to the horizontal. If g = 10 m/s², what is its maximum height?",
+    "options": {
+      "A": "2.5 m",
+      "B": "5 m",
+      "C": "10 m",
+      "D": "20 m"
+    },
+    "answer": "B",
+    "explanation": "Maximum height = u²sin²θ/2g = (20² × 0.5²)/(2 × 10) = 100/20 = 5 m.",
+    "page": 210,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_519",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 519,
+    "text": "A projectile is launched at 20 m/s at 45° to the horizontal. If g = 10 m/s², what is its horizontal range?",
+    "options": {
+      "A": "20 m",
+      "B": "28.3 m",
+      "C": "40 m",
+      "D": "80 m"
+    },
+    "answer": "C",
+    "explanation": "Range = u²sin 2θ/g = 20² × sin 90°/10 = 400/10 = 40 m.",
+    "page": 211,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_520",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 520,
+    "text": "At the highest point of projectile motion, the vertical component of velocity is",
+    "options": {
+      "A": "maximum.",
+      "B": "equal to the horizontal component.",
+      "C": "zero.",
+      "D": "equal to acceleration due to gravity."
+    },
+    "answer": "C",
+    "explanation": "At the highest point, the projectile momentarily stops moving vertically before descending. Its horizontal velocity remains unchanged when air resistance is neglected.",
+    "page": 211,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_521",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 521,
+    "text": "A body starts from rest and reaches 8 m/s in 4 seconds with uniform acceleration. What distance does it cover?",
+    "options": {
+      "A": "8 m",
+      "B": "12 m",
+      "C": "16 m",
+      "D": "32 m"
+    },
+    "answer": "C",
+    "explanation": "Average velocity = (0 + 8)/2 = 4 m/s. Distance = average velocity × time = 4 × 4 = 16 m.",
+    "page": 212,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_522",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 522,
+    "text": "A stone is dropped from a height of 80 m. How long does it take to reach the ground? Take g = 10 m/s².",
+    "options": {
+      "A": "2 s",
+      "B": "4 s",
+      "C": "6 s",
+      "D": "8 s"
+    },
+    "answer": "B",
+    "explanation": "Using s = ½gt², 80 = ½ × 10 × t². Therefore, t² = 16 and t = 4 s.",
+    "page": 212,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_523",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 523,
+    "text": "A moving vehicle slows from 30 m/s to 10 m/s in 5 seconds. What is its acceleration?",
+    "options": {
+      "A": "−2 m/s²",
+      "B": "−4 m/s²",
+      "C": "4 m/s²",
+      "D": "8 m/s²"
+    },
+    "answer": "B",
+    "explanation": "Acceleration = (10 − 30)/5 = −4 m/s². The negative sign indicates retardation.",
+    "page": 213,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_524",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 524,
+    "text": "A body has an initial velocity of 5 m/s and accelerates uniformly at 2 m/s² for 3 seconds. How far does it travel?",
+    "options": {
+      "A": "15 m",
+      "B": "18 m",
+      "C": "21 m",
+      "D": "24 m"
+    },
+    "answer": "D",
+    "explanation": "s = ut + ½at² = (5 × 3) + ½ × 2 × 3² = 15 + 9 = 24 m.",
+    "page": 213,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_525",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 525,
+    "text": "A stone falls freely from rest through 20 m. How long does the fall take if g = 10 m/s²?",
+    "options": {
+      "A": "1 s",
+      "B": "2 s",
+      "C": "3 s",
+      "D": "4 s"
+    },
+    "answer": "B",
+    "explanation": "Using s = ½gt², 20 = 5t². Therefore, t² = 4 and t = 2 s.",
+    "page": 214,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_526",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Motion & Projectiles",
+    "topic": "Linear Motion & Projectiles",
+    "bookQuestionNum": 526,
+    "text": "Two vehicles move in opposite directions at 15 m/s and 20 m/s respectively. What is their relative speed?",
+    "options": {
+      "A": "5 m/s",
+      "B": "15 m/s",
+      "C": "20 m/s",
+      "D": "35 m/s"
+    },
+    "answer": "D",
+    "explanation": "For motion in opposite directions, relative speed is the sum of the speeds: 15 + 20 = 35 m/s.",
+    "page": 214,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_527",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Circular Motion & Periodic Motion",
+    "topic": "Circular Motion & Periodic Motion",
+    "bookQuestionNum": 527,
+    "text": "A wheel rotates at 120 revolutions per minute. What is its angular velocity?",
+    "options": {
+      "A": "2π rad/s",
+      "B": "4π rad/s",
+      "C": "8π rad/s",
+      "D": "120π rad/s"
+    },
+    "answer": "B",
+    "explanation": "120 revolutions per minute = 2 revolutions per second. Angular velocity = 2πf = 2π × 2 = 4π rad/s.",
+    "page": 215,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_528",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Circular Motion & Periodic Motion",
+    "topic": "Circular Motion & Periodic Motion",
+    "bookQuestionNum": 528,
+    "text": "A body moves in a circle of radius 3 m at a speed of 6 m/s. What is its centripetal acceleration?",
+    "options": {
+      "A": "2 m/s²",
+      "B": "6 m/s²",
+      "C": "12 m/s²",
+      "D": "18 m/s²"
+    },
+    "answer": "C",
+    "explanation": "Centripetal acceleration = v²/r = 6²/3 = 12 m/s².",
+    "page": 215,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_529",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Circular Motion & Periodic Motion",
+    "topic": "Circular Motion & Periodic Motion",
+    "bookQuestionNum": 529,
+    "text": "A 0.5 kg object moves at 4 m/s in a circular path of radius 2 m. What centripetal force acts on it?",
+    "options": {
+      "A": "2 N",
+      "B": "4 N",
+      "C": "8 N",
+      "D": "16 N"
+    },
+    "answer": "B",
+    "explanation": "F = mv²/r = 0.5 × 4²/2 = 8/2 = 4 N.",
+    "page": 216,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_530",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Circular Motion & Periodic Motion",
+    "topic": "Circular Motion & Periodic Motion",
+    "bookQuestionNum": 530,
+    "text": "A body completes 5 oscillations every second. What is its period?",
+    "options": {
+      "A": "0.1 s",
+      "B": "0.2 s",
+      "C": "2 s",
+      "D": "5 s"
+    },
+    "answer": "B",
+    "explanation": "Period = 1/frequency = 1/5 = 0.2 s.",
+    "page": 216,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_531",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 531,
+    "text": "What is the momentum of a 2 kg object moving at 3 m/s?",
+    "options": {
+      "A": "1.5 kg m/s",
+      "B": "3 kg m/s",
+      "C": "5 kg m/s",
+      "D": "6 kg m/s"
+    },
+    "answer": "D",
+    "explanation": "Momentum = mass × velocity = 2 × 3 = 6 kg m/s.",
+    "page": 217,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_532",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 532,
+    "text": "A constant force of 50 N acts on an object for 0.04 seconds. What impulse is delivered?",
+    "options": {
+      "A": "0.5 Ns",
+      "B": "1 Ns",
+      "C": "2 Ns",
+      "D": "5 Ns"
+    },
+    "answer": "C",
+    "explanation": "Impulse = force × time = 50 × 0.04 = 2 Ns.",
+    "page": 217,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_533",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 533,
+    "text": "A 3 kg trolley moving at 4 m/s collides with a stationary 1 kg trolley. They move together after collision. What is their common velocity?",
+    "options": {
+      "A": "1 m/s",
+      "B": "2 m/s",
+      "C": "3 m/s",
+      "D": "4 m/s"
+    },
+    "answer": "C",
+    "explanation": "By conservation of momentum, (3 × 4) + (1 × 0) = (3 + 1)v. Therefore, v = 12/4 = 3 m/s.",
+    "page": 218,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_534",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 534,
+    "text": "What is the kinetic energy of a 2 kg object moving at 5 m/s?",
+    "options": {
+      "A": "10 J",
+      "B": "20 J",
+      "C": "25 J",
+      "D": "50 J"
+    },
+    "answer": "C",
+    "explanation": "Kinetic energy = ½mv² = ½ × 2 × 25 = 25 J.",
+    "page": 218,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_535",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 535,
+    "text": "Two objects have equal momentum. If the mass of the first is four times the mass of the second, the speed of the first is",
+    "options": {
+      "A": "four times the speed of the second.",
+      "B": "twice the speed of the second.",
+      "C": "one-quarter the speed of the second.",
+      "D": "equal to the speed of the second."
+    },
+    "answer": "C",
+    "explanation": "Momentum = mv. For equal momentum, speed is inversely proportional to mass. An object four times as massive has one-quarter the speed.",
+    "page": 219,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_536",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 536,
+    "text": "A force acts on a body and changes its momentum from 5 kg m/s to 17 kg m/s in 3 seconds. What is the average force?",
+    "options": {
+      "A": "3 N",
+      "B": "4 N",
+      "C": "6 N",
+      "D": "12 N"
+    },
+    "answer": "B",
+    "explanation": "Force = change in momentum/time = (17 − 5)/3 = 4 N.",
+    "page": 219,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_537",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 537,
+    "text": "The law of conservation of linear momentum applies when",
+    "options": {
+      "A": "the external resultant force on the system is zero.",
+      "B": "all objects have equal masses.",
+      "C": "all bodies are stationary.",
+      "D": "the system contains only one object."
+    },
+    "answer": "A",
+    "explanation": "In an isolated system with zero resultant external force, total linear momentum remains constant.",
+    "page": 220,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_538",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 538,
+    "text": "When a gun fires a bullet, the gun moves backwards because of",
+    "options": {
+      "A": "conservation of energy only.",
+      "B": "conservation of momentum.",
+      "C": "gravitational attraction.",
+      "D": "electromagnetic induction."
+    },
+    "answer": "B",
+    "explanation": "Before firing, the total momentum is zero. The forward momentum of the bullet is balanced by the backward momentum of the gun.",
+    "page": 220,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_539",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 539,
+    "text": "A body moving in a circle at constant speed has",
+    "options": {
+      "A": "constant velocity.",
+      "B": "no acceleration.",
+      "C": "changing velocity.",
+      "D": "zero centripetal force."
+    },
+    "answer": "C",
+    "explanation": "Velocity is a vector. Although the speed remains constant, the direction changes continuously, so the velocity changes.",
+    "page": 221,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_540",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Linear Momentum, Impulse & Collisions",
+    "topic": "Linear Momentum, Impulse & Collisions",
+    "bookQuestionNum": 540,
+    "text": "A falling body eventually reaches terminal velocity when",
+    "options": {
+      "A": "its weight becomes zero.",
+      "B": "air resistance equals its weight.",
+      "C": "its mass increases continuously.",
+      "D": "gravitational acceleration becomes infinite."
+    },
+    "answer": "B",
+    "explanation": "At terminal velocity, the upward drag force balances the downward weight, making the resultant force and acceleration zero.",
+    "page": 221,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_541",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 541,
+    "text": "Two masses of 5 kg and 10 kg are separated by 2 m. What is their gravitational force of attraction?",
+    "options": {
+      "A": "12.5G N",
+      "B": "25G N",
+      "C": "50G N",
+      "D": "100G N"
+    },
+    "answer": "A",
+    "explanation": "F = Gm₁m₂/r² = G × 5 × 10/2² = 50G/4 = 12.5G N.",
+    "page": 222,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_542",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 542,
+    "text": "What is the weight of a 70 kg person on Earth if g = 9.8 m/s²?",
+    "options": {
+      "A": "70 N",
+      "B": "98 N",
+      "C": "686 N",
+      "D": "700 N"
+    },
+    "answer": "C",
+    "explanation": "Weight = mg = 70 × 9.8 = 686 N.",
+    "page": 222,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_543",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 543,
+    "text": "An object weighs 490 N where the acceleration due to gravity is 9.8 m/s². What is its mass?",
+    "options": {
+      "A": "25 kg",
+      "B": "40 kg",
+      "C": "50 kg",
+      "D": "60 kg"
+    },
+    "answer": "C",
+    "explanation": "Mass = weight/g = 490/9.8 = 50 kg.",
+    "page": 223,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_544",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 544,
+    "text": "A gravitational force of 20 N acts on a mass of 2 kg. What is the gravitational field strength at that point?",
+    "options": {
+      "A": "5 N/kg",
+      "B": "10 N/kg",
+      "C": "20 N/kg",
+      "D": "40 N/kg"
+    },
+    "answer": "B",
+    "explanation": "Gravitational field strength = force/mass = 20/2 = 10 N/kg.",
+    "page": 223,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_545",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 545,
+    "text": "At a distance of twice the Earth's radius from its centre, the gravitational field strength is approximately",
+    "options": {
+      "A": "g.",
+      "B": "g/2.",
+      "C": "g/4.",
+      "D": "4g."
+    },
+    "answer": "C",
+    "explanation": "Gravitational field strength varies inversely with the square of the distance from the Earth's centre. At 2R, it becomes g/(2²) = g/4.",
+    "page": 224,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_546",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 546,
+    "text": "The escape velocity from a planet's surface is related to the orbital speed of a satellite close to the surface by",
+    "options": {
+      "A": "escape velocity = orbital speed.",
+      "B": "escape velocity = √2 × orbital speed.",
+      "C": "escape velocity = 2 × orbital speed.",
+      "D": "escape velocity = half the orbital speed."
+    },
+    "answer": "B",
+    "explanation": "Escape velocity is √(2GM/R), while the circular orbital speed near the surface is √(GM/R). Their ratio is √2.",
+    "page": 224,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_547",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 547,
+    "text": "The gravitational potential energy of two masses separated by distance r is",
+    "options": {
+      "A": "GMm/r.",
+      "B": "−GMm/r.",
+      "C": "GMmr.",
+      "D": "−GMr/m."
+    },
+    "answer": "B",
+    "explanation": "Taking gravitational potential energy as zero at infinity, the potential energy of two attracting masses is negative and equals −GMm/r.",
+    "page": 225,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_548",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 548,
+    "text": "An astronaut inside an orbiting spacecraft experiences apparent weightlessness mainly because",
+    "options": {
+      "A": "gravity is completely absent.",
+      "B": "the astronaut and spacecraft are in continuous free fall together.",
+      "C": "the astronaut has lost mass.",
+      "D": "the spacecraft is beyond the atmosphere."
+    },
+    "answer": "B",
+    "explanation": "Both the astronaut and spacecraft accelerate towards Earth under gravity at the same rate, so the astronaut experiences little or no supporting normal force.",
+    "page": 225,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_549",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 549,
+    "text": "If the distance between two masses is doubled, their gravitational force becomes",
+    "options": {
+      "A": "twice as large.",
+      "B": "four times as large.",
+      "C": "half as large.",
+      "D": "one-quarter as large."
+    },
+    "answer": "D",
+    "explanation": "Gravitational force is inversely proportional to the square of distance. Doubling distance reduces the force to 1/4.",
+    "page": 226,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_550",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Gravitational Field & Satellite Motion",
+    "topic": "Gravitational Field & Satellite Motion",
+    "bookQuestionNum": 550,
+    "text": "The weight of an object on the Moon is approximately",
+    "options": {
+      "A": "equal to its weight on Earth.",
+      "B": "twice its weight on Earth.",
+      "C": "one-sixth its weight on Earth.",
+      "D": "six times its weight on Earth."
+    },
+    "answer": "C",
+    "explanation": "The Moon's gravitational field strength is about one-sixth of Earth's. The object's mass remains unchanged, but its weight reduces.",
+    "page": 226,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_551",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 551,
+    "text": "A force of 15 N acts perpendicularly at a distance of 0.4 m from a pivot. What is its moment?",
+    "options": {
+      "A": "3 Nm",
+      "B": "6 Nm",
+      "C": "15 Nm",
+      "D": "37.5 Nm"
+    },
+    "answer": "B",
+    "explanation": "Moment = force × perpendicular distance = 15 × 0.4 = 6 Nm.",
+    "page": 227,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_552",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 552,
+    "text": "The principle of moments states that for a body in rotational equilibrium,",
+    "options": {
+      "A": "total clockwise moment equals total anticlockwise moment.",
+      "B": "total force must be greater than weight.",
+      "C": "all forces must act through the same point.",
+      "D": "angular velocity must be maximum."
+    },
+    "answer": "A",
+    "explanation": "For rotational equilibrium, the resultant moment about any point must be zero.",
+    "page": 227,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_553",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 553,
+    "text": "Two equal and opposite parallel forces of 10 N act 0.5 m apart. What is the moment of the couple?",
+    "options": {
+      "A": "2.5 Nm",
+      "B": "5 Nm",
+      "C": "10 Nm",
+      "D": "20 Nm"
+    },
+    "answer": "B",
+    "explanation": "Moment of a couple = one force × perpendicular distance between the forces = 10 × 0.5 = 5 Nm.",
+    "page": 228,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_554",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 554,
+    "text": "The centre of gravity of a uniform metre rule is approximately at the",
+    "options": {
+      "A": "10 cm mark.",
+      "B": "25 cm mark.",
+      "C": "50 cm mark.",
+      "D": "100 cm mark."
+    },
+    "answer": "C",
+    "explanation": "A uniform metre rule has its mass distributed evenly, so its centre of gravity is at its geometric centre.",
+    "page": 228,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_555",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 555,
+    "text": "A body is in stable equilibrium when, after a small displacement, it tends to",
+    "options": {
+      "A": "move farther from its original position.",
+      "B": "return to its original position.",
+      "C": "remain permanently displaced.",
+      "D": "rotate without limit."
+    },
+    "answer": "B",
+    "explanation": "In stable equilibrium, a small displacement raises the centre of gravity, producing a restoring effect that tends to return the body to its original position.",
+    "page": 229,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_556",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 556,
+    "text": "A seesaw is balanced by a 20 N force acting 0.3 m from the pivot and a 30 N force on the opposite side. How far from the pivot does the 30 N force act?",
+    "options": {
+      "A": "0.1 m",
+      "B": "0.2 m",
+      "C": "0.3 m",
+      "D": "0.5 m"
+    },
+    "answer": "B",
+    "explanation": "For balance, 20 × 0.3 = 30 × d. Therefore, d = 6/30 = 0.2 m.",
+    "page": 229,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_557",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 557,
+    "text": "A rigid body is in complete mechanical equilibrium when",
+    "options": {
+      "A": "only its translational motion is balanced.",
+      "B": "only its rotational motion is balanced.",
+      "C": "both the resultant force and resultant moment are zero.",
+      "D": "its kinetic energy is zero."
+    },
+    "answer": "C",
+    "explanation": "Translational equilibrium requires zero resultant force, while rotational equilibrium requires zero resultant moment.",
+    "page": 230,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_558",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 558,
+    "text": "A body acted upon by three non-parallel forces is in equilibrium when",
+    "options": {
+      "A": "the forces are all equal.",
+      "B": "the vector sum of the three forces is zero.",
+      "C": "the forces are all vertical.",
+      "D": "their magnitudes add to zero."
+    },
+    "answer": "B",
+    "explanation": "Equilibrium requires the vector sum of all forces to be zero, irrespective of their directions.",
+    "page": 230,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_559",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 559,
+    "text": "A uniform beam is supported at both ends. If a load is placed exactly at its centre, the reactions at the two supports are",
+    "options": {
+      "A": "unequal, with the left reaction larger.",
+      "B": "unequal, with the right reaction larger.",
+      "C": "equal, assuming symmetric supports and beam conditions.",
+      "D": "both zero."
+    },
+    "answer": "C",
+    "explanation": "A centrally placed load on a symmetrical beam produces equal reactions at the two supports.",
+    "page": 231,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_560",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Equilibrium of Forces & Moments",
+    "topic": "Equilibrium of Forces & Moments",
+    "bookQuestionNum": 560,
+    "text": "The moment of a force is zero when",
+    "options": {
+      "A": "its magnitude is maximum.",
+      "B": "its line of action passes through the pivot.",
+      "C": "it acts perpendicular to the lever.",
+      "D": "the object is moving."
+    },
+    "answer": "B",
+    "explanation": "The perpendicular distance from the pivot to the force's line of action is zero, so the moment is zero.",
+    "page": 231,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_561",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 561,
+    "text": "A force of 30 N moves a body through 4 m at an angle of 60° to the direction of displacement. What work is done?",
+    "options": {
+      "A": "30 J",
+      "B": "60 J",
+      "C": "90 J",
+      "D": "120 J"
+    },
+    "answer": "B",
+    "explanation": "W = Fs cos θ = 30 × 4 × 0.5 = 60 J.",
+    "page": 232,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_562",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 562,
+    "text": "A machine performs 600 J of work in 3 seconds. What is its power?",
+    "options": {
+      "A": "100 W",
+      "B": "150 W",
+      "C": "200 W",
+      "D": "300 W"
+    },
+    "answer": "C",
+    "explanation": "Power = work/time = 600/3 = 200 W.",
+    "page": 232,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_563",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 563,
+    "text": "What is the gravitational potential energy of a 2 kg object at a height of 5 m? Take g = 10 m/s².",
+    "options": {
+      "A": "10 J",
+      "B": "50 J",
+      "C": "100 J",
+      "D": "200 J"
+    },
+    "answer": "C",
+    "explanation": "Potential energy = mgh = 2 × 10 × 5 = 100 J.",
+    "page": 233,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_564",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 564,
+    "text": "A 4 kg object moves at 3 m/s. What is its kinetic energy?",
+    "options": {
+      "A": "6 J",
+      "B": "12 J",
+      "C": "18 J",
+      "D": "36 J"
+    },
+    "answer": "C",
+    "explanation": "Kinetic energy = ½mv² = ½ × 4 × 9 = 18 J.",
+    "page": 233,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_565",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 565,
+    "text": "A machine receives 500 J of energy and delivers 400 J of useful output energy. What is its efficiency?",
+    "options": {
+      "A": "20%",
+      "B": "40%",
+      "C": "80%",
+      "D": "125%"
+    },
+    "answer": "C",
+    "explanation": "Efficiency = (useful output/input) × 100 = (400/500) × 100 = 80%.",
+    "page": 234,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_566",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 566,
+    "text": "A machine lifts a load of 300 N using an effort of 60 N. What is its mechanical advantage?",
+    "options": {
+      "A": "2",
+      "B": "3",
+      "C": "5",
+      "D": "6"
+    },
+    "answer": "C",
+    "explanation": "Mechanical advantage = load/effort = 300/60 = 5.",
+    "page": 234,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_567",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 567,
+    "text": "In a machine, the effort moves through 2 m while the load moves through 0.4 m. What is its velocity ratio?",
+    "options": {
+      "A": "2",
+      "B": "4",
+      "C": "5",
+      "D": "8"
+    },
+    "answer": "C",
+    "explanation": "Velocity ratio = distance moved by effort/distance moved by load = 2/0.4 = 5.",
+    "page": 235,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_568",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 568,
+    "text": "A machine has a mechanical advantage of 4 and a velocity ratio of 5. What is its efficiency?",
+    "options": {
+      "A": "20%",
+      "B": "40%",
+      "C": "80%",
+      "D": "125%"
+    },
+    "answer": "C",
+    "explanation": "Efficiency = (MA/VR) × 100 = (4/5) × 100 = 80%.",
+    "page": 235,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_569",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 569,
+    "text": "An ideal pulley system has four rope segments supporting the moving load. What is its ideal mechanical advantage?",
+    "options": {
+      "A": "2",
+      "B": "3",
+      "C": "4",
+      "D": "8"
+    },
+    "answer": "C",
+    "explanation": "In an ideal pulley system, the mechanical advantage equals the number of rope segments supporting the moving load.",
+    "page": 236,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_570",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Work, Energy, Power & Machines",
+    "topic": "Work, Energy, Power & Machines",
+    "bookQuestionNum": 570,
+    "text": "The main advantage of a machine is that it can",
+    "options": {
+      "A": "create energy.",
+      "B": "make work disappear.",
+      "C": "change the magnitude or direction of an applied force.",
+      "D": "increase energy without an input."
+    },
+    "answer": "C",
+    "explanation": "Machines make tasks easier by changing force magnitude or direction, or by changing the distance over which a force acts. They do not create energy.",
+    "page": 236,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_571",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 571,
+    "text": "A frictional force of 20 N acts over a distance of 5 m against the motion of a body. How much work is done by friction?",
+    "options": {
+      "A": "+100 J",
+      "B": "−100 J",
+      "C": "+25 J",
+      "D": "−25 J"
+    },
+    "answer": "B",
+    "explanation": "Work = Fs cos 180° = 20 × 5 × (−1) = −100 J. Friction acts opposite to the displacement.",
+    "page": 237,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_572",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 572,
+    "text": "A block experiences a limiting frictional force of 40 N when the normal reaction is 100 N. What is the coefficient of friction?",
+    "options": {
+      "A": "0.2",
+      "B": "0.4",
+      "C": "2.5",
+      "D": "4.0"
+    },
+    "answer": "B",
+    "explanation": "Coefficient of friction = limiting friction/normal reaction = 40/100 = 0.4.",
+    "page": 237,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_573",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 573,
+    "text": "Limiting friction is the frictional force that acts",
+    "options": {
+      "A": "when a body is moving very fast.",
+      "B": "just before a body begins to slide.",
+      "C": "when a body is in free fall.",
+      "D": "only when surfaces are perfectly smooth."
+    },
+    "answer": "B",
+    "explanation": "Limiting friction is the maximum static friction available before relative sliding begins.",
+    "page": 238,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_574",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 574,
+    "text": "In a hydroelectric power station, the main energy transformation is",
+    "options": {
+      "A": "chemical to nuclear to heat.",
+      "B": "gravitational potential to kinetic to electrical.",
+      "C": "electrical to chemical to sound.",
+      "D": "sound to light to gravitational."
+    },
+    "answer": "B",
+    "explanation": "Stored water has gravitational potential energy. As it falls, this becomes kinetic energy, which drives turbines and generators.",
+    "page": 238,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_575",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 575,
+    "text": "The law of conservation of energy states that energy",
+    "options": {
+      "A": "can be created but not destroyed.",
+      "B": "can be destroyed but not created.",
+      "C": "can neither be created nor destroyed, but can be transformed.",
+      "D": "always decreases in a closed system."
+    },
+    "answer": "C",
+    "explanation": "Total energy remains constant in an isolated system, although it may change from one form to another.",
+    "page": 239,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_576",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 576,
+    "text": "A crane lifts a 50 kg load vertically through 2 m in 5 seconds. If g = 10 m/s², what useful power is developed?",
+    "options": {
+      "A": "100 W",
+      "B": "200 W",
+      "C": "500 W",
+      "D": "1,000 W"
+    },
+    "answer": "B",
+    "explanation": "Work done = mgh = 50 × 10 × 2 = 1,000 J. Power = 1,000/5 = 200 W.",
+    "page": 239,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_577",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 577,
+    "text": "The actual mechanical advantage of a machine is usually less than its ideal mechanical advantage because of",
+    "options": {
+      "A": "friction and other energy losses.",
+      "B": "the conservation of momentum.",
+      "C": "gravitational field strength.",
+      "D": "the absence of a load."
+    },
+    "answer": "A",
+    "explanation": "Friction and deformation cause some input energy to be dissipated, reducing the useful output force.",
+    "page": 240,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_578",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 578,
+    "text": "In a simple gear system, a larger driven gear generally rotates",
+    "options": {
+      "A": "faster than a smaller driving gear.",
+      "B": "more slowly than a smaller driving gear.",
+      "C": "at zero speed.",
+      "D": "in the same direction in every arrangement."
+    },
+    "answer": "B",
+    "explanation": "A larger driven gear has more teeth and completes fewer revolutions for the same number of teeth passing the contact point.",
+    "page": 240,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_579",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 579,
+    "text": "Which quantity has no unit?",
+    "options": {
+      "A": "Mechanical advantage",
+      "B": "Force",
+      "C": "Power",
+      "D": "Energy"
+    },
+    "answer": "A",
+    "explanation": "Mechanical advantage is a ratio of load to effort. Since both are measured in newtons, the units cancel.",
+    "page": 241,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_580",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Friction & Energy Conservation",
+    "topic": "Friction & Energy Conservation",
+    "bookQuestionNum": 580,
+    "text": "A machine has an efficiency of 100%. This means that",
+    "options": {
+      "A": "its output energy is greater than its input energy.",
+      "B": "all input energy is converted into useful output energy.",
+      "C": "it requires no input energy.",
+      "D": "friction produces extra energy."
+    },
+    "answer": "B",
+    "explanation": "A 100% efficient machine would have no energy losses. Real machines do not achieve this under ordinary operating conditions.",
+    "page": 241,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_581",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Elasticity & Hooke's Law",
+    "topic": "Elasticity & Hooke's Law",
+    "bookQuestionNum": 581,
+    "text": "Hooke's law states that within the elastic limit,",
+    "options": {
+      "A": "extension is inversely proportional to force.",
+      "B": "extension is directly proportional to applied force.",
+      "C": "stress is always zero.",
+      "D": "strain is independent of stress."
+    },
+    "answer": "B",
+    "explanation": "For a spring within its elastic limit, F = kx. Force is directly proportional to extension.",
+    "page": 242,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_582",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Elasticity & Hooke's Law",
+    "topic": "Elasticity & Hooke's Law",
+    "bookQuestionNum": 582,
+    "text": "A force of 100 N acts uniformly on an area of 0.02 m². What is the pressure?",
+    "options": {
+      "A": "500 Pa",
+      "B": "2,000 Pa",
+      "C": "5,000 Pa",
+      "D": "20,000 Pa"
+    },
+    "answer": "C",
+    "explanation": "Pressure = force/area = 100/0.02 = 5,000 Pa.",
+    "page": 242,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_583",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Elasticity & Hooke's Law",
+    "topic": "Elasticity & Hooke's Law",
+    "bookQuestionNum": 583,
+    "text": "A wire of original length 2 m extends by 2 mm. What is the strain?",
+    "options": {
+      "A": "0.0001",
+      "B": "0.001",
+      "C": "0.01",
+      "D": "0.1"
+    },
+    "answer": "B",
+    "explanation": "Strain = extension/original length = 0.002/2 = 0.001.",
+    "page": 243,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_584",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Elasticity & Hooke's Law",
+    "topic": "Elasticity & Hooke's Law",
+    "bookQuestionNum": 584,
+    "text": "A material experiences a stress of 5,000 Pa and a strain of 0.001. What is its Young's modulus?",
+    "options": {
+      "A": "5 × 10³ Pa",
+      "B": "5 × 10⁴ Pa",
+      "C": "5 × 10⁶ Pa",
+      "D": "5 × 10⁸ Pa"
+    },
+    "answer": "C",
+    "explanation": "Young's modulus = stress/strain = 5,000/0.001 = 5,000,000 Pa.",
+    "page": 243,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_585",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Elasticity & Hooke's Law",
+    "topic": "Elasticity & Hooke's Law",
+    "bookQuestionNum": 585,
+    "text": "A spring of force constant 200 N/m is extended by 0.1 m. What elastic potential energy is stored?",
+    "options": {
+      "A": "0.5 J",
+      "B": "1 J",
+      "C": "2 J",
+      "D": "10 J"
+    },
+    "answer": "B",
+    "explanation": "Elastic energy = ½kx² = ½ × 200 × 0.1² = 1 J.",
+    "page": 244,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_586",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Elasticity & Hooke's Law",
+    "topic": "Elasticity & Hooke's Law",
+    "bookQuestionNum": 586,
+    "text": "A spring extends by 0.02 m when a force of 10 N is applied. What is its spring constant?",
+    "options": {
+      "A": "50 N/m",
+      "B": "100 N/m",
+      "C": "500 N/m",
+      "D": "2,000 N/m"
+    },
+    "answer": "C",
+    "explanation": "Spring constant k = F/x = 10/0.02 = 500 N/m.",
+    "page": 244,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_587",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 587,
+    "text": "Calculate the pressure at a depth of 2 m in water of density 1,000 kg/m³. Take g = 10 m/s².",
+    "options": {
+      "A": "2,000 Pa",
+      "B": "10,000 Pa",
+      "C": "20,000 Pa",
+      "D": "40,000 Pa"
+    },
+    "answer": "C",
+    "explanation": "Liquid pressure = ρgh = 1,000 × 10 × 2 = 20,000 Pa. This is the gauge pressure due to the water column.",
+    "page": 245,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_588",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 588,
+    "text": "Pascal's principle is the basis of the operation of a",
+    "options": {
+      "A": "hydraulic press.",
+      "B": "thermometer.",
+      "C": "barometer.",
+      "D": "simple pendulum."
+    },
+    "answer": "A",
+    "explanation": "Pascal's principle states that pressure applied to an enclosed fluid is transmitted equally throughout the fluid.",
+    "page": 245,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_589",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 589,
+    "text": "A body displaces 0.002 m³ of water. Calculate the upthrust on it if water has a density of 1,000 kg/m³ and g = 10 m/s².",
+    "options": {
+      "A": "2 N",
+      "B": "10 N",
+      "C": "20 N",
+      "D": "200 N"
+    },
+    "answer": "C",
+    "explanation": "Upthrust equals the weight of displaced fluid: U = ρgV = 1,000 × 10 × 0.002 = 20 N.",
+    "page": 246,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_590",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 590,
+    "text": "An object has a density of 800 kg/m³ and floats in a liquid of density 1,000 kg/m³. What fraction of its volume is submerged?",
+    "options": {
+      "A": "0.2",
+      "B": "0.4",
+      "C": "0.8",
+      "D": "1.8"
+    },
+    "answer": "C",
+    "explanation": "For a floating body, fraction submerged = density of body/density of liquid = 800/1,000 = 0.8.",
+    "page": 246,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_591",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 591,
+    "text": "The pressure at a particular depth in a liquid at rest depends mainly on",
+    "options": {
+      "A": "the shape of the container only.",
+      "B": "the depth, liquid density and gravitational field strength.",
+      "C": "the colour of the liquid.",
+      "D": "the total surface area of the container."
+    },
+    "answer": "B",
+    "explanation": "Liquid pressure is given by P = ρgh. It does not depend on the shape of the container.",
+    "page": 247,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_592",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 592,
+    "text": "Atmospheric pressure is commonly measured using a",
+    "options": {
+      "A": "hydrometer.",
+      "B": "barometer.",
+      "C": "calorimeter.",
+      "D": "galvanometer."
+    },
+    "answer": "B",
+    "explanation": "A barometer measures atmospheric pressure, commonly using a mercury column or an aneroid mechanism.",
+    "page": 247,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_593",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluids at Rest & Archimedes' Principle",
+    "topic": "Fluids at Rest & Archimedes' Principle",
+    "bookQuestionNum": 593,
+    "text": "A body floats in a liquid when",
+    "options": {
+      "A": "its weight is greater than the maximum upthrust.",
+      "B": "its weight is balanced by the upthrust.",
+      "C": "its density is always greater than the liquid's density.",
+      "D": "the liquid has no pressure."
+    },
+    "answer": "B",
+    "explanation": "A floating body is in vertical equilibrium because the upward buoyant force equals the body's weight.",
+    "page": 248,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_594",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 594,
+    "text": "Water rises in a narrow glass tube because of capillary action. Compared with a wider tube, the rise in a narrower tube is generally",
+    "options": {
+      "A": "smaller.",
+      "B": "greater.",
+      "C": "zero.",
+      "D": "independent of tube radius."
+    },
+    "answer": "B",
+    "explanation": "For a wetting liquid such as water in clean glass, capillary rise is inversely proportional to the tube radius.",
+    "page": 248,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_595",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 595,
+    "text": "Surface tension tends to make a liquid surface",
+    "options": {
+      "A": "increase its area as much as possible.",
+      "B": "minimise its surface area.",
+      "C": "lose all cohesion.",
+      "D": "become completely rigid."
+    },
+    "answer": "B",
+    "explanation": "Surface tension arises from cohesive forces between liquid molecules and makes the surface behave as though it were stretched.",
+    "page": 249,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_596",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 596,
+    "text": "Viscosity is a measure of a fluid's",
+    "options": {
+      "A": "resistance to flow.",
+      "B": "electrical conductivity.",
+      "C": "temperature only.",
+      "D": "ability to reflect light."
+    },
+    "answer": "A",
+    "explanation": "Viscosity measures a fluid's internal resistance to relative motion between its layers.",
+    "page": 249,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_597",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 597,
+    "text": "A small sphere falling through a viscous liquid eventually moves at terminal velocity when",
+    "options": {
+      "A": "the upward viscous drag and upthrust balance its weight.",
+      "B": "its weight disappears.",
+      "C": "its acceleration keeps increasing.",
+      "D": "the liquid becomes a vacuum."
+    },
+    "answer": "A",
+    "explanation": "At terminal velocity, the downward weight equals the combined upward viscous drag and buoyant force, so the resultant force is zero.",
+    "page": 250,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_598",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 598,
+    "text": "According to Bernoulli's principle, for steady flow of an ideal fluid, an increase in speed is generally accompanied by",
+    "options": {
+      "A": "an increase in pressure.",
+      "B": "a decrease in pressure.",
+      "C": "no change in pressure under any condition.",
+      "D": "an infinite increase in density."
+    },
+    "answer": "B",
+    "explanation": "Along a streamline, increased fluid speed corresponds to reduced static pressure when the other relevant conditions are satisfied.",
+    "page": 250,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_599",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 599,
+    "text": "A hydraulic machine has a small piston area of 0.01 m² and a large piston area of 0.1 m². What output force is produced by an input force of 100 N, assuming no losses?",
+    "options": {
+      "A": "10 N",
+      "B": "100 N",
+      "C": "500 N",
+      "D": "1,000 N"
+    },
+    "answer": "D",
+    "explanation": "By Pascal's principle, F₁/A₁ = F₂/A₂. Therefore, F₂ = 100 × (0.1/0.01) = 1,000 N.",
+    "page": 251,
+    "hasImage": false
+  },
+  {
+    "id": "phy_gen_600",
+    "originalChapter": 5,
+    "chapterTitle": "Topic: Fluid Dynamics & Properties of Liquids",
+    "topic": "Fluid Dynamics & Properties of Liquids",
+    "bookQuestionNum": 600,
+    "text": "A substance has a mass of 250 g and a volume of 100 cm³. What is its relative density with respect to water?",
+    "options": {
+      "A": "0.4",
+      "B": "1.0",
+      "C": "2.5",
+      "D": "25"
+    },
+    "answer": "C",
+    "explanation": "Density = 250/100 = 2.5 g/cm³. Since water has density approximately 1 g/cm³, relative density = 2.5.",
+    "page": 251,
+    "hasImage": false
   }
+
 ];
 
 export const JAMBIX_PHYSICS_100_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_200_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_300_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_500_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
+export const JAMBIX_PHYSICS_600_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 
 export function getPhysicsDemystifiedVerifiedQuestions() {
   return PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({

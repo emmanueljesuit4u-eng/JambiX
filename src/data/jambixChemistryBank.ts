@@ -6,7 +6,8 @@
  * TOPIC 1: ORGANIC CHEMISTRY (QUESTIONS 1–100)
  * TOPIC 2: ANALYTICAL CHEMISTRY (QUESTIONS 101–300)
  * Indexed directly from official syllabus specifications.
- * Total questions: 400
+ * Total questions: 500
+ * TOPIC 4: NON-METALS, METALLURGY, APPLIED & NUCLEAR CHEMISTRY (QUESTIONS 401–500)
  * TOPIC 3: GENERAL, PHYSICAL & INORGANIC CHEMISTRY (QUESTIONS 301–400)
  */
 
@@ -7233,12 +7234,1814 @@ export const JAMBIX_CHEMISTRY_ITEMS: JambixChemistryItem[] = [
     "explanation": "Rusting is an electrochemical corrosion process requiring both oxygen and moisture.",
     "page": 150,
     "hasImage": false
-  }];
+  },
+{
+    "id": "chem_general_101",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 401,
+    "text": "Which of the following is the correct laboratory preparation of hydrogen?",
+    "options": {
+      "A": "Reacting zinc with dilute hydrochloric acid",
+      "B": "Heating sodium chloride",
+      "C": "Passing oxygen over copper",
+      "D": "Heating calcium carbonate alone"
+    },
+    "answer": "A",
+    "explanation": "Zn + 2HCl → ZnCl₂ + H₂. Zinc displaces hydrogen from dilute hydrochloric acid.",
+    "page": 151,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_102",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 402,
+    "text": "A common test for hydrogen gas is that it",
+    "options": {
+      "A": "relights a glowing splint.",
+      "B": "turns limewater milky.",
+      "C": "burns with a squeaky pop.",
+      "D": "bleaches damp litmus paper."
+    },
+    "answer": "C",
+    "explanation": "Hydrogen burns rapidly with oxygen in air, producing water and a characteristic squeaky pop.",
+    "page": 151,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_103",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 403,
+    "text": "Water gas is a mixture mainly of",
+    "options": {
+      "A": "hydrogen and carbon monoxide.",
+      "B": "hydrogen and carbon dioxide.",
+      "C": "nitrogen and oxygen.",
+      "D": "methane and oxygen."
+    },
+    "answer": "A",
+    "explanation": "Water gas is produced by passing steam over hot carbon: C + H₂O → CO + H₂.",
+    "page": 152,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_104",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 404,
+    "text": "Chlorine is commonly prepared in the laboratory by heating manganese(IV) oxide with",
+    "options": {
+      "A": "concentrated hydrochloric acid.",
+      "B": "dilute sodium hydroxide.",
+      "C": "dilute sulphuric acid.",
+      "D": "sodium chloride solution alone."
+    },
+    "answer": "A",
+    "explanation": "MnO₂ + 4HCl → MnCl₂ + Cl₂ + 2H₂O. The reaction releases chlorine gas.",
+    "page": 152,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_105",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 405,
+    "text": "Chlorine bleaches coloured materials most effectively when",
+    "options": {
+      "A": "it is completely dry.",
+      "B": "moisture is present.",
+      "C": "it is mixed with nitrogen.",
+      "D": "it is frozen."
+    },
+    "answer": "B",
+    "explanation": "Chlorine reacts with water to form substances including hypochlorous acid, which produces the oxidizing action responsible for bleaching.",
+    "page": 153,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_106",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 406,
+    "text": "Which property makes chlorine useful in treating drinking water?",
+    "options": {
+      "A": "It increases water hardness.",
+      "B": "It kills many disease-causing microorganisms.",
+      "C": "It removes all dissolved salts.",
+      "D": "It converts water into hydrogen peroxide."
+    },
+    "answer": "B",
+    "explanation": "Chlorine disinfects water by oxidizing or otherwise damaging microorganisms.",
+    "page": 153,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_107",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 407,
+    "text": "Hydrogen chloride gas forms hydrochloric acid when",
+    "options": {
+      "A": "it dissolves in water.",
+      "B": "it is mixed with dry oxygen.",
+      "C": "it is cooled below room temperature.",
+      "D": "it is mixed with nitrogen."
+    },
+    "answer": "A",
+    "explanation": "Hydrogen chloride ionizes in water to form hydronium and chloride ions, producing hydrochloric acid.",
+    "page": 154,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_108",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 408,
+    "text": "Which statement about dry hydrogen chloride gas is correct?",
+    "options": {
+      "A": "It turns dry blue litmus paper red immediately.",
+      "B": "It shows acidic behaviour only when water is available.",
+      "C": "It is a strong oxidizing agent.",
+      "D": "It is an alkaline gas."
+    },
+    "answer": "B",
+    "explanation": "Hydrogen chloride needs water to ionize and produce hydronium ions, which are responsible for its acidic behaviour.",
+    "page": 154,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_109",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 409,
+    "text": "Oxygen is commonly prepared in the laboratory by the catalytic decomposition of",
+    "options": {
+      "A": "sodium chloride.",
+      "B": "hydrogen peroxide.",
+      "C": "calcium carbonate.",
+      "D": "hydrochloric acid."
+    },
+    "answer": "B",
+    "explanation": "Hydrogen peroxide decomposes to water and oxygen. Manganese(IV) oxide can be used as a catalyst.",
+    "page": 155,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_110",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 410,
+    "text": "Which observation supports the presence of oxygen?",
+    "options": {
+      "A": "A glowing splint relights.",
+      "B": "Limewater turns milky.",
+      "C": "A burning splint is extinguished immediately.",
+      "D": "A damp blue litmus paper turns red."
+    },
+    "answer": "A",
+    "explanation": "Oxygen supports combustion and can cause a glowing splint to relight.",
+    "page": 155,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_111",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 411,
+    "text": "Ozone is important in the upper atmosphere because it",
+    "options": {
+      "A": "absorbs much of the harmful ultraviolet radiation from the Sun.",
+      "B": "produces all atmospheric nitrogen.",
+      "C": "prevents all forms of cloud formation.",
+      "D": "removes carbon dioxide completely."
+    },
+    "answer": "A",
+    "explanation": "The ozone layer absorbs much of the Sun's harmful ultraviolet radiation, helping protect living organisms.",
+    "page": 156,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_112",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 412,
+    "text": "Which oxide is amphoteric?",
+    "options": {
+      "A": "Na₂O",
+      "B": "SO₂",
+      "C": "Al₂O₃",
+      "D": "CO₂"
+    },
+    "answer": "C",
+    "explanation": "Aluminium oxide reacts with both acids and strong bases, showing amphoteric behaviour.",
+    "page": 156,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_113",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 413,
+    "text": "Sulphur dioxide is commonly produced when",
+    "options": {
+      "A": "sulphur burns in oxygen.",
+      "B": "hydrogen burns in nitrogen.",
+      "C": "calcium carbonate dissolves in water.",
+      "D": "sodium reacts with chlorine."
+    },
+    "answer": "A",
+    "explanation": "Sulphur burns in oxygen to produce sulphur dioxide: S + O₂ → SO₂.",
+    "page": 157,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_114",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 414,
+    "text": "One major environmental effect of sulphur dioxide is",
+    "options": {
+      "A": "formation of acid rain.",
+      "B": "destruction of all atmospheric nitrogen.",
+      "C": "formation of ozone in soil.",
+      "D": "reduction of ocean salinity."
+    },
+    "answer": "A",
+    "explanation": "Sulphur dioxide can be oxidized and dissolve in atmospheric moisture, contributing to acidic precipitation.",
+    "page": 157,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_115",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 415,
+    "text": "In the Contact process, the catalyst commonly used to convert sulphur dioxide to sulphur trioxide is",
+    "options": {
+      "A": "iron.",
+      "B": "nickel.",
+      "C": "vanadium(V) oxide.",
+      "D": "manganese(IV) oxide."
+    },
+    "answer": "C",
+    "explanation": "Vanadium(V) oxide catalyses the reversible oxidation of sulphur dioxide to sulphur trioxide.",
+    "page": 158,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_116",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 416,
+    "text": "Concentrated tetraoxosulphate(VI) acid acts as a dehydrating agent because it",
+    "options": {
+      "A": "readily removes water from many substances.",
+      "B": "releases hydrogen gas from every compound.",
+      "C": "converts all metals into non-metals.",
+      "D": "prevents all oxidation reactions."
+    },
+    "answer": "A",
+    "explanation": "Concentrated sulphuric acid has a strong affinity for water and can remove water from substances such as sugar.",
+    "page": 158,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_117",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 417,
+    "text": "Hydrogen sulphide is best described as",
+    "options": {
+      "A": "a colourless gas with a characteristic rotten-egg smell.",
+      "B": "a green gas with a choking smell.",
+      "C": "a brown gas with a sharp smell.",
+      "D": "a gas with no smell under any condition."
+    },
+    "answer": "A",
+    "explanation": "H₂S is a colourless, poisonous gas known for its rotten-egg smell.",
+    "page": 159,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_118",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 418,
+    "text": "Which statement about nitrogen is correct?",
+    "options": {
+      "A": "It readily supports ordinary combustion.",
+      "B": "It makes up about 78% of dry air.",
+      "C": "It is the most reactive component of air.",
+      "D": "It dissolves in water more readily than ammonia."
+    },
+    "answer": "B",
+    "explanation": "Nitrogen is the largest component of dry air and is relatively unreactive because of the strong triple bond in N₂.",
+    "page": 159,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_119",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 419,
+    "text": "The industrial production of ammonia is carried out by the",
+    "options": {
+      "A": "Contact process.",
+      "B": "Haber process.",
+      "C": "Solvay process.",
+      "D": "Ostwald process."
+    },
+    "answer": "B",
+    "explanation": "The Haber process combines nitrogen and hydrogen under suitable pressure and temperature using an iron catalyst.",
+    "page": 160,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_120",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 420,
+    "text": "In the Haber process, the reaction is",
+    "options": {
+      "A": "N₂ + O₂ ⇌ 2NO",
+      "B": "N₂ + 3H₂ ⇌ 2NH₃",
+      "C": "2NH₃ + 3O₂ → 2NO₂ + 3H₂O",
+      "D": "2H₂ + O₂ → 2H₂O"
+    },
+    "answer": "B",
+    "explanation": "One mole of nitrogen reacts with three moles of hydrogen to form two moles of ammonia.",
+    "page": 160,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_121",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 421,
+    "text": "A suitable catalyst for the Haber process is",
+    "options": {
+      "A": "iron.",
+      "B": "copper.",
+      "C": "platinum alone.",
+      "D": "silver."
+    },
+    "answer": "A",
+    "explanation": "Finely divided iron is used to increase the rate of ammonia production.",
+    "page": 161,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_122",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 422,
+    "text": "Ammonia turns damp red litmus paper blue because it",
+    "options": {
+      "A": "is acidic.",
+      "B": "produces hydroxide ions in water.",
+      "C": "contains chloride ions.",
+      "D": "produces hydrogen ions in water."
+    },
+    "answer": "B",
+    "explanation": "Ammonia reacts with water to establish an equilibrium that produces NH₄⁺ and OH⁻ ions, making the solution alkaline.",
+    "page": 161,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_123",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Non-Metals & Industrial Processes",
+    "topic": "Non-Metals & Industrial Processes",
+    "bookQuestionNum": 423,
+    "text": "The industrial oxidation of ammonia is an important step in the manufacture of",
+    "options": {
+      "A": "nitric acid.",
+      "B": "hydrochloric acid.",
+      "C": "ethanoic acid.",
+      "D": "carbonic acid."
+    },
+    "answer": "A",
+    "explanation": "The Ostwald process oxidizes ammonia to nitrogen oxides, which are further converted to nitric acid.",
+    "page": 162,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_124",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 424,
+    "text": "Which of the following is an allotrope of carbon?",
+    "options": {
+      "A": "Quartz",
+      "B": "Graphite",
+      "C": "Limestone",
+      "D": "Sulphur dioxide"
+    },
+    "answer": "B",
+    "explanation": "Graphite and diamond are different structural forms of elemental carbon.",
+    "page": 162,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_125",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 425,
+    "text": "Diamond is extremely hard because",
+    "options": {
+      "A": "its carbon atoms form a giant three-dimensional covalent network.",
+      "B": "its atoms are held together by weak hydrogen bonds.",
+      "C": "it contains mobile carbon ions.",
+      "D": "its structure is made of separate molecules."
+    },
+    "answer": "A",
+    "explanation": "Each carbon atom is covalently bonded to four others, forming a strong rigid network.",
+    "page": 163,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_126",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 426,
+    "text": "Carbon dioxide turns limewater milky because it produces",
+    "options": {
+      "A": "calcium oxide.",
+      "B": "calcium carbonate.",
+      "C": "calcium sulphate.",
+      "D": "calcium chloride."
+    },
+    "answer": "B",
+    "explanation": "CO₂ + Ca(OH)₂ → CaCO₃ + H₂O. The calcium carbonate formed is an insoluble white precipitate.",
+    "page": 163,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_127",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 427,
+    "text": "Carbon monoxide is poisonous because it",
+    "options": {
+      "A": "reacts strongly with water in the lungs.",
+      "B": "binds to haemoglobin and reduces oxygen transport.",
+      "C": "destroys red blood cells by dissolving them.",
+      "D": "converts oxygen into nitrogen."
+    },
+    "answer": "B",
+    "explanation": "Carbon monoxide forms carboxyhaemoglobin, reducing the blood's ability to carry oxygen.",
+    "page": 164,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_128",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 428,
+    "text": "Which of the following is a major product of the destructive distillation of coal?",
+    "options": {
+      "A": "Coke",
+      "B": "Sodium chloride",
+      "C": "Calcium hydroxide",
+      "D": "Ammonium nitrate"
+    },
+    "answer": "A",
+    "explanation": "Destructive distillation of coal produces coke, coal gas, coal tar and ammoniacal liquor.",
+    "page": 164,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_129",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 429,
+    "text": "Synthesis gas is mainly a mixture of",
+    "options": {
+      "A": "carbon monoxide and hydrogen.",
+      "B": "carbon dioxide and oxygen.",
+      "C": "nitrogen and chlorine.",
+      "D": "methane and sulphur dioxide."
+    },
+    "answer": "A",
+    "explanation": "Synthesis gas, or syngas, is a mixture mainly of CO and H₂ used as a feedstock for chemical production.",
+    "page": 165,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_130",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 430,
+    "text": "Nitrogen fixation in the nitrogen cycle involves the conversion of atmospheric nitrogen into",
+    "options": {
+      "A": "nitrogen gas alone.",
+      "B": "ammonia or other biologically available nitrogen compounds.",
+      "C": "oxygen.",
+      "D": "carbon dioxide."
+    },
+    "answer": "B",
+    "explanation": "Nitrogen-fixing bacteria and some industrial processes convert atmospheric nitrogen into forms that can enter the nitrogen cycle.",
+    "page": 165,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_131",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 431,
+    "text": "Which property is common to most metals?",
+    "options": {
+      "A": "Poor electrical conductivity",
+      "B": "Brittleness at room temperature",
+      "C": "Ability to conduct heat and electricity",
+      "D": "Low density in every case"
+    },
+    "answer": "C",
+    "explanation": "Metals generally contain mobile delocalized electrons, allowing them to conduct heat and electricity.",
+    "page": 166,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_132",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 432,
+    "text": "Sodium is stored under kerosene mainly because it",
+    "options": {
+      "A": "reacts rapidly with oxygen and moisture in air.",
+      "B": "dissolves in kerosene.",
+      "C": "is a noble metal.",
+      "D": "has a very high melting point."
+    },
+    "answer": "A",
+    "explanation": "Kerosene prevents sodium from direct contact with air and water, with which it reacts vigorously.",
+    "page": 166,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_133",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 433,
+    "text": "Sodium hydroxide is manufactured industrially by the electrolysis of",
+    "options": {
+      "A": "concentrated sodium chloride solution.",
+      "B": "molten calcium carbonate.",
+      "C": "aqueous copper sulphate.",
+      "D": "dilute nitric acid."
+    },
+    "answer": "A",
+    "explanation": "Electrolysis of brine produces sodium hydroxide in solution, alongside chlorine and hydrogen.",
+    "page": 167,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_134",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 434,
+    "text": "In the Solvay process, the major raw materials used to manufacture sodium carbonate include",
+    "options": {
+      "A": "sodium chloride and limestone.",
+      "B": "copper and sulphur.",
+      "C": "aluminium and bauxite.",
+      "D": "iron and coke only."
+    },
+    "answer": "A",
+    "explanation": "The Solvay process uses brine and limestone, with ammonia serving as a recycled intermediate.",
+    "page": 167,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_135",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 435,
+    "text": "Sodium trioxocarbonate(IV) is widely used in the manufacture of",
+    "options": {
+      "A": "glass.",
+      "B": "petrol.",
+      "C": "steel.",
+      "D": "ammonia."
+    },
+    "answer": "A",
+    "explanation": "Sodium carbonate is an important raw material in glass manufacture because it lowers the melting temperature of silica.",
+    "page": 168,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_136",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 436,
+    "text": "Calcium oxide is produced by",
+    "options": {
+      "A": "heating calcium carbonate strongly.",
+      "B": "cooling calcium hydroxide.",
+      "C": "dissolving calcium metal in ethanol.",
+      "D": "mixing calcium chloride with water."
+    },
+    "answer": "A",
+    "explanation": "CaCO₃ → CaO + CO₂. This thermal decomposition is called calcination.",
+    "page": 168,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_137",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 437,
+    "text": "When calcium oxide reacts with water, the product is",
+    "options": {
+      "A": "calcium carbonate.",
+      "B": "calcium hydroxide.",
+      "C": "calcium sulphate.",
+      "D": "calcium chloride."
+    },
+    "answer": "B",
+    "explanation": "CaO + H₂O → Ca(OH)₂. The reaction releases heat.",
+    "page": 169,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_138",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 438,
+    "text": "The setting of mortar occurs mainly because calcium hydroxide",
+    "options": {
+      "A": "reacts with carbon dioxide in air to form calcium carbonate.",
+      "B": "decomposes into calcium and oxygen.",
+      "C": "changes into calcium chloride.",
+      "D": "evaporates completely."
+    },
+    "answer": "A",
+    "explanation": "Calcium hydroxide reacts slowly with atmospheric carbon dioxide to form calcium carbonate and water, helping the mortar harden.",
+    "page": 169,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_139",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 439,
+    "text": "Aluminium is extracted industrially from alumina by",
+    "options": {
+      "A": "reduction with water.",
+      "B": "electrolysis of molten alumina dissolved in cryolite.",
+      "C": "heating alumina with dilute hydrochloric acid.",
+      "D": "simple filtration."
+    },
+    "answer": "B",
+    "explanation": "Aluminium is too reactive to be extracted economically by carbon reduction. Cryolite lowers the operating temperature and improves conductivity.",
+    "page": 170,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_140",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 440,
+    "text": "Cryolite is added during the extraction of aluminium mainly to",
+    "options": {
+      "A": "increase the melting point of alumina.",
+      "B": "lower the melting point and improve the conductivity of the electrolyte.",
+      "C": "convert aluminium into iron.",
+      "D": "prevent all electrical current from passing."
+    },
+    "answer": "B",
+    "explanation": "Pure alumina has a very high melting point. Dissolving it in molten cryolite makes electrolysis more practical.",
+    "page": 170,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_141",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 441,
+    "text": "Which metal is commonly extracted from its oxide ore in a blast furnace?",
+    "options": {
+      "A": "Sodium",
+      "B": "Calcium",
+      "C": "Iron",
+      "D": "Aluminium"
+    },
+    "answer": "C",
+    "explanation": "Iron oxide in the blast furnace is reduced mainly by carbon monoxide produced from coke.",
+    "page": 171,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_142",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 442,
+    "text": "In the blast furnace, the main reducing agent for iron(III) oxide is",
+    "options": {
+      "A": "carbon monoxide.",
+      "B": "nitrogen.",
+      "C": "calcium carbonate.",
+      "D": "oxygen."
+    },
+    "answer": "A",
+    "explanation": "CO removes oxygen from iron oxide, producing iron and carbon dioxide.",
+    "page": 171,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_143",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 443,
+    "text": "Limestone is added to the blast furnace mainly to",
+    "options": {
+      "A": "act as a flux and remove silica impurities as slag.",
+      "B": "act as the only source of iron.",
+      "C": "cool the furnace to room temperature.",
+      "D": "prevent the reduction of iron oxide."
+    },
+    "answer": "A",
+    "explanation": "Calcium oxide from limestone reacts with silica to form calcium silicate slag.",
+    "page": 172,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_144",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 444,
+    "text": "Stainless steel resists corrosion mainly because it contains",
+    "options": {
+      "A": "chromium.",
+      "B": "sodium.",
+      "C": "calcium.",
+      "D": "mercury."
+    },
+    "answer": "A",
+    "explanation": "Chromium forms a thin, protective oxide layer on the steel surface, helping prevent further corrosion.",
+    "page": 172,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_145",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 445,
+    "text": "Brass is an alloy of",
+    "options": {
+      "A": "copper and zinc.",
+      "B": "copper and tin.",
+      "C": "iron and carbon.",
+      "D": "aluminium and magnesium."
+    },
+    "answer": "A",
+    "explanation": "Brass is a copper-zinc alloy widely used for fittings, musical instruments and decorative objects.",
+    "page": 173,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_146",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Carbon, Metallurgy & Alloys",
+    "topic": "Carbon, Metallurgy & Alloys",
+    "bookQuestionNum": 446,
+    "text": "Bronze is mainly an alloy of",
+    "options": {
+      "A": "copper and tin.",
+      "B": "copper and zinc.",
+      "C": "iron and nickel.",
+      "D": "aluminium and copper."
+    },
+    "answer": "A",
+    "explanation": "Bronze is traditionally made mainly from copper and tin and is used in bearings, statues and other items.",
+    "page": 173,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_147",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 447,
+    "text": "The ability of carbon atoms to bond with one another to form long chains is called",
+    "options": {
+      "A": "allotropy.",
+      "B": "catenation.",
+      "C": "ionization.",
+      "D": "polymer cracking."
+    },
+    "answer": "B",
+    "explanation": "Carbon forms strong carbon-carbon covalent bonds, allowing it to produce chains, branches and rings.",
+    "page": 174,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_148",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 448,
+    "text": "Which general formula represents the open-chain alkanes?",
+    "options": {
+      "A": "CₙH₂ₙ",
+      "B": "CₙH₂ₙ₋₂",
+      "C": "CₙH₂ₙ₊₂",
+      "D": "CₙHₙ"
+    },
+    "answer": "C",
+    "explanation": "Open-chain alkanes are saturated hydrocarbons with the general formula CₙH₂ₙ₊₂.",
+    "page": 174,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_149",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 449,
+    "text": "What is the IUPAC name of CH₃CH₂CH₂CH₃?",
+    "options": {
+      "A": "Propane",
+      "B": "Butane",
+      "C": "Pentane",
+      "D": "Butene"
+    },
+    "answer": "B",
+    "explanation": "The compound has four carbon atoms joined by single bonds, so it is named butane.",
+    "page": 175,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_150",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 450,
+    "text": "Which compound is a structural isomer of butane?",
+    "options": {
+      "A": "2-methylpropane",
+      "B": "Propene",
+      "C": "Pentane",
+      "D": "Butyne"
+    },
+    "answer": "A",
+    "explanation": "Butane and 2-methylpropane both have the molecular formula C₄H₁₀ but different carbon arrangements.",
+    "page": 175,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_151",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 451,
+    "text": "The main reaction of alkanes with chlorine in the presence of ultraviolet light is",
+    "options": {
+      "A": "addition.",
+      "B": "substitution.",
+      "C": "neutralization.",
+      "D": "esterification."
+    },
+    "answer": "B",
+    "explanation": "In free-radical substitution, one or more hydrogen atoms in the alkane are replaced by chlorine atoms.",
+    "page": 176,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_152",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 452,
+    "text": "Which reagent is commonly used to test for carbon-carbon double bonds in alkenes?",
+    "options": {
+      "A": "Bromine water",
+      "B": "Limewater",
+      "C": "Sodium hydroxide solution",
+      "D": "Blue litmus paper"
+    },
+    "answer": "A",
+    "explanation": "An alkene generally decolourizes bromine water because bromine adds across the carbon-carbon double bond.",
+    "page": 176,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_153",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 453,
+    "text": "What is the molecular formula of an open-chain alkene containing five carbon atoms and one double bond?",
+    "options": {
+      "A": "C₅H₈",
+      "B": "C₅H₁₀",
+      "C": "C₅H₁₂",
+      "D": "C₅H₆"
+    },
+    "answer": "B",
+    "explanation": "Acyclic alkenes with one double bond have the general formula CₙH₂ₙ. For n = 5, the formula is C₅H₁₀.",
+    "page": 177,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_154",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 454,
+    "text": "Which of the following compounds can show geometrical isomerism?",
+    "options": {
+      "A": "Ethene",
+      "B": "But-2-ene",
+      "C": "Propane",
+      "D": "Ethyne"
+    },
+    "answer": "B",
+    "explanation": "Each carbon atom of the double bond in but-2-ene has two different groups attached, allowing cis-trans isomerism.",
+    "page": 177,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_155",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 455,
+    "text": "The addition of hydrogen to ethene to produce ethane is known as",
+    "options": {
+      "A": "hydration.",
+      "B": "hydrogenation.",
+      "C": "halogenation.",
+      "D": "polymerization."
+    },
+    "answer": "B",
+    "explanation": "Hydrogen adds across the carbon-carbon double bond, converting ethene into the saturated compound ethane.",
+    "page": 178,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_156",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 456,
+    "text": "Which product is formed when ethene undergoes addition polymerization?",
+    "options": {
+      "A": "Polyethene",
+      "B": "Ethanol",
+      "C": "Ethanoic acid",
+      "D": "Ethyne"
+    },
+    "answer": "A",
+    "explanation": "Many ethene molecules join by opening their double bonds to form the long-chain polymer polyethene.",
+    "page": 178,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_157",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 457,
+    "text": "Ethyne can be prepared in the laboratory by reacting water with",
+    "options": {
+      "A": "sodium chloride.",
+      "B": "calcium carbide.",
+      "C": "calcium carbonate.",
+      "D": "magnesium oxide."
+    },
+    "answer": "B",
+    "explanation": "CaC₂ + 2H₂O → C₂H₂ + Ca(OH)₂. The gas produced is ethyne.",
+    "page": 179,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_158",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 458,
+    "text": "Ethyne belongs to the homologous series known as",
+    "options": {
+      "A": "alkanes.",
+      "B": "alkenes.",
+      "C": "alkynes.",
+      "D": "alkanols."
+    },
+    "answer": "C",
+    "explanation": "Ethyne contains a carbon-carbon triple bond and is the simplest alkyne.",
+    "page": 179,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_159",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 459,
+    "text": "The main reason benzene is more stable than a structure containing three isolated double bonds is that",
+    "options": {
+      "A": "its π electrons are delocalized around the ring.",
+      "B": "it contains only single bonds.",
+      "C": "it has no carbon-carbon bonds.",
+      "D": "its carbon atoms are ionic."
+    },
+    "answer": "A",
+    "explanation": "Benzene has a delocalized π-electron system spread over the ring, giving it extra stability.",
+    "page": 180,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_160",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 460,
+    "text": "Unlike alkenes, benzene commonly reacts by",
+    "options": {
+      "A": "addition that destroys its aromatic ring.",
+      "B": "electrophilic substitution that preserves its aromatic ring.",
+      "C": "neutralization with water.",
+      "D": "simple hydrolysis."
+    },
+    "answer": "B",
+    "explanation": "Benzene generally undergoes substitution reactions because they preserve its stable delocalized ring system.",
+    "page": 180,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_161",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 461,
+    "text": "What is the functional group of alkanols?",
+    "options": {
+      "A": "–COOH",
+      "B": "–CHO",
+      "C": "–OH",
+      "D": "–COO–"
+    },
+    "answer": "C",
+    "explanation": "Alkanols contain the hydroxyl functional group attached to a saturated carbon atom.",
+    "page": 181,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_162",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 462,
+    "text": "Which of the following is a secondary alkanol?",
+    "options": {
+      "A": "Ethanol",
+      "B": "Propan-1-ol",
+      "C": "Propan-2-ol",
+      "D": "2-methylpropan-2-ol"
+    },
+    "answer": "C",
+    "explanation": "The carbon carrying the hydroxyl group in propan-2-ol is attached to two other carbon atoms.",
+    "page": 181,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_163",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 463,
+    "text": "Ethanol can be produced by fermentation of glucose according to the equation",
+    "options": {
+      "A": "C₆H₁₂O₆ → 2C₂H₅OH + 2CO₂",
+      "B": "C₆H₁₂O₆ → 6CO₂ + 6H₂O",
+      "C": "C₂H₅OH → C₆H₁₂O₆",
+      "D": "C₆H₁₂O₆ → 2CH₄ + 2O₂"
+    },
+    "answer": "A",
+    "explanation": "Yeast converts glucose into ethanol and carbon dioxide under anaerobic conditions.",
+    "page": 182,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_164",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 464,
+    "text": "Which condition is necessary for the fermentation of glucose by yeast?",
+    "options": {
+      "A": "High oxygen concentration",
+      "B": "Suitable temperature and limited oxygen",
+      "C": "Extremely high temperature",
+      "D": "Absence of water"
+    },
+    "answer": "B",
+    "explanation": "Yeast enzymes work best within a suitable temperature range, and fermentation proceeds under anaerobic or oxygen-limited conditions.",
+    "page": 182,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_165",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 465,
+    "text": "Dehydration of ethanol using concentrated sulphuric acid at about 170°C produces",
+    "options": {
+      "A": "ethane.",
+      "B": "ethene.",
+      "C": "ethanoic acid.",
+      "D": "ethanal."
+    },
+    "answer": "B",
+    "explanation": "Removing water from ethanol produces ethene: C₂H₅OH → C₂H₄ + H₂O.",
+    "page": 183,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_166",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 466,
+    "text": "Controlled oxidation of a primary alkanol can first produce",
+    "options": {
+      "A": "an alkanal.",
+      "B": "an alkane.",
+      "C": "an alkyne.",
+      "D": "an ester only."
+    },
+    "answer": "A",
+    "explanation": "A primary alkanol can be oxidized to an alkanal. Further oxidation can produce an alkanoic acid.",
+    "page": 183,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_167",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 467,
+    "text": "Oxidation of a secondary alkanol generally produces",
+    "options": {
+      "A": "an alkane.",
+      "B": "an alkanone.",
+      "C": "an alkene only.",
+      "D": "a carboxylic acid directly."
+    },
+    "answer": "B",
+    "explanation": "Secondary alkanols are oxidized to ketones, commonly called alkanones in the JAMB syllabus.",
+    "page": 184,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_168",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 468,
+    "text": "Tertiary alkanols resist oxidation under ordinary mild conditions because",
+    "options": {
+      "A": "they contain no oxygen.",
+      "B": "the carbon attached to the –OH group has no hydrogen atom.",
+      "C": "they contain a carbon-carbon triple bond.",
+      "D": "they are all aromatic."
+    },
+    "answer": "B",
+    "explanation": "Ordinary oxidation of an alkanol to a carbonyl compound requires removal of a hydrogen from the carbon bearing the hydroxyl group.",
+    "page": 184,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_169",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 469,
+    "text": "In the Lucas test, a tertiary alkanol generally produces turbidity",
+    "options": {
+      "A": "immediately or very rapidly.",
+      "B": "only after several days.",
+      "C": "only after boiling for one hour.",
+      "D": "never."
+    },
+    "answer": "A",
+    "explanation": "Tertiary alkanols react rapidly with Lucas reagent, producing an insoluble alkyl chloride that causes turbidity.",
+    "page": 185,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_170",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 470,
+    "text": "Which functional group is present in an alkanal?",
+    "options": {
+      "A": "–COOH",
+      "B": "–CHO",
+      "C": "–OH",
+      "D": "–COO–"
+    },
+    "answer": "B",
+    "explanation": "Alkanals contain the aldehyde functional group, –CHO, at the end of the carbon chain.",
+    "page": 185,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_171",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 471,
+    "text": "Which reagent can be used to distinguish an alkanal from an alkanone?",
+    "options": {
+      "A": "Tollens' reagent",
+      "B": "Sodium chloride solution",
+      "C": "Distilled water",
+      "D": "Calcium hydroxide solution"
+    },
+    "answer": "A",
+    "explanation": "Alkanals generally reduce Tollens' reagent to metallic silver, while ordinary alkanones do not.",
+    "page": 186,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_172",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 472,
+    "text": "Which compound is an alkanone?",
+    "options": {
+      "A": "Propanal",
+      "B": "Propanone",
+      "C": "Propanoic acid",
+      "D": "Propan-1-ol"
+    },
+    "answer": "B",
+    "explanation": "Propanone contains a carbonyl group within the carbon chain and is the simplest common ketone.",
+    "page": 186,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_173",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 473,
+    "text": "The functional group of an alkanoic acid is",
+    "options": {
+      "A": "–OH",
+      "B": "–COOH",
+      "C": "–CHO",
+      "D": "–NH₂"
+    },
+    "answer": "B",
+    "explanation": "Alkanoic acids contain the carboxyl group, made up of a carbonyl and hydroxyl group attached to the same carbon.",
+    "page": 187,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_174",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 474,
+    "text": "Ethanoic acid reacts with ethanol in the presence of concentrated sulphuric acid to form",
+    "options": {
+      "A": "ethyl ethanoate and water.",
+      "B": "ethene and hydrogen.",
+      "C": "ethane and carbon dioxide.",
+      "D": "ethanal and oxygen."
+    },
+    "answer": "A",
+    "explanation": "An alkanoic acid reacts with an alkanol to form an ester and water. This reaction is esterification.",
+    "page": 187,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_175",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 475,
+    "text": "What is the name of the reaction between an alkanoic acid and an alkanol to form an ester?",
+    "options": {
+      "A": "Saponification",
+      "B": "Esterification",
+      "C": "Polymerization",
+      "D": "Cracking"
+    },
+    "answer": "B",
+    "explanation": "Esterification produces an ester and water, usually using concentrated sulphuric acid as a catalyst.",
+    "page": 188,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_176",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 476,
+    "text": "Which of the following is a dicarboxylic acid?",
+    "options": {
+      "A": "Methanoic acid",
+      "B": "Ethanoic acid",
+      "C": "Ethanedioic acid",
+      "D": "Propanoic acid"
+    },
+    "answer": "C",
+    "explanation": "Ethanedioic acid contains two carboxyl groups and is also called oxalic acid.",
+    "page": 188,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_177",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 477,
+    "text": "Fats and oils are chemically classified mainly as",
+    "options": {
+      "A": "proteins.",
+      "B": "alkanoate esters.",
+      "C": "amines.",
+      "D": "alkanes."
+    },
+    "answer": "B",
+    "explanation": "Fats and oils are mainly triglycerides, which are triesters formed from glycerol and long-chain fatty acids.",
+    "page": 189,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_178",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 478,
+    "text": "Saponification is the process of",
+    "options": {
+      "A": "converting fats or oils into soap by alkaline hydrolysis.",
+      "B": "converting alcohol into an alkene.",
+      "C": "converting glucose into ethanol.",
+      "D": "converting an alkane into an alkene."
+    },
+    "answer": "A",
+    "explanation": "A strong alkali hydrolyses triglycerides to produce glycerol and the salts of fatty acids, which are soaps.",
+    "page": 189,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_179",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 479,
+    "text": "Why do ordinary soaps form scum in hard water?",
+    "options": {
+      "A": "They react with calcium and magnesium ions to form insoluble salts.",
+      "B": "They evaporate immediately.",
+      "C": "They react with dissolved nitrogen.",
+      "D": "They convert water into an acid."
+    },
+    "answer": "A",
+    "explanation": "Calcium and magnesium ions react with soap anions to form insoluble precipitates, reducing the cleaning action of soap.",
+    "page": 190,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_180",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Organic Chemistry Fundamentals",
+    "topic": "Organic Chemistry Fundamentals",
+    "bookQuestionNum": 480,
+    "text": "Synthetic detergents are often more effective than ordinary soaps in hard water because they",
+    "options": {
+      "A": "do not form insoluble precipitates as readily with calcium and magnesium ions.",
+      "B": "remove all dissolved oxygen.",
+      "C": "are always made from sodium chloride.",
+      "D": "cannot dissolve in water."
+    },
+    "answer": "A",
+    "explanation": "Many synthetic detergents remain effective in hard water because their calcium and magnesium salts are more soluble than ordinary soap scum.",
+    "page": 190,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_181",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 481,
+    "text": "What is the functional group of an amine?",
+    "options": {
+      "A": "–NH₂",
+      "B": "–COOH",
+      "C": "–CHO",
+      "D": "–COO–"
+    },
+    "answer": "A",
+    "explanation": "The amino group, –NH₂, is present in primary amines. Secondary and tertiary amines have different arrangements around the nitrogen atom.",
+    "page": 191,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_182",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 482,
+    "text": "A primary amine has the general structure",
+    "options": {
+      "A": "R₃N",
+      "B": "R₂NH",
+      "C": "RNH₂",
+      "D": "RCOOH"
+    },
+    "answer": "C",
+    "explanation": "A primary amine contains one alkyl or aryl group attached to nitrogen and two hydrogen atoms.",
+    "page": 191,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_183",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 483,
+    "text": "Which of the following is a monosaccharide?",
+    "options": {
+      "A": "Starch",
+      "B": "Cellulose",
+      "C": "Glucose",
+      "D": "Sucrose"
+    },
+    "answer": "C",
+    "explanation": "Glucose is a simple sugar that cannot be hydrolysed into a smaller carbohydrate unit.",
+    "page": 192,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_184",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 484,
+    "text": "Sucrose is classified as a",
+    "options": {
+      "A": "monosaccharide.",
+      "B": "disaccharide.",
+      "C": "polysaccharide.",
+      "D": "protein."
+    },
+    "answer": "B",
+    "explanation": "Sucrose consists of glucose and fructose units joined by a glycosidic bond.",
+    "page": 192,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_185",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 485,
+    "text": "Starch gives a blue-black colour with iodine solution because of its",
+    "options": {
+      "A": "peptide bonds.",
+      "B": "helical structure and interaction with iodine.",
+      "C": "carboxyl groups.",
+      "D": "metallic ions."
+    },
+    "answer": "B",
+    "explanation": "Iodine forms a coloured complex within the helical structure of amylose, a component of starch.",
+    "page": 193,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_186",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 486,
+    "text": "Complete hydrolysis of starch ultimately produces",
+    "options": {
+      "A": "amino acids.",
+      "B": "glucose.",
+      "C": "fatty acids.",
+      "D": "glycerol."
+    },
+    "answer": "B",
+    "explanation": "Starch is a polysaccharide made of glucose units. Hydrolysis breaks its glycosidic bonds and releases glucose.",
+    "page": 193,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_187",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 487,
+    "text": "Humans cannot digest cellulose efficiently because they",
+    "options": {
+      "A": "lack the enzyme cellulase needed to break its β-glycosidic bonds.",
+      "B": "cannot absorb any carbohydrate.",
+      "C": "lack glucose in their blood.",
+      "D": "cannot digest starch."
+    },
+    "answer": "A",
+    "explanation": "Humans do not produce cellulase, the enzyme that breaks the β-1,4 bonds in cellulose.",
+    "page": 194,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_188",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 488,
+    "text": "Proteins are polymers made up of",
+    "options": {
+      "A": "fatty acids.",
+      "B": "amino acids.",
+      "C": "glucose molecules.",
+      "D": "glycerol molecules."
+    },
+    "answer": "B",
+    "explanation": "Amino acids join through peptide bonds to form polypeptide chains, which fold into proteins.",
+    "page": 194,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_189",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 489,
+    "text": "The primary structure of a protein refers to its",
+    "options": {
+      "A": "sequence of amino acids.",
+      "B": "three-dimensional folding only.",
+      "C": "number of hydrogen bonds only.",
+      "D": "arrangement of several protein chains only."
+    },
+    "answer": "A",
+    "explanation": "Primary structure is the specific linear order of amino acids in a polypeptide chain.",
+    "page": 195,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_190",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Biomolecules & Polymers",
+    "topic": "Biomolecules & Polymers",
+    "bookQuestionNum": 490,
+    "text": "Enzymes increase reaction rates mainly by",
+    "options": {
+      "A": "increasing the activation energy.",
+      "B": "lowering the activation energy.",
+      "C": "increasing the mass of products.",
+      "D": "changing the final equilibrium constant."
+    },
+    "answer": "B",
+    "explanation": "Enzymes are biological catalysts. They provide reaction pathways with lower activation energy and are not consumed overall.",
+    "page": 195,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_191",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 491,
+    "text": "The spontaneous emission of radiation from unstable atomic nuclei is called",
+    "options": {
+      "A": "electrolysis.",
+      "B": "radioactivity.",
+      "C": "polymerization.",
+      "D": "neutralization."
+    },
+    "answer": "B",
+    "explanation": "Radioactivity is the spontaneous decay of unstable nuclei with the emission of nuclear radiation.",
+    "page": 196,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_192",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 492,
+    "text": "An alpha particle is identical to",
+    "options": {
+      "A": "an electron.",
+      "B": "a proton.",
+      "C": "a helium nucleus.",
+      "D": "a neutron."
+    },
+    "answer": "C",
+    "explanation": "An alpha particle contains two protons and two neutrons and has a charge of +2.",
+    "page": 196,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_193",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 493,
+    "text": "Which nuclear radiation has the greatest penetrating power?",
+    "options": {
+      "A": "Alpha",
+      "B": "Beta",
+      "C": "Gamma",
+      "D": "Proton"
+    },
+    "answer": "C",
+    "explanation": "Gamma radiation consists of high-energy electromagnetic waves and is more penetrating than alpha and beta radiation.",
+    "page": 197,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_194",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 494,
+    "text": "Which radiation is deflected most strongly by an electric field, compared with alpha and gamma radiation?",
+    "options": {
+      "A": "Alpha",
+      "B": "Beta",
+      "C": "Gamma",
+      "D": "They are all deflected equally."
+    },
+    "answer": "B",
+    "explanation": "Beta particles have a much smaller mass than alpha particles and carry an electric charge. Gamma radiation is uncharged and is not deflected by an electric field.",
+    "page": 197,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_195",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 495,
+    "text": "A radioactive substance has a half-life of four hours. What mass remains from an initial 80 g after twelve hours?",
+    "options": {
+      "A": "5 g",
+      "B": "10 g",
+      "C": "20 g",
+      "D": "40 g"
+    },
+    "answer": "B",
+    "explanation": "Twelve hours represent three half-lives. The mass changes from 80 g to 40 g, then 20 g, then 10 g.",
+    "page": 198,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_196",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 496,
+    "text": "During beta-minus decay, the mass number of a nucleus",
+    "options": {
+      "A": "increases by one.",
+      "B": "decreases by one.",
+      "C": "remains unchanged.",
+      "D": "becomes zero."
+    },
+    "answer": "C",
+    "explanation": "In beta-minus decay, a neutron changes into a proton and an electron. The proton number increases by one, but the total number of nucleons remains constant.",
+    "page": 198,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_197",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 497,
+    "text": "Nuclear fission involves",
+    "options": {
+      "A": "the joining of two light nuclei.",
+      "B": "the splitting of a heavy nucleus into lighter nuclei.",
+      "C": "the removal of electrons from an atom.",
+      "D": "the formation of a chemical bond."
+    },
+    "answer": "B",
+    "explanation": "In fission, a heavy nucleus splits into smaller nuclei, releasing energy and often additional neutrons.",
+    "page": 199,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_198",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 498,
+    "text": "Nuclear fusion involves",
+    "options": {
+      "A": "combining light nuclei to form a heavier nucleus.",
+      "B": "splitting a heavy nucleus into fragments.",
+      "C": "removing electrons from metals.",
+      "D": "breaking covalent bonds in water."
+    },
+    "answer": "A",
+    "explanation": "Fusion combines light nuclei, releasing energy when the products have a greater binding energy per nucleon. It powers the Sun.",
+    "page": 199,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_199",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 499,
+    "text": "Which nuclear process is used in many nuclear power stations to produce energy?",
+    "options": {
+      "A": "Nuclear fission",
+      "B": "Photosynthesis",
+      "C": "Esterification",
+      "D": "Fermentation"
+    },
+    "answer": "A",
+    "explanation": "Controlled fission of heavy nuclei such as uranium-235 releases heat, which can be used to generate electricity.",
+    "page": 200,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_200",
+    "originalChapter": 4,
+    "chapterTitle": "Topic: Nuclear Chemistry & Applied Industrial Chemistry",
+    "topic": "Nuclear Chemistry & Applied Industrial Chemistry",
+    "bookQuestionNum": 500,
+    "text": "In the chemical industry, biotechnology is important because it uses",
+    "options": {
+      "A": "living organisms or biological systems to produce useful products.",
+      "B": "only high-pressure metal furnaces.",
+      "C": "radioactive decay to make all medicines.",
+      "D": "filtration to convert every raw material into a metal."
+    },
+    "answer": "A",
+    "explanation": "Biotechnology applies microorganisms, cells or enzymes to industrial processes such as fermentation, food production and the manufacture of useful chemicals.",
+    "page": 200,
+    "hasImage": false
+  }
+];
 
 export const JAMBIX_CHEMISTRY_100_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const JAMBIX_CHEMISTRY_200_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const JAMBIX_CHEMISTRY_300_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const JAMBIX_CHEMISTRY_400_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
+export const JAMBIX_CHEMISTRY_500_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const CHEMISTRY_DEMYSTIFIED_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 
 export function getChemistryDemystifiedVerifiedQuestions() {

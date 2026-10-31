@@ -3748,37 +3748,63 @@ export function generateUniqueSubjectQuestions(
   };
 
   // =========================================================================
-  // JAMBIX PHYSICS QUESTION BANK (TOPICS 1-3 & AC CIRCUITS: 500 QUESTIONS)
-  // Fairly distributes across available question bank topics, and balances with
-  // all other syllabus chapters (Heat, Optics, Waves, Electricity, Magnetism, Modern Physics)
-  // so the test covers diverse topics across the entire syllabus.
+  // JAMBIX PHYSICS QUESTION BANK (600 VERIFIED QUESTIONS ACROSS 25+ TOPIC CLUSTERS)
+  // Fairly distributes across all syllabus topic clusters via round-robin,
+  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter
+    const getPhysicsTopic = (item: typeof PHYSICS_DEMYSTIFIED_ITEMS[0]) => {
+      if (item.originalChapter === 5 || item.bookQuestionNum > 500) {
+        return item.topic || 'General Physics & Mechanics';
+      }
+      const qNum = item.bookQuestionNum;
+      // Topic 1: Measurements & Units (1-100)
+      if (item.originalChapter === 1 || qNum <= 100) {
+        if (qNum <= 35) return 'Fundamental & Derived Quantities and Units';
+        if (qNum <= 70) return 'Dimensional Analysis & Verification';
+        return 'Vernier Caliper, Micrometer & Error Analysis';
+      }
+      // Topic 2: Scalars & Vectors (101-200)
+      if (item.originalChapter === 2 || qNum <= 200) {
+        if (qNum <= 150) return 'Scalars, Vectors & Component Resolution';
+        return 'Vector Addition, Resultants & Equilibrium';
+      }
+      // Topic 3: Motion (201-300)
+      if (item.originalChapter === 3 || qNum <= 300) {
+        if (qNum <= 240) return 'Linear Motion & Equations of Motion';
+        if (qNum <= 275) return 'Motion Under Gravity & Projectiles';
+        return 'Newton\'s Laws, Dynamics & Friction';
+      }
+      // Topic 4: Alternating Current (AC) Circuits (301-500)
+      if (qNum <= 340) return 'AC Waveforms, Peak & RMS Values';
+      if (qNum <= 380) return 'Inductive & Capacitive Reactance';
+      if (qNum <= 430) return 'Series RLC Circuits & Impedance';
+      if (qNum <= 470) return 'Resonance & Frequency Response in AC';
+      return 'Power in AC Circuits & Power Factor';
+    };
+
+    // 1. Group items across all Physics topic clusters
     const byTopic: Record<string, typeof PHYSICS_DEMYSTIFIED_ITEMS> = {};
     for (const item of PHYSICS_DEMYSTIFIED_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      const topicKey = getPhysicsTopic(item);
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
 
-    // 2. Shuffle within each topic
+    // 2. Shuffle within each topic cluster
     for (const tKey of Object.keys(byTopic)) {
       byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    // 3. Shuffle topic cluster keys so tests don't always pick topics in the same order
     const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedPhysicsItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
-    // Fair quota from PHYSICS_DEMYSTIFIED_ITEMS (which covers 4 topics):
-    // In a 40-question test, pull up to 10 questions (2-3 per topic) so the remaining 30 questions are
-    // drawn across all the other 16 chapters of the Physics syllabus.
-    const physicsQuota = targetCount <= 4
-      ? targetCount
-      : Math.min(10, Math.max(3, Math.round(targetCount * 0.25)));
+    // Fair quota from PHYSICS_DEMYSTIFIED_ITEMS (which covers 25+ major topic clusters):
+    // Round-robins evenly across every topic cluster so questions are drawn across all branches of the syllabus.
+    const physicsQuota = targetCount;
 
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
     let added = true;
     while (pickedPhysicsItems.length < physicsQuota && added) {
       added = false;
@@ -3800,7 +3826,7 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 5. Pass 2: Fallback across all topics to satisfy quota without session duplicates
+    // 5. Pass 2: Fallback across all questions without session duplicates
     if (pickedPhysicsItems.length < physicsQuota) {
       const allShuffled = shuffleArr(PHYSICS_DEMYSTIFIED_ITEMS);
       for (const item of allShuffled) {
@@ -3827,7 +3853,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Physics',
-        topic: item.topic,
+        topic: getPhysicsTopic(item),
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
