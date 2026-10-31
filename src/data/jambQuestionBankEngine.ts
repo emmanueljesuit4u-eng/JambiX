@@ -3888,12 +3888,9 @@ export function generateUniqueSubjectQuestions(
     const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedChemistryItems: typeof JAMBIX_CHEMISTRY_ITEMS = [];
 
-    // Fair quota from JAMBIX_CHEMISTRY_ITEMS (which covers Organic & Analytical Chemistry across 35+ topics):
-    // In a 40-question test, pull up to 18 questions across diverse topics so the remaining questions are
-    // drawn across all the other chapters of the Chemistry syllabus (Separation, Gas Laws, Bonding, Acids/Bases/Salts, Redox, etc.).
-    const chemistryQuota = targetCount <= 4
-      ? targetCount
-      : Math.min(18, Math.max(3, Math.round(targetCount * 0.45)));
+    // Fair quota from JAMBIX_CHEMISTRY_ITEMS (which covers all major syllabus topics across 14+ clusters):
+    // Round-robins evenly across every topic cluster so questions are drawn across the entire syllabus.
+    const chemistryQuota = targetCount;
 
     // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
     let added = true;

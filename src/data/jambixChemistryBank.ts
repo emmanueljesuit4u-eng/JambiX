@@ -6,7 +6,8 @@
  * TOPIC 1: ORGANIC CHEMISTRY (QUESTIONS 1–100)
  * TOPIC 2: ANALYTICAL CHEMISTRY (QUESTIONS 101–300)
  * Indexed directly from official syllabus specifications.
- * Total questions: 300
+ * Total questions: 400
+ * TOPIC 3: GENERAL, PHYSICAL & INORGANIC CHEMISTRY (QUESTIONS 301–400)
  */
 
 export interface JambixChemistryItem {
@@ -5432,11 +5433,1812 @@ export const JAMBIX_CHEMISTRY_ITEMS: JambixChemistryItem[] = [
     "page": 100,
     "hasImage": false
   }
-];
+,
+{
+    "id": "chem_general_1",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 301,
+    "text": "An atom has a mass number of 39 and an atomic number of 19. How many neutrons does it contain?",
+    "options": {
+      "A": "19",
+      "B": "20",
+      "C": "39",
+      "D": "58"
+    },
+    "answer": "B",
+    "explanation": "Number of neutrons = mass number − atomic number = 39 − 19 = 20.",
+    "page": 101,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_2",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 302,
+    "text": "An element contains 75% of an isotope of mass 35 and 25% of an isotope of mass 37. What is its relative atomic mass?",
+    "options": {
+      "A": "35.0",
+      "B": "35.5",
+      "C": "36.0",
+      "D": "36.5"
+    },
+    "answer": "B",
+    "explanation": "Relative atomic mass = (0.75 × 35) + (0.25 × 37) = 35.5.",
+    "page": 101,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_3",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 303,
+    "text": "How many electrons are present in a calcium ion, Ca²⁺, if the atomic number of calcium is 20?",
+    "options": {
+      "A": "18",
+      "B": "20",
+      "C": "22",
+      "D": "40"
+    },
+    "answer": "A",
+    "explanation": "A neutral calcium atom has 20 electrons. Ca²⁺ has lost two electrons, leaving 18.",
+    "page": 102,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_4",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 304,
+    "text": "What is the electronic configuration of chlorine, atomic number 17?",
+    "options": {
+      "A": "2, 7, 8",
+      "B": "2, 8, 7",
+      "C": "2, 8, 8",
+      "D": "2, 6, 9"
+    },
+    "answer": "B",
+    "explanation": "The 17 electrons occupy the shells as 2, 8 and 7.",
+    "page": 102,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_5",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 305,
+    "text": "Which scientist proposed that electrons occupy specific energy levels around the nucleus?",
+    "options": {
+      "A": "Rutherford",
+      "B": "Dalton",
+      "C": "Bohr",
+      "D": "Thomson"
+    },
+    "answer": "C",
+    "explanation": "Bohr proposed that electrons occupy definite energy levels and can move between them by absorbing or releasing energy.",
+    "page": 103,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_6",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 306,
+    "text": "Rutherford's gold-foil experiment provided evidence that an atom has",
+    "options": {
+      "A": "a solid, indivisible structure.",
+      "B": "a small, dense, positively charged nucleus.",
+      "C": "electrons embedded in a positive sphere.",
+      "D": "neutrons occupying fixed energy levels."
+    },
+    "answer": "B",
+    "explanation": "Most alpha particles passed through the foil, but a few were strongly deflected. This showed that most atomic space is empty and that positive charge is concentrated in a small nucleus.",
+    "page": 103,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_7",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 307,
+    "text": "The atomic number of an element represents the number of",
+    "options": {
+      "A": "neutrons in its nucleus.",
+      "B": "protons in its nucleus.",
+      "C": "protons and neutrons combined.",
+      "D": "electrons and neutrons combined."
+    },
+    "answer": "B",
+    "explanation": "Atomic number is defined by the number of protons. It identifies the element.",
+    "page": 104,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_8",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 308,
+    "text": "Which of the following particles has the same number of electrons as neon?",
+    "options": {
+      "A": "Na⁺",
+      "B": "Na",
+      "C": "Mg",
+      "D": "Cl⁻"
+    },
+    "answer": "A",
+    "explanation": "Neon has 10 electrons. Sodium has 11, but Na⁺ has lost one and therefore has 10 electrons.",
+    "page": 104,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_9",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 309,
+    "text": "Isotopes of the same element have similar chemical properties because they have the same",
+    "options": {
+      "A": "number of neutrons.",
+      "B": "mass number.",
+      "C": "electronic configuration.",
+      "D": "nuclear mass."
+    },
+    "answer": "C",
+    "explanation": "Isotopes have the same atomic number and, when neutral, the same number of electrons. Their chemical behaviour is therefore similar.",
+    "page": 105,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_10",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 310,
+    "text": "Across a period from left to right, the first ionization energy generally increases because",
+    "options": {
+      "A": "atomic size generally decreases.",
+      "B": "the number of shells increases.",
+      "C": "nuclear charge decreases.",
+      "D": "shielding increases greatly."
+    },
+    "answer": "A",
+    "explanation": "Across a period, nuclear charge increases while electrons are added to the same main shell. The attraction between the nucleus and outer electrons generally becomes stronger.",
+    "page": 105,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_11",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 311,
+    "text": "The atomic radius of elements generally increases down a group because",
+    "options": {
+      "A": "nuclear charge becomes zero.",
+      "B": "additional electron shells are occupied.",
+      "C": "the number of protons decreases.",
+      "D": "the valence electrons disappear."
+    },
+    "answer": "B",
+    "explanation": "Each step down a group adds an occupied electron shell, increasing the distance of the outer electrons from the nucleus.",
+    "page": 106,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_12",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 312,
+    "text": "Which element has the highest electronegativity?",
+    "options": {
+      "A": "Oxygen",
+      "B": "Chlorine",
+      "C": "Fluorine",
+      "D": "Nitrogen"
+    },
+    "answer": "C",
+    "explanation": "Fluorine attracts shared bonding electrons more strongly than any other element.",
+    "page": 106,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_13",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 313,
+    "text": "Which property generally increases down Group 1?",
+    "options": {
+      "A": "Ionization energy",
+      "B": "Metallic character",
+      "C": "Electronegativity",
+      "D": "Attraction for the outer electron"
+    },
+    "answer": "B",
+    "explanation": "The outer electron becomes easier to remove down Group 1 because it is farther from the nucleus and more shielded.",
+    "page": 107,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_14",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 314,
+    "text": "How many electrons can a p subshell contain at maximum?",
+    "options": {
+      "A": "2",
+      "B": "4",
+      "C": "6",
+      "D": "10"
+    },
+    "answer": "C",
+    "explanation": "A p subshell contains three orbitals, each holding a maximum of two electrons.",
+    "page": 107,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_15",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 315,
+    "text": "What is the shape of an s orbital?",
+    "options": {
+      "A": "Dumb-bell",
+      "B": "Spherical",
+      "C": "Tetrahedral",
+      "D": "Linear"
+    },
+    "answer": "B",
+    "explanation": "An s orbital is spherical around the nucleus, whereas p orbitals have two main lobes.",
+    "page": 108,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_16",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 316,
+    "text": "What is the molecular shape of ammonia, NH₃?",
+    "options": {
+      "A": "Linear",
+      "B": "Trigonal planar",
+      "C": "Trigonal pyramidal",
+      "D": "Tetrahedral"
+    },
+    "answer": "C",
+    "explanation": "Nitrogen has three bonding pairs and one lone pair. The lone pair changes the molecular shape from tetrahedral to trigonal pyramidal.",
+    "page": 108,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_17",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 317,
+    "text": "The bond angle in methane, CH₄, is approximately",
+    "options": {
+      "A": "90°",
+      "B": "104.5°",
+      "C": "107°",
+      "D": "109.5°"
+    },
+    "answer": "D",
+    "explanation": "Methane has four bonding pairs arranged tetrahedrally around carbon.",
+    "page": 109,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_18",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 318,
+    "text": "Water has a bent molecular shape because",
+    "options": {
+      "A": "oxygen has no valence electrons.",
+      "B": "oxygen has two bonding pairs and two lone pairs.",
+      "C": "hydrogen atoms repel each other strongly enough to form a straight line.",
+      "D": "water contains ionic bonds."
+    },
+    "answer": "B",
+    "explanation": "The two lone pairs on oxygen repel the bonding pairs, producing a bent shape with a bond angle of about 104.5°.",
+    "page": 109,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_19",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 319,
+    "text": "Ionic compounds usually have high melting points because",
+    "options": {
+      "A": "their molecules are held together by weak forces.",
+      "B": "they contain freely moving electrons.",
+      "C": "strong electrostatic attractions hold oppositely charged ions together.",
+      "D": "their atoms are connected by hydrogen bonds."
+    },
+    "answer": "C",
+    "explanation": "Considerable energy is needed to overcome the strong attractions between positive and negative ions in the crystal lattice.",
+    "page": 110,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_20",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Atomic Structure, Periodicity & Chemical Bonding",
+    "bookQuestionNum": 320,
+    "text": "Graphite conducts electricity because it contains",
+    "options": {
+      "A": "freely moving protons.",
+      "B": "delocalized electrons.",
+      "C": "mobile carbon ions.",
+      "D": "weak ionic bonds."
+    },
+    "answer": "B",
+    "explanation": "Each carbon atom in graphite forms three covalent bonds. Its remaining electron is delocalized and can move along the layers.",
+    "page": 110,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_21",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 321,
+    "text": "What mass of aluminium chloride is formed when 5.4 g of aluminium reacts completely with excess chlorine? (Al = 27, Cl = 35.5)",
+    "options": {
+      "A": "13.35 g",
+      "B": "26.70 g",
+      "C": "40.05 g",
+      "D": "53.40 g"
+    },
+    "answer": "B",
+    "explanation": "2Al + 3Cl₂ → 2AlCl₃. Moles of Al = 5.4/27 = 0.2 mol. The mole ratio of Al to AlCl₃ is 1:1. Molar mass of AlCl₃ = 27 + 106.5 = 133.5 g/mol. Mass = 0.2 × 133.5 = 26.7 g.",
+    "page": 111,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_22",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 322,
+    "text": "A compound contains 40% carbon, 6.7% hydrogen and 53.3% oxygen by mass. What is its empirical formula?",
+    "options": {
+      "A": "CHO",
+      "B": "CH₂O",
+      "C": "C₂H₄O",
+      "D": "C₂H₂O₂"
+    },
+    "answer": "B",
+    "explanation": "Divide the percentages by their atomic masses: C = 40/12 ≈ 3.33, H = 6.7/1 = 6.7, O = 53.3/16 ≈ 3.33. Dividing by the smallest gives 1:2:1.",
+    "page": 111,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_23",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 323,
+    "text": "What mass of carbon is present in 44 g of carbon dioxide? (C = 12, O = 16)",
+    "options": {
+      "A": "6 g",
+      "B": "12 g",
+      "C": "16 g",
+      "D": "32 g"
+    },
+    "answer": "B",
+    "explanation": "The relative molecular mass of CO₂ is 44. One mole of CO₂ contains 12 g of carbon, so 44 g of CO₂ contains 12 g of carbon.",
+    "page": 112,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_24",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 324,
+    "text": "What volume will 0.5 mole of an ideal gas occupy at STP, using a molar volume of 22.4 dm³?",
+    "options": {
+      "A": "5.6 dm³",
+      "B": "11.2 dm³",
+      "C": "22.4 dm³",
+      "D": "44.8 dm³"
+    },
+    "answer": "B",
+    "explanation": "Volume = number of moles × molar volume = 0.5 × 22.4 = 11.2 dm³.",
+    "page": 112,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_25",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 325,
+    "text": "Four moles of hydrogen are mixed with one mole of oxygen. What is the maximum number of moles of water formed?",
+    "options": {
+      "A": "1",
+      "B": "2",
+      "C": "3",
+      "D": "4"
+    },
+    "answer": "B",
+    "explanation": "2H₂ + O₂ → 2H₂O. One mole of oxygen reacts with two moles of hydrogen to produce two moles of water. Oxygen is the limiting reactant.",
+    "page": 113,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_26",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 326,
+    "text": "The law of definite proportions states that a pure chemical compound always contains",
+    "options": {
+      "A": "elements in the same fixed proportion by mass.",
+      "B": "equal numbers of all atoms.",
+      "C": "elements in any proportion depending on its source.",
+      "D": "equal masses of all its elements."
+    },
+    "answer": "A",
+    "explanation": "A pure compound has a fixed chemical composition, regardless of how or where it is prepared.",
+    "page": 113,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_27",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 327,
+    "text": "Carbon forms two oxides containing 12 g of carbon combined with 16 g and 32 g of oxygen respectively. Which law is demonstrated?",
+    "options": {
+      "A": "Law of conservation of mass",
+      "B": "Law of multiple proportions",
+      "C": "Avogadro's law",
+      "D": "Boyle's law"
+    },
+    "answer": "B",
+    "explanation": "For a fixed mass of carbon, the masses of oxygen are in the simple ratio 16:32 = 1:2.",
+    "page": 114,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_28",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 328,
+    "text": "Avogadro's law states that equal volumes of gases at the same temperature and pressure contain equal numbers of",
+    "options": {
+      "A": "atoms only.",
+      "B": "molecules.",
+      "C": "neutrons.",
+      "D": "ions only."
+    },
+    "answer": "B",
+    "explanation": "At constant temperature and pressure, equal gas volumes contain equal numbers of molecules, regardless of the identity of the gas.",
+    "page": 114,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_29",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 329,
+    "text": "In a closed system, 10 g of substance A reacts with 15 g of substance B. What is the total mass of products formed if the reaction is complete?",
+    "options": {
+      "A": "5 g",
+      "B": "15 g",
+      "C": "25 g",
+      "D": "150 g"
+    },
+    "answer": "C",
+    "explanation": "The law of conservation of mass states that matter is neither created nor destroyed during a chemical reaction.",
+    "page": 115,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_30",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 330,
+    "text": "The volume ratio of hydrogen to oxygen when they combine to form water vapour is",
+    "options": {
+      "A": "1:1",
+      "B": "1:2",
+      "C": "2:1",
+      "D": "2:3"
+    },
+    "answer": "C",
+    "explanation": "The equation 2H₂ + O₂ → 2H₂O shows that two volumes of hydrogen react with one volume of oxygen under the same conditions.",
+    "page": 115,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_31",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 331,
+    "text": "Which equation represents the ideal gas law?",
+    "options": {
+      "A": "PV = nRT",
+      "B": "P/T = V",
+      "C": "PV = RT/n",
+      "D": "P = nR/V"
+    },
+    "answer": "A",
+    "explanation": "The ideal gas equation relates pressure, volume, amount of gas and absolute temperature.",
+    "page": 116,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_32",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 332,
+    "text": "A gas occupies 300 cm³ at 300 K. What volume will it occupy at 600 K if pressure remains constant?",
+    "options": {
+      "A": "150 cm³",
+      "B": "300 cm³",
+      "C": "450 cm³",
+      "D": "600 cm³"
+    },
+    "answer": "D",
+    "explanation": "By Charles' law, V₁/T₁ = V₂/T₂. V₂ = 300 × 600/300 = 600 cm³.",
+    "page": 116,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_33",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 333,
+    "text": "A gas occupies 600 cm³ at a pressure of 1 atmosphere. What volume will it occupy at 3 atmospheres if temperature remains constant?",
+    "options": {
+      "A": "100 cm³",
+      "B": "200 cm³",
+      "C": "400 cm³",
+      "D": "1,800 cm³"
+    },
+    "answer": "B",
+    "explanation": "Boyle's law gives P₁V₁ = P₂V₂. V₂ = (1 × 600)/3 = 200 cm³.",
+    "page": 117,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_34",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 334,
+    "text": "A gas mixture contains oxygen at a partial pressure of 1.2 atm and nitrogen at 0.8 atm. What is the total pressure?",
+    "options": {
+      "A": "0.4 atm",
+      "B": "1.0 atm",
+      "C": "2.0 atm",
+      "D": "2.4 atm"
+    },
+    "answer": "C",
+    "explanation": "Dalton's law states that total pressure equals the sum of the partial pressures of the gases: 1.2 + 0.8 = 2.0 atm.",
+    "page": 117,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_35",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 335,
+    "text": "At the same temperature and pressure, how many times faster does hydrogen diffuse than oxygen? (H₂ = 2, O₂ = 32)",
+    "options": {
+      "A": "2 times",
+      "B": "4 times",
+      "C": "8 times",
+      "D": "16 times"
+    },
+    "answer": "B",
+    "explanation": "By Graham's law, rate ratio = √(32/2) = √16 = 4.",
+    "page": 118,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_36",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 336,
+    "text": "The vapour density of a gas is 22. What is its relative molecular mass?",
+    "options": {
+      "A": "11",
+      "B": "22",
+      "C": "44",
+      "D": "66"
+    },
+    "answer": "C",
+    "explanation": "Relative molecular mass = 2 × vapour density = 2 × 22 = 44.",
+    "page": 118,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_37",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 337,
+    "text": "A gas occupies 2.0 dm³ at 27°C. What volume will it occupy at 127°C at constant pressure?",
+    "options": {
+      "A": "1.5 dm³",
+      "B": "2.0 dm³",
+      "C": "2.67 dm³",
+      "D": "4.0 dm³"
+    },
+    "answer": "C",
+    "explanation": "Convert temperatures to kelvin: 27°C = 300 K and 127°C = 400 K. By Charles' law, V₂ = 2.0 × 400/300 = 2.67 dm³.",
+    "page": 119,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_38",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 338,
+    "text": "What volume is occupied by 0.25 mole of an ideal gas at STP?",
+    "options": {
+      "A": "2.8 dm³",
+      "B": "5.6 dm³",
+      "C": "11.2 dm³",
+      "D": "22.4 dm³"
+    },
+    "answer": "B",
+    "explanation": "Volume = 0.25 × 22.4 = 5.6 dm³.",
+    "page": 119,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_39",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 339,
+    "text": "The relative molecular mass of a gas is 60. What is its vapour density?",
+    "options": {
+      "A": "15",
+      "B": "20",
+      "C": "30",
+      "D": "60"
+    },
+    "answer": "C",
+    "explanation": "Vapour density = relative molecular mass ÷ 2 = 60 ÷ 2 = 30.",
+    "page": 120,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_40",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Stoichiometry, Mole Concept & Gas Laws",
+    "bookQuestionNum": 340,
+    "text": "Which statement about gas molecules is consistent with the kinetic theory?",
+    "options": {
+      "A": "They remain fixed in regular positions.",
+      "B": "They are in continuous random motion.",
+      "C": "They have no kinetic energy.",
+      "D": "They attract one another strongly at all distances."
+    },
+    "answer": "B",
+    "explanation": "Gas particles move continuously and randomly, colliding with one another and the walls of their container.",
+    "page": 120,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_41",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 341,
+    "text": "Which gas makes up the largest proportion of dry atmospheric air?",
+    "options": {
+      "A": "Oxygen",
+      "B": "Carbon dioxide",
+      "C": "Nitrogen",
+      "D": "Argon"
+    },
+    "answer": "C",
+    "explanation": "Nitrogen makes up approximately 78% of dry air, while oxygen accounts for about 21%.",
+    "page": 121,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_42",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 342,
+    "text": "Industrial oxygen is commonly obtained from air by",
+    "options": {
+      "A": "fractional distillation of liquid air.",
+      "B": "electrolysis of dry nitrogen.",
+      "C": "heating limestone.",
+      "D": "filtration of compressed air."
+    },
+    "answer": "A",
+    "explanation": "Air is cooled and liquefied. Its components are separated according to their different boiling points.",
+    "page": 121,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_43",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 343,
+    "text": "Temporary hardness of water is mainly caused by dissolved",
+    "options": {
+      "A": "calcium and magnesium hydrogencarbonates.",
+      "B": "sodium chloride and potassium chloride.",
+      "C": "calcium sulphate and magnesium sulphate.",
+      "D": "sodium carbonate and sodium nitrate."
+    },
+    "answer": "A",
+    "explanation": "These hydrogencarbonates release insoluble carbonates when heated, which can be removed from the water.",
+    "page": 122,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_44",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 344,
+    "text": "Which substance is most likely responsible for permanent hardness of water?",
+    "options": {
+      "A": "Calcium hydrogencarbonate",
+      "B": "Magnesium hydrogencarbonate",
+      "C": "Calcium sulphate",
+      "D": "Dissolved oxygen"
+    },
+    "answer": "C",
+    "explanation": "Calcium and magnesium sulphates or chlorides cause permanent hardness, which cannot be removed by boiling alone.",
+    "page": 122,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_45",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 345,
+    "text": "Permanent hardness of water can be reduced using",
+    "options": {
+      "A": "sodium chloride.",
+      "B": "washing soda.",
+      "C": "ethanol.",
+      "D": "dilute hydrochloric acid."
+    },
+    "answer": "B",
+    "explanation": "Sodium carbonate reacts with dissolved calcium and magnesium ions to form insoluble carbonates.",
+    "page": 123,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_46",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 346,
+    "text": "Water is suitable for many biological processes partly because it",
+    "options": {
+      "A": "is always non-polar.",
+      "B": "dissolves many ionic and polar substances.",
+      "C": "has no hydrogen bonds.",
+      "D": "cannot dissolve gases."
+    },
+    "answer": "B",
+    "explanation": "Water is a polar solvent and can dissolve many ionic and polar substances needed for biological reactions.",
+    "page": 123,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_47",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 347,
+    "text": "The high specific heat capacity of water means that it",
+    "options": {
+      "A": "heats up and cools down very quickly.",
+      "B": "requires much energy to change its temperature.",
+      "C": "cannot absorb heat.",
+      "D": "freezes at all room temperatures."
+    },
+    "answer": "B",
+    "explanation": "Water absorbs or releases a relatively large amount of heat before its temperature changes significantly.",
+    "page": 124,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_48",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 348,
+    "text": "Ice floats on liquid water because",
+    "options": {
+      "A": "ice has a higher density than water.",
+      "B": "ice contains trapped salt.",
+      "C": "its open hydrogen-bonded structure makes it less dense.",
+      "D": "its molecules stop moving completely."
+    },
+    "answer": "C",
+    "explanation": "Hydrogen bonding holds water molecules in an open structure in ice, increasing its volume and lowering its density.",
+    "page": 124,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_49",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 349,
+    "text": "Which gas dissolved in natural water is particularly important for the respiration of aquatic animals?",
+    "options": {
+      "A": "Nitrogen",
+      "B": "Oxygen",
+      "C": "Hydrogen",
+      "D": "Helium"
+    },
+    "answer": "B",
+    "explanation": "Aquatic organisms obtain dissolved oxygen from water for aerobic respiration.",
+    "page": 125,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_50",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 350,
+    "text": "A substance that absorbs moisture from the atmosphere and eventually dissolves in the absorbed water is described as",
+    "options": {
+      "A": "efflorescent.",
+      "B": "deliquescent.",
+      "C": "volatile.",
+      "D": "sublimable."
+    },
+    "answer": "B",
+    "explanation": "Deliquescent substances absorb enough moisture from air to form a solution. Sodium hydroxide is an example.",
+    "page": 125,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_51",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 351,
+    "text": "Washing soda crystals exposed to dry air may lose water of crystallization. This process is called",
+    "options": {
+      "A": "deliquescence.",
+      "B": "efflorescence.",
+      "C": "condensation.",
+      "D": "hydration."
+    },
+    "answer": "B",
+    "explanation": "Efflorescence is the loss of water of crystallization by a hydrated salt on exposure to air.",
+    "page": 126,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_52",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 352,
+    "text": "Silica gel is commonly used in packaging because it is",
+    "options": {
+      "A": "hygroscopic.",
+      "B": "deliquescent.",
+      "C": "radioactive.",
+      "D": "strongly acidic."
+    },
+    "answer": "A",
+    "explanation": "Hygroscopic substances absorb moisture from the atmosphere. Silica gel helps keep packaged products dry.",
+    "page": 126,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_53",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 353,
+    "text": "A saturated solution at a particular temperature is one that",
+    "options": {
+      "A": "contains no dissolved solute.",
+      "B": "contains the maximum amount of solute that can dissolve at that temperature.",
+      "C": "must contain more solvent than solute.",
+      "D": "always has a concentration of 1 mol/dm³."
+    },
+    "answer": "B",
+    "explanation": "A saturated solution is in equilibrium with undissolved solute at the stated temperature.",
+    "page": 127,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_54",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 354,
+    "text": "A solution containing more dissolved solute than is normally required for saturation at a given temperature is called",
+    "options": {
+      "A": "dilute.",
+      "B": "unsaturated.",
+      "C": "supersaturated.",
+      "D": "colloidal."
+    },
+    "answer": "C",
+    "explanation": "A supersaturated solution contains more dissolved solute than a normal saturated solution at the same temperature and is often unstable.",
+    "page": 127,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_55",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 355,
+    "text": "The solubility of most gases in water increases when",
+    "options": {
+      "A": "temperature increases.",
+      "B": "pressure above the liquid increases.",
+      "C": "the liquid is stirred less.",
+      "D": "the gas is removed."
+    },
+    "answer": "B",
+    "explanation": "Higher gas pressure above a liquid generally increases the amount of gas that dissolves in it.",
+    "page": 128,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_56",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 356,
+    "text": "The scattering of a beam of light by colloidal particles is known as",
+    "options": {
+      "A": "Brownian movement.",
+      "B": "Tyndall effect.",
+      "C": "electrolysis.",
+      "D": "diffusion."
+    },
+    "answer": "B",
+    "explanation": "Colloidal particles scatter light, making the path of a beam visible in the mixture.",
+    "page": 128,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_57",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 357,
+    "text": "Which property distinguishes a suspension from a true solution?",
+    "options": {
+      "A": "A suspension always contains gases.",
+      "B": "Particles in a suspension can settle on standing.",
+      "C": "A true solution contains visible particles.",
+      "D": "Suspensions cannot be separated by filtration."
+    },
+    "answer": "B",
+    "explanation": "Suspension particles are relatively large and can settle under gravity, unlike the dissolved particles in a true solution.",
+    "page": 129,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_58",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 358,
+    "text": "The major chemical process through which plants remove carbon dioxide from the atmosphere is",
+    "options": {
+      "A": "respiration.",
+      "B": "photosynthesis.",
+      "C": "fermentation.",
+      "D": "combustion."
+    },
+    "answer": "B",
+    "explanation": "Plants use carbon dioxide and water to produce carbohydrates during photosynthesis, releasing oxygen.",
+    "page": 129,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_59",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 359,
+    "text": "The decomposition of untreated sewage in water can cause a sharp decrease in dissolved oxygen because",
+    "options": {
+      "A": "microorganisms use oxygen while breaking down organic matter.",
+      "B": "sewage immediately converts oxygen to nitrogen.",
+      "C": "dissolved salts remove all oxygen by filtration.",
+      "D": "sunlight stops producing oxygen permanently."
+    },
+    "answer": "A",
+    "explanation": "Microorganisms consume dissolved oxygen during the breakdown of organic waste, raising the biological oxygen demand.",
+    "page": 130,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_60",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Air, Water, Solutions & Colloids",
+    "bookQuestionNum": 360,
+    "text": "Excessive growth of algae in a lake following nutrient enrichment is called",
+    "options": {
+      "A": "desalination.",
+      "B": "eutrophication.",
+      "C": "calcination.",
+      "D": "corrosion."
+    },
+    "answer": "B",
+    "explanation": "Excess nitrates and phosphates promote rapid algal growth. Their decomposition can reduce dissolved oxygen in the water.",
+    "page": 130,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_61",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 361,
+    "text": "A reaction that releases heat to its surroundings is described as",
+    "options": {
+      "A": "endothermic.",
+      "B": "exothermic.",
+      "C": "reversible only.",
+      "D": "non-spontaneous."
+    },
+    "answer": "B",
+    "explanation": "Exothermic reactions release heat, so their enthalpy change is negative.",
+    "page": 131,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_62",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 362,
+    "text": "Which of the following processes is usually endothermic?",
+    "options": {
+      "A": "Freezing water",
+      "B": "Condensing steam",
+      "C": "Melting ice",
+      "D": "Burning methane"
+    },
+    "answer": "C",
+    "explanation": "Melting requires the absorption of heat to overcome some of the attractive forces holding the solid structure together.",
+    "page": 131,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_63",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 363,
+    "text": "For an exothermic reaction, the enthalpy of the products is generally",
+    "options": {
+      "A": "greater than that of the reactants.",
+      "B": "lower than that of the reactants.",
+      "C": "always zero.",
+      "D": "equal to the activation energy."
+    },
+    "answer": "B",
+    "explanation": "The reaction releases energy, leaving the products at a lower enthalpy than the reactants.",
+    "page": 132,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_64",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 364,
+    "text": "Which change generally causes an increase in entropy?",
+    "options": {
+      "A": "Condensation of steam",
+      "B": "Freezing water",
+      "C": "Mixing two gases",
+      "D": "Crystallization of a dissolved salt"
+    },
+    "answer": "C",
+    "explanation": "Mixing gases increases the number of possible particle arrangements and therefore increases entropy.",
+    "page": 132,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_65",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 365,
+    "text": "A reaction has ΔH = −50 kJ mol⁻¹ and TΔS = +10 kJ mol⁻¹. What is ΔG?",
+    "options": {
+      "A": "−60 kJ mol⁻¹",
+      "B": "−40 kJ mol⁻¹",
+      "C": "+40 kJ mol⁻¹",
+      "D": "+60 kJ mol⁻¹"
+    },
+    "answer": "A",
+    "explanation": "ΔG = ΔH − TΔS = −50 − 10 = −60 kJ mol⁻¹.",
+    "page": 133,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_66",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 366,
+    "text": "For a process at constant temperature and pressure, a negative Gibbs free-energy change indicates that the process is",
+    "options": {
+      "A": "spontaneous in the forward direction.",
+      "B": "necessarily very fast.",
+      "C": "at equilibrium.",
+      "D": "impossible."
+    },
+    "answer": "A",
+    "explanation": "A negative ΔG indicates thermodynamic favourability in the forward direction. It does not mean the reaction must be fast.",
+    "page": 133,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_67",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 367,
+    "text": "A catalyst increases the rate of a reaction by",
+    "options": {
+      "A": "increasing the enthalpy of the products.",
+      "B": "lowering the activation energy through an alternative reaction pathway.",
+      "C": "increasing the equilibrium constant.",
+      "D": "changing the mass of the reactants."
+    },
+    "answer": "B",
+    "explanation": "A catalyst provides an alternative pathway with lower activation energy and is not consumed overall.",
+    "page": 134,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_68",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 368,
+    "text": "Increasing the temperature of a reaction generally increases its rate because",
+    "options": {
+      "A": "all molecules become larger.",
+      "B": "more molecules have energy equal to or greater than the activation energy.",
+      "C": "the activation energy always becomes zero.",
+      "D": "the number of reactant atoms increases."
+    },
+    "answer": "B",
+    "explanation": "At higher temperature, a greater fraction of particles has enough energy to react when collisions occur.",
+    "page": 134,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_69",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 369,
+    "text": "Powdered calcium carbonate reacts faster with dilute hydrochloric acid than an equal mass of large marble chips because the powder has",
+    "options": {
+      "A": "a lower chemical composition.",
+      "B": "a greater surface area exposed to the acid.",
+      "C": "a higher relative atomic mass.",
+      "D": "less calcium carbonate."
+    },
+    "answer": "B",
+    "explanation": "More particles are exposed to the acid, allowing more effective collisions per unit time.",
+    "page": 135,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_70",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 370,
+    "text": "What is the main function of manganese(IV) oxide in the decomposition of hydrogen peroxide?",
+    "options": {
+      "A": "It increases the activation energy.",
+      "B": "It acts as a catalyst.",
+      "C": "It forms the main product.",
+      "D": "It prevents oxygen from being released."
+    },
+    "answer": "B",
+    "explanation": "Manganese(IV) oxide speeds up hydrogen peroxide decomposition without being used up overall.",
+    "page": 135,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_71",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 371,
+    "text": "In a reaction-rate experiment, the rate is measured by monitoring the volume of gas produced. The initial rate is obtained from",
+    "options": {
+      "A": "the final gas volume only.",
+      "B": "the gradient of the curve at the start.",
+      "C": "the total time divided by the final volume.",
+      "D": "the area below the curve."
+    },
+    "answer": "B",
+    "explanation": "Reaction rate is the change in quantity per unit time. The initial rate is the slope of the tangent to the curve at time zero.",
+    "page": 136,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_72",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 372,
+    "text": "In a reversible reaction at dynamic equilibrium,",
+    "options": {
+      "A": "both forward and reverse reactions stop.",
+      "B": "the forward reaction is faster.",
+      "C": "the reverse reaction is faster.",
+      "D": "the forward and reverse reaction rates are equal."
+    },
+    "answer": "D",
+    "explanation": "Both reactions continue at equal rates, so the concentrations of reactants and products remain constant.",
+    "page": 136,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_73",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 373,
+    "text": "For the equilibrium N₂ + 3H₂ ⇌ 2NH₃, increasing the pressure favours",
+    "options": {
+      "A": "the reverse reaction.",
+      "B": "ammonia formation.",
+      "C": "hydrogen formation only.",
+      "D": "no direction because pressure has no effect."
+    },
+    "answer": "B",
+    "explanation": "The product side contains two moles of gas, compared with four moles on the reactant side. Higher pressure favours the side with fewer gas molecules.",
+    "page": 137,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_74",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 374,
+    "text": "The Haber process is exothermic. Increasing the temperature at equilibrium will",
+    "options": {
+      "A": "favour ammonia formation.",
+      "B": "favour the reverse reaction.",
+      "C": "have no effect on equilibrium position.",
+      "D": "increase the amount of ammonia without limit."
+    },
+    "answer": "B",
+    "explanation": "Increasing temperature favours the endothermic direction. Since ammonia formation is exothermic, higher temperature shifts equilibrium towards nitrogen and hydrogen.",
+    "page": 137,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_75",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 375,
+    "text": "A catalyst added to a system already at equilibrium",
+    "options": {
+      "A": "increases the amount of products at equilibrium.",
+      "B": "shifts equilibrium to the left.",
+      "C": "shifts equilibrium to the right.",
+      "D": "speeds up forward and reverse reactions equally without changing the equilibrium position."
+    },
+    "answer": "D",
+    "explanation": "A catalyst helps the system reach equilibrium faster but does not alter the equilibrium composition.",
+    "page": 138,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_76",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 376,
+    "text": "For N₂O₄(g) ⇌ 2NO₂(g), the forward reaction is endothermic. What happens when the temperature is increased?",
+    "options": {
+      "A": "The equilibrium shifts towards N₂O₄.",
+      "B": "The equilibrium shifts towards NO₂.",
+      "C": "Both gases disappear.",
+      "D": "The equilibrium constant becomes zero."
+    },
+    "answer": "B",
+    "explanation": "Higher temperature favours the endothermic forward reaction, producing more nitrogen dioxide.",
+    "page": 138,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_77",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 377,
+    "text": "For the equilibrium H₂(g) + I₂(g) ⇌ 2HI(g), an increase in pressure at constant temperature will",
+    "options": {
+      "A": "favour the forward reaction.",
+      "B": "favour the reverse reaction.",
+      "C": "have no effect on the equilibrium position.",
+      "D": "stop the reaction."
+    },
+    "answer": "C",
+    "explanation": "There are two moles of gas on each side. A pressure change therefore does not favour either side.",
+    "page": 139,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_78",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 378,
+    "text": "What happens to the equilibrium constant of a reaction when a catalyst is added?",
+    "options": {
+      "A": "It increases.",
+      "B": "It decreases.",
+      "C": "It remains unchanged.",
+      "D": "It becomes equal to zero."
+    },
+    "answer": "C",
+    "explanation": "The equilibrium constant depends on temperature, not on the presence of a catalyst.",
+    "page": 139,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_79",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 379,
+    "text": "If the concentration of a reactant is increased in an equilibrium system, the system generally shifts to",
+    "options": {
+      "A": "consume some of the added reactant.",
+      "B": "produce more of the added reactant.",
+      "C": "stop both reactions.",
+      "D": "reduce the temperature automatically."
+    },
+    "answer": "A",
+    "explanation": "By Le Chatelier's principle, the equilibrium shifts in the direction that opposes the concentration change.",
+    "page": 140,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_80",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Energetics, Kinetics & Chemical Equilibrium",
+    "bookQuestionNum": 380,
+    "text": "A reaction is slow at room temperature but becomes much faster when heated. The best explanation is that heating",
+    "options": {
+      "A": "reduces the number of reactant molecules.",
+      "B": "increases the fraction of collisions with sufficient energy.",
+      "C": "changes all molecules into ions.",
+      "D": "removes the activation energy entirely."
+    },
+    "answer": "B",
+    "explanation": "Higher temperature increases molecular kinetic energy and the number of effective collisions.",
+    "page": 140,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_81",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 381,
+    "text": "Oxidation can be defined as",
+    "options": {
+      "A": "gain of electrons.",
+      "B": "loss of electrons.",
+      "C": "gain of neutrons.",
+      "D": "loss of protons only."
+    },
+    "answer": "B",
+    "explanation": "Oxidation involves electron loss and an increase in oxidation number.",
+    "page": 141,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_82",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 382,
+    "text": "In the reaction Zn + CuSO₄ → ZnSO₄ + Cu, the substance oxidized is",
+    "options": {
+      "A": "copper.",
+      "B": "zinc.",
+      "C": "sulphate ion.",
+      "D": "copper(II) ion."
+    },
+    "answer": "B",
+    "explanation": "Zinc changes from oxidation state 0 to +2 by losing two electrons.",
+    "page": 141,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_83",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 383,
+    "text": "In the reaction Fe₂O₃ + 3CO → 2Fe + 3CO₂, carbon monoxide acts as",
+    "options": {
+      "A": "an oxidizing agent.",
+      "B": "a reducing agent.",
+      "C": "an acid.",
+      "D": "a catalyst only."
+    },
+    "answer": "B",
+    "explanation": "CO removes oxygen from iron(III) oxide and is itself oxidized to carbon dioxide.",
+    "page": 142,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_84",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 384,
+    "text": "What is the oxidation number of sulphur in H₂SO₄?",
+    "options": {
+      "A": "+2",
+      "B": "+4",
+      "C": "+6",
+      "D": "−2"
+    },
+    "answer": "C",
+    "explanation": "Let the oxidation number of sulphur be x. 2(+1) + x + 4(−2) = 0. Therefore, x = +6.",
+    "page": 142,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_85",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 385,
+    "text": "What is the oxidation number of manganese in KMnO₄?",
+    "options": {
+      "A": "+2",
+      "B": "+4",
+      "C": "+6",
+      "D": "+7"
+    },
+    "answer": "D",
+    "explanation": "Potassium is +1 and four oxygen atoms contribute −8. The manganese oxidation number must be +7 to make the compound neutral.",
+    "page": 143,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_86",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 386,
+    "text": "In the reaction 2Mg + O₂ → 2MgO, oxygen is",
+    "options": {
+      "A": "oxidized.",
+      "B": "reduced.",
+      "C": "unchanged.",
+      "D": "acting as a catalyst."
+    },
+    "answer": "B",
+    "explanation": "Oxygen changes from oxidation number 0 in O₂ to −2 in MgO. A decrease in oxidation number is reduction.",
+    "page": 143,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_87",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 387,
+    "text": "Which statement correctly describes an oxidizing agent?",
+    "options": {
+      "A": "It accepts electrons and is reduced.",
+      "B": "It donates electrons and is reduced.",
+      "C": "It always contains oxygen.",
+      "D": "It cannot participate in redox reactions."
+    },
+    "answer": "A",
+    "explanation": "An oxidizing agent causes another substance to lose electrons while it gains electrons itself.",
+    "page": 144,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_88",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 388,
+    "text": "The oxidation number of chromium in Cr₂O₇²⁻ is",
+    "options": {
+      "A": "+3",
+      "B": "+4",
+      "C": "+6",
+      "D": "+7"
+    },
+    "answer": "C",
+    "explanation": "Let chromium be x. 2x + 7(−2) = −2. Therefore, 2x = 12 and x = +6.",
+    "page": 144,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_89",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 389,
+    "text": "Which process occurs at the anode during electrolysis?",
+    "options": {
+      "A": "Reduction",
+      "B": "Oxidation",
+      "C": "Neutralization",
+      "D": "Hydration"
+    },
+    "answer": "B",
+    "explanation": "Oxidation occurs at the anode, where anions or other species lose electrons.",
+    "page": 145,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_90",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 390,
+    "text": "During electrolysis, positively charged ions move towards the",
+    "options": {
+      "A": "anode.",
+      "B": "cathode.",
+      "C": "electrolyte surface only.",
+      "D": "salt bridge."
+    },
+    "answer": "B",
+    "explanation": "Cations are positively charged and are attracted to the negatively charged cathode in an electrolytic cell.",
+    "page": 145,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_91",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 391,
+    "text": "Which of the following is a non-electrolyte in its pure form?",
+    "options": {
+      "A": "Molten sodium chloride",
+      "B": "Aqueous hydrochloric acid",
+      "C": "Aqueous sodium hydroxide",
+      "D": "Glucose solution"
+    },
+    "answer": "D",
+    "explanation": "Glucose dissolves as neutral molecules and does not produce ions in solution. The other examples contain mobile ions.",
+    "page": 146,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_92",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 392,
+    "text": "In the electrolysis of molten sodium chloride, the product at the cathode is",
+    "options": {
+      "A": "chlorine.",
+      "B": "sodium.",
+      "C": "hydrogen.",
+      "D": "sodium hydroxide."
+    },
+    "answer": "B",
+    "explanation": "Sodium ions gain electrons at the cathode: Na⁺ + e⁻ → Na.",
+    "page": 146,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_93",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 393,
+    "text": "During the electrolysis of concentrated aqueous sodium chloride using inert electrodes, which gases are produced at the electrodes?",
+    "options": {
+      "A": "Sodium and oxygen",
+      "B": "Hydrogen and chlorine",
+      "C": "Sodium and chlorine",
+      "D": "Hydrogen and sodium"
+    },
+    "answer": "B",
+    "explanation": "Water is reduced at the cathode to hydrogen, while chloride ions are oxidized at the anode to chlorine. Sodium hydroxide also remains in the solution.",
+    "page": 147,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_94",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 394,
+    "text": "In the electrolysis of copper(II) sulphate solution using inert electrodes, the substance deposited at the cathode is",
+    "options": {
+      "A": "oxygen.",
+      "B": "hydrogen.",
+      "C": "copper.",
+      "D": "sulphur."
+    },
+    "answer": "C",
+    "explanation": "Cu²⁺ ions are preferentially discharged at the cathode: Cu²⁺ + 2e⁻ → Cu.",
+    "page": 147,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_95",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 395,
+    "text": "In copper purification by electrolysis, the impure copper is used as the",
+    "options": {
+      "A": "cathode.",
+      "B": "anode.",
+      "C": "electrolyte.",
+      "D": "salt bridge."
+    },
+    "answer": "B",
+    "explanation": "Copper from the impure anode dissolves into solution as Cu²⁺ ions and is deposited as pure copper at the cathode.",
+    "page": 148,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_96",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 396,
+    "text": "One faraday is approximately equal to",
+    "options": {
+      "A": "9,650 C.",
+      "B": "48,250 C.",
+      "C": "96,500 C.",
+      "D": "193,000 C."
+    },
+    "answer": "C",
+    "explanation": "One faraday is the charge carried by one mole of electrons, approximately 96,500 coulombs.",
+    "page": 148,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_97",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 397,
+    "text": "A current of 2 A flows for 100 seconds. What charge passes through the circuit?",
+    "options": {
+      "A": "20 C",
+      "B": "100 C",
+      "C": "200 C",
+      "D": "400 C"
+    },
+    "answer": "C",
+    "explanation": "Charge = current × time = 2 × 100 = 200 C.",
+    "page": 149,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_98",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 398,
+    "text": "How many moles of electrons are represented by a charge of 19,300 C? (1 F = 96,500 C)",
+    "options": {
+      "A": "0.1 mol",
+      "B": "0.2 mol",
+      "C": "0.5 mol",
+      "D": "2.0 mol"
+    },
+    "answer": "B",
+    "explanation": "Moles of electrons = Q/F = 19,300/96,500 = 0.2 mol.",
+    "page": 149,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_99",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 399,
+    "text": "Which metal is most suitable for sacrificial protection of iron because it is more reactive than iron?",
+    "options": {
+      "A": "Copper",
+      "B": "Silver",
+      "C": "Magnesium",
+      "D": "Gold"
+    },
+    "answer": "C",
+    "explanation": "Magnesium oxidizes more readily than iron and can protect the iron by acting as a sacrificial anode.",
+    "page": 150,
+    "hasImage": false
+  },
+  {
+    "id": "chem_general_100",
+    "originalChapter": 3,
+    "chapterTitle": "Topic: General, Physical & Inorganic Chemistry",
+    "topic": "Redox Reactions & Electrolysis",
+    "bookQuestionNum": 400,
+    "text": "Rusting of iron requires",
+    "options": {
+      "A": "nitrogen only.",
+      "B": "oxygen and water.",
+      "C": "carbon dioxide only.",
+      "D": "hydrogen and chlorine."
+    },
+    "answer": "B",
+    "explanation": "Rusting is an electrochemical corrosion process requiring both oxygen and moisture.",
+    "page": 150,
+    "hasImage": false
+  }];
 
 export const JAMBIX_CHEMISTRY_100_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const JAMBIX_CHEMISTRY_200_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const JAMBIX_CHEMISTRY_300_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
+export const JAMBIX_CHEMISTRY_400_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 export const CHEMISTRY_DEMYSTIFIED_ITEMS = JAMBIX_CHEMISTRY_ITEMS;
 
 export function getChemistryDemystifiedVerifiedQuestions() {
