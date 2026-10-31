@@ -12,23 +12,22 @@ import {
   AlertCircle,
   Loader2,
   CheckCircle2,
-  Mail,
   ArrowRight,
+  UserPlus,
 } from 'lucide-react';
 import { Logo } from '../brand/Logo';
 import { auth } from '../../lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth';
-import {
+  getUserProfile,
   saveUserProfile,
-  getOrCreateAccountActivation,
+  getAccountActivation,
+  isAccountRegistered,
   UserProfileData,
 } from '../../lib/firestoreService';
 
 interface LogInPageProps {
-  onNavigateToSignUp: () => void;
+  onNavigateToSignUp: (emailPrefill?: string) => void;
   onNavigateToForgotPassword: () => void;
   onLogInSuccess: (user: { identifier: string }) => void;
   initialIdentifier?: string;
@@ -50,6 +49,7 @@ export const LogInPage: React.FC<LogInPageProps> = ({
   const [errors, setErrors] = useState<{ identifier?: string; password?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [requiresSignUp, setRequiresSignUp] = useState(false);
   const [loginSuccessFeedback, setLoginSuccessFeedback] = useState<string | null>(null);
 
   useEffect(() => {
@@ -65,13 +65,11 @@ export const LogInPage: React.FC<LogInPageProps> = ({
 
     if (field === 'identifier') {
       if (!trimmed) {
-        err = 'Email or phone number is required';
+        err = 'Email address is required';
       } else {
-        // Can be email or phone number
         const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
-        const isPhone = /^(\+?234|0)[789][01]\d{8}$/.test(trimmed.replace(/\s+/g, ''));
-        if (!isEmail && !isPhone && trimmed.length < 5) {
-          err = 'Please enter a valid email or Nigerian phone number';
+        if (!isEmail) {
+          err = 'Please enter the valid email address you used when signing up';
         }
       }
     }
@@ -103,74 +101,102 @@ export const LogInPage: React.FC<LogInPageProps> = ({
 
     setErrors({ identifier: idErr, password: passErr });
     setAuthError(null);
+    setRequiresSignUp(false);
 
     if (idErr || passErr) return;
 
     setIsSubmitting(true);
     setAuthError(null);
+    setRequiresSignUp(false);
 
-    const cleanId = identifier.trim().toLowerCase();
+    const cleanEmail = identifier.trim().toLowerCase();
 
     (async () => {
       try {
         let userCred;
         try {
-          userCred = await signInWithEmailAndPassword(auth, cleanId, password);
+          userCred = await signInWithEmailAndPassword(auth, cleanEmail, password);
         } catch (err: any) {
-          // If candidate account was created prior to live auth wiring or demo test credentials,
-          // seamlessly provision via Firebase Auth on first login attempt!
-          if (
-            err.code === 'auth/user-not-found' ||
+          // STRICT RULE: No one can log in without signing up first!
+          // We DO NOT call createUserWithEmailAndPassword on the login page.
+          if (err.code === 'auth/user-not-found') {
+            setRequiresSignUp(true);
+            throw new Error(
+              'No registered account found with this email. You must sign up first before being allowed to log in.'
+            );
+          } else if (
             err.code === 'auth/invalid-credential' ||
             err.code === 'auth/invalid-login-credentials'
           ) {
-            try {
-              userCred = await createUserWithEmailAndPassword(auth, cleanId, password);
-            } catch (createErr: any) {
-              if (createErr.code === 'auth/email-already-in-use') {
-                throw new Error('Incorrect password. Please verify your password or click Forgot Password to reset it.');
-              } else {
-                throw createErr;
-              }
+            // Verify if user exists in the authoritative registration record
+            const registered = await isAccountRegistered(cleanEmail);
+            if (!registered) {
+              setRequiresSignUp(true);
+              throw new Error(
+                'No registered account found with this email. You must sign up first before being allowed to log in.'
+              );
+            } else {
+              setRequiresSignUp(false);
+              throw new Error(
+                'Incorrect password. Please verify your password or click Forgot Password to reset it.'
+              );
             }
+          } else if (err.code === 'auth/wrong-password') {
+            setRequiresSignUp(false);
+            throw new Error(
+              'Incorrect password. Please verify your password or click Forgot Password to reset it.'
+            );
           } else {
             throw err;
           }
         }
 
         const user = userCred.user;
-        const candidateName = user.displayName || cleanId.split('@')[0];
+        const candidateName = user.displayName || cleanEmail.split('@')[0];
 
-        // Background cloud sync: update Firestore & activation record asynchronously without blocking login
-        const newProfile: UserProfileData = {
-          id: user.uid,
-          email: cleanId,
-          fullName: candidateName,
-          targetScore: 320,
-          preferredInstitution: 'University of Lagos (UNILAG)',
-          registeredAt: Date.now(),
-          isActivated: true,
-          isEmailVerified: true,
-        };
-        saveUserProfile(newProfile).catch((e) => console.warn('Background profile sync note:', e));
-        getOrCreateAccountActivation(cleanId).catch((e) => console.warn('Background activation sync note:', e));
+        // Background cloud sync: verify user profile without overwriting existing data
+        const existingProf = await getUserProfile(user.uid);
+        if (!existingProf) {
+          const act = await getAccountActivation(cleanEmail);
+          const newProfile: UserProfileData = {
+            id: user.uid,
+            email: cleanEmail,
+            fullName: candidateName,
+            targetScore: 320,
+            preferredInstitution: 'University of Lagos (UNILAG)',
+            registeredAt: act?.registeredAt || Date.now(),
+            isActivated: act?.isActivated ?? true,
+            isEmailVerified: true,
+          };
+          saveUserProfile(newProfile).catch((e) => console.warn('Background profile sync note:', e));
+        }
 
         setIsSubmitting(false);
         setLoginSuccessFeedback('Login successful! Loading your UTME prep workspace...');
-        
-        // Immediate transition to student workspace
-        onLogInSuccess({ identifier: cleanId });
+
+        // Transition to student dashboard
+        onLogInSuccess({ identifier: cleanEmail });
       } catch (err: any) {
         setIsSubmitting(false);
         let msg = 'Invalid credentials. Please verify your email and password.';
-        if (err.code === 'auth/wrong-password') {
+        if (err.code === 'auth/user-not-found') {
+          setRequiresSignUp(true);
+          msg =
+            'No registered account found with this email. You must sign up first before being allowed to log in.';
+        } else if (err.code === 'auth/wrong-password') {
+          setRequiresSignUp(false);
           msg = 'Incorrect password. Click Forgot Password to reset it.';
         } else if (err.code === 'auth/invalid-email') {
+          setRequiresSignUp(false);
           msg = 'Please enter a valid email address.';
         } else if (err.code === 'auth/too-many-requests') {
-          msg = 'Too many attempts. Access is temporarily paused for security. Please try again in 1 minute.';
+          setRequiresSignUp(false);
+          msg =
+            'Too many failed attempts. Access is temporarily paused for security. Please try again in 1 minute.';
         } else if (err.code === 'auth/network-request-failed') {
-          msg = 'Network timeout contacting Firebase. Please check your internet connection and try again.';
+          setRequiresSignUp(false);
+          msg =
+            'Network timeout contacting Firebase. Please check your internet connection and try again.';
         } else if (err.message) {
           msg = err.message;
         }
@@ -188,15 +214,33 @@ export const LogInPage: React.FC<LogInPageProps> = ({
           Welcome back
         </h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Continue your JambiX preparation journey.
+          Log in with your registered account to continue your UTME prep.
         </p>
       </div>
 
       {/* Global alert error */}
       {authError && (
-        <div className="mb-4 p-3.5 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/80 rounded-xl text-rose-800 dark:text-rose-200 text-xs flex items-start gap-2.5 animate-in fade-in">
-          <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
-          <span className="leading-snug">{authError}</span>
+        <div className="mb-4 p-4 bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/80 rounded-xl text-rose-800 dark:text-rose-200 text-xs animate-in fade-in space-y-2.5">
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+            <span className="leading-snug font-medium">{authError}</span>
+          </div>
+          {requiresSignUp && (
+            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-rose-200/80 dark:border-rose-900/80">
+              <span className="text-[11px] text-rose-700 dark:text-rose-300">
+                You must sign up first:
+              </span>
+              <button
+                type="button"
+                onClick={() => onNavigateToSignUp(identifier.trim())}
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer"
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>Sign Up First</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -211,13 +255,13 @@ export const LogInPage: React.FC<LogInPageProps> = ({
       {/* Card */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 transition-colors">
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
-          {/* Email or Phone Number */}
+          {/* Email Address */}
           <div>
             <label
               htmlFor={`${formId}-identifier`}
               className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
             >
-              Email or Phone Number
+              Registered Email Address
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 dark:text-slate-500">
@@ -225,9 +269,9 @@ export const LogInPage: React.FC<LogInPageProps> = ({
               </div>
               <input
                 id={`${formId}-identifier`}
-                type="text"
-                autoComplete="username"
-                placeholder="candidate@example.com or 080..."
+                type="email"
+                autoComplete="username email"
+                placeholder="candidate@example.com"
                 value={identifier}
                 onChange={(e) => {
                   setIdentifier(e.target.value);
@@ -334,16 +378,21 @@ export const LogInPage: React.FC<LogInPageProps> = ({
           </div>
         </form>
 
-        {/* Don't have an account? Create Account */}
-        <div className="mt-6 text-center text-xs text-slate-600 dark:text-slate-400">
-          <span>Don&apos;t have an account? </span>
-          <button
-            type="button"
-            onClick={onNavigateToSignUp}
-            className="font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:underline transition-colors cursor-pointer"
-          >
-            Create Account
-          </button>
+        {/* Notice that sign-up is required first */}
+        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-600 dark:text-slate-400 space-y-2">
+          <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/50 text-amber-800 dark:text-amber-300 text-[11px] leading-relaxed">
+            All users must sign up first before being allowed to log in.
+          </div>
+          <div>
+            <span>Don&apos;t have an account yet? </span>
+            <button
+              type="button"
+              onClick={() => onNavigateToSignUp(identifier.trim())}
+              className="font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:underline transition-colors cursor-pointer"
+            >
+              Create Account
+            </button>
+          </div>
         </div>
       </div>
     </div>

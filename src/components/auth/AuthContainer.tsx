@@ -35,6 +35,20 @@ export const AuthContainer: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('login');
   const [prefilledLoginEmail, setPrefilledLoginEmail] = useState<string>('');
 
+  const handleNavigateToSignUp = (emailPrefill?: string) => {
+    if (emailPrefill) {
+      setPrefilledLoginEmail(emailPrefill);
+    }
+    setCurrentScreen('signup');
+  };
+
+  const handleNavigateToLogin = (emailPrefill?: string) => {
+    if (emailPrefill) {
+      setPrefilledLoginEmail(emailPrefill);
+    }
+    setCurrentScreen('login');
+  };
+
   // Modal dialog states
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [termsTab, setTermsTab] = useState<'terms' | 'privacy'>('terms');
@@ -203,15 +217,16 @@ export const AuthContainer: React.FC = () => {
             <div className="lg:col-span-7 flex justify-center">
               {currentScreen === 'signup' && (
                 <SignUpPage
-                  onNavigateToLogin={() => setCurrentScreen('login')}
+                  onNavigateToLogin={handleNavigateToLogin}
                   onOpenTerms={handleOpenTerms}
                   onSignUpSuccess={handleSignUpSuccess}
+                  initialEmail={prefilledLoginEmail}
                 />
               )}
 
               {currentScreen === 'login' && (
                 <LogInPage
-                  onNavigateToSignUp={() => setCurrentScreen('signup')}
+                  onNavigateToSignUp={handleNavigateToSignUp}
                   onNavigateToForgotPassword={() => setCurrentScreen('forgot_password')}
                   onLogInSuccess={handleLogInSuccess}
                   initialIdentifier={prefilledLoginEmail}

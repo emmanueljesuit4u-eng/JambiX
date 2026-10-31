@@ -31,9 +31,10 @@ import {
 } from '../../lib/firestoreService';
 
 interface SignUpPageProps {
-  onNavigateToLogin: () => void;
+  onNavigateToLogin: (emailPrefill?: string) => void;
   onOpenTerms: (tab: 'terms' | 'privacy') => void;
   onSignUpSuccess: (user: { name: string; email: string }) => void;
+  initialEmail?: string;
 }
 
 interface FormErrors {
@@ -48,15 +49,22 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   onNavigateToLogin,
   onOpenTerms,
   onSignUpSuccess,
+  initialEmail,
 }) => {
   const formId = useId();
 
   // Form values
   const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(initialEmail || '');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  React.useEffect(() => {
+    if (initialEmail) {
+      setEmail(initialEmail);
+    }
+  }, [initialEmail]);
 
   // Visibility toggles
   const [showPassword, setShowPassword] = useState(false);
@@ -695,7 +703,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
           <span>Already have an account? </span>
           <button
             type="button"
-            onClick={onNavigateToLogin}
+            onClick={() => onNavigateToLogin(email.trim())}
             className="font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 hover:underline transition-colors cursor-pointer"
           >
             Log In

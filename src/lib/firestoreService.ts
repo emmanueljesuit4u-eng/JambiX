@@ -398,6 +398,49 @@ export async function getOrCreateAccountActivation(
 }
 
 /**
+ * Checks whether an account activation record already exists in Firestore.
+ * Does NOT auto-create a record if one is missing.
+ */
+export async function getAccountActivation(
+  email: string
+): Promise<AccountActivationData | null> {
+  if (!email) return null;
+  const cleanEmail = email.toLowerCase().trim();
+  const activationId = sanitizeActivationId(cleanEmail);
+
+  try {
+    const actRef = doc(db, 'accountActivations', activationId);
+    const snap = await getDoc(actRef);
+    if (snap.exists()) {
+      return snap.data() as AccountActivationData;
+    }
+    return null;
+  } catch (error) {
+    if (isOfflineError(error)) {
+      return null;
+    }
+    console.warn('getAccountActivation note:', error);
+    return null;
+  }
+}
+
+/**
+ * Verifies if an email has previously registered/signed up.
+ */
+export async function isAccountRegistered(email: string): Promise<boolean> {
+  if (!email) return false;
+  const cleanEmail = email.toLowerCase().trim();
+  const activationId = sanitizeActivationId(cleanEmail);
+  try {
+    const actRef = doc(db, 'accountActivations', activationId);
+    const snap = await getDoc(actRef);
+    return snap.exists();
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Updates activation status to activated across all devices once OPay payment is verified.
  */
 export async function updateAccountActivation(
