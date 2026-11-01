@@ -150,6 +150,52 @@ export function clearSeenSignatures(): void {
 }
 
 // ============================================================================
+// CYCLIC ROTATION POINTER FOR THE 20 VERIFIED PHYSICS DIAGRAM QUESTIONS
+// Ensures exactly 4 diagram questions per test (batch of 4), and once all 20
+// are exhausted, smoothly restarts from the very first again (0-3, 4-7, 8-11, 12-15, 16-19 -> 0-3).
+// ============================================================================
+export const PHYSICS_DIAGRAM_POINTER_KEY = 'jambix_physics_diagram_pointer_v1';
+
+let inMemoryPhysicsDiagramPointer = 0;
+
+export function getPhysicsDiagramPointer(): number {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const stored = window.localStorage.getItem(PHYSICS_DIAGRAM_POINTER_KEY);
+      if (stored !== null) {
+        const parsed = parseInt(stored, 10);
+        if (!isNaN(parsed) && parsed >= 0) {
+          inMemoryPhysicsDiagramPointer = parsed % 20;
+          return inMemoryPhysicsDiagramPointer;
+        }
+      }
+    } catch {
+      // fallback
+    }
+  }
+  return inMemoryPhysicsDiagramPointer % 20;
+}
+
+export function setPhysicsDiagramPointer(newVal: number): void {
+  const normVal = ((newVal % 20) + 20) % 20;
+  inMemoryPhysicsDiagramPointer = normVal;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.setItem(PHYSICS_DIAGRAM_POINTER_KEY, String(normVal));
+    } catch {
+      // ignore
+    }
+  }
+}
+
+export function advancePhysicsDiagramPointer(step: number = 4): number {
+  const current = getPhysicsDiagramPointer();
+  const next = (current + step) % 20;
+  setPhysicsDiagramPointer(next);
+  return current;
+}
+
+// ============================================================================
 // DYNAMIC COMBINATORIAL QUESTION GENERATION ENGINE (15,000+ Permutations)
 // ============================================================================
 
@@ -3786,33 +3832,55 @@ export function generateUniqueSubjectQuestions(
       return 'Power in AC Circuits & Power Factor';
     };
 
-    // 1. Group items across all Physics topic clusters
+    // 1. Separate the 20 verified diagram questions from the non-diagram question pool
+    const diagramPool = PHYSICS_DEMYSTIFIED_ITEMS.filter(
+      (item) => item.originalChapter === 6 || (item.bookQuestionNum >= 601 && item.bookQuestionNum <= 620)
+    );
+    const nonDiagramPool = PHYSICS_DEMYSTIFIED_ITEMS.filter(
+      (item) => !(item.originalChapter === 6 || (item.bookQuestionNum >= 601 && item.bookQuestionNum <= 620))
+    );
+
+    // 2. Select EXACTLY 4 diagram questions per test in cyclic sequence (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
+    const targetDiagramCount = Math.min(4, targetCount, diagramPool.length);
+    const pickedDiagramItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
+
+    if (targetDiagramCount > 0 && diagramPool.length > 0) {
+      const diagramStartIndex = advancePhysicsDiagramPointer(targetDiagramCount);
+      for (let d = 0; d < targetDiagramCount; d++) {
+        const dIdx = (diagramStartIndex + d) % diagramPool.length;
+        const dItem = diagramPool[dIdx];
+        const sig = getQuestionCoreSignature(dItem.text);
+        safeSessionUsed.add(sig);
+        pickedDiagramItems.push(dItem);
+      }
+    }
+
+    // 3. The remaining questions (e.g. 36 questions in a 40-question test) are drawn
+    // evenly via round-robin across all syllabus topic clusters
+    const nonDiagramQuota = Math.max(0, targetCount - pickedDiagramItems.length);
+
     const byTopic: Record<string, typeof PHYSICS_DEMYSTIFIED_ITEMS> = {};
-    for (const item of PHYSICS_DEMYSTIFIED_ITEMS) {
+    for (const item of nonDiagramPool) {
       const topicKey = getPhysicsTopic(item);
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
 
-    // 2. Shuffle within each topic cluster
+    // Shuffle within each topic cluster
     for (const tKey of Object.keys(byTopic)) {
       byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    // 3. Shuffle topic cluster keys so tests don't always pick topics in the same order
+    // Shuffle topic cluster keys so tests don't always pick topics in the same order
     const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedPhysicsItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
+    const pickedNonDiagramItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
-    // Fair quota from PHYSICS_DEMYSTIFIED_ITEMS (which covers 25+ major topic clusters):
-    // Round-robins evenly across every topic cluster so questions are drawn across all branches of the syllabus.
-    const physicsQuota = targetCount;
-
-    // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
+    // Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
     let added = true;
-    while (pickedPhysicsItems.length < physicsQuota && added) {
+    while (pickedNonDiagramItems.length < nonDiagramQuota && added) {
       added = false;
       for (const tKey of topicKeys) {
-        if (pickedPhysicsItems.length >= physicsQuota) break;
+        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
@@ -3827,7 +3895,7 @@ export function generateUniqueSubjectQuestions(
         if (nextItem) {
           const sig = getQuestionCoreSignature(nextItem.text);
           safeSessionUsed.add(sig);
-          pickedPhysicsItems.push(nextItem);
+          pickedNonDiagramItems.push(nextItem);
           const idx = pool.indexOf(nextItem);
           if (idx !== -1) pool.splice(idx, 1);
           added = true;
@@ -3835,11 +3903,11 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 5. Pass 2: Fallback across all questions without session duplicates
-    if (pickedPhysicsItems.length < physicsQuota) {
-      const allShuffled = shuffleArr(PHYSICS_DEMYSTIFIED_ITEMS);
+    // Pass 2: Fallback across nonDiagramPool without session duplicates
+    if (pickedNonDiagramItems.length < nonDiagramQuota) {
+      const allShuffled = shuffleArr(nonDiagramPool);
       for (const item of allShuffled) {
-        if (pickedPhysicsItems.length >= physicsQuota) break;
+        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
           const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bcircuit\s+shown|\bcircuit\s+in\b|\bwaveform\s+in\b)/i.test(item.text);
@@ -3847,13 +3915,14 @@ export function generateUniqueSubjectQuestions(
             continue;
           }
           safeSessionUsed.add(sig);
-          pickedPhysicsItems.push(item);
+          pickedNonDiagramItems.push(item);
         }
       }
     }
 
-    // 6. Complete random shuffle of all selected questions so questions are diversified
-    const finalOrderedPhysics = shuffleArr(pickedPhysicsItems);
+    // 4. Combine the 4 diagram questions and the 36 non-diagram questions,
+    // and randomly shuffle their order so diagram questions are naturally dispersed throughout the exam
+    const finalOrderedPhysics = shuffleArr([...pickedDiagramItems, ...pickedNonDiagramItems]);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
     for (let i = 0; i < finalOrderedPhysics.length && picked.length < targetCount; i++) {
@@ -3885,7 +3954,6 @@ export function generateUniqueSubjectQuestions(
         imageAlt: item.imageAlt,
         imageUrl: item.imageUrl,
       };
-      // Exactly preserve the author's answer and explanation without scrambling
       picked.push(vq);
     }
 
