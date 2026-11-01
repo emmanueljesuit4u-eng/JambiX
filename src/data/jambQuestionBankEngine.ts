@@ -3754,6 +3754,9 @@ export function generateUniqueSubjectQuestions(
   // =========================================================================
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
     const getPhysicsTopic = (item: typeof PHYSICS_DEMYSTIFIED_ITEMS[0]) => {
+      if (item.originalChapter === 6 || item.bookQuestionNum > 600) {
+        return item.topic || 'Diagram-Based Physics Problem Solving';
+      }
       if (item.originalChapter === 5 || item.bookQuestionNum > 500) {
         return item.topic || 'General Physics & Mechanics';
       }
@@ -3813,7 +3816,13 @@ export function generateUniqueSubjectQuestions(
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
+          // Guard: If item specifies a diagram/graph/circuit, ensure it actually has visual content for students
+          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bcircuit\s+shown|\bcircuit\s+in\b|\bwaveform\s+in\b)/i.test(item.text);
+          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+            return false;
+          }
+          return true;
         });
         if (nextItem) {
           const sig = getQuestionCoreSignature(nextItem.text);
@@ -3833,6 +3842,10 @@ export function generateUniqueSubjectQuestions(
         if (pickedPhysicsItems.length >= physicsQuota) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
+          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bcircuit\s+shown|\bcircuit\s+in\b|\bwaveform\s+in\b)/i.test(item.text);
+          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+            continue;
+          }
           safeSessionUsed.add(sig);
           pickedPhysicsItems.push(item);
         }
@@ -3866,7 +3879,11 @@ export function generateUniqueSubjectQuestions(
         bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
-        hasImage: false,
+        hasImage: Boolean(item.hasImage),
+        imageSvg: item.imageSvg,
+        imageCaption: item.imageCaption,
+        imageAlt: item.imageAlt,
+        imageUrl: item.imageUrl,
       };
       // Exactly preserve the author's answer and explanation without scrambling
       picked.push(vq);

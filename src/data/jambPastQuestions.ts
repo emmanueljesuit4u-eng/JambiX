@@ -1434,7 +1434,11 @@ export function generateQuestionForYear(
       bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
       author: 'JAMBIX UTME Preparatory Series',
       textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
-      hasImage: false,
+      hasImage: Boolean(item.hasImage),
+      imageSvg: item.imageSvg,
+      imageCaption: item.imageCaption,
+      imageAlt: item.imageAlt,
+      imageUrl: item.imageUrl,
     };
 
     return baseQuestion;

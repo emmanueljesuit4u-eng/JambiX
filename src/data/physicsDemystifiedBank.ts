@@ -7,9 +7,10 @@
  * TOPIC 2: SCALARS AND VECTORS (QUESTIONS 101–200)
  * TOPIC 3: MOTION (QUESTIONS 201–300)
  * TOPIC 4: ALTERNATING CURRENT (AC) CIRCUITS (QUESTIONS 301–500)
- * Indexed directly from official syllabus specifications.
- * Total questions: 600
  * TOPIC 5: MECHANICS, GRAVITATION, WORK, ENERGY & PROPERTIES OF MATTER (QUESTIONS 501–600)
+ * TOPIC 6: DIAGRAM-BASED PROBLEM SOLVING IN PHYSICS (QUESTIONS 601–620)
+ * Indexed directly from official syllabus specifications.
+ * Total questions: 617
  */
 
 export interface PhysicsDemystifiedItem {
@@ -32,6 +33,7 @@ export interface PhysicsDemystifiedItem {
   imageUrl?: string;
   imageCaption?: string;
   imageAlt?: string;
+  imageSvg?: string;
 }
 
 export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
@@ -8118,24 +8120,6 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "hasImage": false
   },
   {
-    "id": "phy_ac_450",
-    "originalChapter": 4,
-    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
-    "topic": "Alternating Current (AC) Circuits",
-    "bookQuestionNum": 450,
-    "text": "For the circuit in Question 149, calculate the real power.",
-    "options": {
-      "A": "400 W",
-      "B": "800 W",
-      "C": "1,200 W",
-      "D": "1,600 W"
-    },
-    "answer": "D",
-    "explanation": "Power factor = R/Z = 4/5 = 0.8. Therefore P = VI cos φ = 100 × 20 × 0.8 = 1,600 W.",
-    "page": 113,
-    "hasImage": false
-  },
-  {
     "id": "phy_ac_451",
     "originalChapter": 4,
     "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
@@ -8856,42 +8840,6 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "hasImage": false
   },
   {
-    "id": "phy_ac_491",
-    "originalChapter": 4,
-    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
-    "topic": "Alternating Current (AC) Circuits",
-    "bookQuestionNum": 491,
-    "text": "For the waveform in Question 190, what is the voltage at t = T/2?",
-    "options": {
-      "A": "−Vpeak",
-      "B": "0",
-      "C": "Vpeak/2",
-      "D": "Vpeak"
-    },
-    "answer": "B",
-    "explanation": "At half a period, the phase is 180° and sin 180° = 0.",
-    "page": 123,
-    "hasImage": false
-  },
-  {
-    "id": "phy_ac_492",
-    "originalChapter": 4,
-    "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
-    "topic": "Alternating Current (AC) Circuits",
-    "bookQuestionNum": 492,
-    "text": "For the waveform in Question 190, what is the voltage at t = 3T/4?",
-    "options": {
-      "A": "−Vpeak",
-      "B": "0",
-      "C": "Vpeak/2",
-      "D": "Vpeak"
-    },
-    "answer": "A",
-    "explanation": "At three-quarters of a period, the phase is 270°, where the sine value is −1.",
-    "page": 123,
-    "hasImage": false
-  },
-  {
     "id": "phy_ac_493",
     "originalChapter": 4,
     "chapterTitle": "Topic 4: Alternating Current (AC) Circuits",
@@ -9035,7 +8983,7 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "page": 125,
     "hasImage": false
   },
-{
+  {
     "id": "phy_gen_501",
     "originalChapter": 5,
     "chapterTitle": "Topic: Units, Dimensions & Measurements",
@@ -10834,8 +10782,427 @@ export const PHYSICS_DEMYSTIFIED_ITEMS: PhysicsDemystifiedItem[] = [
     "explanation": "Density = 250/100 = 2.5 g/cm³. Since water has density approximately 1 g/cm³, relative density = 2.5.",
     "page": 251,
     "hasImage": false
+  },
+  {
+    "id": "phy_diag_601",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Kinematics: Velocity-Time Graph & Displacement",
+    "bookQuestionNum": 601,
+    "text": "The velocity–time graph of a moving body is shown in the diagram. Calculate the total distance covered by the body in 15 s.",
+    "options": {
+      "A": "75 m",
+      "B": "110 m",
+      "C": "120 m",
+      "D": "150 m"
+    },
+    "answer": "B",
+    "explanation": "Distance = area under the velocity–time graph = ½×5×10 + (12−5)×10 + ½×3×10 = 25 + 70 + 15 = 110 m.",
+    "page": 40,
+    "hasImage": true,
+    "imageCaption": "Figure 1: Velocity–time graph of a moving body over 15 s",
+    "imageAlt": "Velocity-time graph showing acceleration from 0 to 10 m/s in 5s, constant speed for 7s, and deceleration to rest in 3s",
+    "imageSvg": "<svg viewBox=\"0 0 320 220\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"220\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 180 L 300 180 M 50 180 L 50 20\" stroke=\"#334155\" stroke-width=\"2\" />\n  <polygon points=\"300,180 293,176 293,184\" fill=\"#334155\" />\n  <polygon points=\"50,20 46,27 54,27\" fill=\"#334155\" />\n  <text x=\"175\" y=\"212\" font-size=\"12\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Time (s)</text>\n  <text x=\"18\" y=\"100\" font-size=\"12\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,100)\">Velocity (m s⁻¹)</text>\n  <text x=\"45\" y=\"184\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">0</text>\n  <text x=\"45\" y=\"64\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">10</text>\n  <line x1=\"47\" y1=\"60\" x2=\"53\" y2=\"60\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"110\" y=\"196\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">5</text>\n  <text x=\"210\" y=\"196\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">12</text>\n  <text x=\"260\" y=\"196\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">15</text>\n  <line x1=\"50\" y1=\"60\" x2=\"110\" y2=\"60\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"110\" y1=\"60\" x2=\"110\" y2=\"180\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"210\" y1=\"60\" x2=\"210\" y2=\"180\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <polyline points=\"50,180 110,60 210,60 260,180\" fill=\"rgba(37,99,235,0.08)\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <circle cx=\"50\" cy=\"180\" r=\"3.5\" fill=\"#2563eb\" />\n  <circle cx=\"110\" cy=\"60\" r=\"3.5\" fill=\"#2563eb\" />\n  <circle cx=\"210\" cy=\"60\" r=\"3.5\" fill=\"#2563eb\" />\n  <circle cx=\"260\" cy=\"180\" r=\"3.5\" fill=\"#2563eb\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_602",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Kinematics: Velocity-Time Graph & Deceleration",
+    "bookQuestionNum": 602,
+    "text": "The graph shows the motion of a body along a straight line. Calculate the deceleration of the body during the last 4 seconds of its motion.",
+    "options": {
+      "A": "1.2 m s⁻²",
+      "B": "4 m s⁻²",
+      "C": "12 m s⁻²",
+      "D": "3 m s⁻²"
+    },
+    "answer": "D",
+    "explanation": "Deceleration = magnitude of the slope of the last section = (12 − 0)/(14 − 10) = 12/4 = 3 m s⁻².",
+    "page": 40,
+    "hasImage": true,
+    "imageCaption": "Figure 2: Linear motion velocity–time graph",
+    "imageAlt": "Velocity-time graph with acceleration to 12 m/s in 4s, constant speed for 6s, and deceleration to rest in 4s",
+    "imageSvg": "<svg viewBox=\"0 0 320 220\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"220\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 180 L 300 180 M 50 180 L 50 20\" stroke=\"#334155\" stroke-width=\"2\" />\n  <polygon points=\"300,180 293,176 293,184\" fill=\"#334155\" />\n  <polygon points=\"50,20 46,27 54,27\" fill=\"#334155\" />\n  <text x=\"175\" y=\"212\" font-size=\"12\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Time (s)</text>\n  <text x=\"18\" y=\"100\" font-size=\"12\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,100)\">Velocity (m s⁻¹)</text>\n  <text x=\"45\" y=\"184\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">0</text>\n  <text x=\"45\" y=\"54\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">12</text>\n  <line x1=\"47\" y1=\"50\" x2=\"53\" y2=\"50\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"110\" y=\"196\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">4</text>\n  <text x=\"200\" y=\"196\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">10</text>\n  <text x=\"260\" y=\"196\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">14</text>\n  <line x1=\"50\" y1=\"50\" x2=\"110\" y2=\"50\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"110\" y1=\"50\" x2=\"110\" y2=\"180\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"200\" y1=\"50\" x2=\"200\" y2=\"180\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <polyline points=\"50,180 110,50 200,50 260,180\" fill=\"rgba(37,99,235,0.08)\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <circle cx=\"50\" cy=\"180\" r=\"3.5\" fill=\"#2563eb\" />\n  <circle cx=\"110\" cy=\"50\" r=\"3.5\" fill=\"#2563eb\" />\n  <circle cx=\"200\" cy=\"50\" r=\"3.5\" fill=\"#2563eb\" />\n  <circle cx=\"260\" cy=\"180\" r=\"3.5\" fill=\"#2563eb\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_603",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Current Electricity: Series Resistor Circuits",
+    "bookQuestionNum": 603,
+    "text": "In the circuit diagram shown, the battery has negligible internal resistance and the ammeter A has negligible resistance. What is the reading of the ammeter?",
+    "options": {
+      "A": "2 A",
+      "B": "4 A",
+      "C": "6 A",
+      "D": "12 A"
+    },
+    "answer": "A",
+    "explanation": "The resistors are in series: R = 2 + 4 + 6 = 12 Ω. Current I = V/R = 24/12 = 2 A.",
+    "page": 40,
+    "hasImage": true,
+    "imageCaption": "Figure 3: DC circuit with three series resistors (2 Ω, 4 Ω, 6 Ω) and a 24 V battery",
+    "imageAlt": "Series circuit diagram with 24V supply, three resistors of 2, 4, and 6 ohms, and an ammeter",
+    "imageSvg": "<svg viewBox=\"0 0 320 180\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"180\" fill=\"#f8fafc\" rx=\"8\" />\n  <polyline points=\"50,90 50,40 270,40 270,140 50,140 50,110\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <line x1=\"40\" y1=\"90\" x2=\"60\" y2=\"90\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <line x1=\"45\" y1=\"100\" x2=\"55\" y2=\"100\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <line x1=\"40\" y1=\"110\" x2=\"60\" y2=\"110\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <text x=\"25\" y=\"105\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">24 V</text>\n  <rect x=\"80\" y=\"32\" width=\"40\" height=\"16\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"100\" y=\"24\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" font-weight=\"bold\" fill=\"#0f172a\">2 Ω</text>\n  <rect x=\"145\" y=\"32\" width=\"40\" height=\"16\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"165\" y=\"24\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" font-weight=\"bold\" fill=\"#0f172a\">4 Ω</text>\n  <rect x=\"210\" y=\"32\" width=\"40\" height=\"16\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"230\" y=\"24\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" font-weight=\"bold\" fill=\"#0f172a\">6 Ω</text>\n  <circle cx=\"160\" cy=\"140\" r=\"14\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <text x=\"160\" y=\"145\" font-size=\"13\" font-family=\"sans-serif\" text-anchor=\"middle\" font-weight=\"bold\" fill=\"#0f172a\">A</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_604",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Current Electricity: Parallel Resistor Circuits",
+    "bookQuestionNum": 604,
+    "text": "In the circuit shown, the battery has negligible internal resistance. What is the reading of the ammeter A in the main line?",
+    "options": {
+      "A": "1.3 A",
+      "B": "2 A",
+      "C": "6 A",
+      "D": "4 A"
+    },
+    "answer": "C",
+    "explanation": "For the parallel resistors, 1/R = 1/6 + 1/3 = 1/2, so R = 2 Ω. The ammeter in the main line reads I = V/R = 12/2 = 6 A (2 A in the 6 Ω branch + 4 A in the 3 Ω branch).",
+    "page": 40,
+    "hasImage": true,
+    "imageCaption": "Figure 4: Parallel circuit with 6 Ω and 3 Ω branches connected to 12 V",
+    "imageAlt": "Circuit diagram showing 12V battery with ammeter in main line feeding parallel resistors 6 ohms and 3 ohms",
+    "imageSvg": "<svg viewBox=\"0 0 320 180\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"180\" fill=\"#f8fafc\" rx=\"8\" />\n  <polyline points=\"70,80 70,40 180,40\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <polyline points=\"70,105 70,140 270,140 270,50\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <line x1=\"60\" y1=\"80\" x2=\"80\" y2=\"80\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <line x1=\"63\" y1=\"92\" x2=\"77\" y2=\"92\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <line x1=\"60\" y1=\"105\" x2=\"80\" y2=\"105\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <text x=\"45\" y=\"98\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">12 V</text>\n  <circle cx=\"120\" cy=\"40\" r=\"13\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <text x=\"120\" y=\"45\" font-size=\"12\" font-family=\"sans-serif\" text-anchor=\"middle\" font-weight=\"bold\" fill=\"#0f172a\">A</text>\n  <line x1=\"180\" y1=\"40\" x2=\"270\" y2=\"40\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <line x1=\"200\" y1=\"40\" x2=\"200\" y2=\"60\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <rect x=\"190\" y=\"60\" width=\"20\" height=\"40\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"216\" y=\"85\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">6 Ω</text>\n  <line x1=\"200\" y1=\"100\" x2=\"200\" y2=\"140\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <line x1=\"260\" y1=\"40\" x2=\"260\" y2=\"60\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <rect x=\"250\" y=\"60\" width=\"20\" height=\"40\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"276\" y=\"85\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">3 Ω</text>\n  <line x1=\"260\" y1=\"100\" x2=\"260\" y2=\"140\" stroke=\"#1e293b\" stroke-width=\"2\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_605",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Dynamics: Motion on an Inclined Plane",
+    "bookQuestionNum": 605,
+    "text": "A block of mass 10 kg slides down a smooth plane inclined at 30° to the horizontal, as shown. Calculate the acceleration of the block. [g = 10 m s⁻²]",
+    "options": {
+      "A": "10 m s⁻²",
+      "B": "5 m s⁻²",
+      "C": "8.7 m s⁻²",
+      "D": "50 m s⁻²"
+    },
+    "answer": "B",
+    "explanation": "Along a smooth incline, a = g sin θ = 10 × sin 30° = 10 × 0.5 = 5 m s⁻². The mass cancels out, so it does not affect the acceleration.",
+    "page": 41,
+    "hasImage": true,
+    "imageCaption": "Figure 5: 10 kg mass on a 30° frictionless inclined plane",
+    "imageAlt": "Diagram of right-angled inclined plane at 30 degrees with a 10kg block sliding down smoothly",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <polygon points=\"50,150 250,150 250,35\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"2.5\" />\n  <line x1=\"45\" y1=\"150\" x2=\"255\" y2=\"150\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <g stroke=\"#94a3b8\" stroke-width=\"1.5\">\n    <line x1=\"60\" y1=\"150\" x2=\"50\" y2=\"160\" />\n    <line x1=\"80\" y1=\"150\" x2=\"70\" y2=\"160\" />\n    <line x1=\"100\" y1=\"150\" x2=\"90\" y2=\"160\" />\n    <line x1=\"120\" y1=\"150\" x2=\"110\" y2=\"160\" />\n    <line x1=\"140\" y1=\"150\" x2=\"130\" y2=\"160\" />\n    <line x1=\"160\" y1=\"150\" x2=\"150\" y2=\"160\" />\n    <line x1=\"180\" y1=\"150\" x2=\"170\" y2=\"160\" />\n    <line x1=\"200\" y1=\"150\" x2=\"190\" y2=\"160\" />\n    <line x1=\"220\" y1=\"150\" x2=\"210\" y2=\"160\" />\n    <line x1=\"240\" y1=\"150\" x2=\"230\" y2=\"160\" />\n  </g>\n  <path d=\"M 90 150 A 40 40 0 0 0 85 130\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.5\" />\n  <text x=\"96\" y=\"142\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#2563eb\">30°</text>\n  <g transform=\"translate(145, 95) rotate(-30)\">\n    <rect x=\"-24\" y=\"-30\" width=\"48\" height=\"30\" fill=\"#e2e8f0\" stroke=\"#0f172a\" stroke-width=\"2\" />\n    <text x=\"0\" y=\"-10\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">10 kg</text>\n  </g>\n  <text x=\"150\" y=\"178\" font-size=\"11\" font-style=\"italic\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">smooth surface (no friction)</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_606",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Waves: Transverse Wave Parameters & Frequency",
+    "bookQuestionNum": 606,
+    "text": "The diagram shows a transverse wave travelling at a speed of 6 m s⁻¹. What is the frequency of the wave?",
+    "options": {
+      "A": "3 Hz",
+      "B": "0.33 Hz",
+      "C": "4 Hz",
+      "D": "12 Hz"
+    },
+    "answer": "A",
+    "explanation": "The graph shows 3 complete waves in 6 m, so the wavelength λ = 6/3 = 2 m. Frequency f = v/λ = 6/2 = 3 Hz.",
+    "page": 41,
+    "hasImage": true,
+    "imageCaption": "Figure 6: Transverse wave displacement vs distance",
+    "imageAlt": "Sine wave diagram showing 3 complete wave cycles in 6 meters with amplitude 2 cm",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <line x1=\"50\" y1=\"100\" x2=\"290\" y2=\"100\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <line x1=\"50\" y1=\"20\" x2=\"50\" y2=\"180\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"192\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Distance (m)</text>\n  <text x=\"18\" y=\"100\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,100)\">Displacement (cm)</text>\n  <text x=\"45\" y=\"44\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">2</text>\n  <line x1=\"47\" y1=\"40\" x2=\"53\" y2=\"40\" stroke=\"#334155\" stroke-width=\"1\" />\n  <text x=\"45\" y=\"104\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">0</text>\n  <text x=\"45\" y=\"164\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">-2</text>\n  <line x1=\"47\" y1=\"160\" x2=\"53\" y2=\"160\" stroke=\"#334155\" stroke-width=\"1\" />\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">\n    <text x=\"88\" y=\"115\">1</text>\n    <text x=\"127\" y=\"115\">2</text>\n    <text x=\"165\" y=\"115\">3</text>\n    <text x=\"203\" y=\"115\">4</text>\n    <text x=\"242\" y=\"115\">5</text>\n    <text x=\"280\" y=\"115\">6</text>\n  </g>\n  <path d=\"M 50 100 Q 69 20 88 100 T 127 100 T 165 100 T 203 100 T 242 100 T 280 100\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_607",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Thermal Physics: Heating Curve & Latent Heat",
+    "bookQuestionNum": 607,
+    "text": "The graph shows how the temperature of a block of ice, initially at −20 °C, changes with time when it is heated steadily. Which portion of the graph represents the boiling of the water?",
+    "options": {
+      "A": "AB",
+      "B": "BC",
+      "C": "CD",
+      "D": "DE"
+    },
+    "answer": "D",
+    "explanation": "The flat portions are changes of state, where heat is absorbed without a rise in temperature. BC (0 °C) is melting; DE (100 °C) is boiling, when latent heat of vaporisation is absorbed.",
+    "page": 41,
+    "hasImage": true,
+    "imageCaption": "Figure 7: Heating curve of ice from -20 °C to steam",
+    "imageAlt": "Temperature vs time graph showing states AB (solid), BC (melting at 0C), CD (liquid), DE (boiling at 100C), EF (gas)",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 170 L 290 170 M 50 170 L 50 20\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"192\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Time (min) (not drawn to scale)</text>\n  <text x=\"18\" y=\"95\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,95)\">Temperature (°C)</text>\n  <text x=\"45\" y=\"174\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">-20</text>\n  <text x=\"45\" y=\"129\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">0</text>\n  <text x=\"45\" y=\"54\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">100</text>\n  <line x1=\"48\" y1=\"125\" x2=\"285\" y2=\"125\" stroke=\"#cbd5e1\" stroke-dasharray=\"2,2\" />\n  <line x1=\"48\" y1=\"50\" x2=\"285\" y2=\"50\" stroke=\"#cbd5e1\" stroke-dasharray=\"2,2\" />\n  <polyline points=\"50,170 85,125 125,125 200,50 260,50 280,30\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <circle cx=\"50\" cy=\"170\" r=\"3.5\" fill=\"#1e293b\" />\n  <text x=\"56\" y=\"165\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">A</text>\n  <circle cx=\"85\" cy=\"125\" r=\"3.5\" fill=\"#1e293b\" />\n  <text x=\"85\" y=\"117\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">B</text>\n  <circle cx=\"125\" cy=\"125\" r=\"3.5\" fill=\"#1e293b\" />\n  <text x=\"125\" y=\"117\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">C</text>\n  <circle cx=\"200\" cy=\"50\" r=\"3.5\" fill=\"#1e293b\" />\n  <text x=\"200\" y=\"42\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">D</text>\n  <circle cx=\"260\" cy=\"50\" r=\"3.5\" fill=\"#1e293b\" />\n  <text x=\"260\" y=\"42\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">E</text>\n  <circle cx=\"280\" cy=\"30\" r=\"3.5\" fill=\"#1e293b\" />\n  <text x=\"283\" y=\"26\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">F</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_608",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Equilibrium: Principle of Moments & Metre Rule",
+    "bookQuestionNum": 608,
+    "text": "A uniform metre rule is pivoted at its centre and balances horizontally with a 20 N weight and a weight W hung as shown. What is the value of W?",
+    "options": {
+      "A": "13.3 N",
+      "B": "20 N",
+      "C": "30 N",
+      "D": "50 N"
+    },
+    "answer": "C",
+    "explanation": "At balance, clockwise moment = anticlockwise moment: 20 × 30 = W × 20, so W = 600/20 = 30 N. (The rule's own weight acts at the pivot, so it has no moment.)",
+    "page": 41,
+    "hasImage": true,
+    "imageCaption": "Figure 8: Horizontal balanced metre rule with hung weights",
+    "imageAlt": "Metre rule pivoted at centre with 20 N weight at 30 cm and weight W at 20 cm",
+    "imageSvg": "<svg viewBox=\"0 0 320 160\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"160\" fill=\"#f8fafc\" rx=\"8\" />\n  <rect x=\"40\" y=\"55\" width=\"240\" height=\"12\" fill=\"#d97706\" rx=\"2\" stroke=\"#92400e\" stroke-width=\"1.5\" />\n  <polygon points=\"170,67 160,88 180,88\" fill=\"#475569\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"103\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">pivot</text>\n  <line x1=\"100\" y1=\"67\" x2=\"100\" y2=\"105\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"100,112 95,103 105,103\" fill=\"#dc2626\" />\n  <text x=\"100\" y=\"45\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#dc2626\">20 N</text>\n  <line x1=\"217\" y1=\"67\" x2=\"217\" y2=\"105\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"217,112 212,103 222,103\" fill=\"#dc2626\" />\n  <text x=\"217\" y=\"45\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#dc2626\">W</text>\n  <line x1=\"100\" y1=\"130\" x2=\"170\" y2=\"130\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <line x1=\"100\" y1=\"125\" x2=\"100\" y2=\"135\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <line x1=\"170\" y1=\"125\" x2=\"170\" y2=\"135\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <text x=\"135\" y=\"145\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">30 cm</text>\n  <line x1=\"170\" y1=\"130\" x2=\"217\" y2=\"130\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <line x1=\"217\" y1=\"125\" x2=\"217\" y2=\"135\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <text x=\"193\" y=\"145\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">20 cm</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_609",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Elasticity: Hooke's Law & Force Constant",
+    "bookQuestionNum": 609,
+    "text": "The graph shows how the extension of a spring varies with the force applied to it. P is the elastic limit. Calculate the force constant (spring constant) of the spring.",
+    "options": {
+      "A": "200 N m⁻¹",
+      "B": "2 N m⁻¹",
+      "C": "50 N m⁻¹",
+      "D": "500 N m⁻¹"
+    },
+    "answer": "A",
+    "explanation": "Within the elastic limit, k = F/e = 10 N / 0.05 m = 200 N m⁻¹. Note that 5 cm must be converted to 0.05 m.",
+    "page": 42,
+    "hasImage": true,
+    "imageCaption": "Figure 9: Force against extension graph for an elastic spring",
+    "imageAlt": "Graph showing linear relationship between force and extension up to elastic limit P at 10 N and 5 cm",
+    "imageSvg": "<svg viewBox=\"0 0 320 220\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"220\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 180 L 290 180 M 50 180 L 50 20\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"212\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Extension (cm)</text>\n  <text x=\"18\" y=\"100\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,100)\">Force (N)</text>\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">\n    <text x=\"45\" y=\"184\">0</text>\n    <text x=\"45\" y=\"144\">4</text>\n    <text x=\"45\" y=\"117\">6</text>\n    <text x=\"45\" y=\"90\">8</text>\n    <text x=\"45\" y=\"64\">10</text>\n    <text x=\"45\" y=\"44\">12</text>\n  </g>\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">\n    <text x=\"75\" y=\"195\">1</text>\n    <text x=\"100\" y=\"195\">2</text>\n    <text x=\"150\" y=\"195\">4</text>\n    <text x=\"175\" y=\"195\">5</text>\n    <text x=\"200\" y=\"195\">6</text>\n    <text x=\"225\" y=\"195\">7</text>\n    <text x=\"250\" y=\"195\">8</text>\n  </g>\n  <line x1=\"50\" y1=\"60\" x2=\"175\" y2=\"60\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"175\" y1=\"60\" x2=\"175\" y2=\"180\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <path d=\"M 50 180 L 175 60 Q 215 40 250 40\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <circle cx=\"175\" cy=\"60\" r=\"4\" fill=\"#2563eb\" />\n  <text x=\"183\" y=\"72\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">P</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_610",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Kinematics: Distance-Time Graph & Average Speed",
+    "bookQuestionNum": 610,
+    "text": "The graph shows the distance of a cyclist from the starting point of a straight road at different times. What is the average speed of the cyclist for the whole 12 s?",
+    "options": {
+      "A": "5 m s⁻¹",
+      "B": "3.3 m s⁻¹",
+      "C": "0 m s⁻¹",
+      "D": "1.7 m s⁻¹"
+    },
+    "answer": "B",
+    "explanation": "The cyclist goes 20 m away (4 s), rests (4 s), then returns 20 m (4 s). Total distance = 40 m in 12 s, so average speed = 40/12 ≈ 3.3 m s⁻¹. (Average velocity would be 0, since displacement is zero.)",
+    "page": 42,
+    "hasImage": true,
+    "imageCaption": "Figure 10: Distance from start versus time for a cyclist",
+    "imageAlt": "Distance-time graph showing travel to 20m in 4s, rest from 4s to 8s, and return to start by 12s",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 160 L 290 160 M 50 160 L 50 20\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"192\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Time (s)</text>\n  <text x=\"18\" y=\"90\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,90)\">Distance from start (m)</text>\n  <text x=\"45\" y=\"164\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">0</text>\n  <text x=\"45\" y=\"54\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">20</text>\n  <line x1=\"47\" y1=\"50\" x2=\"53\" y2=\"50\" stroke=\"#334155\" stroke-width=\"1\" />\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">\n    <text x=\"120\" y=\"174\">4</text>\n    <text x=\"190\" y=\"174\">8</text>\n    <text x=\"260\" y=\"174\">12</text>\n  </g>\n  <line x1=\"120\" y1=\"50\" x2=\"120\" y2=\"160\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"190\" y1=\"50\" x2=\"190\" y2=\"160\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <polyline points=\"50,160 120,50 190,50 260,160\" fill=\"rgba(37,99,235,0.06)\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <circle cx=\"50\" cy=\"160\" r=\"3\" fill=\"#2563eb\" />\n  <circle cx=\"120\" cy=\"50\" r=\"3\" fill=\"#2563eb\" />\n  <circle cx=\"190\" cy=\"50\" r=\"3\" fill=\"#2563eb\" />\n  <circle cx=\"260\" cy=\"160\" r=\"3\" fill=\"#2563eb\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_611",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Nuclear Physics: Radioactive Decay Curve & Half-Life",
+    "bookQuestionNum": 611,
+    "text": "The graph shows the decay of a radioactive sample. What will be the activity of the sample after 18 days?",
+    "options": {
+      "A": "50 counts per minute",
+      "B": "200 counts per minute",
+      "C": "400 counts per minute",
+      "D": "100 counts per minute"
+    },
+    "answer": "D",
+    "explanation": "The activity falls from 800 to 400 in 6 days, so the half-life is 6 days. 18 days = 3 half-lives: 800 → 400 → 200 → 100 counts per minute.",
+    "page": 42,
+    "hasImage": true,
+    "imageCaption": "Figure 11: Activity decay curve with time in days",
+    "imageAlt": "Radioactive decay curve showing initial activity of 800 counts/min decreasing to 400 at day 6",
+    "imageSvg": "<svg viewBox=\"0 0 320 220\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"220\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 180 L 290 180 M 50 180 L 50 20\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"212\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Time (days)</text>\n  <text x=\"18\" y=\"100\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,100)\">Activity (counts per minute)</text>\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">\n    <text x=\"45\" y=\"184\">0</text>\n    <text x=\"45\" y=\"144\">200</text>\n    <text x=\"45\" y=\"104\">400</text>\n    <text x=\"45\" y=\"64\">600</text>\n    <text x=\"45\" y=\"24\">800</text>\n  </g>\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">\n    <text x=\"105\" y=\"195\">6</text>\n    <text x=\"160\" y=\"195\">12</text>\n    <text x=\"215\" y=\"195\">18</text>\n    <text x=\"270\" y=\"195\">24</text>\n  </g>\n  <line x1=\"50\" y1=\"100\" x2=\"105\" y2=\"100\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"105\" y1=\"100\" x2=\"105\" y2=\"180\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <path d=\"M 50 20 Q 80 85 105 100 T 160 140 T 215 160 T 270 170\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <circle cx=\"50\" cy=\"20\" r=\"3\" fill=\"#dc2626\" />\n  <circle cx=\"105\" cy=\"100\" r=\"3\" fill=\"#dc2626\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_612",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Optics: Refraction of Light & Snell's Law",
+    "bookQuestionNum": 612,
+    "text": "A ray of light passes from air into glass as shown in the diagram. Calculate the refractive index of the glass.",
+    "options": {
+      "A": "1.22",
+      "B": "1.50",
+      "C": "1.41",
+      "D": "1.73"
+    },
+    "answer": "C",
+    "explanation": "n = sin i / sin r = sin 45° / sin 30° = 0.707 / 0.5 = 1.41. (Angles are measured from the normal.)",
+    "page": 42,
+    "hasImage": true,
+    "imageCaption": "Figure 12: Light ray refraction at an air-glass interface",
+    "imageAlt": "Ray of light in air at 45 degrees to normal refracting into glass at 30 degrees to normal",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <line x1=\"40\" y1=\"100\" x2=\"280\" y2=\"100\" stroke=\"#0f172a\" stroke-width=\"2\" />\n  <rect x=\"40\" y=\"100\" width=\"240\" height=\"90\" fill=\"#e0f2fe\" opacity=\"0.6\" />\n  <text x=\"230\" y=\"45\" font-size=\"14\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">Air</text>\n  <text x=\"230\" y=\"145\" font-size=\"14\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0369a1\">Glass</text>\n  <line x1=\"160\" y1=\"20\" x2=\"160\" y2=\"180\" stroke=\"#64748b\" stroke-dasharray=\"4,4\" stroke-width=\"1.5\" />\n  <text x=\"165\" y=\"30\" font-size=\"10\" font-family=\"sans-serif\" fill=\"#64748b\">normal</text>\n  <line x1=\"90\" y1=\"30\" x2=\"160\" y2=\"100\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"127,67 122,58 132,62\" fill=\"#dc2626\" />\n  <line x1=\"160\" y1=\"100\" x2=\"205\" y2=\"178\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"184,141 178,133 188,135\" fill=\"#dc2626\" />\n  <path d=\"M 160 65 A 35 35 0 0 0 135 75\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.5\" />\n  <text x=\"145\" y=\"58\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#2563eb\">45°</text>\n  <path d=\"M 160 135 A 35 35 0 0 0 178 130\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.5\" />\n  <text x=\"166\" y=\"152\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#2563eb\">30°</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_613",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Optics: Reflection on a Plane Mirror",
+    "bookQuestionNum": 613,
+    "text": "A ray of light strikes a plane mirror so that it makes an angle of 35° with the surface of the mirror, as shown. What is the angle of reflection r?",
+    "options": {
+      "A": "55°",
+      "B": "35°",
+      "C": "70°",
+      "D": "110°"
+    },
+    "answer": "A",
+    "explanation": "Angles of incidence and reflection are measured from the normal. Angle of incidence = 90° − 35° = 55°. By the law of reflection, r = 55°.",
+    "page": 43,
+    "hasImage": true,
+    "imageCaption": "Figure 13: Light ray striking a horizontal plane mirror",
+    "imageAlt": "Light ray striking a plane mirror at 35 degrees to the mirror surface with angle of reflection r to the normal",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <line x1=\"40\" y1=\"140\" x2=\"280\" y2=\"140\" stroke=\"#0f172a\" stroke-width=\"2.5\" />\n  <g stroke=\"#94a3b8\" stroke-width=\"1.5\">\n    <line x1=\"50\" y1=\"140\" x2=\"40\" y2=\"150\" />\n    <line x1=\"75\" y1=\"140\" x2=\"65\" y2=\"150\" />\n    <line x1=\"100\" y1=\"140\" x2=\"90\" y2=\"150\" />\n    <line x1=\"125\" y1=\"140\" x2=\"115\" y2=\"150\" />\n    <line x1=\"150\" y1=\"140\" x2=\"140\" y2=\"150\" />\n    <line x1=\"175\" y1=\"140\" x2=\"165\" y2=\"150\" />\n    <line x1=\"200\" y1=\"140\" x2=\"190\" y2=\"150\" />\n    <line x1=\"225\" y1=\"140\" x2=\"215\" y2=\"150\" />\n    <line x1=\"250\" y1=\"140\" x2=\"240\" y2=\"150\" />\n    <line x1=\"275\" y1=\"140\" x2=\"265\" y2=\"150\" />\n  </g>\n  <text x=\"220\" y=\"165\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#64748b\">plane mirror</text>\n  <line x1=\"160\" y1=\"40\" x2=\"160\" y2=\"140\" stroke=\"#64748b\" stroke-dasharray=\"4,4\" stroke-width=\"1.5\" />\n  <text x=\"165\" y=\"50\" font-size=\"10\" font-family=\"sans-serif\" fill=\"#64748b\">normal</text>\n  <line x1=\"78\" y1=\"83\" x2=\"160\" y2=\"140\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"121,113 114,106 125,108\" fill=\"#dc2626\" />\n  <path d=\"M 125 140 A 35 35 0 0 1 133 121\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"1.5\" />\n  <text x=\"105\" y=\"130\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#2563eb\">35°</text>\n  <line x1=\"160\" y1=\"140\" x2=\"242\" y2=\"83\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"203,110 200,100 209,106\" fill=\"#dc2626\" />\n  <path d=\"M 160 85 A 55 55 0 0 1 205 108\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  <text x=\"180\" y=\"90\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#dc2626\">r = ?</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_614",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Optics: Thin Converging Lens & Lens Formula",
+    "bookQuestionNum": 614,
+    "text": "An object is placed 30 cm from a converging lens whose focal length is 10 cm, as shown. At what distance from the lens is the image formed?",
+    "options": {
+      "A": "7.5 cm",
+      "B": "20 cm",
+      "C": "15 cm",
+      "D": "30 cm"
+    },
+    "answer": "C",
+    "explanation": "Lens formula: 1/f = 1/u + 1/v, so 1/v = 1/10 − 1/30 = 2/30 and v = 15 cm. The image is real and formed on the opposite side of the lens.",
+    "page": 43,
+    "hasImage": true,
+    "imageCaption": "Figure 14: Object in front of a thin converging convex lens",
+    "imageAlt": "Object arrow placed 30 cm from converging lens with focal length 10 cm",
+    "imageSvg": "<svg viewBox=\"0 0 320 180\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"180\" fill=\"#f8fafc\" rx=\"8\" />\n  <line x1=\"30\" y1=\"90\" x2=\"290\" y2=\"90\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <line x1=\"180\" y1=\"25\" x2=\"180\" y2=\"155\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <polygon points=\"180,25 175,35 185,35\" fill=\"#2563eb\" />\n  <polygon points=\"180,155 175,145 185,145\" fill=\"#2563eb\" />\n  <text x=\"180\" y=\"18\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#2563eb\">converging lens</text>\n  <line x1=\"140\" y1=\"84\" x2=\"140\" y2=\"96\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"140\" y=\"80\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#334155\">F</text>\n  <line x1=\"220\" y1=\"84\" x2=\"220\" y2=\"96\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"220\" y=\"80\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#334155\">F</text>\n  <line x1=\"60\" y1=\"90\" x2=\"60\" y2=\"45\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <polygon points=\"60,40 55,48 65,48\" fill=\"#dc2626\" />\n  <text x=\"60\" y=\"105\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Object</text>\n  <line x1=\"60\" y1=\"125\" x2=\"180\" y2=\"125\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <line x1=\"60\" y1=\"120\" x2=\"60\" y2=\"130\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <line x1=\"180\" y1=\"120\" x2=\"180\" y2=\"130\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <text x=\"120\" y=\"138\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">30 cm</text>\n  <line x1=\"180\" y1=\"125\" x2=\"220\" y2=\"125\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <line x1=\"220\" y1=\"120\" x2=\"220\" y2=\"130\" stroke=\"#64748b\" stroke-width=\"1\" />\n  <text x=\"200\" y=\"138\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">10 cm</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_615",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Hydrostatics: U-Tube Manometer & Excess Pressure",
+    "bookQuestionNum": 615,
+    "text": "A U-tube manometer containing water is connected to a gas supply, as shown. By how much does the gas pressure exceed the atmospheric pressure? [density of water = 1000 kg m⁻³, g = 10 m s⁻²]",
+    "options": {
+      "A": "400 Pa",
+      "B": "4 000 Pa",
+      "C": "40 000 Pa",
+      "D": "40 Pa"
+    },
+    "answer": "B",
+    "explanation": "The gas pressure exceeds atmospheric pressure by hρg = 0.40 m × 1000 kg m⁻³ × 10 m s⁻² = 4 000 Pa. (Convert 40 cm to 0.40 m.)",
+    "page": 43,
+    "hasImage": true,
+    "imageCaption": "Figure 15: Open-tube water manometer connected to a gas supply",
+    "imageAlt": "U-tube manometer showing liquid water level difference of h = 40 cm between open arm and gas-connected arm",
+    "imageSvg": "<svg viewBox=\"0 0 320 220\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"220\" fill=\"#f8fafc\" rx=\"8\" />\n  <circle cx=\"70\" cy=\"50\" r=\"18\" fill=\"#e2e8f0\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"70\" y=\"54\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">Gas</text>\n  <path d=\"M 88 50 L 110 50 L 110 160 A 30 30 0 0 0 170 160 L 170 60\" fill=\"none\" stroke=\"#334155\" stroke-width=\"18\" stroke-linejoin=\"round\" />\n  <path d=\"M 88 50 L 110 50 L 110 160 A 30 30 0 0 0 170 160 L 170 60\" fill=\"none\" stroke=\"#ffffff\" stroke-width=\"14\" stroke-linejoin=\"round\" />\n  <path d=\"M 110 130 L 110 160 A 30 30 0 0 0 170 160 L 170 80\" fill=\"none\" stroke=\"#38bdf8\" stroke-width=\"12\" />\n  <line x1=\"104\" y1=\"130\" x2=\"116\" y2=\"130\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  <line x1=\"164\" y1=\"80\" x2=\"176\" y2=\"80\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  <text x=\"175\" y=\"45\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#64748b\">open to atmosphere</text>\n  <line x1=\"104\" y1=\"130\" x2=\"200\" y2=\"130\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"176\" y1=\"80\" x2=\"200\" y2=\"80\" stroke=\"#94a3b8\" stroke-dasharray=\"3,3\" />\n  <line x1=\"195\" y1=\"80\" x2=\"195\" y2=\"130\" stroke=\"#dc2626\" stroke-width=\"2\" />\n  <polygon points=\"195,80 191,88 199,88\" fill=\"#dc2626\" />\n  <polygon points=\"195,130 191,122 199,122\" fill=\"#dc2626\" />\n  <text x=\"205\" y=\"109\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#dc2626\">h = 40 cm</text>\n  <text x=\"215\" y=\"155\" font-size=\"11\" font-family=\"sans-serif\" fill=\"#0284c7\">liquid: water</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_616",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Current Electricity: Potential Divider & Voltmeter",
+    "bookQuestionNum": 616,
+    "text": "In the circuit shown, the battery has negligible internal resistance and the voltmeter V has a very high resistance. What is the reading of the voltmeter?",
+    "options": {
+      "A": "4 V",
+      "B": "6 V",
+      "C": "12 V",
+      "D": "8 V"
+    },
+    "answer": "D",
+    "explanation": "The resistors are in series: R = 4 + 2 = 6 Ω, so I = 12/6 = 2 A. The voltmeter is across the 4 Ω resistor, so V = IR = 2 × 4 = 8 V.",
+    "page": 43,
+    "hasImage": true,
+    "imageCaption": "Figure 16: Potential divider circuit with voltmeter measuring across 4 Ω resistor",
+    "imageAlt": "Circuit diagram of 12V battery connected to series resistors 4 ohms and 2 ohms with voltmeter across 4 ohm resistor",
+    "imageSvg": "<svg viewBox=\"0 0 320 180\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"180\" fill=\"#f8fafc\" rx=\"8\" />\n  <polyline points=\"70,120 70,65 250,65 250,120 70,120\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <line x1=\"60\" y1=\"120\" x2=\"80\" y2=\"120\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <line x1=\"64\" y1=\"130\" x2=\"76\" y2=\"130\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"45\" y=\"125\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">12 V</text>\n  <rect x=\"110\" y=\"57\" width=\"40\" height=\"16\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"130\" y=\"85\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">4 Ω</text>\n  <rect x=\"180\" y=\"57\" width=\"40\" height=\"16\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"200\" y=\"85\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">2 Ω</text>\n  <polyline points=\"105,65 105,30 155,30 155,65\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <circle cx=\"130\" cy=\"30\" r=\"12\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"130\" y=\"34\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">V</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_617",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Electromagnetism: Ideal Transformer & Turn Ratio",
+    "bookQuestionNum": 617,
+    "text": "The diagram shows an ideal transformer. The primary coil has 200 turns and is connected to a 240 V a.c. supply, and the secondary coil has 50 turns. What is the secondary voltage Vs?",
+    "options": {
+      "A": "60 V",
+      "B": "120 V",
+      "C": "48 V",
+      "D": "960 V"
+    },
+    "answer": "A",
+    "explanation": "For an ideal transformer, Vs/Vp = Ns/Np. So Vs = 240 × 50/200 = 60 V. It is a step-down transformer because the secondary has fewer turns.",
+    "page": 44,
+    "hasImage": true,
+    "imageCaption": "Figure 17: Step-down transformer with 200 primary and 50 secondary turns",
+    "imageAlt": "Transformer diagram showing primary coil with 200 turns on 240V a.c. and secondary coil with 50 turns connected to voltmeter",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <rect x=\"80\" y=\"45\" width=\"160\" height=\"110\" fill=\"#94a3b8\" stroke=\"#334155\" stroke-width=\"2\" rx=\"4\" />\n  <rect x=\"115\" y=\"70\" width=\"90\" height=\"60\" fill=\"#f8fafc\" stroke=\"#334155\" stroke-width=\"2\" rx=\"2\" />\n  <rect x=\"75\" y=\"55\" width=\"10\" height=\"90\" fill=\"#d97706\" rx=\"2\" />\n  <polyline points=\"50,70 75,70 M 50,130 75,130\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <text x=\"60\" y=\"40\" font-size=\"10\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">Primary</text>\n  <text x=\"60\" y=\"52\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">200 turns</text>\n  <text x=\"50\" y=\"155\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">240 V a.c.</text>\n  <rect x=\"235\" y=\"75\" width=\"10\" height=\"50\" fill=\"#d97706\" rx=\"2\" />\n  <polyline points=\"245,85 270,85 M 245,115 270,115\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"2\" />\n  <circle cx=\"280\" cy=\"100\" r=\"11\" fill=\"#ffffff\" stroke=\"#1e293b\" stroke-width=\"1.5\" />\n  <text x=\"280\" y=\"104\" font-size=\"11\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">V</text>\n  <text x=\"260\" y=\"40\" font-size=\"10\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0f172a\">Secondary</text>\n  <text x=\"260\" y=\"52\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">50 turns</text>\n  <text x=\"280\" y=\"135\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#dc2626\">Vs = ?</text>\n</svg>"
+  },
+  {
+    "id": "phy_diag_618",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Simple Harmonic Motion: Pendulum Displacement-Time Graph",
+    "bookQuestionNum": 618,
+    "text": "The graph shows the displacement of a simple pendulum bob with time as it oscillates. What is the frequency of the oscillation?",
+    "options": {
+      "A": "0.50 Hz",
+      "B": "4.0 Hz",
+      "C": "0.25 Hz",
+      "D": "2.0 Hz"
+    },
+    "answer": "C",
+    "explanation": "The graph shows 2 complete oscillations in 8 s, so the period T = 4 s. Frequency f = 1/T = 1/4 = 0.25 Hz.",
+    "page": 44,
+    "hasImage": true,
+    "imageCaption": "Figure 18: Displacement against time for an oscillating simple pendulum",
+    "imageAlt": "Displacement-time sine wave showing 2 complete oscillations in 8 seconds with amplitude 5 cm",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <path d=\"M 50 100 L 290 100 M 50 100 L 50 20 M 50 100 L 50 180\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"170\" y=\"192\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\">Time (s)</text>\n  <text x=\"18\" y=\"100\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#334155\" transform=\"rotate(-90 18,100)\">Displacement (cm)</text>\n  <text x=\"45\" y=\"44\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">5</text>\n  <text x=\"45\" y=\"104\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">0</text>\n  <text x=\"45\" y=\"164\" font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"end\" fill=\"#475569\">-5</text>\n  <g font-size=\"10\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">\n    <text x=\"78\" y=\"115\">1</text>\n    <text x=\"107\" y=\"115\">2</text>\n    <text x=\"136\" y=\"115\">3</text>\n    <text x=\"165\" y=\"115\">4</text>\n    <text x=\"194\" y=\"115\">5</text>\n    <text x=\"223\" y=\"115\">6</text>\n    <text x=\"252\" y=\"115\">7</text>\n    <text x=\"280\" y=\"115\">8</text>\n  </g>\n  <path d=\"M 50 100 Q 78 20 107 100 T 165 100 Q 194 20 223 100 T 280 100\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n</svg>"
+  },
+  {
+    "id": "phy_diag_619",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Thermal Physics: Bimetallic Strip & Linear Expansivity",
+    "bookQuestionNum": 619,
+    "text": "A bimetallic strip made of two different metals X and Y is straight at room temperature. When heated, it bends as shown. Which of the following statements is correct?",
+    "options": {
+      "A": "Y expands more than X.",
+      "B": "X and Y have the same linear expansivity.",
+      "C": "The strip bends towards the metal that expands more.",
+      "D": "X expands more than Y."
+    },
+    "answer": "D",
+    "explanation": "The metal that expands more becomes longer and so must lie on the outer (convex) side of the curve. X is on the outside, so X has the greater linear expansivity. The strip bends towards the metal that expands less.",
+    "page": 44,
+    "hasImage": true,
+    "imageCaption": "Figure 19: Bimetallic strip composed of metals X and Y before and after heating",
+    "imageAlt": "Bimetallic strip straight before heating, bending downwards after heating with metal X on outer curve and Y on inner curve",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <g transform=\"translate(30, 40)\">\n    <rect x=\"0\" y=\"0\" width=\"100\" height=\"12\" fill=\"#f97316\" stroke=\"#c2410c\" stroke-width=\"1\" />\n    <rect x=\"0\" y=\"12\" width=\"100\" height=\"12\" fill=\"#fbbf24\" stroke=\"#d97706\" stroke-width=\"1\" />\n    <text x=\"50\" y=\"10\" font-size=\"10\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#ffffff\">X</text>\n    <text x=\"50\" y=\"22\" font-size=\"10\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#78350f\">Y</text>\n    <g stroke=\"#dc2626\" stroke-width=\"1.5\">\n      <line x1=\"25\" y1=\"40\" x2=\"25\" y2=\"28\" />\n      <polygon points=\"25,28 22,34 28,34\" fill=\"#dc2626\" />\n      <line x1=\"50\" y1=\"40\" x2=\"50\" y2=\"28\" />\n      <polygon points=\"50,28 47,34 53,34\" fill=\"#dc2626\" />\n      <line x1=\"75\" y1=\"40\" x2=\"75\" y2=\"28\" />\n      <polygon points=\"75,28 72,34 78,34\" fill=\"#dc2626\" />\n    </g>\n    <text x=\"50\" y=\"70\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">Before heating</text>\n  </g>\n  <g transform=\"translate(190, 40)\">\n    <path d=\"M 0 0 Q 50 35 100 20 L 98 32 Q 50 47 0 12 Z\" fill=\"#f97316\" stroke=\"#c2410c\" stroke-width=\"1\" />\n    <path d=\"M 0 12 Q 50 47 98 32 L 96 44 Q 50 59 0 24 Z\" fill=\"#fbbf24\" stroke=\"#d97706\" stroke-width=\"1\" />\n    <text x=\"50\" y=\"20\" font-size=\"10\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#ffffff\">X</text>\n    <text x=\"50\" y=\"38\" font-size=\"10\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#78350f\">Y</text>\n    <text x=\"50\" y=\"70\" font-size=\"11\" font-family=\"sans-serif\" text-anchor=\"middle\" fill=\"#475569\">After heating</text>\n  </g>\n</svg>"
+  },
+  {
+    "id": "phy_diag_620",
+    "originalChapter": 6,
+    "chapterTitle": "Topic 6: Diagram-Based Problem Solving in Physics",
+    "topic": "Vectors: Perpendicular Vector Addition & Resultant",
+    "bookQuestionNum": 620,
+    "text": "Two forces of 6 N and 8 N act at a point O at right angles to each other, as shown. What is the magnitude of their resultant?",
+    "options": {
+      "A": "14 N",
+      "B": "10 N",
+      "C": "2 N",
+      "D": "48 N"
+    },
+    "answer": "B",
+    "explanation": "The forces are perpendicular, so by Pythagoras R = √(6² + 8²) = √(36 + 64) = √100 = 10 N.",
+    "page": 44,
+    "hasImage": true,
+    "imageCaption": "Figure 20: Two perpendicular forces 6 N and 8 N acting at a common point O",
+    "imageAlt": "Vector diagram showing horizontal force 6 N and vertical force 8 N meeting at 90 degrees with resultant R",
+    "imageSvg": "<svg viewBox=\"0 0 320 200\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-full max-w-md mx-auto\">\n  <rect width=\"320\" height=\"200\" fill=\"#f8fafc\" rx=\"8\" />\n  <circle cx=\"80\" cy=\"150\" r=\"3.5\" fill=\"#0f172a\" />\n  <text x=\"65\" y=\"160\" font-size=\"12\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">O</text>\n  <line x1=\"80\" y1=\"150\" x2=\"200\" y2=\"150\" stroke=\"#dc2626\" stroke-width=\"3\" />\n  <polygon points=\"208,150 198,144 198,156\" fill=\"#dc2626\" />\n  <text x=\"145\" y=\"172\" font-size=\"14\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#dc2626\">6 N</text>\n  <line x1=\"80\" y1=\"150\" x2=\"80\" y2=\"40\" stroke=\"#0284c7\" stroke-width=\"3\" />\n  <polygon points=\"80,32 74,42 86,42\" fill=\"#0284c7\" />\n  <text x=\"55\" y=\"95\" font-size=\"14\" font-family=\"sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#0284c7\">8 N</text>\n  <polyline points=\"80,138 92,138 92,150\" fill=\"none\" stroke=\"#64748b\" stroke-width=\"1.5\" />\n  <line x1=\"80\" y1=\"150\" x2=\"205\" y2=\"35\" stroke=\"#1e293b\" stroke-dasharray=\"4,4\" stroke-width=\"2.5\" />\n  <polygon points=\"208,32 198,34 205,42\" fill=\"#1e293b\" />\n  <text x=\"165\" y=\"85\" font-size=\"14\" font-family=\"sans-serif\" font-weight=\"bold\" fill=\"#0f172a\">R = ?</text>\n</svg>"
   }
-
 ];
 
 export const JAMBIX_PHYSICS_100_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
@@ -10843,6 +11210,7 @@ export const JAMBIX_PHYSICS_200_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_300_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_500_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 export const JAMBIX_PHYSICS_600_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
+export const JAMBIX_PHYSICS_620_ITEMS = PHYSICS_DEMYSTIFIED_ITEMS;
 
 export function getPhysicsDemystifiedVerifiedQuestions() {
   return PHYSICS_DEMYSTIFIED_ITEMS.map((item, idx) => ({
@@ -10863,6 +11231,9 @@ export function getPhysicsDemystifiedVerifiedQuestions() {
     bookTitle: 'JAMBIX PHYSICS QUESTION BANK',
     author: 'JAMBIX UTME Preparatory Series',
     textbookRef: item.chapterTitle || 'Topic 1: Measurements and Units',
-    hasImage: false,
+    hasImage: item.hasImage || false,
+    imageSvg: item.imageSvg,
+    imageCaption: item.imageCaption,
+    imageAlt: item.imageAlt,
   }));
 }

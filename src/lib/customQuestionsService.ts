@@ -39,6 +39,7 @@ export interface CustomExtractedQuestion {
   imageUrl?: string;
   imageCaption?: string;
   imageAlt?: string;
+  imageSvg?: string;
 }
 
 import { PHYSICS_DEMYSTIFIED_ITEMS } from '../data/physicsDemystifiedBank';
@@ -71,6 +72,7 @@ export const PHYSICS_DEMYSTIFIED_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = P
   imageUrl: item.imageUrl,
   imageCaption: item.imageCaption,
   imageAlt: item.imageAlt,
+  imageSvg: item.imageSvg,
 }));
 
 export const CHEMISTRY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_CHEMISTRY_ITEMS.map((item, idx) => ({
@@ -414,6 +416,7 @@ export function convertToVerifiedQuestion(
     imageUrl: cq.imageUrl,
     imageCaption: cq.imageCaption,
     imageAlt: cq.imageAlt,
+    imageSvg: cq.imageSvg,
   };
 
   const isAuthenticBank = isDemystified || cq.bookTitle?.includes('JAMBIX') || cq.sourcePdfName?.includes('JAMBIX');
