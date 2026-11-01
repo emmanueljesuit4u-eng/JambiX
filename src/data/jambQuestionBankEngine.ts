@@ -4088,34 +4088,357 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX BIOLOGY QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX BIOLOGY QUESTION BANK (300 CHALLENGING QUESTIONS ACROSS 20+ TOPIC CLUSTERS)
+  // Balanced Topic Distribution During Tests:
+  // Round-robins evenly across all 20+ syllabus topic clusters so questions
+  // are drawn evenly from all branches of the syllabus without clustering into any single topic.
   // =========================================================================
   if (subjectKey === 'biology' && JAMBIX_BIOLOGY_ITEMS.length > 0) {
-    // 1. Group items by topic to guarantee even, fair distribution across all topics
+    const getBiologyTopicCluster = (item: typeof JAMBIX_BIOLOGY_ITEMS[0]) => {
+      const topic = (item.topic || '').toLowerCase();
+      const title = (item.chapterTitle || '').toLowerCase();
+      const text = (item.text || '').toLowerCase();
+
+      // 1. Cell Division & Cell Cycle
+      if (
+        topic.includes('mitosis') ||
+        topic.includes('meiosis') ||
+        topic.includes('cell cycle') ||
+        topic.includes('cell division') ||
+        topic.includes('crossing over') ||
+        topic.includes('independent assortment')
+      ) {
+        return 'Cell Division & Cell Cycle';
+      }
+
+      // 2. Cell Biology, Organelles & Membrane Transport
+      if (
+        topic.includes('cell biology') ||
+        topic.includes('cellular physiology') ||
+        topic.includes('membrane transport') ||
+        topic.includes('microscopy') ||
+        topic.includes('plasmolysis') ||
+        topic.includes('diffusion') ||
+        topic.includes('organelle') ||
+        topic.includes('vacuole') ||
+        topic.includes('ribosome') ||
+        topic.includes('protoplast') ||
+        title.includes('cell biology')
+      ) {
+        return 'Cell Biology, Organelles & Membrane Transport';
+      }
+
+      // 3. Molecular Biology, DNA & Protein Synthesis
+      if (
+        topic.includes('molecular genetics') ||
+        topic.includes('dna') ||
+        topic.includes('rna') ||
+        topic.includes('transcription') ||
+        topic.includes('translation') ||
+        topic.includes('codon') ||
+        topic.includes('protein synthesis') ||
+        topic.includes('mutation') ||
+        text.includes('dna replication') ||
+        text.includes('codon')
+      ) {
+        return 'Molecular Biology, DNA & Protein Synthesis';
+      }
+
+      // 4. Evolution, Natural Selection & Taxonomy
+      if (
+        topic.includes('evolution') ||
+        topic.includes('adaptation') ||
+        topic.includes('taxonomy') ||
+        topic.includes('binomial nomenclature') ||
+        topic.includes('natural selection') ||
+        topic.includes('homologous') ||
+        title.includes('evolution')
+      ) {
+        return 'Evolution, Natural Selection & Taxonomy';
+      }
+
+      // 5. Mendelian Genetics, Heredity & Variation
+      if (
+        topic.includes('genetics') ||
+        topic.includes('heredity') ||
+        topic.includes('mendelian') ||
+        topic.includes('allele') ||
+        topic.includes('dihybrid') ||
+        topic.includes('monohybrid') ||
+        topic.includes('test cross') ||
+        topic.includes('polygenic') ||
+        topic.includes('genotype') ||
+        topic.includes('phenotype') ||
+        topic.includes('nondisjunction') ||
+        title.includes('genetics') ||
+        title.includes('heredity')
+      ) {
+        return 'Mendelian Genetics, Heredity & Variation';
+      }
+
+      // 6. Plant Anatomy, Water Relations & Transpiration
+      if (
+        topic.includes('plant water relations') ||
+        topic.includes('transpiration') ||
+        topic.includes('stomata') ||
+        topic.includes('guttation') ||
+        topic.includes('xylem') ||
+        topic.includes('phloem') ||
+        topic.includes('translocation') ||
+        topic.includes('casparian') ||
+        topic.includes('root hair') ||
+        topic.includes('leaf anatomy') ||
+        topic.includes('vascular bundle') ||
+        (topic.includes('transport in plants') && !topic.includes('hormone'))
+      ) {
+        return 'Plant Anatomy, Water Relations & Transpiration';
+      }
+
+      // 7. Plant Physiology, Photosynthesis & Mineral Nutrition
+      if (
+        topic.includes('photosynthesis') ||
+        topic.includes('chloroplast') ||
+        topic.includes('cam photosynthesis') ||
+        topic.includes('c4 pathway') ||
+        topic.includes('plant nutrition') ||
+        topic.includes('mineral requirements')
+      ) {
+        return 'Plant Physiology, Photosynthesis & Mineral Nutrition';
+      }
+
+      // 8. Plant Hormones, Tropisms & Responses
+      if (
+        topic.includes('tropism') ||
+        topic.includes('plant hormone') ||
+        topic.includes('auxin') ||
+        topic.includes('photoperiodism') ||
+        topic.includes('abscisic') ||
+        topic.includes('geotropism') ||
+        topic.includes('phototropism') ||
+        topic.includes('apical dominance')
+      ) {
+        return 'Plant Hormones, Tropisms & Responses';
+      }
+
+      // 9. Plant Reproduction, Pollination & Seed Development
+      if (
+        topic.includes('plant reproduction') ||
+        topic.includes('pollination') ||
+        topic.includes('flower') ||
+        topic.includes('floral') ||
+        topic.includes('pollen') ||
+        topic.includes('stigma') ||
+        topic.includes('embryo sac') ||
+        topic.includes('fruit and seed')
+      ) {
+        return 'Plant Reproduction, Pollination & Seed Development';
+      }
+
+      // 10. Respiratory System & Gaseous Exchange
+      if (
+        topic.includes('respiratory') ||
+        topic.includes('gaseous exchange') ||
+        topic.includes('alveoli') ||
+        topic.includes('diaphragm') ||
+        topic.includes('gas transport') ||
+        topic.includes('bicarbonate') ||
+        topic.includes('inhalation') ||
+        text.includes('alveoli') ||
+        text.includes('diaphragm') ||
+        text.includes('inhalation')
+      ) {
+        return 'Respiratory System & Gaseous Exchange';
+      }
+
+      // 11. Circulatory System, Blood & Immunity
+      if (
+        topic.includes('circulatory') ||
+        topic.includes('blood') ||
+        topic.includes('heart') ||
+        topic.includes('valve') ||
+        topic.includes('pacemaker') ||
+        topic.includes('immune') ||
+        topic.includes('antibody') ||
+        topic.includes('phagocytosis') ||
+        topic.includes('thrombin') ||
+        topic.includes('plasma protein') ||
+        topic.includes('red blood cell') ||
+        title.includes('circulation')
+      ) {
+        return 'Circulatory System, Blood & Immunity';
+      }
+
+      // 12. Excretory System & Osmoregulation
+      if (
+        topic.includes('excretory') ||
+        topic.includes('renal') ||
+        topic.includes('kidney') ||
+        topic.includes('nephron') ||
+        topic.includes('ultrafiltration') ||
+        topic.includes('loop of henle') ||
+        topic.includes('deamination') ||
+        title.includes('excretion')
+      ) {
+        return 'Excretory System & Osmoregulation';
+      }
+
+      // 13. Support, Skeletal & Muscular Systems
+      if (
+        topic.includes('skeletal') ||
+        topic.includes('joint') ||
+        topic.includes('muscular') ||
+        topic.includes('muscle') ||
+        topic.includes('bone') ||
+        topic.includes('support, movement') ||
+        title.includes('support, movement')
+      ) {
+        return 'Support, Skeletal & Muscular Systems';
+      }
+
+      // 14. Sense Organs: Eye & Ear Mechanics
+      if (
+        topic.includes('sense organ') ||
+        topic.includes('retina') ||
+        topic.includes('rod') ||
+        topic.includes('cone') ||
+        topic.includes('cochlea') ||
+        topic.includes('semicircular') ||
+        topic.includes('eye') ||
+        topic.includes('ear')
+      ) {
+        return 'Sense Organs: Eye & Ear Mechanics';
+      }
+
+      // 15. Nervous Coordination & Synaptic Transmission
+      if (
+        topic.includes('nervous') ||
+        topic.includes('reflex') ||
+        topic.includes('synapse') ||
+        topic.includes('neurotransmitter') ||
+        topic.includes('myelin') ||
+        topic.includes('axon') ||
+        topic.includes('saltatory')
+      ) {
+        return 'Nervous Coordination & Synaptic Transmission';
+      }
+
+      // 16. Endocrine System & Hormonal Coordination
+      if (
+        topic.includes('endocrine') ||
+        topic.includes('hormone') ||
+        topic.includes('thyroxine') ||
+        topic.includes('metabolic rate') ||
+        topic.includes('pituitary') ||
+        topic.includes('adrenal')
+      ) {
+        return 'Endocrine System & Hormonal Coordination';
+      }
+
+      // 17. Animal Reproduction & Embryonic Development
+      if (
+        topic.includes('spermatogenesis') ||
+        topic.includes('seminiferous') ||
+        topic.includes('epididym') ||
+        topic.includes('ovulation') ||
+        topic.includes('corpus luteum') ||
+        topic.includes('progesterone') ||
+        topic.includes('fsh') ||
+        topic.includes('lh') ||
+        topic.includes('amniotic') ||
+        topic.includes('umbilical') ||
+        topic.includes('twins') ||
+        topic.includes('animal reproduction') ||
+        title.includes('reproduction')
+      ) {
+        return 'Animal Reproduction & Embryonic Development';
+      }
+
+      // 18. Animal Nutrition & Digestive System
+      if (
+        topic.includes('nutrition') ||
+        topic.includes('digestive') ||
+        topic.includes('alimentary') ||
+        topic.includes('peristalsis') ||
+        topic.includes('lacteal') ||
+        topic.includes('lipase') ||
+        topic.includes('enzyme') ||
+        title.includes('nutrition')
+      ) {
+        return 'Animal Nutrition & Digestive System';
+      }
+
+      // 19. Microbiology, Viruses, Fungi & Biotechnology
+      if (
+        topic.includes('microbiology') ||
+        topic.includes('bacteria') ||
+        topic.includes('binary fission') ||
+        topic.includes('plasmid') ||
+        topic.includes('virology') ||
+        topic.includes('virus') ||
+        topic.includes('bacteriophage') ||
+        topic.includes('mycology') ||
+        topic.includes('fungi') ||
+        topic.includes('chitin')
+      ) {
+        return 'Microbiology, Viruses, Fungi & Biotechnology';
+      }
+
+      // 20. Ecology, Energy Flow & Nutrient Cycling
+      if (
+        topic.includes('ecology') ||
+        topic.includes('ecosystem') ||
+        topic.includes('decomposer') ||
+        topic.includes('pyramid of energy') ||
+        topic.includes('trophic') ||
+        topic.includes('food chain') ||
+        topic.includes('biomagnification') ||
+        topic.includes('pollution') ||
+        topic.includes('commensalism') ||
+        topic.includes('symbiosis') ||
+        title.includes('ecology')
+      ) {
+        return 'Ecology, Energy Flow & Nutrient Cycling';
+      }
+
+      // 21. Classification & Diversity of Living Organisms
+      if (
+        topic.includes('classification') ||
+        topic.includes('diversity') ||
+        topic.includes('kingdom')
+      ) {
+        return 'Classification & Diversity of Living Organisms';
+      }
+
+      return item.chapterTitle || `Topic ${item.originalChapter}`;
+    };
+
+    // 1. Group items across all Biology topic clusters
     const byTopic: Record<string, typeof JAMBIX_BIOLOGY_ITEMS> = {};
     for (const item of JAMBIX_BIOLOGY_ITEMS) {
-      const topicKey = item.topic || item.chapterTitle || `Topic ${item.originalChapter}`;
+      const topicKey = getBiologyTopicCluster(item);
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
 
-    // 2. Shuffle within each topic
+    // 2. Shuffle within each topic cluster
     for (const tKey of Object.keys(byTopic)) {
       byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    // 3. Shuffle topic cluster keys so tests don't always pick topics in the same order
     const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedBioItems: typeof JAMBIX_BIOLOGY_ITEMS = [];
 
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    // Fair quota from JAMBIX_BIOLOGY_ITEMS (which covers 20+ major topic clusters):
+    // Round-robins evenly across every topic cluster so questions are drawn across all branches of the syllabus.
+    const biologyQuota = targetCount;
+
+    // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
     let added = true;
-    while (pickedBioItems.length < targetCount && added) {
+    while (pickedBioItems.length < biologyQuota && added) {
       added = false;
       for (const tKey of topicKeys) {
-        if (pickedBioItems.length >= targetCount) break;
+        if (pickedBioItems.length >= biologyQuota) break;
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
@@ -4132,11 +4455,11 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedBioItems.length < targetCount) {
+    // 5. Pass 2: Fallback across all questions without session duplicates
+    if (pickedBioItems.length < biologyQuota) {
       const allShuffled = shuffleArr(JAMBIX_BIOLOGY_ITEMS);
       for (const item of allShuffled) {
-        if (pickedBioItems.length >= targetCount) break;
+        if (pickedBioItems.length >= biologyQuota) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
           safeSessionUsed.add(sig);
@@ -4159,7 +4482,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Biology',
-        topic: item.topic,
+        topic: item.topic || getBiologyTopicCluster(item),
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
@@ -4171,7 +4494,7 @@ export function generateUniqueSubjectQuestions(
         explanation: item.explanation,
         bookTitle: 'JAMBIX BIOLOGY QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
-        textbookRef: item.chapterTitle || '300 Tough Questions Across All Topics',
+        textbookRef: item.chapterTitle || '300 Challenging Practice Questions Across All Topics',
         hasImage: false,
       };
       // Exactly preserve the author's answer and explanation without scrambling

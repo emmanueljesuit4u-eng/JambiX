@@ -15,6 +15,7 @@ import { SubjectKey, normalizeSubjectKey, assembleUtmeTest, VerifiedQuestion, sc
 import { getPhysicsDemystifiedVerifiedQuestions } from './physicsDemystifiedBank';
 import { getChemistryDemystifiedVerifiedQuestions } from './jambixChemistryBank';
 import { getLamladBiologyVerifiedQuestions } from './lamladBiologyBank';
+import { getBiologyDemystifiedVerifiedQuestions } from './jambixBiologyBank';
 export type { VerifiedQuestion };
 
 export interface VerifiedTextbook {
@@ -1397,6 +1398,7 @@ export const VERIFIED_QUESTIONS: VerifiedQuestion[] = [
   ...getPhysicsDemystifiedVerifiedQuestions(),
   ...getChemistryDemystifiedVerifiedQuestions(),
   ...getLamladBiologyVerifiedQuestions(),
+  ...getBiologyDemystifiedVerifiedQuestions(),
 ];
 
 /**
