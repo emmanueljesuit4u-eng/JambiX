@@ -1448,8 +1448,13 @@ export function generateQuestionForYear(
   if (subjectKey === 'chemistry' && JAMBIX_CHEMISTRY_ITEMS.length > 0) {
     const qNum = qIndex + 1;
     // Deterministic selection based on year and index: no repeats within year, and no question repeats consecutively for more than 2 years
-    const itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_CHEMISTRY_ITEMS.length;
-    const item = JAMBIX_CHEMISTRY_ITEMS[itemIdx];
+    let itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_CHEMISTRY_ITEMS.length;
+    let item = JAMBIX_CHEMISTRY_ITEMS[itemIdx];
+    const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bapparatus\s+shown|\bsetup\s+shown|\bfigure\s+shows)/i.test(item.text);
+    if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+      itemIdx = (itemIdx + 1) % JAMBIX_CHEMISTRY_ITEMS.length;
+      item = JAMBIX_CHEMISTRY_ITEMS[itemIdx];
+    }
     const subCode = SUBJECT_ID_OFFSETS.chemistry || 930000;
     const id = subCode + (year * 100) + qNum;
 
@@ -1471,7 +1476,11 @@ export function generateQuestionForYear(
       bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
       author: 'JAMBIX UTME Preparatory Series',
       textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
-      hasImage: false,
+      hasImage: Boolean(item.hasImage),
+      imageSvg: item.imageSvg,
+      imageCaption: item.imageCaption,
+      imageAlt: item.imageAlt,
+      imageUrl: item.imageUrl,
     };
 
     return baseQuestion;
@@ -1532,12 +1541,16 @@ export function getDiagramSignature(q: {
   imageSvg?: string;
   imageUrl?: string;
   topic?: string;
+  text?: string;
 }): string | null {
   if (!q.hasImage && !q.imageSvg && !q.imageUrl) return null;
   if (q.imageUrl) return q.imageUrl.trim().toLowerCase();
-  if (q.imageSvg) return `svg_${q.imageSvg.trim().slice(0, 100).toLowerCase()}`;
-  if (q.imageCaption) return q.imageCaption.trim().toLowerCase();
-  if (q.imageAlt) return q.imageAlt.trim().toLowerCase();
+  if (q.imageCaption) return `caption_${q.imageCaption.trim().toLowerCase()}`;
+  if (q.imageAlt) return `alt_${q.imageAlt.trim().toLowerCase()}`;
+  if (q.imageSvg) {
+    const textSnippet = q.text ? getQuestionCoreSignature(q.text).slice(0, 40) : '';
+    return `svg_${textSnippet}_${q.imageSvg.length}_${q.imageSvg.slice(-60).trim().toLowerCase()}`;
+  }
   if (q.topic) return `diagram_topic_${q.topic.trim().toLowerCase()}`;
   return 'general_diagram';
 }

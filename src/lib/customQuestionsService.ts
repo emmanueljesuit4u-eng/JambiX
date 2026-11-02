@@ -95,6 +95,7 @@ export const CHEMISTRY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_CHEM
   imageUrl: item.imageUrl,
   imageCaption: item.imageCaption,
   imageAlt: item.imageAlt,
+  imageSvg: item.imageSvg,
 }));
 
 export const MATHEMATICS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_MATHEMATICS_ITEMS.map((item, idx) => ({
