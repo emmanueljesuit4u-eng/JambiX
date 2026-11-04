@@ -6,7 +6,7 @@
  * QUESTIONS 1–100: TOUGH QUESTIONS ACROSS ALL TOPICS
  * QUESTIONS 201–400: 200 CHALLENGING QUESTIONS
  * Indexed directly from official syllabus specifications.
- * Total questions: 300
+ * Total questions: 320 (including 20 Illustrated Diagram Questions)
  */
 
 export interface JambixMathematicsItem {
@@ -29,6 +29,7 @@ export interface JambixMathematicsItem {
   imageUrl?: string;
   imageCaption?: string;
   imageAlt?: string;
+  imageSvg?: string;
 }
 
 export const JAMBIX_MATHEMATICS_ITEMS: JambixMathematicsItem[] = [
@@ -5432,5 +5433,425 @@ export const JAMBIX_MATHEMATICS_ITEMS: JambixMathematicsItem[] = [
     explanation: "Total balls = 4 + 5 + 3 = 12.\n\nFavourable pairs:\n\nRed: ⁴C₂ = 6.\n\nBlue: ⁵C₂ = 10.\n\nGreen: ³C₂ = 3.\n\nTotal favourable pairs = 6 + 10 + 3 = 19.\n\nTotal possible pairs = ¹²C₂ = 66.\n\nProbability = **19/66**.",
     page: 40,
     hasImage: false
+  },
+  {
+    id: "math_diag_401",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Plane Geometry: Angles & Parallel Lines",
+    bookQuestionNum: 401,
+    text: "Two parallel lines l and m are cut by a transversal as shown in the diagram. Find the value of x.",
+    options: {
+      A: "15",
+      B: "20",
+      C: "25",
+      D: "30"
+    },
+    answer: "B",
+    explanation: "Alternate interior angles between parallel lines are equal:\n\n3x + 10 = 5x − 30\n\n5x − 3x = 10 + 30\n\n2x = 40\n\nx = **20**.",
+    page: 1,
+    hasImage: true,
+    imageCaption: "Figure 1: Transversal intersecting two parallel lines l and m with alternate interior angles",
+    imageAlt: "Geometric diagram of parallel lines l and m intersected by a transversal, showing alternate interior angles (3x + 10)° and (5x - 30)°",
+    imageSvg: "<svg viewBox=\"0 0 440 220\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <defs>\n    <marker id=\"arr1\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\">\n      <path d=\"M 0 1 L 8 5 L 0 9 z\" fill=\"#0284c7\" />\n    </marker>\n    <marker id=\"arr2\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\">\n      <path d=\"M 0 1 L 8 5 L 0 9 z\" fill=\"#3b82f6\" />\n    </marker>\n  </defs>\n  <!-- Background subtle grid -->\n  <rect width=\"100%\" height=\"100%\" fill=\"transparent\" />\n  \n  <!-- Parallel line l -->\n  <line x1=\"40\" y1=\"70\" x2=\"400\" y2=\"70\" stroke=\"#1e293b\" stroke-width=\"2.5\" />\n  <path d=\"M 220 70 L 230 65 L 230 75 Z\" fill=\"#0284c7\" />\n  <text x=\"390\" y=\"62\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0369a1\">l</text>\n  \n  <!-- Parallel line m -->\n  <line x1=\"40\" y1=\"150\" x2=\"400\" y2=\"150\" stroke=\"#1e293b\" stroke-width=\"2.5\" />\n  <path d=\"M 220 150 L 230 145 L 230 155 Z\" fill=\"#0284c7\" />\n  <text x=\"390\" y=\"142\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0369a1\">m</text>\n  \n  <!-- Transversal line -->\n  <line x1=\"100\" y1=\"25\" x2=\"330\" y2=\"195\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  <text x=\"335\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">t</text>\n  \n  <!-- Angle (3x + 10)° at upper intersection (x ~ 161, y = 70) -->\n  <!-- Interior angle between transversal going down-right and horizontal line going right -->\n  <path d=\"M 195 70 A 35 35 0 0 1 180 97\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" />\n  <circle cx=\"161\" cy=\"70\" r=\"3.5\" fill=\"#dc2626\" />\n  <text x=\"190\" y=\"100\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#1d4ed8\">(3x + 10)°</text>\n  \n  <!-- Angle (5x - 30)° at lower intersection (x ~ 269, y = 150) -->\n  <!-- Interior angle between transversal going up-left and horizontal line going left -->\n  <path d=\"M 235 150 A 35 35 0 0 1 250 123\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\" />\n  <circle cx=\"269\" cy=\"150\" r=\"3.5\" fill=\"#dc2626\" />\n  <text x=\"145\" y=\"140\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#1d4ed8\">(5x − 30)°</text>\n</svg>"
+  },
+  {
+    id: "math_diag_402",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Mensuration: Area of Triangles",
+    bookQuestionNum: 402,
+    text: "The triangle shown has an area of 70 cm² and base of 14 cm. Find its perpendicular height h.",
+    options: {
+      A: "5 cm",
+      B: "8 cm",
+      C: "10 cm",
+      D: "12 cm"
+    },
+    answer: "C",
+    explanation: "Area of a triangle = ½ × base × height\n\n70 = ½ × 14 × h = 7h\n\nh = 70 / 7 = **10 cm**.",
+    page: 1,
+    hasImage: true,
+    imageCaption: "Figure 2: Triangle with known base 14 cm, area 70 cm², and unknown altitude h",
+    imageAlt: "Triangle diagram with base = 14 cm and dashed perpendicular height h from apex C to base",
+    imageSvg: "<svg viewBox=\"0 0 420 220\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Triangle vertices: A(70, 170), B(350, 170), C(200, 40) -->\n  <polygon points=\"70,170 350,170 200,40\" fill=\"#e0f2fe\" stroke=\"#0369a1\" stroke-width=\"2.5\" />\n  \n  <!-- Perpendicular height line -->\n  <line x1=\"200\" y1=\"40\" x2=\"200\" y2=\"170\" stroke=\"#dc2626\" stroke-width=\"2\" stroke-dasharray=\"5,4\" />\n  \n  <!-- Right-angle square marker at foot (200, 170) -->\n  <rect x=\"200\" y=\"156\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  \n  <!-- Vertex labels -->\n  <text x=\"52\" y=\"176\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#1e293b\">A</text>\n  <text x=\"360\" y=\"176\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#1e293b\">B</text>\n  <text x=\"195\" y=\"28\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#1e293b\">C</text>\n  \n  <!-- Height label -->\n  <text x=\"210\" y=\"110\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#dc2626\">h = ?</text>\n  \n  <!-- Base dimension line -->\n  <line x1=\"70\" y1=\"195\" x2=\"350\" y2=\"195\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"70\" y1=\"188\" x2=\"70\" y2=\"202\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"350\" y1=\"188\" x2=\"350\" y2=\"202\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <text x=\"175\" y=\"212\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0f172a\">base = 14 cm</text>\n  <text x=\"160\" y=\"130\" font-family=\"system-ui, sans-serif\" font-weight=\"600\" font-size=\"13\" fill=\"#0369a1\">Area = 70 cm²</text>\n</svg>"
+  },
+  {
+    id: "math_diag_403",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Circle Geometry: Tangents & Radii",
+    bookQuestionNum: 403,
+    text: "OP is a radius of 7 cm meeting a tangent line at point P as illustrated in the diagram. What is the angle between OP and the tangent?",
+    options: {
+      A: "45°",
+      B: "60°",
+      C: "90°",
+      D: "120°"
+    },
+    answer: "C",
+    explanation: "A fundamental theorem of circle geometry states that the radius of a circle is perpendicular to the tangent at the point of contact.\n\nTherefore, the angle between OP and the tangent is **90°**.",
+    page: 1,
+    hasImage: true,
+    imageCaption: "Figure 3: Radius OP meeting the tangent line at point of contact P",
+    imageAlt: "Circle with center O, radius OP of 7 cm meeting horizontal tangent line at contact point P at 90 degrees",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Circle center at (200, 100), radius 70 -->\n  <circle cx=\"200\" cy=\"100\" r=\"70\" fill=\"#f0fdf4\" stroke=\"#16a34a\" stroke-width=\"2.5\" />\n  \n  <!-- Tangent line at bottom point P(200, 170) -->\n  <line x1=\"50\" y1=\"170\" x2=\"350\" y2=\"170\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <text x=\"355\" y=\"174\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#2563eb\">Tangent</text>\n  \n  <!-- Radius line OP -->\n  <line x1=\"200\" y1=\"100\" x2=\"200\" y2=\"170\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  \n  <!-- Center O -->\n  <circle cx=\"200\" cy=\"100\" r=\"4\" fill=\"#0f172a\" />\n  <text x=\"180\" y=\"98\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0f172a\">O</text>\n  \n  <!-- Point P -->\n  <circle cx=\"200\" cy=\"170\" r=\"4\" fill=\"#dc2626\" />\n  <text x=\"208\" y=\"190\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#dc2626\">P</text>\n  \n  <!-- Radius label -->\n  <text x=\"210\" y=\"135\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">7 cm</text>\n  \n  <!-- Right-angle square marker at P (200, 170) -->\n  <rect x=\"200\" y=\"154\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"#16a34a\" stroke-width=\"2\" />\n  \n  <text x=\"110\" y=\"30\" font-family=\"system-ui, sans-serif\" font-size=\"13\" font-weight=\"600\" fill=\"#475569\">Radius ⊥ Tangent at contact point</text>\n</svg>"
+  },
+  {
+    id: "math_diag_404",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Coordinate Geometry: Area of Polygons",
+    bookQuestionNum: 404,
+    text: "A triangle has vertices A(1, 1), B(5, 1) and C(3, 4) in the Cartesian plane as shown. Find its area.",
+    options: {
+      A: "4",
+      B: "6",
+      C: "8",
+      D: "10"
+    },
+    answer: "B",
+    explanation: "The base AB lies horizontally along y = 1:\n\nBase AB = 5 − 1 = 4 units.\n\nThe vertical height is the difference in y-coordinates between C(3, 4) and the base line y = 1:\n\nHeight h = 4 − 1 = 3 units.\n\nArea = ½ × base × height = ½ × 4 × 3 = **6 square units**.",
+    page: 2,
+    hasImage: true,
+    imageCaption: "Figure 4: Triangle plotted on Cartesian coordinates with vertices A(1, 1), B(5, 1), and C(3, 4)",
+    imageAlt: "Cartesian plane plotting triangle ABC with coordinates A(1, 1), B(5, 1) and C(3, 4)",
+    imageSvg: "<svg viewBox=\"0 0 440 240\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <defs>\n    <pattern id=\"grid4\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\">\n      <path d=\"M 40 0 L 0 0 0 40\" fill=\"none\" stroke=\"#cbd5e1\" stroke-width=\"0.7\" stroke-dasharray=\"2,2\"/>\n    </pattern>\n  </defs>\n  <rect x=\"60\" y=\"20\" width=\"340\" height=\"180\" fill=\"url(#grid4)\" />\n  \n  <!-- Axes: origin at (60, 200). Scale: 50px per unit horizontal, 40px per unit vertical -->\n  <!-- x-axis -->\n  <line x1=\"50\" y1=\"200\" x2=\"410\" y2=\"200\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"415\" y=\"205\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">x</text>\n  <!-- y-axis -->\n  <line x1=\"60\" y1=\"210\" x2=\"60\" y2=\"15\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"55\" y=\"12\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">y</text>\n  \n  <!-- Tick marks: origin (0,0) at (60, 200) -->\n  <!-- x ticks: 1:110, 2:160, 3:210, 4:260, 5:310, 6:360 -->\n  <text x=\"50\" y=\"215\" font-size=\"12\" fill=\"#64748b\">0</text>\n  <text x=\"106\" y=\"215\" font-size=\"12\" fill=\"#64748b\">1</text>\n  <text x=\"156\" y=\"215\" font-size=\"12\" fill=\"#64748b\">2</text>\n  <text x=\"206\" y=\"215\" font-size=\"12\" fill=\"#64748b\">3</text>\n  <text x=\"256\" y=\"215\" font-size=\"12\" fill=\"#64748b\">4</text>\n  <text x=\"306\" y=\"215\" font-size=\"12\" fill=\"#64748b\">5</text>\n  <!-- y ticks: 1:160, 2:120, 3:80, 4:40 -->\n  <text x=\"44\" y=\"164\" font-size=\"12\" fill=\"#64748b\">1</text>\n  <text x=\"44\" y=\"124\" font-size=\"12\" fill=\"#64748b\">2</text>\n  <text x=\"44\" y=\"84\" font-size=\"12\" fill=\"#64748b\">3</text>\n  <text x=\"44\" y=\"44\" font-size=\"12\" fill=\"#64748b\">4</text>\n\n  <!-- Triangle ABC: A(110, 160), B(310, 160), C(210, 40) -->\n  <polygon points=\"110,160 310,160 210,40\" fill=\"#e0e7ff\" stroke=\"#4f46e5\" stroke-width=\"2.5\" />\n  \n  <!-- Height dashed line -->\n  <line x1=\"210\" y1=\"40\" x2=\"210\" y2=\"160\" stroke=\"#e11d48\" stroke-width=\"1.8\" stroke-dasharray=\"4,4\" />\n  \n  <!-- Vertices -->\n  <circle cx=\"110\" cy=\"160\" r=\"4.5\" fill=\"#4f46e5\" />\n  <circle cx=\"310\" cy=\"160\" r=\"4.5\" fill=\"#4f46e5\" />\n  <circle cx=\"210\" cy=\"40\" r=\"4.5\" fill=\"#4f46e5\" />\n  \n  <!-- Labels -->\n  <text x=\"75\" y=\"155\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#1e1b4b\">A(1, 1)</text>\n  <text x=\"315\" y=\"155\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#1e1b4b\">B(5, 1)</text>\n  <text x=\"218\" y=\"38\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#1e1b4b\">C(3, 4)</text>\n  <text x=\"215\" y=\"105\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"12\" fill=\"#e11d48\">h = 3</text>\n</svg>"
+  },
+  {
+    id: "math_diag_405",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Trigonometry & Bearings: Vector Resolution",
+    bookQuestionNum: 405,
+    text: "A ship travels 20 km at 60° north of east as shown in the diagram. Find its northward displacement.",
+    options: {
+      A: "10 km",
+      B: "10√3 km",
+      C: "20√3 km",
+      D: "20 km"
+    },
+    answer: "B",
+    explanation: "Northward component = 20 × sin(60°) = 20 × (√3 / 2) = **10√3 km**.",
+    page: 2,
+    hasImage: true,
+    imageCaption: "Figure 5: Bearing and vector resolution of ship traveling 20 km at 60° North of East",
+    imageAlt: "Compass vector showing a displacement of 20 km at 60 degrees north of east and its northward component",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <defs>\n    <marker id=\"vectArr\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\">\n      <path d=\"M 0 1 L 8 5 L 0 9 z\" fill=\"#0284c7\" />\n    </marker>\n    <marker id=\"axisArr\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\">\n      <path d=\"M 0 1 L 8 5 L 0 9 z\" fill=\"#475569\" />\n    </marker>\n  </defs>\n  <!-- Axes from Origin (100, 180) -->\n  <line x1=\"80\" y1=\"180\" x2=\"360\" y2=\"180\" stroke=\"#475569\" stroke-width=\"2\" marker-end=\"url(#axisArr)\" />\n  <text x=\"365\" y=\"185\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#0f172a\">E</text>\n  \n  <line x1=\"100\" y1=\"200\" x2=\"100\" y2=\"25\" stroke=\"#475569\" stroke-width=\"2\" marker-end=\"url(#axisArr)\" />\n  <text x=\"95\" y=\"18\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#0f172a\">N</text>\n  \n  <!-- Ship Vector: 200 px at 60 deg -> dx = 100 px, dy = 173 px -> End at (200, 7) -->\n  <!-- Scaled slightly: vector length 160 px -> dx = 80, dy = 138.56 -> End at (180, 41.4) -->\n  <line x1=\"100\" y1=\"180\" x2=\"180\" y2=\"42\" stroke=\"#0284c7\" stroke-width=\"3\" marker-end=\"url(#vectArr)\" />\n  \n  <!-- Northward component dashed -->\n  <line x1=\"180\" y1=\"180\" x2=\"180\" y2=\"42\" stroke=\"#dc2626\" stroke-width=\"2\" stroke-dasharray=\"4,4\" />\n  <rect x=\"168\" y=\"168\" width=\"12\" height=\"12\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  \n  <!-- Angle arc 60 deg -->\n  <path d=\"M 140 180 A 40 40 0 0 0 120 145\" fill=\"none\" stroke=\"#eab308\" stroke-width=\"2.5\" />\n  <text x=\"142\" y=\"162\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#b45309\">60°</text>\n  \n  <!-- Vector labels -->\n  <text x=\"115\" y=\"100\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0284c7\">20 km</text>\n  <text x=\"188\" y=\"115\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">Displacement (N) = ?</text>\n  \n  <circle cx=\"100\" cy=\"180\" r=\"4\" fill=\"#0f172a\" />\n  <text x=\"80\" y=\"195\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#64748b\">Origin</text>\n</svg>"
+  },
+  {
+    id: "math_diag_406",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Mensuration: Sector of a Circle",
+    bookQuestionNum: 406,
+    text: "Find the area of the circular sector shown with radius 14 cm and subtended angle 75°. (Take π = 22/7)",
+    options: {
+      A: "110 cm²",
+      B: "128⅓ cm²",
+      C: "140 cm²",
+      D: "154 cm²"
+    },
+    answer: "B",
+    explanation: "Area of a sector = (θ / 360°) × πr²\n\nArea = (75 / 360) × (22 / 7) × 14²\n\n= (5 / 24) × (22 / 7) × 196\n\n= (5 / 24) × 616 = 3080 / 24 = 385 / 3 = **128⅓ cm²**.",
+    page: 2,
+    hasImage: true,
+    imageCaption: "Figure 6: Circular sector of radius 14 cm subtending central angle 75°",
+    imageAlt: "Diagram of a circle sector with central angle 75 degrees and radius r = 14 cm",
+    imageSvg: "<svg viewBox=\"0 0 420 220\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Center O at (130, 160), Radius 150 -->\n  <!-- Horizontal arm to (280, 160) -->\n  <!-- Arm at 75° up: dx = 150 * cos(75°) = 38.8, dy = 150 * sin(75°) = 144.9 -> End at (168.8, 15.1) -->\n  <path d=\"M 130 160 L 280 160 A 150 150 0 0 0 168.8 15.1 Z\" fill=\"#fef3c7\" stroke=\"#d97706\" stroke-width=\"2.5\" />\n  \n  <!-- Center O -->\n  <circle cx=\"130\" cy=\"160\" r=\"4.5\" fill=\"#0f172a\" />\n  <text x=\"110\" y=\"175\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0f172a\">O</text>\n  \n  <!-- Radius labels -->\n  <text x=\"195\" y=\"180\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#b45309\">r = 14 cm</text>\n  \n  <!-- Angle arc -->\n  <path d=\"M 170 160 A 40 40 0 0 0 140.3 121.4\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"2\" />\n  <text x=\"175\" y=\"140\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">75°</text>\n  \n  <!-- Info card -->\n  <rect x=\"290\" y=\"40\" width=\"115\" height=\"75\" rx=\"6\" fill=\"#ffffff\" stroke=\"#cbd5e1\" stroke-width=\"1.5\" />\n  <text x=\"300\" y=\"65\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#334155\">r = 14 cm</text>\n  <text x=\"300\" y=\"85\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#334155\">θ = 75°</text>\n  <text x=\"300\" y=\"105\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#0284c7\">π = 22/7</text>\n</svg>"
+  },
+  {
+    id: "math_diag_407",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Mensuration: Area of Trapezium",
+    bookQuestionNum: 407,
+    text: "The parallel sides of the trapezium shown are 12 cm and 20 cm, and its perpendicular height is 10 cm. Find its area.",
+    options: {
+      A: "120 cm²",
+      B: "140 cm²",
+      C: "160 cm²",
+      D: "180 cm²"
+    },
+    answer: "C",
+    explanation: "Area of a trapezium = ½(a + b)h\n\nArea = ½(12 + 20) × 10\n\n= ½(32) × 10 = 16 × 10 = **160 cm²**.",
+    page: 3,
+    hasImage: true,
+    imageCaption: "Figure 7: Trapezium with parallel sides 12 cm and 20 cm, and height 10 cm",
+    imageAlt: "Trapezium with top side 12 cm, bottom side 20 cm, and dashed vertical height 10 cm",
+    imageSvg: "<svg viewBox=\"0 0 420 220\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Trapezium vertices: Top (140, 50) to (260, 50) length 120 (12 cm); Bottom (80, 160) to (320, 160) length 240 (20 cm) -->\n  <polygon points=\"140,50 260,50 320,160 80,160\" fill=\"#f0fdfa\" stroke=\"#0d9488\" stroke-width=\"2.5\" />\n  \n  <!-- Height dashed line from (140, 50) to (140, 160) -->\n  <line x1=\"140\" y1=\"50\" x2=\"140\" y2=\"160\" stroke=\"#dc2626\" stroke-width=\"2\" stroke-dasharray=\"4,4\" />\n  <rect x=\"140\" y=\"146\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  <text x=\"148\" y=\"110\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">h = 10 cm</text>\n  \n  <!-- Top dimension -->\n  <line x1=\"140\" y1=\"36\" x2=\"260\" y2=\"36\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"140\" y1=\"30\" x2=\"140\" y2=\"42\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"260\" y1=\"30\" x2=\"260\" y2=\"42\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <text x=\"180\" y=\"28\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0f172a\">12 cm</text>\n  \n  <!-- Bottom dimension -->\n  <line x1=\"80\" y1=\"184\" x2=\"320\" y2=\"184\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"80\" y1=\"178\" x2=\"80\" y2=\"190\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"320\" y1=\"178\" x2=\"320\" y2=\"190\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <text x=\"180\" y=\"202\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0f172a\">20 cm</text>\n</svg>"
+  },
+  {
+    id: "math_diag_408",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Mensuration: Volume of Cone",
+    bookQuestionNum: 408,
+    text: "A cone has base radius 5 cm and vertical height 12 cm as illustrated. Find its volume.",
+    options: {
+      A: "60π cm³",
+      B: "75π cm³",
+      C: "100π cm³",
+      D: "150π cm³"
+    },
+    answer: "C",
+    explanation: "Volume of a cone = ⅓πr²h\n\n= ⅓ × π × (5)² × 12\n\n= ⅓ × π × 25 × 12\n\n= 25 × 4 × π = **100π cm³**.",
+    page: 3,
+    hasImage: true,
+    imageCaption: "Figure 8: Circular cone with vertical height 12 cm and base radius 5 cm",
+    imageAlt: "Diagram of a cone with radius r = 5 cm and vertical height h = 12 cm",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Cone apex at (210, 30), base ellipse centered at (210, 180), rx = 80, ry = 22 -->\n  <path d=\"M 130 180 L 210 30 L 290 180\" fill=\"#ede9fe\" stroke=\"#7c3aed\" stroke-width=\"2.5\" />\n  \n  <!-- Base ellipse: bottom half solid, top half dashed -->\n  <path d=\"M 130 180 A 80 22 0 0 0 290 180\" fill=\"#ddd6fe\" stroke=\"#7c3aed\" stroke-width=\"2.5\" />\n  <path d=\"M 130 180 A 80 22 0 0 1 290 180\" fill=\"none\" stroke=\"#7c3aed\" stroke-width=\"1.8\" stroke-dasharray=\"4,4\" />\n  \n  <!-- Height dashed line -->\n  <line x1=\"210\" y1=\"30\" x2=\"210\" y2=\"180\" stroke=\"#dc2626\" stroke-width=\"2\" stroke-dasharray=\"4,4\" />\n  <rect x=\"210\" y=\"168\" width=\"12\" height=\"12\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  <text x=\"218\" y=\"110\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">h = 12 cm</text>\n  \n  <!-- Radius line from center (210, 180) to (290, 180) -->\n  <line x1=\"210\" y1=\"180\" x2=\"290\" y2=\"180\" stroke=\"#2563eb\" stroke-width=\"2\" />\n  <circle cx=\"210\" cy=\"180\" r=\"3.5\" fill=\"#0f172a\" />\n  <text x=\"235\" y=\"196\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#2563eb\">r = 5 cm</text>\n</svg>"
+  },
+  {
+    id: "math_diag_409",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Mensuration: Surface Area of Cylinder",
+    bookQuestionNum: 409,
+    text: "A solid cylinder has base radius 4 cm and height 15 cm. Find its curved surface area.",
+    options: {
+      A: "60π cm²",
+      B: "100π cm²",
+      C: "120π cm²",
+      D: "160π cm²"
+    },
+    answer: "C",
+    explanation: "Curved surface area of a cylinder = 2πrh\n\n= 2 × π × 4 × 15\n\n= **120π cm²**.",
+    page: 3,
+    hasImage: true,
+    imageCaption: "Figure 9: Solid cylinder with base radius 4 cm and vertical height 15 cm",
+    imageAlt: "Cylinder diagram with base radius r = 4 cm and height h = 15 cm",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Top ellipse centered at (210, 50), rx = 70, ry = 20 -->\n  <!-- Cylinder body: sides from (140, 50) to (140, 170) and (280, 50) to (280, 170) -->\n  <path d=\"M 140 50 L 140 170 A 70 20 0 0 0 280 170 L 280 50 Z\" fill=\"#e0f2fe\" stroke=\"#0284c7\" stroke-width=\"2.5\" />\n  \n  <!-- Bottom back curve dashed -->\n  <path d=\"M 140 170 A 70 20 0 0 1 280 170\" fill=\"none\" stroke=\"#0284c7\" stroke-width=\"1.8\" stroke-dasharray=\"4,4\" />\n  \n  <!-- Top ellipse complete -->\n  <ellipse cx=\"210\" cy=\"50\" rx=\"70\" ry=\"20\" fill=\"#bae6fd\" stroke=\"#0284c7\" stroke-width=\"2.5\" />\n  \n  <!-- Top radius line -->\n  <line x1=\"210\" y1=\"50\" x2=\"280\" y2=\"50\" stroke=\"#dc2626\" stroke-width=\"2\" />\n  <circle cx=\"210\" cy=\"50\" r=\"3.5\" fill=\"#0f172a\" />\n  <text x=\"230\" y=\"44\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#dc2626\">r = 4 cm</text>\n  \n  <!-- Height dimension on left -->\n  <line x1=\"115\" y1=\"50\" x2=\"115\" y2=\"170\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"110\" y1=\"50\" x2=\"120\" y2=\"50\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <line x1=\"110\" y1=\"170\" x2=\"120\" y2=\"170\" stroke=\"#475569\" stroke-width=\"1.5\" />\n  <text x=\"50\" y=\"115\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0f172a\">h = 15 cm</text>\n</svg>"
+  },
+  {
+    id: "math_diag_410",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Coordinate Geometry: Gradient of Straight Line",
+    bookQuestionNum: 410,
+    text: "A straight line passes through (0, 1) and (4, 5) as shown in the diagram. Find its gradient.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "A",
+    explanation: "Gradient m = (y₂ − y₁) / (x₂ − x₁)\n\nm = (5 − 1) / (4 − 0) = 4 / 4 = **1**.",
+    page: 4,
+    hasImage: true,
+    imageCaption: "Figure 10: Cartesian line passing through coordinates (0, 1) and (4, 5)",
+    imageAlt: "Linear graph with line passing through y-intercept (0, 1) and point (4, 5)",
+    imageSvg: "<svg viewBox=\"0 0 440 240\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <defs>\n    <pattern id=\"grid10\" width=\"40\" height=\"30\" patternUnits=\"userSpaceOnUse\">\n      <path d=\"M 40 0 L 0 0 0 30\" fill=\"none\" stroke=\"#e2e8f0\" stroke-width=\"0.8\" />\n    </pattern>\n  </defs>\n  <rect x=\"70\" y=\"20\" width=\"320\" height=\"180\" fill=\"url(#grid10)\" />\n  \n  <!-- Axes: origin at (70, 200). Scale: 50px per x unit, 30px per y unit -->\n  <!-- x-axis -->\n  <line x1=\"50\" y1=\"200\" x2=\"410\" y2=\"200\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"415\" y=\"205\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">x</text>\n  <!-- y-axis -->\n  <line x1=\"70\" y1=\"210\" x2=\"70\" y2=\"15\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"65\" y=\"12\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">y</text>\n  \n  <!-- Ticks -->\n  <text x=\"60\" y=\"215\" font-size=\"12\" fill=\"#64748b\">0</text>\n  <text x=\"116\" y=\"215\" font-size=\"12\" fill=\"#64748b\">1</text>\n  <text x=\"166\" y=\"215\" font-size=\"12\" fill=\"#64748b\">2</text>\n  <text x=\"216\" y=\"215\" font-size=\"12\" fill=\"#64748b\">3</text>\n  <text x=\"266\" y=\"215\" font-size=\"12\" fill=\"#64748b\">4</text>\n  <text x=\"316\" y=\"215\" font-size=\"12\" fill=\"#64748b\">5</text>\n  \n  <!-- y-values: 1:170, 2:140, 3:110, 4:80, 5:50 -->\n  <text x=\"54\" y=\"174\" font-size=\"12\" fill=\"#64748b\">1</text>\n  <text x=\"54\" y=\"144\" font-size=\"12\" fill=\"#64748b\">2</text>\n  <text x=\"54\" y=\"114\" font-size=\"12\" fill=\"#64748b\">3</text>\n  <text x=\"54\" y=\"84\" font-size=\"12\" fill=\"#64748b\">4</text>\n  <text x=\"54\" y=\"54\" font-size=\"12\" fill=\"#64748b\">5</text>\n  \n  <!-- Line from x=-0.5 (45, 185) to x=4.5 (295, 35) -->\n  <line x1=\"45\" y1=\"185\" x2=\"310\" y2=\"26\" stroke=\"#2563eb\" stroke-width=\"3\" />\n  \n  <!-- Triangle showing rise and run -->\n  <line x1=\"70\" y1=\"50\" x2=\"270\" y2=\"50\" stroke=\"#e11d48\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\" />\n  <line x1=\"270\" y1=\"170\" x2=\"270\" y2=\"50\" stroke=\"#e11d48\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\" />\n  \n  <!-- Points: (0, 1) -> (70, 170) ; (4, 5) -> (270, 50) -->\n  <circle cx=\"70\" cy=\"170\" r=\"5\" fill=\"#dc2626\" />\n  <text x=\"82\" y=\"175\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#1e293b\">(0, 1)</text>\n  \n  <circle cx=\"270\" cy=\"50\" r=\"5\" fill=\"#dc2626\" />\n  <text x=\"280\" y=\"48\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#1e293b\">(4, 5)</text>\n</svg>"
+  },
+  {
+    id: "math_diag_411",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Sets & Venn Diagrams",
+    bookQuestionNum: 411,
+    text: "The Venn diagram gives 8 elements in A only, 5 in A ∩ B, and 7 in B only. Find n(A ∪ B).",
+    options: {
+      A: "13",
+      B: "15",
+      C: "20",
+      D: "25"
+    },
+    answer: "C",
+    explanation: "The union n(A ∪ B) is the sum of the non-overlapping regions:\n\nn(A ∪ B) = n(A only) + n(A ∩ B) + n(B only)\n\n= 8 + 5 + 7 = **20**.",
+    page: 4,
+    hasImage: true,
+    imageCaption: "Figure 11: Venn diagram with sets A and B, showing cardinalities 8, 5, and 7",
+    imageAlt: "Venn diagram showing set A only with 8, intersection A and B with 5, and set B only with 7",
+    imageSvg: "<svg viewBox=\"0 0 420 220\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Universal set boundary -->\n  <rect x=\"30\" y=\"20\" width=\"360\" height=\"180\" rx=\"8\" fill=\"#f8fafc\" stroke=\"#475569\" stroke-width=\"2\" />\n  <text x=\"45\" y=\"45\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"18\" fill=\"#334155\">ξ</text>\n  \n  <!-- Circle A centered at (170, 115), r = 65 -->\n  <circle cx=\"170\" cy=\"115\" r=\"65\" fill=\"#3b82f6\" fill-opacity=\"0.25\" stroke=\"#2563eb\" stroke-width=\"2.5\" />\n  <!-- Circle B centered at (250, 115), r = 65 -->\n  <circle cx=\"250\" cy=\"115\" r=\"65\" fill=\"#10b981\" fill-opacity=\"0.25\" stroke=\"#059669\" stroke-width=\"2.5\" />\n  \n  <!-- Labels -->\n  <text x=\"135\" y=\"45\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"17\" fill=\"#1d4ed8\">A</text>\n  <text x=\"275\" y=\"45\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"17\" fill=\"#047857\">B</text>\n  \n  <!-- Values inside regions -->\n  <text x=\"135\" y=\"122\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"20\" fill=\"#1e293b\">8</text>\n  <text x=\"204\" y=\"122\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"20\" fill=\"#0f172a\">5</text>\n  <text x=\"270\" y=\"122\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"20\" fill=\"#1e293b\">7</text>\n  \n  <text x=\"185\" y=\"190\" font-family=\"system-ui, sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#64748b\">A ∩ B = 5</text>\n</svg>"
+  },
+  {
+    id: "math_diag_412",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Statistics: Frequency Distribution",
+    bookQuestionNum: 412,
+    text: "A frequency bar chart has class frequencies 4, 6, 8, 5, and 3 across five classes. Find the total frequency.",
+    options: {
+      A: "21",
+      B: "24",
+      C: "26",
+      D: "28"
+    },
+    answer: "C",
+    explanation: "Total frequency Σf = 4 + 6 + 8 + 5 + 3 = **26**.",
+    page: 4,
+    hasImage: true,
+    imageCaption: "Figure 12: Frequency bar chart across 5 classes with frequencies 4, 6, 8, 5, 3",
+    imageAlt: "Bar chart displaying frequencies of 4, 6, 8, 5, and 3 for classes 1 through 5",
+    imageSvg: "<svg viewBox=\"0 0 440 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Horizontal grid lines -->\n  <line x1=\"60\" y1=\"180\" x2=\"400\" y2=\"180\" stroke=\"#cbd5e1\" stroke-width=\"1.5\" />\n  <line x1=\"60\" y1=\"145\" x2=\"400\" y2=\"145\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  <line x1=\"60\" y1=\"110\" x2=\"400\" y2=\"110\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  <line x1=\"60\" y1=\"75\" x2=\"400\" y2=\"75\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  <line x1=\"60\" y1=\"40\" x2=\"400\" y2=\"40\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  \n  <!-- Y axis labels (each 2 units = 35px) -->\n  <text x=\"40\" y=\"184\" font-size=\"12\" fill=\"#64748b\">0</text>\n  <text x=\"40\" y=\"149\" font-size=\"12\" fill=\"#64748b\">2</text>\n  <text x=\"40\" y=\"114\" font-size=\"12\" fill=\"#64748b\">4</text>\n  <text x=\"40\" y=\"79\" font-size=\"12\" fill=\"#64748b\">6</text>\n  <text x=\"40\" y=\"44\" font-size=\"12\" fill=\"#64748b\">8</text>\n  <text x=\"15\" y=\"25\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"12\" fill=\"#334155\">Frequency</text>\n  \n  <!-- Bars: width 40, centers at 100, 165, 230, 295, 360 -->\n  <!-- Class 1: freq 4 -> height 70 (y = 110) -->\n  <rect x=\"80\" y=\"110\" width=\"40\" height=\"70\" rx=\"3\" fill=\"#6366f1\" />\n  <text x=\"96\" y=\"103\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#4338ca\">4</text>\n  <text x=\"95\" y=\"200\" font-family=\"system-ui, sans-serif\" font-size=\"12\" fill=\"#334155\">C1</text>\n  \n  <!-- Class 2: freq 6 -> height 105 (y = 75) -->\n  <rect x=\"145\" y=\"75\" width=\"40\" height=\"105\" rx=\"3\" fill=\"#6366f1\" />\n  <text x=\"161\" y=\"68\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#4338ca\">6</text>\n  <text x=\"160\" y=\"200\" font-family=\"system-ui, sans-serif\" font-size=\"12\" fill=\"#334155\">C2</text>\n  \n  <!-- Class 3: freq 8 -> height 140 (y = 40) -->\n  <rect x=\"210\" y=\"40\" width=\"40\" height=\"140\" rx=\"3\" fill=\"#4f46e5\" />\n  <text x=\"226\" y=\"33\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#3730a3\">8</text>\n  <text x=\"225\" y=\"200\" font-family=\"system-ui, sans-serif\" font-size=\"12\" fill=\"#334155\">C3</text>\n  \n  <!-- Class 4: freq 5 -> height 87.5 (y = 92.5) -->\n  <rect x=\"275\" y=\"92.5\" width=\"40\" height=\"87.5\" rx=\"3\" fill=\"#6366f1\" />\n  <text x=\"291\" y=\"85\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#4338ca\">5</text>\n  <text x=\"290\" y=\"200\" font-family=\"system-ui, sans-serif\" font-size=\"12\" fill=\"#334155\">C4</text>\n  \n  <!-- Class 5: freq 3 -> height 52.5 (y = 127.5) -->\n  <rect x=\"340\" y=\"127.5\" width=\"40\" height=\"52.5\" rx=\"3\" fill=\"#6366f1\" />\n  <text x=\"356\" y=\"120\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#4338ca\">3</text>\n  <text x=\"355\" y=\"200\" font-family=\"system-ui, sans-serif\" font-size=\"12\" fill=\"#334155\">C5</text>\n  \n  <text x=\"210\" y=\"222\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">Classes</text>\n</svg>"
+  },
+  {
+    id: "math_diag_413",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Algebra & Graphs: Quadratic Functions",
+    bookQuestionNum: 413,
+    text: "The graph represents y = x² − 4. At which points does the curve cross the x-axis?",
+    options: {
+      A: "−4 and 4",
+      B: "−2 and 2",
+      C: "0 and 4",
+      D: "−1 and 1"
+    },
+    answer: "B",
+    explanation: "At the x-axis, y = 0:\n\nx² − 4 = 0\n\nx² = 4\n\nx = ±√4 = **−2 and 2**.",
+    page: 5,
+    hasImage: true,
+    imageCaption: "Figure 13: Parabola graph of y = x² − 4 intersecting the x-axis",
+    imageAlt: "Parabola y = x^2 - 4 crossing the x-axis at -2 and 2 with vertex at (0, -4)",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Axes: Origin at (210, 110) -->\n  <!-- x-axis at y = 110, y-axis at x = 210 -->\n  <line x1=\"30\" y1=\"110\" x2=\"390\" y2=\"110\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"395\" y=\"115\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">x</text>\n  \n  <line x1=\"210\" y1=\"215\" x2=\"210\" y2=\"15\" stroke=\"#334155\" stroke-width=\"2\" />\n  <text x=\"205\" y=\"12\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">y</text>\n  \n  <!-- Scale: 40px per x unit, 18px per y unit -->\n  <!-- x ticks: -3:90, -2:130, -1:170, 0:210, 1:250, 2:290, 3:330 -->\n  <text x=\"123\" y=\"128\" font-size=\"13\" font-weight=\"bold\" fill=\"#dc2626\">−2</text>\n  <text x=\"286\" y=\"128\" font-size=\"13\" font-weight=\"bold\" fill=\"#dc2626\">2</text>\n  \n  <!-- y-intercept at (210, 110 + 4*18 = 182) -->\n  <circle cx=\"210\" cy=\"182\" r=\"4\" fill=\"#0284c7\" />\n  <text x=\"218\" y=\"186\" font-size=\"12\" fill=\"#0284c7\">−4</text>\n  \n  <!-- Parabola path: y = x^2 - 4 -->\n  <!-- x=-2.6 -> y=2.76 (cy = 110 - 2.76*18 = 60) ; cx = 210 - 104 = 106 -->\n  <!-- x=2.6 -> cx = 314, cy = 60 -->\n  <!-- Curve through (106, 60), (-2,0)->(130,110), (0,-4)->(210,182), (2,0)->(290,110), (314,60) -->\n  <path d=\"M 100 45 Q 210 250 320 45\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"3\" />\n  \n  <!-- Intercept dots -->\n  <circle cx=\"130\" cy=\"110\" r=\"5\" fill=\"#dc2626\" />\n  <circle cx=\"290\" cy=\"110\" r=\"5\" fill=\"#dc2626\" />\n  \n  <text x=\"250\" y=\"45\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#1d4ed8\">y = x² − 4</text>\n</svg>"
+  },
+  {
+    id: "math_diag_414",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Vectors: Magnitude in 2D",
+    bookQuestionNum: 414,
+    text: "A vector has components 6 units east and 4 units north, terminating at (6, 4) as shown. Find its magnitude.",
+    options: {
+      A: "2√13",
+      B: "2√10",
+      C: "10",
+      D: "52"
+    },
+    answer: "A",
+    explanation: "Magnitude = √(6² + 4²) = √(36 + 16) = √52 = √(4 × 13) = **2√13**.",
+    page: 5,
+    hasImage: true,
+    imageCaption: "Figure 14: 2D vector with horizontal component 6 and vertical component 4",
+    imageAlt: "Vector in Cartesian plane from origin to (6, 4) with components 6 east and 4 north",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <defs>\n    <marker id=\"vect14\" viewBox=\"0 0 10 10\" refX=\"6\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\">\n      <path d=\"M 0 1 L 8 5 L 0 9 z\" fill=\"#0284c7\" />\n    </marker>\n  </defs>\n  <!-- Axes: origin at (80, 180) -->\n  <line x1=\"60\" y1=\"180\" x2=\"380\" y2=\"180\" stroke=\"#475569\" stroke-width=\"2\" />\n  <text x=\"385\" y=\"185\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">x</text>\n  \n  <line x1=\"80\" y1=\"200\" x2=\"80\" y2=\"30\" stroke=\"#475569\" stroke-width=\"2\" />\n  <text x=\"75\" y=\"22\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">y</text>\n  \n  <!-- Point (6, 4): dx = 240, dy = 120 -> at (320, 60) -->\n  <line x1=\"80\" y1=\"180\" x2=\"315\" y2=\"63\" stroke=\"#0284c7\" stroke-width=\"3\" marker-end=\"url(#vect14)\" />\n  \n  <!-- Components -->\n  <line x1=\"80\" y1=\"180\" x2=\"320\" y2=\"180\" stroke=\"#64748b\" stroke-width=\"2\" stroke-dasharray=\"4,4\" />\n  <line x1=\"320\" y1=\"180\" x2=\"320\" y2=\"60\" stroke=\"#64748b\" stroke-width=\"2\" stroke-dasharray=\"4,4\" />\n  <rect x=\"306\" y=\"166\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"#64748b\" stroke-width=\"1.5\" />\n  \n  <circle cx=\"80\" cy=\"180\" r=\"4\" fill=\"#0f172a\" />\n  <circle cx=\"320\" cy=\"60\" r=\"5\" fill=\"#dc2626\" />\n  <text x=\"330\" y=\"58\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#dc2626\">(6, 4)</text>\n  \n  <text x=\"190\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0f172a\">6 units</text>\n  <text x=\"330\" y=\"125\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0f172a\">4 units</text>\n  <text x=\"175\" y=\"105\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#0284c7\">|v| = ?</text>\n</svg>"
+  },
+  {
+    id: "math_diag_415",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Probability: Tree Diagrams",
+    bookQuestionNum: 415,
+    text: "A fair coin is tossed twice as represented in the probability tree diagram. Find the probability of getting exactly one head.",
+    options: {
+      A: "¼",
+      B: "⅓",
+      C: "½",
+      D: "¾"
+    },
+    answer: "C",
+    explanation: "Sample space = {HH, HT, TH, TT}, each with probability ¼.\n\nOutcomes with exactly one head = {HT, TH}.\n\nP(exactly 1 head) = ¼ + ¼ = 2/4 = **½**.",
+    page: 5,
+    hasImage: true,
+    imageCaption: "Figure 15: Probability tree diagram for two consecutive coin tosses",
+    imageAlt: "Tree diagram showing outcomes of two coin tosses: HH, HT, TH, TT with probabilities",
+    imageSvg: "<svg viewBox=\"0 0 440 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Start node at (50, 115) -->\n  <circle cx=\"50\" cy=\"115\" r=\"16\" fill=\"#0284c7\" />\n  <text x=\"36\" y=\"120\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"11\" fill=\"#ffffff\">Start</text>\n  \n  <!-- First toss branches: to (180, 60) and (180, 170) -->\n  <line x1=\"66\" y1=\"115\" x2=\"165\" y2=\"60\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  <line x1=\"66\" y1=\"115\" x2=\"165\" y2=\"170\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  <text x=\"105\" y=\"78\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"12\" fill=\"#0369a1\">½</text>\n  <text x=\"105\" y=\"155\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"12\" fill=\"#0369a1\">½</text>\n  \n  <!-- 1st Toss Nodes -->\n  <circle cx=\"180\" cy=\"60\" r=\"15\" fill=\"#f0fdf4\" stroke=\"#16a34a\" stroke-width=\"2\" />\n  <text x=\"174\" y=\"66\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#15803d\">H</text>\n  \n  <circle cx=\"180\" cy=\"170\" r=\"15\" fill=\"#fef2f2\" stroke=\"#dc2626\" stroke-width=\"2\" />\n  <text x=\"175\" y=\"176\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#b91c1c\">T</text>\n  \n  <!-- Second toss branches -->\n  <!-- From H (180, 60) to (310, 30) and (310, 90) -->\n  <line x1=\"195\" y1=\"60\" x2=\"295\" y2=\"30\" stroke=\"#16a34a\" stroke-width=\"1.8\" />\n  <line x1=\"195\" y1=\"60\" x2=\"295\" y2=\"90\" stroke=\"#16a34a\" stroke-width=\"1.8\" />\n  \n  <!-- From T (180, 170) to (310, 140) and (310, 200) -->\n  <line x1=\"195\" y1=\"170\" x2=\"295\" y2=\"140\" stroke=\"#dc2626\" stroke-width=\"1.8\" />\n  <line x1=\"195\" y1=\"170\" x2=\"295\" y2=\"200\" stroke=\"#dc2626\" stroke-width=\"1.8\" />\n  \n  <!-- 2nd Toss Nodes -->\n  <circle cx=\"310\" cy=\"30\" r=\"13\" fill=\"#f0fdf4\" stroke=\"#16a34a\" stroke-width=\"1.5\" />\n  <text x=\"305\" y=\"35\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#15803d\">H</text>\n  \n  <circle cx=\"310\" cy=\"90\" r=\"13\" fill=\"#fef2f2\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  <text x=\"306\" y=\"95\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#b91c1c\">T</text>\n  \n  <circle cx=\"310\" cy=\"140\" r=\"13\" fill=\"#f0fdf4\" stroke=\"#16a34a\" stroke-width=\"1.5\" />\n  <text x=\"305\" y=\"145\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#15803d\">H</text>\n  \n  <circle cx=\"310\" cy=\"200\" r=\"13\" fill=\"#fef2f2\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  <text x=\"306\" y=\"205\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#b91c1c\">T</text>\n  \n  <!-- Outcomes -->\n  <text x=\"345\" y=\"35\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">HH (¼)</text>\n  <text x=\"345\" y=\"95\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0284c7\">HT (¼) ★</text>\n  <text x=\"345\" y=\"145\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0284c7\">TH (¼) ★</text>\n  <text x=\"345\" y=\"205\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#334155\">TT (¼)</text>\n</svg>"
+  },
+  {
+    id: "math_diag_416",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Statistics: Box Plots & Interquartile Range",
+    bookQuestionNum: 416,
+    text: "The box plot shown represents a dataset with Q₁ = 8 and Q₃ = 12. Find the interquartile range.",
+    options: {
+      A: "2",
+      B: "4",
+      C: "8",
+      D: "12"
+    },
+    answer: "B",
+    explanation: "Interquartile range = Q₃ − Q₁ = 12 − 8 = **4**.",
+    page: 6,
+    hasImage: true,
+    imageCaption: "Figure 16: Box-and-whisker plot indicating Q₁ = 8, median = 10, and Q₃ = 12",
+    imageAlt: "Box plot diagram showing quartiles on a number line with Q1 at 8 and Q3 at 12",
+    imageSvg: "<svg viewBox=\"0 0 440 210\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Number line: from 0 to 20. X-range: 40 to 400 (18px per unit) -->\n  <line x1=\"30\" y1=\"150\" x2=\"410\" y2=\"150\" stroke=\"#334155\" stroke-width=\"2\" />\n  \n  <!-- Ticks and labels: 2, 5, 8, 10, 12, 15, 18 -->\n  <!-- 2: 76, 5: 130, 8: 184, 10: 220, 12: 256, 15: 310, 18: 364 -->\n  <line x1=\"76\" y1=\"145\" x2=\"76\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"72\" y=\"172\" font-size=\"12\" fill=\"#64748b\">2</text>\n  \n  <line x1=\"130\" y1=\"145\" x2=\"130\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"126\" y=\"172\" font-size=\"12\" fill=\"#64748b\">5</text>\n  \n  <line x1=\"184\" y1=\"145\" x2=\"184\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"180\" y=\"172\" font-size=\"13\" font-weight=\"bold\" fill=\"#0284c7\">8</text>\n  \n  <line x1=\"220\" y1=\"145\" x2=\"220\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"213\" y=\"172\" font-size=\"12\" fill=\"#64748b\">10</text>\n  \n  <line x1=\"256\" y1=\"145\" x2=\"256\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"249\" y=\"172\" font-size=\"13\" font-weight=\"bold\" fill=\"#0284c7\">12</text>\n  \n  <line x1=\"310\" y1=\"145\" x2=\"310\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"303\" y=\"172\" font-size=\"12\" fill=\"#64748b\">15</text>\n  \n  <line x1=\"364\" y1=\"145\" x2=\"364\" y2=\"155\" stroke=\"#334155\" stroke-width=\"1.5\" />\n  <text x=\"357\" y=\"172\" font-size=\"12\" fill=\"#64748b\">18</text>\n  \n  <!-- Left Whisker: from min (76) to Q1 (184) at y = 80 -->\n  <line x1=\"76\" y1=\"80\" x2=\"184\" y2=\"80\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  <line x1=\"76\" y1=\"65\" x2=\"76\" y2=\"95\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  \n  <!-- Right Whisker: from Q3 (256) to max (364) at y = 80 -->\n  <line x1=\"256\" y1=\"80\" x2=\"364\" y2=\"80\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  <line x1=\"364\" y1=\"65\" x2=\"364\" y2=\"95\" stroke=\"#0284c7\" stroke-width=\"2\" />\n  \n  <!-- Box: from Q1 (184) to Q3 (256), width 72, y: 55 to 105 -->\n  <rect x=\"184\" y=\"55\" width=\"72\" height=\"50\" rx=\"3\" fill=\"#e0f2fe\" stroke=\"#0284c7\" stroke-width=\"2.5\" />\n  \n  <!-- Median line at 10 (220) -->\n  <line x1=\"220\" y1=\"55\" x2=\"220\" y2=\"105\" stroke=\"#dc2626\" stroke-width=\"2.5\" />\n  \n  <!-- Quartile labels on top -->\n  <text x=\"175\" y=\"42\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#0284c7\">Q₁ = 8</text>\n  <text x=\"210\" y=\"42\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"12\" fill=\"#dc2626\">Med</text>\n  <text x=\"245\" y=\"42\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#0284c7\">Q₃ = 12</text>\n</svg>"
+  },
+  {
+    id: "math_diag_417",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Geometry & Trigonometry: Pythagoras Theorem",
+    bookQuestionNum: 417,
+    text: "A right-angled triangle ABC has perpendicular sides AB = 12 cm and BC = 5 cm. Find the length of the hypotenuse AC.",
+    options: {
+      A: "13 cm",
+      B: "15 cm",
+      C: "17 cm",
+      D: "19 cm"
+    },
+    answer: "A",
+    explanation: "Hypotenuse² = 5² + 12² = 25 + 144 = 169.\n\nTherefore, the hypotenuse is **13 cm**.",
+    page: 6,
+    hasImage: true,
+    imageCaption: "Figure 17: Right triangle ABC with perpendicular legs 12 cm and 5 cm",
+    imageAlt: "Right-angled triangle diagram with leg 12 cm, base 5 cm, and hypotenuse AC",
+    imageSvg: "<svg viewBox=\"0 0 420 220\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Right triangle: B at right angle (140, 170). A is at (140, 40) (height 130px -> 12 cm). C is at (270, 170) (base 130px -> 5 cm) -->\n  <polygon points=\"140,40 140,170 270,170\" fill=\"#f0fdf4\" stroke=\"#16a34a\" stroke-width=\"2.5\" />\n  \n  <!-- Right-angle symbol at B -->\n  <rect x=\"140\" y=\"154\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"#16a34a\" stroke-width=\"1.8\" />\n  \n  <!-- Vertices labels -->\n  <text x=\"135\" y=\"30\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0f172a\">A</text>\n  <text x=\"118\" y=\"180\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0f172a\">B</text>\n  <text x=\"280\" y=\"175\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0f172a\">C</text>\n  \n  <!-- Side lengths -->\n  <text x=\"70\" y=\"110\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#15803d\">12 cm</text>\n  <text x=\"195\" y=\"195\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"15\" fill=\"#15803d\">5 cm</text>\n  <text x=\"215\" y=\"95\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#dc2626\">AC = ?</text>\n</svg>"
+  },
+  {
+    id: "math_diag_418",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Circle Geometry: Chords & Distances",
+    bookQuestionNum: 418,
+    text: "A chord is 16 cm long and its perpendicular distance from the centre O is 6 cm as shown. Find the radius of the circle.",
+    options: {
+      A: "8 cm",
+      B: "9 cm",
+      C: "10 cm",
+      D: "12 cm"
+    },
+    answer: "C",
+    explanation: "The perpendicular from the centre bisects the chord.\n\nHalf-chord = 16 / 2 = 8 cm.\n\nRadius = √(8² + 6²) = √(64 + 36) = √100 = **10 cm**.",
+    page: 6,
+    hasImage: true,
+    imageCaption: "Figure 18: Circle with chord of length 16 cm at distance 6 cm from centre O",
+    imageAlt: "Circle diagram showing chord of 16 cm and distance d = 6 cm from centre to chord",
+    imageSvg: "<svg viewBox=\"0 0 420 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Circle centered at (210, 115), radius 90 -->\n  <circle cx=\"210\" cy=\"115\" r=\"90\" fill=\"#f8fafc\" stroke=\"#475569\" stroke-width=\"2.5\" />\n  \n  <!-- Chord: horizontal below center at y = 115 + 54 = 169. Length = 2 * sqrt(90^2 - 54^2) = 2 * 72 = 144 -> from x = 138 to 282 -->\n  <line x1=\"138\" y1=\"169\" x2=\"282\" y2=\"169\" stroke=\"#0284c7\" stroke-width=\"3\" />\n  \n  <!-- Center O -->\n  <circle cx=\"210\" cy=\"115\" r=\"4.5\" fill=\"#0f172a\" />\n  <text x=\"215\" y=\"110\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"16\" fill=\"#0f172a\">O</text>\n  \n  <!-- Perpendicular line from O to chord -->\n  <line x1=\"210\" y1=\"115\" x2=\"210\" y2=\"169\" stroke=\"#dc2626\" stroke-width=\"2\" />\n  <rect x=\"210\" y=\"157\" width=\"12\" height=\"12\" fill=\"none\" stroke=\"#dc2626\" stroke-width=\"1.5\" />\n  <text x=\"216\" y=\"145\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#dc2626\">d = 6</text>\n  \n  <!-- Radius line from O to chord endpoint (282, 169) -->\n  <line x1=\"210\" y1=\"115\" x2=\"282\" y2=\"169\" stroke=\"#16a34a\" stroke-width=\"2\" stroke-dasharray=\"4,4\" />\n  <text x=\"250\" y=\"135\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#16a34a\">r = ?</text>\n  \n  <!-- Chord label -->\n  <text x=\"180\" y=\"195\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"14\" fill=\"#0284c7\">chord = 16 cm</text>\n</svg>"
+  },
+  {
+    id: "math_diag_419",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 419,
+    text: "Given the matrices A and B shown below, find det(AB).",
+    options: {
+      A: "5",
+      B: "7",
+      C: "10",
+      D: "12"
+    },
+    answer: "A",
+    explanation: "det(AB) = det(A) × det(B)\n\ndet(A) = (2 × 4) − (1 × 3) = 8 − 3 = 5\n\ndet(B) = (1 × 1) − (2 × 0) = 1 − 0 = 1\n\ndet(AB) = 5 × 1 = **5**.",
+    page: 7,
+    hasImage: true,
+    imageCaption: "Figure 19: 2×2 Matrices A and B for determinant evaluation",
+    imageAlt: "Matrix A = [[2, 1], [3, 4]] and Matrix B = [[1, 2], [0, 1]]",
+    imageSvg: "<svg viewBox=\"0 0 440 210\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Matrix A -->\n  <text x=\"45\" y=\"115\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#0f172a\">A =</text>\n  <!-- Bracket A Left -->\n  <path d=\"M 110 50 L 95 50 L 95 160 L 110 160\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <!-- Matrix A contents -->\n  <text x=\"120\" y=\"90\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">2</text>\n  <text x=\"165\" y=\"90\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">1</text>\n  <text x=\"120\" y=\"140\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">3</text>\n  <text x=\"165\" y=\"140\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">4</text>\n  <!-- Bracket A Right -->\n  <path d=\"M 185 50 L 200 50 L 200 160 L 185 160\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  \n  <!-- Matrix B -->\n  <text x=\"235\" y=\"115\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#0f172a\">B =</text>\n  <!-- Bracket B Left -->\n  <path d=\"M 300 50 L 285 50 L 285 160 L 300 160\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  <!-- Matrix B contents -->\n  <text x=\"310\" y=\"90\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">1</text>\n  <text x=\"355\" y=\"90\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">2</text>\n  <text x=\"310\" y=\"140\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">0</text>\n  <text x=\"355\" y=\"140\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"22\" fill=\"#1e293b\">1</text>\n  <!-- Bracket B Right -->\n  <path d=\"M 375 50 L 390 50 L 390 160 L 375 160\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"3\" />\n  \n  <text x=\"170\" y=\"195\" font-family=\"system-ui, sans-serif\" font-size=\"14\" font-weight=\"bold\" fill=\"#0284c7\">det(AB) = det(A) × det(B)</text>\n</svg>"
+  },
+  {
+    id: "math_diag_420",
+    originalChapter: 15,
+    chapterTitle: "Topic 15: Diagram-Based Problem Solving in Mathematics",
+    topic: "Statistics: Bar Charts & Totals",
+    bookQuestionNum: 420,
+    text: "A bar chart shows frequencies 25, 45, 30, 65, and 40 across five categories (1 to 5). Find the total frequency.",
+    options: {
+      A: "195",
+      B: "200",
+      C: "205",
+      D: "210"
+    },
+    answer: "C",
+    explanation: "Total frequency = 25 + 45 + 30 + 65 + 40 = **205**.",
+    page: 7,
+    hasImage: true,
+    imageCaption: "Figure 20: Bar chart displaying frequencies 25, 45, 30, 65, and 40",
+    imageAlt: "Bar chart with categories 1, 2, 3, 4, 5 having values 25, 45, 30, 65, and 40",
+    imageSvg: "<svg viewBox=\"0 0 440 230\" xmlns=\"http://www.w3.org/2000/svg\" className=\"w-full h-auto max-w-lg mx-auto bg-slate-50 dark:bg-slate-900 rounded-lg p-2 border border-slate-200 dark:border-slate-800\">\n  <!-- Horizontal gridlines: y-axis 0 to 70. 2px per unit. Baseline at y = 180, 70 at y = 40 -->\n  <line x1=\"55\" y1=\"180\" x2=\"410\" y2=\"180\" stroke=\"#cbd5e1\" stroke-width=\"1.5\" />\n  <line x1=\"55\" y1=\"140\" x2=\"410\" y2=\"140\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  <line x1=\"55\" y1=\"100\" x2=\"410\" y2=\"100\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  <line x1=\"55\" y1=\"60\" x2=\"410\" y2=\"60\" stroke=\"#e2e8f0\" stroke-width=\"1\" stroke-dasharray=\"3,3\" />\n  \n  <!-- Y-axis labels -->\n  <text x=\"35\" y=\"184\" font-size=\"12\" fill=\"#64748b\">0</text>\n  <text x=\"30\" y=\"144\" font-size=\"12\" fill=\"#64748b\">20</text>\n  <text x=\"30\" y=\"104\" font-size=\"12\" fill=\"#64748b\">40</text>\n  <text x=\"30\" y=\"64\" font-size=\"12\" fill=\"#64748b\">60</text>\n  \n  <!-- Bars: width 44, centers at 95, 165, 235, 305, 375 -->\n  <!-- Cat 1: 25 -> height 50 (y = 130) -->\n  <rect x=\"73\" y=\"130\" width=\"44\" height=\"50\" rx=\"4\" fill=\"#0ea5e9\" />\n  <text x=\"86\" y=\"122\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#0369a1\">25</text>\n  <text x=\"91\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">1</text>\n  \n  <!-- Cat 2: 45 -> height 90 (y = 90) -->\n  <rect x=\"143\" y=\"90\" width=\"44\" height=\"90\" rx=\"4\" fill=\"#0ea5e9\" />\n  <text x=\"156\" y=\"82\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#0369a1\">45</text>\n  <text x=\"161\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">2</text>\n  \n  <!-- Cat 3: 30 -> height 60 (y = 120) -->\n  <rect x=\"213\" y=\"120\" width=\"44\" height=\"60\" rx=\"4\" fill=\"#0ea5e9\" />\n  <text x=\"226\" y=\"112\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#0369a1\">30</text>\n  <text x=\"231\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">3</text>\n  \n  <!-- Cat 4: 65 -> height 130 (y = 50) -->\n  <rect x=\"283\" y=\"50\" width=\"44\" height=\"130\" rx=\"4\" fill=\"#0284c7\" />\n  <text x=\"296\" y=\"42\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#075985\">65</text>\n  <text x=\"301\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">4</text>\n  \n  <!-- Cat 5: 40 -> height 80 (y = 100) -->\n  <rect x=\"353\" y=\"100\" width=\"44\" height=\"80\" rx=\"4\" fill=\"#0ea5e9\" />\n  <text x=\"366\" y=\"92\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#0369a1\">40</text>\n  <text x=\"371\" y=\"200\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">5</text>\n  \n  <text x=\"210\" y=\"222\" font-family=\"system-ui, sans-serif\" font-weight=\"bold\" font-size=\"13\" fill=\"#334155\">Category</text>\n</svg>"
   }
 ];

@@ -1436,6 +1436,7 @@ export function generateQuestionForYear(
       author: 'JAMBIX UTME Preparatory Series',
       textbookRef: item.chapterTitle || 'Topic: Mathematics',
       hasImage: Boolean(item.hasImage),
+      imageSvg: item.imageSvg,
       imageCaption: item.imageCaption,
       imageAlt: item.imageAlt,
       imageUrl: item.imageUrl,

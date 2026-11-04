@@ -118,6 +118,7 @@ export const MATHEMATICS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_MA
   imageUrl: item.imageUrl,
   imageCaption: item.imageCaption,
   imageAlt: item.imageAlt,
+  imageSvg: item.imageSvg,
 }));
 
 export const BIOLOGY_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_BIOLOGY_ITEMS.map((item, idx) => ({

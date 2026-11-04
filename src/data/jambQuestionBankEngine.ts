@@ -242,6 +242,52 @@ export function advanceChemistryDiagramPointer(step: number = 4): number {
 }
 
 // ============================================================================
+// CYCLIC ROTATION POINTER FOR THE 20 VERIFIED MATHEMATICS DIAGRAM QUESTIONS
+// Ensures exactly 4 diagram questions per test (batch of 4), and once all 20
+// are exhausted, smoothly restarts from the very first again (0-3, 4-7, 8-11, 12-15, 16-19 -> 0-3).
+// ============================================================================
+export const MATHEMATICS_DIAGRAM_POINTER_KEY = 'jambix_mathematics_diagram_pointer_v1';
+
+let inMemoryMathematicsDiagramPointer = 0;
+
+export function getMathematicsDiagramPointer(): number {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const stored = window.localStorage.getItem(MATHEMATICS_DIAGRAM_POINTER_KEY);
+      if (stored !== null) {
+        const parsed = parseInt(stored, 10);
+        if (!isNaN(parsed) && parsed >= 0) {
+          inMemoryMathematicsDiagramPointer = parsed % 20;
+          return inMemoryMathematicsDiagramPointer;
+        }
+      }
+    } catch {
+      // fallback
+    }
+  }
+  return inMemoryMathematicsDiagramPointer % 20;
+}
+
+export function setMathematicsDiagramPointer(newVal: number): void {
+  const normVal = ((newVal % 20) + 20) % 20;
+  inMemoryMathematicsDiagramPointer = normVal;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      window.localStorage.setItem(MATHEMATICS_DIAGRAM_POINTER_KEY, String(normVal));
+    } catch {
+      // ignore
+    }
+  }
+}
+
+export function advanceMathematicsDiagramPointer(step: number = 4): number {
+  const current = getMathematicsDiagramPointer();
+  const next = (current + step) % 20;
+  setMathematicsDiagramPointer(next);
+  return current;
+}
+
+// ============================================================================
 // DYNAMIC COMBINATORIAL QUESTION GENERATION ENGINE (15,000+ Permutations)
 // ============================================================================
 
@@ -4169,43 +4215,78 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX MATHEMATICS QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX MATHEMATICS QUESTION BANK (320 QUESTIONS INCLUDING 20 DIAGRAM QUESTIONS)
+  // Ensures exactly 4 diagram questions per test in cyclic rotation (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
+  // IF AND ONLY IF the student selects Mathematics.
+  // The remaining 36 questions are fairly distributed across all syllabus topic clusters
+  // via round-robin, ensuring every 40-question CBT mock exam draws evenly without clustering.
   // =========================================================================
   if (subjectKey === 'mathematics' && JAMBIX_MATHEMATICS_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    // 1. Separate the 20 verified diagram questions from the non-diagram question pool
+    const diagramPool = JAMBIX_MATHEMATICS_ITEMS.filter(
+      (item) => item.originalChapter === 15 || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420)
+    );
+    const nonDiagramPool = JAMBIX_MATHEMATICS_ITEMS.filter(
+      (item) => !(item.originalChapter === 15 || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420))
+    );
+
+    // 2. Select EXACTLY 4 diagram questions per test in cyclic sequence (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
+    const targetDiagramCount = Math.min(4, targetCount, diagramPool.length);
+    const pickedDiagramItems: typeof JAMBIX_MATHEMATICS_ITEMS = [];
+
+    if (targetDiagramCount > 0 && diagramPool.length > 0) {
+      const diagramStartIndex = advanceMathematicsDiagramPointer(targetDiagramCount);
+      for (let d = 0; d < targetDiagramCount; d++) {
+        const dIdx = (diagramStartIndex + d) % diagramPool.length;
+        const dItem = diagramPool[dIdx];
+        const sig = getQuestionCoreSignature(dItem.text);
+        safeSessionUsed.add(sig);
+        pickedDiagramItems.push(dItem);
+      }
+    }
+
+    // 3. The remaining questions (e.g. 36 questions in a 40-question test) are drawn
+    // evenly via round-robin across all syllabus topic clusters
+    const nonDiagramQuota = Math.max(0, targetCount - pickedDiagramItems.length);
+
     const byTopic: Record<string, typeof JAMBIX_MATHEMATICS_ITEMS> = {};
-    for (const item of JAMBIX_MATHEMATICS_ITEMS) {
+    for (const item of nonDiagramPool) {
       const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
 
-    // 2. Shuffle within each topic
+    // Shuffle within each cluster
     for (const tKey of Object.keys(byTopic)) {
       byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    // Shuffle topic keys so tests don't always pick topics in the same sequence
     const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedMathItems: typeof JAMBIX_MATHEMATICS_ITEMS = [];
+    const pickedNonDiagramItems: typeof JAMBIX_MATHEMATICS_ITEMS = [];
 
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    // Pass 1: Round-robin across all topics, prioritizing unseen questions and filtering any missing visual questions
     let added = true;
-    while (pickedMathItems.length < targetCount && added) {
+    while (pickedNonDiagramItems.length < nonDiagramQuota && added) {
       added = false;
       for (const tKey of topicKeys) {
-        if (pickedMathItems.length >= targetCount) break;
+        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
+          // Cleanliness check: reject questions referencing diagrams/graphs if they lack visual assets
+          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
+          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+            return false;
+          }
+          return true;
         });
+
         if (nextItem) {
           const sig = getQuestionCoreSignature(nextItem.text);
           safeSessionUsed.add(sig);
-          pickedMathItems.push(nextItem);
+          pickedNonDiagramItems.push(nextItem);
           const idx = pool.indexOf(nextItem);
           if (idx !== -1) pool.splice(idx, 1);
           added = true;
@@ -4213,21 +4294,26 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedMathItems.length < targetCount) {
-      const allShuffled = shuffleArr(JAMBIX_MATHEMATICS_ITEMS);
+    // Pass 2: Fallback across nonDiagramPool without session duplicates
+    if (pickedNonDiagramItems.length < nonDiagramQuota) {
+      const allShuffled = shuffleArr(nonDiagramPool);
       for (const item of allShuffled) {
-        if (pickedMathItems.length >= targetCount) break;
+        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
+          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
+          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+            continue;
+          }
           safeSessionUsed.add(sig);
-          pickedMathItems.push(item);
+          pickedNonDiagramItems.push(item);
         }
       }
     }
 
-    // 6. Complete random shuffle of all selected questions so questions are diversified
-    const finalOrderedMath = shuffleArr(pickedMathItems);
+    // 4. Combine the 4 diagram questions and the 36 non-diagram questions,
+    // and randomly shuffle their order so diagram questions are naturally dispersed throughout the exam
+    const finalOrderedMath = shuffleArr([...pickedDiagramItems, ...pickedNonDiagramItems]);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
     for (let i = 0; i < finalOrderedMath.length && picked.length < targetCount; i++) {
@@ -4240,7 +4326,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Mathematics',
-        topic: item.topic,
+        topic: item.topic || item.chapterTitle || 'General Mathematics',
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
@@ -4253,7 +4339,11 @@ export function generateUniqueSubjectQuestions(
         bookTitle: 'JAMBIX MATHEMATICS QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || 'Topic: Mathematics',
-        hasImage: false,
+        hasImage: Boolean(item.hasImage),
+        imageSvg: item.imageSvg,
+        imageCaption: item.imageCaption,
+        imageAlt: item.imageAlt,
+        imageUrl: item.imageUrl,
       };
       // Exactly preserve the author's answer and explanation without scrambling
       picked.push(vq);
