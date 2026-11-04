@@ -32,6 +32,7 @@ import {
 } from './jambImageQuestions';
 import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
 import { JAMBIX_CHEMISTRY_ITEMS } from './jambixChemistryBank';
+import { JAMBIX_MATHEMATICS_ITEMS } from './jambixMathematicsBank';
 
 export type SubjectKey =
   | 'english'
@@ -1405,6 +1406,42 @@ export function generateQuestionForYear(
     };
 
     return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
+  }
+
+  // For Mathematics: Pull directly from JAMBIX MATHEMATICS QUESTION BANK (300 verified questions)
+  if (subjectKey === 'mathematics' && JAMBIX_MATHEMATICS_ITEMS.length > 0) {
+    const qNum = qIndex + 1;
+    // Deterministic selection based on year and index: no repeats within year, and no question repeats consecutively for more than 2 years
+    const itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_MATHEMATICS_ITEMS.length;
+    const item = JAMBIX_MATHEMATICS_ITEMS[itemIdx];
+    const subCode = SUBJECT_ID_OFFSETS.mathematics || 910000;
+    const id = subCode + (year * 100) + qNum;
+
+    const baseQuestion: VerifiedQuestion = {
+      id,
+      year,
+      questionNumber: qNum,
+      subject: 'Mathematics',
+      topic: item.topic,
+      text: `[JAMB UTME ${year} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+      options: {
+        A: item.options.A,
+        B: item.options.B,
+        C: item.options.C,
+        D: item.options.D,
+      },
+      answer: item.answer,
+      explanation: item.explanation,
+      bookTitle: 'JAMBIX MATHEMATICS QUESTION BANK',
+      author: 'JAMBIX UTME Preparatory Series',
+      textbookRef: item.chapterTitle || 'Topic: Mathematics',
+      hasImage: Boolean(item.hasImage),
+      imageCaption: item.imageCaption,
+      imageAlt: item.imageAlt,
+      imageUrl: item.imageUrl,
+    };
+
+    return baseQuestion;
   }
 
   // For Physics: Pull directly from JAMBIX PHYSICS QUESTION BANK (100 verified questions)

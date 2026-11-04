@@ -112,7 +112,7 @@ export const MATHEMATICS_CUSTOM_QUESTIONS: CustomExtractedQuestion[] = JAMBIX_MA
   explanation: item.explanation,
   bookTitle: 'JAMBIX MATHEMATICS QUESTION BANK',
   author: 'JAMBIX UTME Preparatory Series',
-  textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+  textbookRef: item.chapterTitle || 'Topic: Mathematics',
   isUserApproved: true,
   hasImage: item.hasImage,
   imageUrl: item.imageUrl,

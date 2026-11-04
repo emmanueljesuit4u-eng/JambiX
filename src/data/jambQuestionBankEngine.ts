@@ -4252,7 +4252,7 @@ export function generateUniqueSubjectQuestions(
         explanation: item.explanation,
         bookTitle: 'JAMBIX MATHEMATICS QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
-        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
+        textbookRef: item.chapterTitle || 'Topic: Mathematics',
         hasImage: false,
       };
       // Exactly preserve the author's answer and explanation without scrambling

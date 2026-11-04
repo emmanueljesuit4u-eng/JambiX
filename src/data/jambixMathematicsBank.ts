@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  * 
  * JAMBIX MATHEMATICS QUESTION BANK
- * 100 TOUGH QUESTIONS ACROSS ALL TOPICS (QUESTIONS 1–100)
+ * QUESTIONS 1–100: TOUGH QUESTIONS ACROSS ALL TOPICS
+ * QUESTIONS 201–400: 200 CHALLENGING QUESTIONS
  * Indexed directly from official syllabus specifications.
- * Total questions: 100
+ * Total questions: 300
  */
 
 export interface JambixMathematicsItem {
@@ -1829,6 +1830,3607 @@ export const JAMBIX_MATHEMATICS_ITEMS: JambixMathematicsItem[] = [
     answer: "B",
     explanation: "The sum is even when both numbers are even or both are odd. There are 5 even and 5 odd numbers, giving 2 × ⁵C₂ = 20 favourable pairs. Total pairs = ¹⁰C₂ = 45. Probability = 20/45 = 4/9.",
     page: 10,
+    hasImage: false
+  }
+,
+  {
+    id: "math_tough_201",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Number Bases",
+    bookQuestionNum: 201,
+    text: "Convert (1321)₄ to base ten.",
+    options: {
+      A: "111",
+      B: "117",
+      C: "121",
+      D: "129"
+    },
+    answer: "C",
+    explanation: "(1321)₄ = 1 × 4³ + 3 × 4² + 2 × 4¹ + 1 × 4⁰\n\n= 64 + 48 + 8 + 1 = **121**.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_202",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Number Bases",
+    bookQuestionNum: 202,
+    text: "Convert (1101.011)₂ to base ten.",
+    options: {
+      A: "12.375",
+      B: "13.375",
+      C: "13.625",
+      D: "14.125"
+    },
+    answer: "B",
+    explanation: "Integer part = 8 + 4 + 1 = 13.\n\nFractional part = ½ × 0 + ¼ + ⅛ = 0.375.\n\nTherefore, the answer is 13.375.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_203",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Number Bases",
+    bookQuestionNum: 203,
+    text: "Evaluate (245)₆ + (153)₆, giving your answer in base six.",
+    options: {
+      A: "(422)₆",
+      B: "(432)₆",
+      C: "(442)₆",
+      D: "(452)₆"
+    },
+    answer: "C",
+    explanation: "(245)₆ = 101 in base ten.\n\n(153)₆ = 69 in base ten.\n\n101 + 69 = 170.\n\nConverting 170 to base six gives (442)₆.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_204",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Modular Arithmetic & Divisibility",
+    bookQuestionNum: 204,
+    text: "Find the remainder when 7¹⁰³ is divided by 5.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "C",
+    explanation: "7 ≡ 2 (mod 5).\n\nThe remainders of successive powers of 2 are 2, 4, 3, 1, repeating every four powers.\n\nSince 103 leaves remainder 3 when divided by 4, the required remainder is 3.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_205",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Modular Arithmetic & Divisibility",
+    bookQuestionNum: 205,
+    text: "Find the least positive integer x satisfying:\n\n4x ≡ 3 (mod 9).",
+    options: {
+      A: "2",
+      B: "3",
+      C: "5",
+      D: "6"
+    },
+    answer: "B",
+    explanation: "4 × 3 = 12.\n\n12 divided by 9 leaves remainder 3.\n\nTherefore, x = 3.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_206",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Fractions, Decimals, Approximations & Factors",
+    bookQuestionNum: 206,
+    text: "Evaluate:\n\n(¾ − ⅙) ÷ (⅝ + ¼)",
+    options: {
+      A: "⅓",
+      B: "⅔",
+      C: "¾",
+      D: "4/3"
+    },
+    answer: "B",
+    explanation: "¾ − ⅙ = 9/12 − 2/12 = 7/12.\n\n⅝ + ¼ = ⅝ + 2/8 = ⅞.\n\nTherefore:\n\n(7/12) ÷ (7/8) = (7/12) × (8/7) = **⅔**.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_207",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Approximation & Percentage Error",
+    bookQuestionNum: 207,
+    text: "A length is recorded as 12.6 cm, correct to one decimal place. What is the maximum percentage error?",
+    options: {
+      A: "0.20%",
+      B: "0.40%",
+      C: "0.60%",
+      D: "0.80%"
+    },
+    answer: "B",
+    explanation: "Maximum absolute error = 0.05 cm.\n\nPercentage error = (0.05 ÷ 12.6) × 100%.\n\n= 0.397%, approximately **0.40%**.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_208",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Commercial & Financial Mathematics",
+    bookQuestionNum: 208,
+    text: "After receiving a discount of 20%, a customer pays ₦9,600. What was the original price?",
+    options: {
+      A: "₦11,200",
+      B: "₦11,500",
+      C: "₦12,000",
+      D: "₦12,500"
+    },
+    answer: "C",
+    explanation: "The customer paid 80% of the original price.\n\nOriginal price = ₦9,600 ÷ 0.8 = **₦12,000**.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_209",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Commercial & Financial Mathematics",
+    bookQuestionNum: 209,
+    text: "A machine worth ₦80,000 depreciates by 10% annually. Find its value after two years.",
+    options: {
+      A: "₦64,000",
+      B: "₦64,800",
+      C: "₦68,000",
+      D: "₦72,000"
+    },
+    answer: "B",
+    explanation: "Value = P(1 − r)ⁿ.\n\n= ₦80,000 × (0.9)².\n\n= ₦80,000 × 0.81 = **₦64,800**.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_210",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Commercial & Financial Mathematics",
+    bookQuestionNum: 210,
+    text: "Find the compound interest on ₦100,000 invested at 10% per annum for two years, compounded annually.",
+    options: {
+      A: "₦10,000",
+      B: "₦20,000",
+      C: "₦21,000",
+      D: "₦22,000"
+    },
+    answer: "C",
+    explanation: "A = P(1 + r)ⁿ.\n\n= 100,000 × (1.1)² = ₦121,000.\n\nCompound interest = ₦121,000 − ₦100,000 = **₦21,000**.",
+    page: 21,
+    hasImage: false
+  },
+  {
+    id: "math_tough_211",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Rates, Ratios & Proportions",
+    bookQuestionNum: 211,
+    text: "A company shares a dividend of ₦180,000 among three investors in the ratio 2:3:4. How much does the investor with the largest share receive?",
+    options: {
+      A: "₦40,000",
+      B: "₦60,000",
+      C: "₦80,000",
+      D: "₦90,000"
+    },
+    answer: "C",
+    explanation: "Total ratio = 2 + 3 + 4 = 9.\n\nLargest share = (4/9) × ₦180,000 = **₦80,000**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_212",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Rates, Ratios & Proportions",
+    bookQuestionNum: 212,
+    text: "Fifteen workers can complete a project in 12 days. How many days will 20 workers require, assuming equal working rates?",
+    options: {
+      A: "6 days",
+      B: "8 days",
+      C: "9 days",
+      D: "10 days"
+    },
+    answer: "C",
+    explanation: "Total work = 15 × 12 = 180 worker-days.\n\nRequired days = 180 ÷ 20 = **9 days**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_213",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Commercial & Financial Mathematics",
+    bookQuestionNum: 213,
+    text: "An item costs ₦50,000. A discount of 12% is applied, followed by VAT of 7.5% on the discounted price. Find the final price.",
+    options: {
+      A: "₦44,000",
+      B: "₦46,200",
+      C: "₦47,300",
+      D: "₦53,750"
+    },
+    answer: "C",
+    explanation: "Discounted price = ₦50,000 × 0.88 = ₦44,000.\n\nVAT = ₦44,000 × 0.075 = ₦3,300.\n\nFinal price = ₦44,000 + ₦3,300 = **₦47,300**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_214",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Rates, Ratios & Proportions",
+    bookQuestionNum: 214,
+    text: "The ratio of the speeds of two vehicles is 4:7. If the slower vehicle travels 180 km in 3 hours, how far will the faster vehicle travel in the same time?",
+    options: {
+      A: "210 km",
+      B: "270 km",
+      C: "315 km",
+      D: "360 km"
+    },
+    answer: "C",
+    explanation: "Slower speed = 180 ÷ 3 = 60 km/h.\n\nFaster speed = 60 × 7/4 = 105 km/h.\n\nDistance = 105 × 3 = **315 km**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_215",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Rates, Ratios & Proportions",
+    bookQuestionNum: 215,
+    text: "A car travels 120 km at 60 km/h and another 120 km at 40 km/h. Find its average speed for the entire journey.",
+    options: {
+      A: "45 km/h",
+      B: "48 km/h",
+      C: "50 km/h",
+      D: "52 km/h"
+    },
+    answer: "B",
+    explanation: "Time for the first journey = 120/60 = 2 hours.\n\nTime for the second = 120/40 = 3 hours.\n\nAverage speed = total distance ÷ total time.\n\n= 240 ÷ 5 = **48 km/h**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_216",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Surds",
+    bookQuestionNum: 216,
+    text: "Simplify √72 − √32 + √8.",
+    options: {
+      A: "2√2",
+      B: "3√2",
+      C: "4√2",
+      D: "6√2"
+    },
+    answer: "C",
+    explanation: "√72 = 6√2.\n\n√32 = 4√2.\n\n√8 = 2√2.\n\nTherefore, 6√2 − 4√2 + 2√2 = **4√2**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_217",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Surds",
+    bookQuestionNum: 217,
+    text: "Rationalise the denominator of:\n\n5/(√3 − √2)",
+    options: {
+      A: "5√3 − 5√2",
+      B: "5√3 + 5√2",
+      C: "√3 + √2",
+      D: "5(√3 − √2)"
+    },
+    answer: "B",
+    explanation: "Multiply the numerator and denominator by the conjugate:\n\n5/(√3 − √2) × (√3 + √2)/(√3 + √2).\n\nThe denominator becomes 3 − 2 = 1.\n\nAnswer = **5√3 + 5√2**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_218",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices & Exponents",
+    bookQuestionNum: 218,
+    text: "Solve:\n\n2ˣ⁺¹ = 8ˣ⁻¹.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "B",
+    explanation: "Since 8 = 2³:\n\n2ˣ⁺¹ = 2³⁽ˣ⁻¹⁾.\n\nEquating powers:\n\nx + 1 = 3x − 3.\n\n4 = 2x.\n\nTherefore, x = **2**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_219",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Logarithms",
+    bookQuestionNum: 219,
+    text: "Evaluate:\n\nlog₃ 81 − log₃ 3 + log₃ 9.",
+    options: {
+      A: "2",
+      B: "3",
+      C: "4",
+      D: "5"
+    },
+    answer: "D",
+    explanation: "log₃ 81 = 4.\n\nlog₃ 3 = 1.\n\nlog₃ 9 = 2.\n\nTherefore, 4 − 1 + 2 = **5**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_220",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Logarithms",
+    bookQuestionNum: 220,
+    text: "Solve:\n\nlog₂(x + 1) + log₂(x − 1) = 3.",
+    options: {
+      A: "2",
+      B: "3",
+      C: "4",
+      D: "5"
+    },
+    answer: "B",
+    explanation: "Using the logarithm law:\n\nlog₂[(x + 1)(x − 1)] = 3.\n\nlog₂(x² − 1) = 3.\n\nx² − 1 = 2³ = 8.\n\nx² = 9.\n\nSince x must be greater than 1, x = **3**.",
+    page: 22,
+    hasImage: false
+  },
+  {
+    id: "math_tough_221",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices & Exponents",
+    bookQuestionNum: 221,
+    text: "Evaluate the following in standard form:\n\n(6.4 × 10⁷) ÷ (8 × 10⁻³)",
+    options: {
+      A: "0.8 × 10¹⁰",
+      B: "8 × 10⁹",
+      C: "8 × 10⁴",
+      D: "5.12 × 10⁵"
+    },
+    answer: "B",
+    explanation: "Divide the coefficients: 6.4 ÷ 8 = 0.8.\n\nSubtract the powers: 7 − (−3) = 10.\n\nTherefore, 0.8 × 10¹⁰ = **8 × 10⁹**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_222",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices & Exponents",
+    bookQuestionNum: 222,
+    text: "Evaluate 64²ᐟ³.",
+    options: {
+      A: "8",
+      B: "12",
+      C: "16",
+      D: "32"
+    },
+    answer: "C",
+    explanation: "64²ᐟ³ = (∛64)² = 4² = **16**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_223",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Logarithms",
+    bookQuestionNum: 223,
+    text: "Evaluate log₄ 8.",
+    options: {
+      A: "1",
+      B: "3/2",
+      C: "2",
+      D: "3"
+    },
+    answer: "B",
+    explanation: "Let log₄ 8 = x.\n\nThen 4ˣ = 8.\n\n(2²)ˣ = 2³.\n\n2ˣ = 3.\n\nTherefore, x = **3/2**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_224",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Approximation & Percentage Error",
+    bookQuestionNum: 224,
+    text: "A mass is recorded as 48 kg, correct to the nearest kilogram. What is the upper bound of its actual mass?",
+    options: {
+      A: "47.5 kg",
+      B: "48.0 kg",
+      C: "48.5 kg",
+      D: "49.0 kg"
+    },
+    answer: "C",
+    explanation: "The possible interval is:\n\n47.5 kg ≤ mass < 48.5 kg.\n\nThe upper bound is **48.5 kg**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_225",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Commercial & Financial Mathematics",
+    bookQuestionNum: 225,
+    text: "A trader sells an article for ₦18,000 at a loss of 10%. Find its cost price.",
+    options: {
+      A: "₦16,200",
+      B: "₦19,800",
+      C: "₦20,000",
+      D: "₦22,000"
+    },
+    answer: "C",
+    explanation: "Selling price = 90% of cost price.\n\nCost price = ₦18,000 ÷ 0.9 = **₦20,000**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_226",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Rates, Ratios & Proportions",
+    bookQuestionNum: 226,
+    text: "A solution contains alcohol and water in the ratio 3:5. If 16 litres of the solution are present, how much water must be added to make the ratio 1:2?",
+    options: {
+      A: "2 litres",
+      B: "4 litres",
+      C: "6 litres",
+      D: "8 litres"
+    },
+    answer: "A",
+    explanation: "Total ratio = 3 + 5 = 8.\n\nAlcohol = 3/8 × 16 = 6 litres.\n\nWater = 5/8 × 16 = 10 litres.\n\nFor the new ratio of 1:2, 6 litres of alcohol require 12 litres of water.\n\nWater to add = 12 − 10 = **2 litres**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_227",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Rates, Ratios & Proportions",
+    bookQuestionNum: 227,
+    text: "A vehicle travels 90 km at 30 km/h and then 150 km at 50 km/h. What is its average speed for the entire journey?",
+    options: {
+      A: "35 km/h",
+      B: "40 km/h",
+      C: "42 km/h",
+      D: "45 km/h"
+    },
+    answer: "B",
+    explanation: "First time = 90/30 = 3 hours.\n\nSecond time = 150/50 = 3 hours.\n\nAverage speed = 240/6 = **40 km/h**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_228",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 228,
+    text: "If y varies directly as x² and inversely as z, and y = 12 when x = 2 and z = 4, find y when x = 3 and z = 6.",
+    options: {
+      A: "12",
+      B: "15",
+      C: "18",
+      D: "24"
+    },
+    answer: "C",
+    explanation: "y = kx²/z.\n\n12 = k × 4/4.\n\nTherefore, k = 12.\n\nNew value:\n\ny = 12 × 9/6 = **18**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_229",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Modular Arithmetic & Divisibility",
+    bookQuestionNum: 229,
+    text: "The time is 8:00 a.m. What time will it be 1,000 hours later?",
+    options: {
+      A: "8:00 p.m.",
+      B: "12:00 midnight",
+      C: "2:00 p.m.",
+      D: "4:00 p.m."
+    },
+    answer: "B",
+    explanation: "1,000 ÷ 24 = 41 days with 16 hours remaining.\n\nSixteen hours after 8:00 a.m. is **12:00 midnight**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_230",
+    originalChapter: 3,
+    chapterTitle: "Commercial Mathematics & Financial Arithmetic",
+    topic: "Commercial & Financial Mathematics",
+    bookQuestionNum: 230,
+    text: "A company declares a dividend of 12% on shares worth ₦250,000. How much dividend will an investor receive?",
+    options: {
+      A: "₦20,000",
+      B: "₦25,000",
+      C: "₦30,000",
+      D: "₦35,000"
+    },
+    answer: "C",
+    explanation: "Dividend = 12/100 × ₦250,000 = **₦30,000**.",
+    page: 23,
+    hasImage: false
+  },
+  {
+    id: "math_tough_231",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebraic Fractions",
+    bookQuestionNum: 231,
+    text: "Make r the subject of the formula:\n\nP = (2r + 3)/(r − 1).",
+    options: {
+      A: "(P + 3)/(P − 2)",
+      B: "(P − 3)/(P + 2)",
+      C: "(P + 1)/(P − 2)",
+      D: "(P − 1)/(P + 3)"
+    },
+    answer: "A",
+    explanation: "P(r − 1) = 2r + 3.\n\nPr − P = 2r + 3.\n\nPr − 2r = P + 3.\n\nr(P − 2) = P + 3.\n\nTherefore:\n\nr = **(P + 3)/(P − 2)**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_232",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebraic Identities",
+    bookQuestionNum: 232,
+    text: "Expand and simplify:\n\n(2x − 3)(x + 4) − (x − 2)².",
+    options: {
+      A: "x² + 13x − 17",
+      B: "x² + 9x − 16",
+      C: "x² + 5x − 17",
+      D: "x² + 9x + 17"
+    },
+    answer: "B",
+    explanation: "First expansion:\n\n(2x − 3)(x + 4) = 2x² + 5x − 12.\n\nSecond expansion:\n\n(x − 2)² = x² − 4x + 4.\n\nSubtract:\n\n2x² + 5x − 12 − x² + 4x − 4.\n\n= **x² + 9x − 16**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_233",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Polynomials & Remainder Theorem",
+    bookQuestionNum: 233,
+    text: "Factorise completely:\n\nx³ − 4x² + x + 6.",
+    options: {
+      A: "(x − 2)(x − 3)(x + 1)",
+      B: "(x + 2)(x − 3)(x − 1)",
+      C: "(x − 2)(x + 3)(x − 1)",
+      D: "(x + 2)(x + 3)(x − 1)"
+    },
+    answer: "A",
+    explanation: "Factorising gives:\n\n(x − 2)(x² − 2x − 3).\n\nThen:\n\nx² − 2x − 3 = (x − 3)(x + 1).\n\nTherefore, the complete factorisation is **(x − 2)(x − 3)(x + 1)**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_234",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Polynomials & Remainder Theorem",
+    bookQuestionNum: 234,
+    text: "Solve:\n\nx³ − 6x² + 11x − 6 = 0.",
+    options: {
+      A: "1, 2 and 3",
+      B: "−1, −2 and −3",
+      C: "1, 3 and 4",
+      D: "2, 3 and 4"
+    },
+    answer: "A",
+    explanation: "Factorising:\n\n(x − 1)(x − 2)(x − 3) = 0.\n\nThe roots are **1, 2 and 3**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_235",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Polynomials & Remainder Theorem",
+    bookQuestionNum: 235,
+    text: "Divide x³ − 3x² + 4x − 4 by x − 2.",
+    options: {
+      A: "x² + x + 2",
+      B: "x² − x + 2",
+      C: "x² − 2x + 2",
+      D: "x² − 3x + 2"
+    },
+    answer: "B",
+    explanation: "Polynomial division gives:\n\nQuotient = x² − x + 2.\n\nRemainder = 0.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_236",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 236,
+    text: "If x + y = 5 and x² + y² = 13, find the values of x and y.",
+    options: {
+      A: "1 and 4",
+      B: "2 and 3",
+      C: "1 and 3",
+      D: "2 and 4"
+    },
+    answer: "B",
+    explanation: "(x + y)² = x² + 2xy + y².\n\n25 = 13 + 2xy.\n\nxy = 6.\n\nThe two numbers with sum 5 and product 6 are **2 and 3**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_237",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 237,
+    text: "Solve simultaneously:\n\n3x + 2y = 16\n\nx − y = 2",
+    options: {
+      A: "x = 3, y = 2",
+      B: "x = 4, y = 2",
+      C: "x = 2, y = 4",
+      D: "x = 5, y = 1"
+    },
+    answer: "B",
+    explanation: "From x − y = 2:\n\nx = y + 2.\n\nSubstitute:\n\n3(y + 2) + 2y = 16.\n\n5y + 6 = 16.\n\ny = 2, so x = 4.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_238",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebra: Quadratic Equations",
+    bookQuestionNum: 238,
+    text: "The roots of 2x² − 7x + 3 = 0 are",
+    options: {
+      A: "3 and ½",
+      B: "−3 and −½",
+      C: "2 and 3",
+      D: "1 and 3/2"
+    },
+    answer: "A",
+    explanation: "Factorising:\n\n(2x − 1)(x − 3) = 0.\n\nTherefore, x = ½ or x = 3.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_239",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebra: Quadratic Equations",
+    bookQuestionNum: 239,
+    text: "Find the minimum value of x² − 8x + 13.",
+    options: {
+      A: "−5",
+      B: "−4",
+      C: "−3",
+      D: "3"
+    },
+    answer: "C",
+    explanation: "Complete the square:\n\nx² − 8x + 13 = (x − 4)² − 3.\n\nThe smallest possible value of a square is zero.\n\nMinimum value = **−3**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_240",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebra: Quadratic Equations",
+    bookQuestionNum: 240,
+    text: "For what value of k does x² − 4x + k = 0 have equal roots?",
+    options: {
+      A: "2",
+      B: "4",
+      C: "8",
+      D: "16"
+    },
+    answer: "B",
+    explanation: "For equal roots:\n\nb² − 4ac = 0.\n\n(−4)² − 4(1)(k) = 0.\n\n16 − 4k = 0.\n\nTherefore, k = **4**.",
+    page: 24,
+    hasImage: false
+  },
+  {
+    id: "math_tough_241",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Inequalities",
+    bookQuestionNum: 241,
+    text: "Solve:\n\n3x − 7 < 8.",
+    options: {
+      A: "x < 3",
+      B: "x < 5",
+      C: "x > 5",
+      D: "x > 3"
+    },
+    answer: "B",
+    explanation: "3x < 8 + 7.\n\n3x < 15.\n\nTherefore, x < **5**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_242",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Inequalities",
+    bookQuestionNum: 242,
+    text: "Solve:\n\nx² − 7x + 12 ≥ 0.",
+    options: {
+      A: "3 ≤ x ≤ 4",
+      B: "x ≤ 3 or x ≥ 4",
+      C: "x < 3 or x > 4",
+      D: "x ≥ 3"
+    },
+    answer: "B",
+    explanation: "Factorise:\n\n(x − 3)(x − 4) ≥ 0.\n\nThe expression is non-negative outside the two roots.\n\nTherefore, x ≤ 3 or x ≥ 4.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_243",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Inequalities",
+    bookQuestionNum: 243,
+    text: "Solve:\n\n|3x − 2| ≤ 7.",
+    options: {
+      A: "−5/3 ≤ x ≤ 3",
+      B: "−3 ≤ x ≤ 5/3",
+      C: "x ≤ −5/3 or x ≥ 3",
+      D: "−7 ≤ x ≤ 7"
+    },
+    answer: "A",
+    explanation: "−7 ≤ 3x − 2 ≤ 7.\n\nAdd 2:\n\n−5 ≤ 3x ≤ 9.\n\nDivide by 3:\n\n**−5/3 ≤ x ≤ 3**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_244",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Inequalities",
+    bookQuestionNum: 244,
+    text: "Find the values of x for which:\n\n(x − 2)(x + 5) < 0.",
+    options: {
+      A: "x < −5 or x > 2",
+      B: "−5 < x < 2",
+      C: "x < −2",
+      D: "x > 5"
+    },
+    answer: "B",
+    explanation: "The roots are −5 and 2.\n\nThe product is negative between the roots.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_245",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebra: Quadratic Equations",
+    bookQuestionNum: 245,
+    text: "The curve y = x² − 5x + 6 intersects the x-axis at",
+    options: {
+      A: "x = 1 and 6",
+      B: "x = 2 and 3",
+      C: "x = −2 and −3",
+      D: "x = 1 and 5"
+    },
+    answer: "B",
+    explanation: "At the x-axis, y = 0.\n\nx² − 5x + 6 = 0.\n\n(x − 2)(x − 3) = 0.\n\nTherefore, x = 2 or x = 3.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_246",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 246,
+    text: "y varies directly as the square of x. If y = 45 when x = 3, find y when x = 5.",
+    options: {
+      A: "75",
+      B: "100",
+      C: "125",
+      D: "150"
+    },
+    answer: "C",
+    explanation: "y = kx².\n\n45 = 9k, so k = 5.\n\nWhen x = 5:\n\ny = 5 × 25 = **125**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_247",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 247,
+    text: "y varies inversely as x. If y = 12 when x = 5, find y when x = 8.",
+    options: {
+      A: "6.5",
+      B: "7.5",
+      C: "8",
+      D: "9"
+    },
+    answer: "B",
+    explanation: "xy = k.\n\nk = 12 × 5 = 60.\n\nWhen x = 8:\n\ny = 60/8 = **7.5**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_248",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 248,
+    text: "z varies jointly as x and the square root of y. If z = 24 when x = 4 and y = 9, find z when x = 6 and y = 16.",
+    options: {
+      A: "32",
+      B: "36",
+      C: "40",
+      D: "48"
+    },
+    answer: "D",
+    explanation: "z = kx√y.\n\n24 = k × 4 × 3.\n\nk = 2.\n\nTherefore:\n\nz = 2 × 6 × √16 = **48**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_249",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 249,
+    text: "y varies partly as x and is partly constant. If y = 17 when x = 3 and y = 27 when x = 8, find y when x = 12.",
+    options: {
+      A: "31",
+      B: "33",
+      C: "35",
+      D: "37"
+    },
+    answer: "C",
+    explanation: "Let y = mx + c.\n\n27 − 17 = m(8 − 3).\n\n10 = 5m.\n\nm = 2.\n\n17 = 2(3) + c.\n\nc = 11.\n\nWhen x = 12:\n\ny = 2(12) + 11 = **35**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_250",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 250,
+    text: "A quantity varies inversely as the square of x. If x increases by 20%, what is the percentage decrease in the quantity?",
+    options: {
+      A: "20%",
+      B: "25%",
+      C: "30.56%",
+      D: "44%"
+    },
+    answer: "C",
+    explanation: "New x = 1.2x.\n\nThe new quantity is proportional to:\n\n1/(1.2)² = 1/1.44 ≈ 0.6944.\n\nPercentage decrease = (1 − 0.6944) × 100 = **30.56%**.",
+    page: 25,
+    hasImage: false
+  },
+  {
+    id: "math_tough_251",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 251,
+    text: "The nth term of an arithmetic progression is Tₙ = 5n − 2. Find the 25th term.",
+    options: {
+      A: "115",
+      B: "120",
+      C: "123",
+      D: "125"
+    },
+    answer: "C",
+    explanation: "T₂₅ = 5(25) − 2 = 125 − 2 = **123**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_252",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 252,
+    text: "Find the sum of the first 30 terms of the arithmetic progression:\n\n4, 9, 14, 19, ...",
+    options: {
+      A: "2,145",
+      B: "2,250",
+      C: "2,295",
+      D: "2,415"
+    },
+    answer: "C",
+    explanation: "a = 4, d = 5, n = 30.\n\nSₙ = n/2 [2a + (n − 1)d].\n\nS₃₀ = 30/2 [2(4) + 29(5)].\n\n= 15(8 + 145).\n\n= 15 × 153 = **2,295**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_253",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 253,
+    text: "The 5th term of an arithmetic progression is 18 and the 12th term is 46. Find its first term.",
+    options: {
+      A: "2",
+      B: "4",
+      C: "6",
+      D: "8"
+    },
+    answer: "A",
+    explanation: "T₅ = a + 4d = 18.\n\nT₁₂ = a + 11d = 46.\n\nSubtracting:\n\n7d = 28.\n\nd = 4.\n\na = 18 − 4(4) = **2**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_254",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 254,
+    text: "Find the 7th term of the geometric progression:\n\n2, 6, 18, 54, ...",
+    options: {
+      A: "486",
+      B: "729",
+      C: "1,458",
+      D: "2,187"
+    },
+    answer: "C",
+    explanation: "a = 2, r = 3.\n\nT₇ = ar⁶.\n\n= 2 × 3⁶.\n\n= 2 × 729 = **1,458**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_255",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 255,
+    text: "Find the sum of the first five terms of a geometric progression whose first term is 3 and common ratio is 2.",
+    options: {
+      A: "45",
+      B: "48",
+      C: "93",
+      D: "96"
+    },
+    answer: "C",
+    explanation: "Sₙ = a(rⁿ − 1)/(r − 1).\n\nS₅ = 3(2⁵ − 1)/(2 − 1).\n\n= 3(32 − 1) = **93**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_256",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 256,
+    text: "Find the sum to infinity of the geometric progression:\n\n12, 6, 3, 1.5, ...",
+    options: {
+      A: "18",
+      B: "24",
+      C: "30",
+      D: "36"
+    },
+    answer: "B",
+    explanation: "a = 12 and r = ½.\n\nS∞ = a/(1 − r).\n\n= 12/(1 − ½) = **24**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_257",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Binary Operations",
+    bookQuestionNum: 257,
+    text: "A binary operation is defined by:\n\na * b = a + b + 2.\n\nFind the identity element.",
+    options: {
+      A: "−2",
+      B: "−1",
+      C: "0",
+      D: "2"
+    },
+    answer: "A",
+    explanation: "Let the identity be e.\n\na * e = a.\n\na + e + 2 = a.\n\nTherefore, e = **−2**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_258",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Binary Operations",
+    bookQuestionNum: 258,
+    text: "A binary operation is defined by:\n\na * b = ab − a − b + 2.\n\nFind the inverse of 5.",
+    options: {
+      A: "1/4",
+      B: "1/2",
+      C: "5/4",
+      D: "2"
+    },
+    answer: "C",
+    explanation: "The identity element is 2.\n\nLet the inverse of 5 be b.\n\n5b − 5 − b + 2 = 2.\n\n4b = 5.\n\nTherefore, b = **5/4**.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_259",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Binary Operations",
+    bookQuestionNum: 259,
+    text: "On the set of integers, an operation is defined by:\n\na * b = a + b − 1.\n\nWhich statement is correct?",
+    options: {
+      A: "It is not closed on integers.",
+      B: "It is commutative.",
+      C: "It is not associative.",
+      D: "It has no identity."
+    },
+    answer: "B",
+    explanation: "a * b = a + b − 1.\n\nb * a = b + a − 1.\n\nSince a + b = b + a, the operation is commutative.",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_260",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 260,
+    text: "Given:\n\nA = [1  2; 3  1]\n\nB = [2  0; 1  4]\n\nFind AB.",
+    options: {
+      A: "[2  8; 7  4]",
+      B: "[4  8; 7  4]",
+      C: "[4  4; 7  8]",
+      D: "[3  8; 6  4]"
+    },
+    answer: "B",
+    explanation: "Multiply rows of A by columns of B.\n\nFirst row: (1 × 2 + 2 × 1) = 4; (1 × 0 + 2 × 4) = 8.\n\nSecond row: (3 × 2 + 1 × 1) = 7; (3 × 0 + 1 × 4) = 4.\n\nTherefore:\n\nAB = [4  8; 7  4].",
+    page: 26,
+    hasImage: false
+  },
+  {
+    id: "math_tough_261",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 261,
+    text: "Find the determinant of:\n\n[4  3; 2  5]",
+    options: {
+      A: "8",
+      B: "12",
+      C: "14",
+      D: "26"
+    },
+    answer: "C",
+    explanation: "For a 2 × 2 matrix:\n\n|A| = ad − bc.\n\n= (4 × 5) − (3 × 2).\n\n= 20 − 6 = **14**.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_262",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 262,
+    text: "Find the inverse of:\n\n[2  1; 5  3]",
+    options: {
+      A: "[3  −1; −5  2]",
+      B: "[3  1; 5  2]",
+      C: "[2  −1; −5  3]",
+      D: "[3  −5; −1  2]"
+    },
+    answer: "A",
+    explanation: "Determinant = (2 × 3) − (1 × 5) = 1.\n\nThe inverse is obtained by swapping the diagonal elements and changing the signs of the other elements.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_263",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 263,
+    text: "If:\n\n2x + y = 7\n\nx + y = 4\n\nFind x and y.",
+    options: {
+      A: "x = 1, y = 3",
+      B: "x = 3, y = 1",
+      C: "x = 4, y = −1",
+      D: "x = −1, y = 3"
+    },
+    answer: "B",
+    explanation: "Subtract the second equation from the first:\n\nx = 3.\n\nSubstitute into x + y = 4:\n\n3 + y = 4.\n\nTherefore, y = 1.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_264",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 264,
+    text: "Evaluate the determinant:\n\n|1  2  1; 0  3  2; 2  1  0|",
+    options: {
+      A: "−10",
+      B: "−6",
+      C: "0",
+      D: "8"
+    },
+    answer: "C",
+    explanation: "Expanding along the first row:\n\n= 1(3 × 0 − 2 × 1) − 2(0 × 0 − 2 × 2) + 1(0 × 1 − 3 × 2).\n\n= −2 + 8 − 6 = **0**.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_265",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Polynomials & Remainder Theorem",
+    bookQuestionNum: 265,
+    text: "The remainder when 2x³ − 3x² + 4x − 5 is divided by x − 2 is",
+    options: {
+      A: "3",
+      B: "5",
+      C: "7",
+      D: "9"
+    },
+    answer: "C",
+    explanation: "By the remainder theorem, substitute x = 2.\n\nRemainder = 2(2³) − 3(2²) + 4(2) − 5.\n\n= 16 − 12 + 8 − 5 = **7**.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_266",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebra: Quadratic Equations",
+    bookQuestionNum: 266,
+    text: "The sum and product of the roots of 3x² − 11x + 6 = 0 are respectively",
+    options: {
+      A: "11/3 and 2",
+      B: "3 and 11/3",
+      C: "11 and 6",
+      D: "6 and 11/3"
+    },
+    answer: "A",
+    explanation: "Sum = −b/a = 11/3.\n\nProduct = c/a = 6/3 = 2.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_267",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Polynomials & Remainder Theorem",
+    bookQuestionNum: 267,
+    text: "Factorise:\n\nx³ + 2x² − x − 2.",
+    options: {
+      A: "(x + 2)(x − 1)(x + 1)",
+      B: "(x − 2)(x + 1)²",
+      C: "(x + 2)(x + 1)²",
+      D: "(x − 2)(x − 1)(x + 1)"
+    },
+    answer: "A",
+    explanation: "Group the terms:\n\nx²(x + 2) − 1(x + 2).\n\n= (x² − 1)(x + 2).\n\n= (x − 1)(x + 1)(x + 2).",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_268",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Algebraic Fractions",
+    bookQuestionNum: 268,
+    text: "Make a the subject of the formula:\n\nv² = u² + 2as.",
+    options: {
+      A: "(v² + u²)/(2s)",
+      B: "(v² − u²)/(2s)",
+      C: "2s/(v² − u²)",
+      D: "(u² − v²)/(2s)"
+    },
+    answer: "B",
+    explanation: "v² − u² = 2as.\n\nDivide both sides by 2s:\n\na = **(v² − u²)/(2s)**.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_269",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Inequalities",
+    bookQuestionNum: 269,
+    text: "Find the solution set of:\n\n2x + 1 ≤ 7\n\n3x − 2 > 1",
+    options: {
+      A: "x ≤ 3",
+      B: "x > 1",
+      C: "1 < x ≤ 3",
+      D: "x < 1"
+    },
+    answer: "C",
+    explanation: "First inequality gives x ≤ 3.\n\nSecond inequality gives x > 1.\n\nCombining them:\n\n**1 < x ≤ 3**.",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_270",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 270,
+    text: "Solve simultaneously:\n\nx + y = 5\n\ny = x² − 3x + 2.",
+    options: {
+      A: "(3, 2) or (−1, 6)",
+      B: "(2, 3) or (−1, 6)",
+      C: "(3, 2) or (1, 4)",
+      D: "(2, 3) or (1, 4)"
+    },
+    answer: "A",
+    explanation: "From the first equation, y = 5 − x.\n\nSubstitute:\n\n5 − x = x² − 3x + 2.\n\nx² − 2x − 3 = 0.\n\n(x − 3)(x + 1) = 0.\n\nTherefore, x = 3 or −1.\n\nThe corresponding points are (3, 2) and (−1, 6).",
+    page: 27,
+    hasImage: false
+  },
+  {
+    id: "math_tough_271",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 271,
+    text: "The nth term of a sequence is Tₙ = 3n² − 2n. Find the difference between the 6th and 4th terms.",
+    options: {
+      A: "32",
+      B: "48",
+      C: "56",
+      D: "64"
+    },
+    answer: "C",
+    explanation: "T₆ = 3(6²) − 2(6) = 96.\n\nT₄ = 3(4²) − 2(4) = 40.\n\nDifference = 96 − 40 = **56**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_272",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 272,
+    text: "An arithmetic progression has a first term of 8 and a 15th term of 50. Find the sum of its first 15 terms.",
+    options: {
+      A: "420",
+      B: "435",
+      C: "450",
+      D: "465"
+    },
+    answer: "B",
+    explanation: "Sₙ = n/2(a + l).\n\nS₁₅ = 15/2(8 + 50).\n\n= 15/2 × 58 = **435**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_273",
+    originalChapter: 4,
+    chapterTitle: "Sequences, Series & Progression",
+    topic: "Sequences & Series: AP & GP",
+    bookQuestionNum: 273,
+    text: "A population doubles every 5 years. If its present population is 12,000, what will it be after 20 years?",
+    options: {
+      A: "48,000",
+      B: "96,000",
+      C: "144,000",
+      D: "192,000"
+    },
+    answer: "D",
+    explanation: "Number of doubling periods = 20/5 = 4.\n\nPopulation = 12,000 × 2⁴.\n\n= 12,000 × 16 = **192,000**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_274",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Binary Operations",
+    bookQuestionNum: 274,
+    text: "The operation * is defined by:\n\na * b = ab − a − b + 2.\n\nFind 3 * 4.",
+    options: {
+      A: "5",
+      B: "6",
+      C: "7",
+      D: "8"
+    },
+    answer: "C",
+    explanation: "3 * 4 = (3 × 4) − 3 − 4 + 2.\n\n= 12 − 3 − 4 + 2 = **7**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_275",
+    originalChapter: 7,
+    chapterTitle: "Functions, Matrices & Vectors",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 275,
+    text: "If matrix A has order 2 × 3 and matrix B has order 3 × 2, the order of AB is",
+    options: {
+      A: "2 × 2",
+      B: "3 × 3",
+      C: "2 × 3",
+      D: "3 × 2"
+    },
+    answer: "A",
+    explanation: "The inner dimensions are both 3, so multiplication is possible.\n\nThe product has the outer dimensions: **2 × 2**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_276",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Variations",
+    bookQuestionNum: 276,
+    text: "A variable y varies directly as x and inversely as z². If y = 10 when x = 4 and z = 2, find y when x = 9 and z = 3.",
+    options: {
+      A: "10",
+      B: "12.5",
+      C: "15",
+      D: "20"
+    },
+    answer: "A",
+    explanation: "y = kx/z².\n\n10 = 4k/4.\n\nk = 10.\n\nWhen x = 9 and z = 3:\n\ny = 10 × 9/3² = **10**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_277",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Inequalities",
+    bookQuestionNum: 277,
+    text: "Find the integer values of x satisfying:\n\n2x − 3 < 7\n\nx + 4 ≥ 1.",
+    options: {
+      A: "−2, −1, 0, 1, 2, 3, 4",
+      B: "−3, −2, −1, 0, 1, 2, 3, 4",
+      C: "−2, −1, 0, 1, 2, 3",
+      D: "0, 1, 2, 3"
+    },
+    answer: "B",
+    explanation: "First inequality gives x < 5.\n\nSecond inequality gives x ≥ −3.\n\nTherefore, the integer values range from −3 to 4.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_278",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Equations & Polynomials",
+    topic: "Polynomials & Remainder Theorem",
+    bookQuestionNum: 278,
+    text: "One root of x³ − 4x² + x + 6 = 0 is 2. Find the product of the other two roots.",
+    options: {
+      A: "−3",
+      B: "−2",
+      C: "2",
+      D: "3"
+    },
+    answer: "A",
+    explanation: "Dividing the cubic by x − 2 gives:\n\nx² − 2x − 3 = 0.\n\nFactorising:\n\n(x − 3)(x + 1) = 0.\n\nThe other roots are 3 and −1.\n\nTheir product = **−3**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_279",
+    originalChapter: 6,
+    chapterTitle: "Simultaneous Equations, Inequalities & Variations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 279,
+    text: "If:\n\n2x + y = 11\n\nx − y = 1\n\nFind x² + y².",
+    options: {
+      A: "25",
+      B: "29",
+      C: "34",
+      D: "40"
+    },
+    answer: "A",
+    explanation: "Adding the two equations:\n\n3x = 12.\n\nx = 4.\n\nSubstitute into x − y = 1:\n\n4 − y = 1.\n\ny = 3.\n\nTherefore:\n\nx² + y² = 4² + 3² = **25**.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_280",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 280,
+    text: "The curve y = x³ − 3x² − 9x + 5 has stationary points where",
+    options: {
+      A: "x = −1 or 3",
+      B: "x = 1 or −3",
+      C: "x = −2 or 3",
+      D: "x = 0 or 3"
+    },
+    answer: "A",
+    explanation: "dy/dx = 3x² − 6x − 9.\n\n= 3(x² − 2x − 3).\n\n= 3(x − 3)(x + 1).\n\nAt stationary points, dy/dx = 0.\n\nTherefore, x = 3 or x = −1.",
+    page: 28,
+    hasImage: false
+  },
+  {
+    id: "math_tough_281",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Euclidean Geometry: Polygons",
+    bookQuestionNum: 281,
+    text: "Two parallel lines are cut by a transversal. If one corresponding angle is 3x + 15° and the other is 5x − 25°, find x.",
+    options: {
+      A: "15",
+      B: "20",
+      C: "25",
+      D: "30"
+    },
+    answer: "B",
+    explanation: "Corresponding angles are equal.\n\n3x + 15 = 5x − 25.\n\n40 = 2x.\n\nx = **20**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_282",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Euclidean Geometry: Polygons",
+    bookQuestionNum: 282,
+    text: "The angles of a triangle are in the ratio 2:3:4. Find the largest angle.",
+    options: {
+      A: "60°",
+      B: "70°",
+      C: "80°",
+      D: "90°"
+    },
+    answer: "C",
+    explanation: "Total ratio = 9.\n\nOne part = 180°/9 = 20°.\n\nLargest angle = 4 × 20° = **80°**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_283",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Euclidean Geometry: Polygons",
+    bookQuestionNum: 283,
+    text: "Each exterior angle of a regular polygon is 24°. How many sides does the polygon have?",
+    options: {
+      A: "12",
+      B: "15",
+      C: "18",
+      D: "20"
+    },
+    answer: "B",
+    explanation: "Number of sides = 360°/24° = **15**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_284",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Euclidean Geometry: Polygons",
+    bookQuestionNum: 284,
+    text: "How many diagonals does a 15-sided polygon have?",
+    options: {
+      A: "75",
+      B: "80",
+      C: "90",
+      D: "105"
+    },
+    answer: "C",
+    explanation: "Number of diagonals = n(n − 3)/2.\n\n= 15(15 − 3)/2.\n\n= 15 × 12/2 = **90**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_285",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Circle Geometry & Theorems",
+    bookQuestionNum: 285,
+    text: "ABCD is a cyclic quadrilateral. If angle ABC = 3x + 10° and angle ADC = 5x − 10°, find x.",
+    options: {
+      A: "20",
+      B: "22.5",
+      C: "25",
+      D: "30"
+    },
+    answer: "B",
+    explanation: "Opposite angles in a cyclic quadrilateral add up to 180°.\n\n3x + 10 + 5x − 10 = 180.\n\n8x = 180.\n\nx = **22.5**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_286",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Circle Geometry & Theorems",
+    bookQuestionNum: 286,
+    text: "Two chords intersect inside a circle. One chord is divided into segments of 4 cm and 9 cm. The other is divided into segments of 6 cm and x cm. Find x.",
+    options: {
+      A: "4 cm",
+      B: "5 cm",
+      C: "6 cm",
+      D: "8 cm"
+    },
+    answer: "C",
+    explanation: "By the intersecting chords theorem:\n\n4 × 9 = 6 × x.\n\n36 = 6x.\n\nx = **6 cm**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_287",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Circle Geometry & Theorems",
+    bookQuestionNum: 287,
+    text: "A chord of a circle of radius 13 cm is 5 cm from the centre. Find its length.",
+    options: {
+      A: "12 cm",
+      B: "18 cm",
+      C: "24 cm",
+      D: "26 cm"
+    },
+    answer: "C",
+    explanation: "The perpendicular from the centre bisects the chord.\n\nHalf-chord = √(13² − 5²).\n\n= √(169 − 25) = √144 = 12 cm.\n\nFull chord = 2 × 12 = **24 cm**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_288",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Circle Geometry & Theorems",
+    bookQuestionNum: 288,
+    text: "A tangent touches a circle at P. The angle between the tangent and chord PQ is 42°. Find the angle in the alternate segment subtended by PQ.",
+    options: {
+      A: "21°",
+      B: "42°",
+      C: "48°",
+      D: "84°"
+    },
+    answer: "B",
+    explanation: "By the alternate segment theorem, the angle between the tangent and chord equals the angle in the opposite segment.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_289",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 289,
+    text: "The diagonal of a rectangle is 25 cm and one side is 7 cm. Find the other side.",
+    options: {
+      A: "18 cm",
+      B: "20 cm",
+      C: "24 cm",
+      D: "32 cm"
+    },
+    answer: "C",
+    explanation: "Using Pythagoras:\n\nOther side = √(25² − 7²).\n\n= √(625 − 49).\n\n= √576 = **24 cm**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_290",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Euclidean Geometry: Polygons",
+    bookQuestionNum: 290,
+    text: "Two similar triangles have areas in the ratio 25:49. If the corresponding side of the smaller triangle is 15 cm, find the corresponding side of the larger triangle.",
+    options: {
+      A: "18 cm",
+      B: "20 cm",
+      C: "21 cm",
+      D: "24 cm"
+    },
+    answer: "C",
+    explanation: "Ratio of corresponding sides = √25 : √49 = 5:7.\n\nLarger side = 15 × 7/5 = **21 cm**.",
+    page: 29,
+    hasImage: false
+  },
+  {
+    id: "math_tough_291",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 291,
+    text: "Find the area of a triangle whose sides are 13 cm, 14 cm and 15 cm.",
+    options: {
+      A: "72 cm²",
+      B: "78 cm²",
+      C: "84 cm²",
+      D: "90 cm²"
+    },
+    answer: "C",
+    explanation: "Using Heron's formula:\n\ns = (13 + 14 + 15)/2 = 21.\n\nArea = √[s(s − a)(s − b)(s − c)].\n\n= √[21 × 8 × 7 × 6].\n\n= √7056 = **84 cm²**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_292",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 292,
+    text: "A trapezium has parallel sides of 12 cm and 20 cm and height 9 cm. Find its are",
+    options: {
+      A: "A. 126 cm²",
+      B: "135 cm²",
+      C: "144 cm²",
+      D: "162 cm²"
+    },
+    answer: "C",
+    explanation: "Area = ½(a + b)h.\n\n= ½(12 + 20) × 9.\n\n= 16 × 9 = **144 cm²**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_293",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 293,
+    text: "Find the length of an arc subtending an angle of 60° at the centre of a circle of radius 21 cm.",
+    options: {
+      A: "5π cm",
+      B: "7π cm",
+      C: "14π cm",
+      D: "21π cm"
+    },
+    answer: "B",
+    explanation: "Arc length = (θ/360°) × 2πr.\n\n= (60/360) × 2π × 21.\n\n= **7π cm**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_294",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 294,
+    text: "Find the area of a sector of a circle of radius 6 cm and angle 120°.",
+    options: {
+      A: "6π cm²",
+      B: "12π cm²",
+      C: "18π cm²",
+      D: "24π cm²"
+    },
+    answer: "B",
+    explanation: "Sector area = (θ/360°) × πr².\n\n= (120/360) × π × 6².\n\n= **12π cm²**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_295",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 295,
+    text: "A segment of a circle of radius 4 cm is cut off by a 90° sector. Find the area of the minor segment.",
+    options: {
+      A: "4π − 8 cm²",
+      B: "8π − 4 cm²",
+      C: "4π + 8 cm²",
+      D: "16π − 8 cm²"
+    },
+    answer: "A",
+    explanation: "Area of sector = ¼ × π × 4² = 4π cm².\n\nArea of triangle = ½ × 4 × 4 = 8 cm².\n\nMinor segment = 4π − 8 cm².",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_296",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 296,
+    text: "Find the circumference of a circle whose area is 154 cm². Take π = 22/7.",
+    options: {
+      A: "22 cm",
+      B: "33 cm",
+      C: "44 cm",
+      D: "55 cm"
+    },
+    answer: "C",
+    explanation: "πr² = 154.\n\n(22/7)r² = 154.\n\nr² = 49.\n\nr = 7 cm.\n\nCircumference = 2πr = 2 × 22/7 × 7 = **44 cm**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_297",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 297,
+    text: "Find the total surface area of a closed cylinder of radius 3 cm and height 7 cm.",
+    options: {
+      A: "30π cm²",
+      B: "42π cm²",
+      C: "60π cm²",
+      D: "84π cm²"
+    },
+    answer: "C",
+    explanation: "Total surface area = 2πr(r + h).\n\n= 2π × 3 × (3 + 7).\n\n= **60π cm²**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_298",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 298,
+    text: "A cone has radius 5 cm and perpendicular height 12 cm. Find its volume.",
+    options: {
+      A: "60π cm³",
+      B: "80π cm³",
+      C: "100π cm³",
+      D: "120π cm³"
+    },
+    answer: "C",
+    explanation: "Volume = ⅓πr²h.\n\n= ⅓ × π × 5² × 12.\n\n= **100π cm³**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_299",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 299,
+    text: "A frustum of a cone has height 4 cm and radii 5 cm and 3 cm. Find its volume.",
+    options: {
+      A: "49π/3 cm³",
+      B: "98π/3 cm³",
+      C: "196π/3 cm³",
+      D: "245π/3 cm³"
+    },
+    answer: "C",
+    explanation: "Volume = πh/3 (R² + Rr + r²).\n\n= 4π/3 (25 + 15 + 9).\n\n= 4π/3 × 49.\n\n= **196π/3 cm³**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_300",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 300,
+    text: "Find the total surface area of a sphere of radius 3 cm.",
+    options: {
+      A: "9π cm²",
+      B: "18π cm²",
+      C: "27π cm²",
+      D: "36π cm²"
+    },
+    answer: "D",
+    explanation: "Surface area = 4πr².\n\n= 4π × 3² = **36π cm²**.",
+    page: 30,
+    hasImage: false
+  },
+  {
+    id: "math_tough_301",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 301,
+    text: "Find the volume of a hemisphere of radius 6 cm.",
+    options: {
+      A: "72π cm³",
+      B: "108π cm³",
+      C: "144π cm³",
+      D: "288π cm³"
+    },
+    answer: "C",
+    explanation: "Volume = ⅔πr³.\n\n= ⅔ × π × 6³.\n\n= ⅔ × 216π = **144π cm³**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_302",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 302,
+    text: "A cuboid measures 10 cm by 8 cm by 6 cm. A cube of side 2 cm is removed from it. Find the remaining volume.",
+    options: {
+      A: "456 cm³",
+      B: "464 cm³",
+      C: "472 cm³",
+      D: "480 cm³"
+    },
+    answer: "C",
+    explanation: "Cuboid volume = 10 × 8 × 6 = 480 cm³.\n\nCube volume = 2³ = 8 cm³.\n\nRemaining volume = 480 − 8 = **472 cm³**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_303",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Earth Geometry & Spherical Geometry",
+    bookQuestionNum: 303,
+    text: "Two places lie on the equator and differ by 6° in longitude. Using 111 km per degree, find the distance between them.",
+    options: {
+      A: "555 km",
+      B: "600 km",
+      C: "666 km",
+      D: "777 km"
+    },
+    answer: "C",
+    explanation: "Distance = 6 × 111 = **666 km**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_304",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Loci & Geometric Constructions",
+    bookQuestionNum: 304,
+    text: "The locus of a point that is equidistant from two fixed points A and B is",
+    options: {
+      A: "a circle.",
+      B: "a perpendicular bisector.",
+      C: "a straight line parallel to AB.",
+      D: "an ellipse."
+    },
+    answer: "B",
+    explanation: "Every point on the perpendicular bisector of AB is equidistant from A and B.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_305",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Loci & Geometric Constructions",
+    bookQuestionNum: 305,
+    text: "The locus of points equidistant from two intersecting straight lines consists of",
+    options: {
+      A: "two parallel lines.",
+      B: "two angle bisectors.",
+      C: "one circle.",
+      D: "one perpendicular bisector."
+    },
+    answer: "B",
+    explanation: "Points equidistant from two intersecting lines lie on the internal or external angle bisectors.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_306",
+    originalChapter: 8,
+    chapterTitle: "Coordinate Geometry",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 306,
+    text: "Find the gradient of the line joining (−3, 4) and (5, −8).",
+    options: {
+      A: "−3/2",
+      B: "−1",
+      C: "1",
+      D: "3/2"
+    },
+    answer: "A",
+    explanation: "Gradient = (y₂ − y₁)/(x₂ − x₁).\n\n= (−8 − 4)/(5 + 3).\n\n= −12/8 = **−3/2**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_307",
+    originalChapter: 8,
+    chapterTitle: "Coordinate Geometry",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 307,
+    text: "Find the equation of the line passing through (2, 3) and (4, 7).",
+    options: {
+      A: "y = 2x − 1",
+      B: "y = 2x + 1",
+      C: "y = −2x + 7",
+      D: "y = x + 2"
+    },
+    answer: "A",
+    explanation: "Gradient = (7 − 3)/(4 − 2) = 2.\n\nUsing y − y₁ = m(x − x₁):\n\ny − 3 = 2(x − 2).\n\nTherefore, y = **2x − 1**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_308",
+    originalChapter: 8,
+    chapterTitle: "Coordinate Geometry",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 308,
+    text: "Find the equation of the line perpendicular to 3x − 2y + 5 = 0 and passing through (4, 1).",
+    options: {
+      A: "2x + 3y − 11 = 0",
+      B: "2x − 3y − 5 = 0",
+      C: "3x + 2y − 14 = 0",
+      D: "3x − 2y + 5 = 0"
+    },
+    answer: "A",
+    explanation: "Rearrange the given line:\n\ny = 3x/2 + 5/2.\n\nIts gradient is 3/2.\n\nPerpendicular gradient = −2/3.\n\nUsing the point (4, 1):\n\ny − 1 = −⅔(x − 4).\n\nSimplifying gives **2x + 3y − 11 = 0**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_309",
+    originalChapter: 8,
+    chapterTitle: "Coordinate Geometry",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 309,
+    text: "Find the distance between the points (−5, 2) and (7, −3).",
+    options: {
+      A: "12 units",
+      B: "13 units",
+      C: "14 units",
+      D: "15 units"
+    },
+    answer: "B",
+    explanation: "Distance = √[(x₂ − x₁)² + (y₂ − y₁)²].\n\n= √[12² + (−5)²].\n\n= √169 = **13 units**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_310",
+    originalChapter: 8,
+    chapterTitle: "Coordinate Geometry",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 310,
+    text: "The midpoint of the line joining A(−4, 7) and B(8, −5) is",
+    options: {
+      A: "(2, 1)",
+      B: "(4, 2)",
+      C: "(−2, 6)",
+      D: "(6, −2)"
+    },
+    answer: "A",
+    explanation: "Midpoint = ((x₁ + x₂)/2, (y₁ + y₂)/2).\n\n= ((−4 + 8)/2, (7 − 5)/2).\n\n= **(2, 1)**.",
+    page: 31,
+    hasImage: false
+  },
+  {
+    id: "math_tough_311",
+    originalChapter: 8,
+    chapterTitle: "Coordinate Geometry",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 311,
+    text: "Which value of k makes the points (1, 2), (3, 6) and (5, k) collinear?",
+    options: {
+      A: "8",
+      B: "9",
+      C: "10",
+      D: "12"
+    },
+    answer: "C",
+    explanation: "Gradient between the first two points = (6 − 2)/(3 − 1) = 2.\n\nFor collinearity:\n\n(k − 6)/(5 − 3) = 2.\n\nk − 6 = 4.\n\nk = **10**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_312",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Ratios",
+    bookQuestionNum: 312,
+    text: "Evaluate:\n\n2sin30° + 3cos60° + tan45°.",
+    options: {
+      A: "2.5",
+      B: "3",
+      C: "3.5",
+      D: "4"
+    },
+    answer: "C",
+    explanation: "sin30° = ½.\n\ncos60° = ½.\n\ntan45° = 1.\n\nTherefore:\n\n2(½) + 3(½) + 1 = **3.5**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_313",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Equations",
+    bookQuestionNum: 313,
+    text: "Solve cos θ = ½ for 0° ≤ θ ≤ 360°.",
+    options: {
+      A: "30°, 150°",
+      B: "60°, 300°",
+      C: "60°, 120°",
+      D: "120°, 240°"
+    },
+    answer: "B",
+    explanation: "Cosine is positive in the first and fourth quadrants.\n\nThe reference angle is 60°.\n\nTherefore, θ = **60° or 300°**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_314",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Sine & Cosine Rules",
+    bookQuestionNum: 314,
+    text: "In triangle ABC, angle A = 30°, angle B = 60° and side a = 8 cm. Find side b.",
+    options: {
+      A: "4√3 cm",
+      B: "8√2 cm",
+      C: "8√3 cm",
+      D: "16 cm"
+    },
+    answer: "C",
+    explanation: "Using the sine rule:\n\nb/sin60° = 8/sin30°.\n\nb = 8 × (sin60°/sin30°).\n\n= 8 × (√3/2)/(½).\n\n= **8√3 cm**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_315",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Sine & Cosine Rules",
+    bookQuestionNum: 315,
+    text: "Two sides of a triangle are 8 cm and 11 cm, and their included angle is 60°. Find the third side.",
+    options: {
+      A: "√57 cm",
+      B: "√73 cm",
+      C: "√97 cm",
+      D: "√145 cm"
+    },
+    answer: "C",
+    explanation: "Using the cosine rule:\n\nc² = 8² + 11² − 2(8)(11)cos60°.\n\n= 64 + 121 − 88(½).\n\n= 185 − 44 = 97.\n\nTherefore, c = **√97 cm**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_316",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Ratios",
+    bookQuestionNum: 316,
+    text: "Find the area of a triangle with sides 9 cm and 12 cm and included angle 150°.",
+    options: {
+      A: "13.5 cm²",
+      B: "27 cm²",
+      C: "36 cm²",
+      D: "54 cm²"
+    },
+    answer: "B",
+    explanation: "Area = ½ab sin C.\n\n= ½ × 9 × 12 × sin150°.\n\n= 54 × ½ = **27 cm²**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_317",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Bearings & Trigonometric Surveying",
+    bookQuestionNum: 317,
+    text: "A plane travels 12 km due east and then 5 km due north. Find its displacement and bearing from its starting point, to the nearest degree.",
+    options: {
+      A: "13 km, 067°",
+      B: "17 km, 067°",
+      C: "13 km, 113°",
+      D: "7 km, 023°"
+    },
+    answer: "A",
+    explanation: "Displacement = √(12² + 5²) = 13 km.\n\nBearing is measured clockwise from north.\n\nAngle = tan⁻¹(12/5) ≈ 67°.\n\nTherefore, the bearing is 067°.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_318",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Bearings & Trigonometric Surveying",
+    bookQuestionNum: 318,
+    text: "From a point 30 m away from a building, the angle of elevation of its top is 60°. Find the building's height.",
+    options: {
+      A: "10√3 m",
+      B: "15√3 m",
+      C: "30√3 m",
+      D: "60 m"
+    },
+    answer: "C",
+    explanation: "tan60° = height/30.\n\n√3 = height/30.\n\nHeight = **30√3 m**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_319",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Ratios",
+    bookQuestionNum: 319,
+    text: "The amplitude and period of y = 4sin2x, where x is measured in degrees, are",
+    options: {
+      A: "2 and 180°",
+      B: "4 and 180°",
+      C: "4 and 360°",
+      D: "2 and 360°"
+    },
+    answer: "B",
+    explanation: "Amplitude = 4.\n\nPeriod = 360°/2 = **180°**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_320",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Ratios",
+    bookQuestionNum: 320,
+    text: "For y = 3cos(x − 60°), find the value of y when x = 60°.",
+    options: {
+      A: "0",
+      B: "1",
+      C: "2",
+      D: "3"
+    },
+    answer: "D",
+    explanation: "y = 3cos(60° − 60°).\n\n= 3cos0° = **3**.",
+    page: 32,
+    hasImage: false
+  },
+  {
+    id: "math_tough_321",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Ratios",
+    bookQuestionNum: 321,
+    text: "Evaluate:\n\ntan135° + sin330° − cos180°.",
+    options: {
+      A: "−½",
+      B: "0",
+      C: "½",
+      D: "3/2"
+    },
+    answer: "A",
+    explanation: "tan135° = −1.\n\nsin330° = −½.\n\ncos180° = −1.\n\nTherefore:\n\n−1 − ½ − (−1) = **−½**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_322",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Ratios",
+    bookQuestionNum: 322,
+    text: "If sin θ = 5/13 and θ is acute, find cos θ + tan θ.",
+    options: {
+      A: "169/156",
+      B: "209/156",
+      C: "204/65",
+      D: "17/13"
+    },
+    answer: "B",
+    explanation: "Using Pythagoras, the adjacent side is 12.\n\ncos θ = 12/13.\n\ntan θ = 5/12.\n\nTherefore:\n\n12/13 + 5/12 = 144/156 + 65/156 = **209/156**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_323",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Trigonometry: Sine & Cosine Rules",
+    bookQuestionNum: 323,
+    text: "A triangle has sides 7 cm, 8 cm and 9 cm. Find the cosine of the angle opposite the longest side.",
+    options: {
+      A: "1/3",
+      B: "1/2",
+      C: "2/7",
+      D: "3/4"
+    },
+    answer: "C",
+    explanation: "Using the cosine rule:\n\ncos C = (7² + 8² − 9²)/(2 × 7 × 8).\n\n= (49 + 64 − 81)/112.\n\n= 32/112 = **2/7**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_324",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Loci & Geometric Constructions",
+    bookQuestionNum: 324,
+    text: "In a construction, the perpendicular bisector of a line segment is drawn by using",
+    options: {
+      A: "two arcs of different radii from the same endpoint.",
+      B: "equal-radius arcs from each endpoint, with radius greater than half the segment.",
+      C: "a protractor only.",
+      D: "a ruler only."
+    },
+    answer: "B",
+    explanation: "The equal-radius arcs intersect at points equidistant from the two endpoints. Joining the intersection points produces the perpendicular bisector.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_325",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Earth Geometry & Spherical Geometry",
+    bookQuestionNum: 325,
+    text: "Two places on the same longitude differ in latitude by 5°. Using 111 km per degree of latitude, find their approximate surface distance.",
+    options: {
+      A: "444 km",
+      B: "555 km",
+      C: "666 km",
+      D: "777 km"
+    },
+    answer: "B",
+    explanation: "Distance = 5 × 111 = **555 km**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_326",
+    originalChapter: 11,
+    chapterTitle: "Geometry & Circle Theorems",
+    topic: "Euclidean Geometry: Polygons",
+    bookQuestionNum: 326,
+    text: "Each interior angle of a regular polygon is 165°. Find the number of sides.",
+    options: {
+      A: "18",
+      B: "20",
+      C: "24",
+      D: "30"
+    },
+    answer: "C",
+    explanation: "Exterior angle = 180° − 165° = 15°.\n\nNumber of sides = 360°/15° = **24**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_327",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: Plane Figures",
+    bookQuestionNum: 327,
+    text: "A circle has radius 7 cm and a sector of 90° is removed. Find the area of the remaining major sector.",
+    options: {
+      A: "49π/4 cm²",
+      B: "49π/2 cm²",
+      C: "147π/4 cm²",
+      D: "49π cm²"
+    },
+    answer: "C",
+    explanation: "Remaining angle = 360° − 90° = 270°.\n\nArea = (270/360) × π × 7².\n\n= ¾ × 49π = **147π/4 cm²**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_328",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 328,
+    text: "A triangular prism has a triangular cross-section of base 6 cm and perpendicular height 4 cm. If its length is 10 cm, find its volume.",
+    options: {
+      A: "60 cm³",
+      B: "100 cm³",
+      C: "120 cm³",
+      D: "240 cm³"
+    },
+    answer: "C",
+    explanation: "Area of triangular cross-section = ½ × 6 × 4 = 12 cm².\n\nVolume = 12 × 10 = **120 cm³**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_329",
+    originalChapter: 9,
+    chapterTitle: "Mensuration & Geometry",
+    topic: "Mensuration: 3D Solids",
+    bookQuestionNum: 329,
+    text: "A square-based pyramid has base side 8 cm and perpendicular height 9 cm. Find its volume.",
+    options: {
+      A: "144 cm³",
+      B: "192 cm³",
+      C: "256 cm³",
+      D: "576 cm³"
+    },
+    answer: "B",
+    explanation: "Volume = ⅓ × base area × height.\n\n= ⅓ × 8² × 9.\n\n= ⅓ × 64 × 9 = **192 cm³**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_330",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry",
+    topic: "Bearings & Trigonometric Surveying",
+    bookQuestionNum: 330,
+    text: "A traveller moves 12 km on a bearing of 090° and then 5 km due north. Find the distance from the starting point.",
+    options: {
+      A: "7 km",
+      B: "13 km",
+      C: "17 km",
+      D: "25 km"
+    },
+    answer: "B",
+    explanation: "The two movements are perpendicular.\n\nDistance = √(12² + 5²) = √169 = **13 km**.",
+    page: 33,
+    hasImage: false
+  },
+  {
+    id: "math_tough_331",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Calculus: Limits & Continuity",
+    bookQuestionNum: 331,
+    text: "Evaluate:\n\nlim₍ₓ→₃₎ (x² − 9)/(x − 3).",
+    options: {
+      A: "3",
+      B: "6",
+      C: "9",
+      D: "12"
+    },
+    answer: "B",
+    explanation: "x² − 9 = (x − 3)(x + 3).\n\nCancel the common factor:\n\nlim₍ₓ→₃₎ (x + 3) = **6**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_332",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Calculus: Limits & Continuity",
+    bookQuestionNum: 332,
+    text: "Evaluate:\n\nlim₍ₓ→₀₎ [√(x + 4) − 2]/x.",
+    options: {
+      A: "½",
+      B: "¼",
+      C: "1",
+      D: "2"
+    },
+    answer: "B",
+    explanation: "Multiply by the conjugate:\n\n[√(x + 4) − 2]/x × [√(x + 4) + 2]/[√(x + 4) + 2].\n\nThis simplifies to:\n\n1/[√(x + 4) + 2].\n\nSubstituting x = 0 gives 1/(2 + 2) = **¼**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_333",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 333,
+    text: "Differentiate:\n\ny = 5x⁴ − 3x³ + 2x − 7.",
+    options: {
+      A: "20x³ − 9x² + 2",
+      B: "20x³ − 3x² + 2",
+      C: "5x³ − 9x² + 2",
+      D: "20x⁴ − 9x³ + 2"
+    },
+    answer: "A",
+    explanation: "Using the power rule:\n\nd(xⁿ)/dx = nxⁿ⁻¹.\n\nTherefore:\n\ndy/dx = **20x³ − 9x² + 2**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_334",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 334,
+    text: "Differentiate:\n\ny = (x² + 1)(3x − 2).",
+    options: {
+      A: "9x² − 4x + 3",
+      B: "9x² − 4x + 1",
+      C: "6x² + 3",
+      D: "3x² − 4x + 3"
+    },
+    answer: "A",
+    explanation: "Expand first:\n\ny = 3x³ − 2x² + 3x − 2.\n\nDifferentiate:\n\ndy/dx = **9x² − 4x + 3**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_335",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 335,
+    text: "Differentiate y = 3sin x − 2cos x and evaluate at x = 0°.",
+    options: {
+      A: "−3",
+      B: "−2",
+      C: "2",
+      D: "3"
+    },
+    answer: "D",
+    explanation: "dy/dx = 3cos x + 2sin x.\n\nAt x = 0°:\n\ndy/dx = 3(1) + 2(0) = **3**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_336",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 336,
+    text: "Find the gradient of y = 2x² − 5x + 3 at x = 3.",
+    options: {
+      A: "5",
+      B: "6",
+      C: "7",
+      D: "8"
+    },
+    answer: "C",
+    explanation: "dy/dx = 4x − 5.\n\nAt x = 3:\n\n4(3) − 5 = **7**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_337",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 337,
+    text: "At which values of x does y = x³ − 6x² + 9x + 2 have stationary points?",
+    options: {
+      A: "x = 1 and 3",
+      B: "x = 2 and 4",
+      C: "x = −1 and 3",
+      D: "x = 1 and 4"
+    },
+    answer: "A",
+    explanation: "dy/dx = 3x² − 12x + 9.\n\n= 3(x − 1)(x − 3).\n\nAt stationary points, dy/dx = 0.\n\nTherefore, x = **1 or 3**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_338",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 338,
+    text: "Find the minimum value of y = 2x² − 8x + 11.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "C",
+    explanation: "Complete the square:\n\ny = 2(x² − 4x) + 11.\n\ny = 2(x − 2)² + 3.\n\nThe minimum value is **3**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_339",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 339,
+    text: "The radius of a circle increases at 3 cm/s. Find the rate of increase of its area when its radius is 4 cm.",
+    options: {
+      A: "12π cm²/s",
+      B: "18π cm²/s",
+      C: "24π cm²/s",
+      D: "36π cm²/s"
+    },
+    answer: "C",
+    explanation: "A = πr².\n\nDifferentiate with respect to time:\n\ndA/dt = 2πr(dr/dt).\n\n= 2π × 4 × 3.\n\n= **24π cm²/s**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_340",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 340,
+    text: "The displacement of a particle is s = 4t³ − 3t² + 2t. Find its acceleration at t = 2 seconds.",
+    options: {
+      A: "36 m/s²",
+      B: "42 m/s²",
+      C: "48 m/s²",
+      D: "54 m/s²"
+    },
+    answer: "B",
+    explanation: "Velocity:\n\nv = ds/dt = 12t² − 6t + 2.\n\nAcceleration:\n\na = dv/dt = 24t − 6.\n\nAt t = 2:\n\na = 24(2) − 6 = **42 m/s²**.",
+    page: 34,
+    hasImage: false
+  },
+  {
+    id: "math_tough_341",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Integration & Applications",
+    bookQuestionNum: 341,
+    text: "Evaluate:\n\n∫(6x² − 4x + 5) dx.",
+    options: {
+      A: "2x³ − 2x² + 5x + C",
+      B: "6x³ − 4x² + 5x + C",
+      C: "2x³ − 4x² + 5 + C",
+      D: "3x² − 2x + 5 + C"
+    },
+    answer: "A",
+    explanation: "Integrate each term:\n\n∫6x² dx = 2x³.\n\n∫−4x dx = −2x².\n\n∫5 dx = 5x.\n\nTherefore, the answer is **2x³ − 2x² + 5x + C**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_342",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Integration & Applications",
+    bookQuestionNum: 342,
+    text: "Evaluate:\n\n∫₀² (3x² + 2x) dx.",
+    options: {
+      A: "8",
+      B: "10",
+      C: "12",
+      D: "14"
+    },
+    answer: "C",
+    explanation: "Integrate:\n\n∫(3x² + 2x)dx = x³ + x².\n\nApply the limits:\n\n[x³ + x²]₀².\n\n= (8 + 4) − 0 = **12**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_343",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Integration & Applications",
+    bookQuestionNum: 343,
+    text: "Evaluate:\n\n∫cos x dx.",
+    options: {
+      A: "−sin x + C",
+      B: "sin x + C",
+      C: "−cos x + C",
+      D: "tan x + C"
+    },
+    answer: "B",
+    explanation: "The derivative of sin x is cos x.\n\nTherefore, ∫cos x dx = **sin x + C**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_344",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Integration & Applications",
+    bookQuestionNum: 344,
+    text: "Find the area under the curve y = 2x + 1 between x = 0 and x = 3.",
+    options: {
+      A: "9 square units",
+      B: "10 square units",
+      C: "12 square units",
+      D: "15 square units"
+    },
+    answer: "C",
+    explanation: "Area = ∫₀³(2x + 1)dx.\n\n= [x² + x]₀³.\n\n= 9 + 3 = **12 square units**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_345",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Integration & Applications",
+    bookQuestionNum: 345,
+    text: "Find the area enclosed between y = 4x and y = x² from x = 0 to x = 4.",
+    options: {
+      A: "16/3 square units",
+      B: "24/3 square units",
+      C: "32/3 square units",
+      D: "64/3 square units"
+    },
+    answer: "C",
+    explanation: "The upper curve is y = 4x.\n\nArea = ∫₀⁴(4x − x²)dx.\n\n= [2x² − x³/3]₀⁴.\n\n= 32 − 64/3.\n\n= **32/3 square units**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_346",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Calculus: Limits & Continuity",
+    bookQuestionNum: 346,
+    text: "Evaluate:\n\nlim₍ₓ→∞₎ (5x² + 3x − 1)/(2x² − 4).",
+    options: {
+      A: "2",
+      B: "2.5",
+      C: "3",
+      D: "5"
+    },
+    answer: "B",
+    explanation: "Divide the numerator and denominator by x².\n\nAs x approaches infinity, the lower-order terms approach zero.\n\nThe limit is 5/2 = **2.5**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_347",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 347,
+    text: "Differentiate:\n\ny = x² + 3/x.",
+    options: {
+      A: "2x + 3/x²",
+      B: "2x − 3/x²",
+      C: "2x + 3/x³",
+      D: "x − 3/x²"
+    },
+    answer: "B",
+    explanation: "Rewrite:\n\ny = x² + 3x⁻¹.\n\nDifferentiate:\n\ndy/dx = 2x − 3x⁻².\n\n= **2x − 3/x²**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_348",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 348,
+    text: "Find the gradient of y = 2x² − 5x + 3 at x = 3.",
+    options: {
+      A: "5",
+      B: "6",
+      C: "7",
+      D: "8"
+    },
+    answer: "C",
+    explanation: "dy/dx = 4x − 5.\n\nAt x = 3:\n\n4 × 3 − 5 = **7**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_349",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Differentiation & Applications",
+    bookQuestionNum: 349,
+    text: "A rectangle has perimeter 48 cm. What is its maximum possible area?",
+    options: {
+      A: "120 cm²",
+      B: "132 cm²",
+      C: "144 cm²",
+      D: "156 cm²"
+    },
+    answer: "C",
+    explanation: "For a fixed perimeter, maximum area occurs when the rectangle is a square.\n\nEach side = 48/4 = 12 cm.\n\nArea = 12 × 12 = **144 cm²**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_350",
+    originalChapter: 14,
+    chapterTitle: "Calculus: Differentiation & Integration",
+    topic: "Integration & Applications",
+    bookQuestionNum: 350,
+    text: "The rate of increase of a quantity is dy/dx = 6x − 4. If y = 5 when x = 1, find y when x = 3.",
+    options: {
+      A: "15",
+      B: "18",
+      C: "21",
+      D: "25"
+    },
+    answer: "C",
+    explanation: "Integrate:\n\ny = ∫(6x − 4)dx.\n\ny = 3x² − 4x + C.\n\nUsing x = 1 and y = 5:\n\n5 = 3 − 4 + C.\n\nC = 6.\n\nWhen x = 3:\n\ny = 3(9) − 4(3) + 6 = **21**.",
+    page: 35,
+    hasImage: false
+  },
+  {
+    id: "math_tough_351",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 351,
+    text: "The values 4, 6, 8 and 10 have frequencies 2, 3, 4 and 1 respectively. Find their mean.",
+    options: {
+      A: "6.8",
+      B: "7.2",
+      C: "7.6",
+      D: "8.0"
+    },
+    answer: "B",
+    explanation: "Mean = Σfx/Σf.\n\n= [4(2) + 6(3) + 8(4) + 10(1)]/10.\n\n= 72/10 = **7.2**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_352",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 352,
+    text: "Find the median of the data:\n\n12, 5, 9, 7, 15, 11, 8, 13, 6.",
+    options: {
+      A: "8",
+      B: "9",
+      C: "10",
+      D: "11"
+    },
+    answer: "B",
+    explanation: "Arrange in ascending order:\n\n5, 6, 7, 8, 9, 11, 12, 13, 15.\n\nThere are nine values.\n\nMedian = fifth value = **9**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_353",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 353,
+    text: "In a grouped frequency table, the class with the highest frequency is called the",
+    options: {
+      A: "median class.",
+      B: "modal class.",
+      C: "lower quartile class.",
+      D: "cumulative class."
+    },
+    answer: "B",
+    explanation: "The modal class is the class interval with the highest frequency.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_354",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Data Presentation",
+    bookQuestionNum: 354,
+    text: "The cumulative frequencies of a data set are 4, 11, 19, 27 and 35. How many observations are in the fourth class?",
+    options: {
+      A: "4",
+      B: "8",
+      C: "11",
+      D: "27"
+    },
+    answer: "B",
+    explanation: "Fourth class frequency = 27 − 19 = **8**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_355",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 355,
+    text: "The grouped data has class intervals 0–10, 10–20 and 20–30 with frequencies 3, 5 and 2. Estimate the mean.",
+    options: {
+      A: "12",
+      B: "14",
+      C: "15",
+      D: "16"
+    },
+    answer: "B",
+    explanation: "Class midpoints are 5, 15 and 25.\n\nMean = Σfx/Σf.\n\n= [3(5) + 5(15) + 2(25)]/10.\n\n= 140/10 = **14**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_356",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Data Presentation",
+    bookQuestionNum: 356,
+    text: "A sector in a pie chart represents 20% of the total dat",
+    options: {
+      A: "What is its angle?\n\nA. 36°",
+      B: "54°",
+      C: "72°",
+      D: "90°"
+    },
+    answer: "C",
+    explanation: "Angle = 20/100 × 360° = **72°**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_357",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Data Presentation",
+    bookQuestionNum: 357,
+    text: "A histogram class has frequency 24 and class width 6. Find its frequency density.",
+    options: {
+      A: "3",
+      B: "4",
+      C: "6",
+      D: "18"
+    },
+    answer: "B",
+    explanation: "Frequency density = frequency/class width.\n\n= 24/6 = **4**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_358",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 358,
+    text: "Find the range of the data:\n\n18, 25, 12, 34, 29, 16 and 41.",
+    options: {
+      A: "23",
+      B: "25",
+      C: "27",
+      D: "29"
+    },
+    answer: "D",
+    explanation: "Range = highest value − lowest value.\n\n= 41 − 12 = **29**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_359",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 359,
+    text: "Find the population variance of 2, 4, 6, 8 and 10.",
+    options: {
+      A: "6",
+      B: "8",
+      C: "10",
+      D: "12"
+    },
+    answer: "B",
+    explanation: "Mean = 6.\n\nSquared deviations:\n\n(2 − 6)² = 16.\n\n(4 − 6)² = 4.\n\n(6 − 6)² = 0.\n\n(8 − 6)² = 4.\n\n(10 − 6)² = 16.\n\nVariance = (16 + 4 + 0 + 4 + 16)/5 = **8**.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_360",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 360,
+    text: "Find the population standard deviation of 3, 5, 7, 9 and 11.",
+    options: {
+      A: "2",
+      B: "√8",
+      C: "3",
+      D: "4"
+    },
+    answer: "B",
+    explanation: "Mean = 7.\n\nSquared deviations sum = 40.\n\nVariance = 40/5 = 8.\n\nStandard deviation = √8.",
+    page: 36,
+    hasImage: false
+  },
+  {
+    id: "math_tough_361",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 361,
+    text: "Find the mean absolute deviation from the mean for the values 2, 4, 6 and 8.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "2.5",
+      D: "3"
+    },
+    answer: "B",
+    explanation: "Mean = 5.\n\nAbsolute deviations = 3, 1, 1 and 3.\n\nMean deviation = (3 + 1 + 1 + 3)/4 = **2**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_362",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 362,
+    text: "Find the interquartile range of:\n\n2, 4, 6, 8, 10, 12, 14, 16.",
+    options: {
+      A: "6",
+      B: "8",
+      C: "10",
+      D: "12"
+    },
+    answer: "B",
+    explanation: "Lower quartile Q₁ = (4 + 6)/2 = 5.\n\nUpper quartile Q₃ = (12 + 14)/2 = 13.\n\nInterquartile range = Q₃ − Q₁ = 13 − 5 = **8**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_363",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 363,
+    text: "If the mean of a set of values is 6, what is the mean when each value is multiplied by 3 and then increased by 4?",
+    options: {
+      A: "18",
+      B: "20",
+      C: "22",
+      D: "24"
+    },
+    answer: "C",
+    explanation: "New mean = 3(6) + 4.\n\n= 18 + 4 = **22**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_364",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 364,
+    text: "Class A has 20 students with an average score of 60. Class B has 30 students with an average score of 70. Find the combined average.",
+    options: {
+      A: "64",
+      B: "65",
+      C: "66",
+      D: "68"
+    },
+    answer: "C",
+    explanation: "Class A total = 20 × 60 = 1,200.\n\nClass B total = 30 × 70 = 2,100.\n\nCombined total = 3,300.\n\nCombined average = 3,300/50 = **66**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_365",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 365,
+    text: "A student scores 70, 65 and 80 in three tests carrying weights 2, 3 and 5 respectively. Find the weighted average.",
+    options: {
+      A: "70.5",
+      B: "72.5",
+      C: "73.5",
+      D: "75.0"
+    },
+    answer: "C",
+    explanation: "Weighted average = Σwx/Σw.\n\n= [70(2) + 65(3) + 80(5)]/10.\n\n= 735/10 = **73.5**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_366",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Data Presentation",
+    bookQuestionNum: 366,
+    text: "The frequencies of four classes are 5, 8, 12 and 7. What is the cumulative frequency up to the third class?",
+    options: {
+      A: "13",
+      B: "20",
+      C: "25",
+      D: "32"
+    },
+    answer: "C",
+    explanation: "Cumulative frequency = 5 + 8 + 12 = **25**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_367",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 367,
+    text: "The grouped frequency distribution below has total frequency 40. Find the median class.\n\n| Class interval | Frequency |\n|---|---:|\n| 0–10 | 5 |\n| 10–20 | 9 |\n| 20–30 | 16 |\n| 30–40 | 10 |",
+    options: {
+      A: "0–10",
+      B: "10–20",
+      C: "20–30",
+      D: "30–40"
+    },
+    answer: "C",
+    explanation: "Median position = 40/2 = 20.\n\nCumulative frequencies = 5, 14, 30 and 40.\n\nThe 20th observation lies in the class **20–30**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_368",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 368,
+    text: "The mean of six numbers is 14. Five of the numbers are 8, 12, 15, 16 and 19. Find the sixth number.",
+    options: {
+      A: "12",
+      B: "14",
+      C: "16",
+      D: "18"
+    },
+    answer: "B",
+    explanation: "Total of six numbers = 6 × 14 = 84.\n\nSum of five known numbers = 70.\n\nSixth number = 84 − 70 = **14**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_369",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 369,
+    text: "The mean of 10 observations is 12. If one observation of 18 is replaced by 28, find the new mean.",
+    options: {
+      A: "12",
+      B: "12.5",
+      C: "13",
+      D: "14"
+    },
+    answer: "C",
+    explanation: "Original total = 10 × 12 = 120.\n\nReplacing 18 with 28 increases the total by 10.\n\nNew total = 130.\n\nNew mean = 130/10 = **13**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_370",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 370,
+    text: "Two fair dice are thrown. Find the probability that their sum is 10.",
+    options: {
+      A: "1/6",
+      B: "1/9",
+      C: "1/12",
+      D: "1/18"
+    },
+    answer: "C",
+    explanation: "Favourable outcomes:\n\n(4,6), (5,5), (6,4).\n\nProbability = 3/36 = **1/12**.",
+    page: 37,
+    hasImage: false
+  },
+  {
+    id: "math_tough_371",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 371,
+    text: "One card is drawn at random from a standard pack of 52 cards. Find the probability of drawing a king or a heart.",
+    options: {
+      A: "4/13",
+      B: "5/13",
+      C: "7/13",
+      D: "1/2"
+    },
+    answer: "A",
+    explanation: "Number of kings = 4.\n\nNumber of hearts = 13.\n\nKing of hearts is counted twice, so subtract 1.\n\nFavourable cards = 4 + 13 − 1 = 16.\n\nProbability = 16/52 = **4/13**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_372",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 372,
+    text: "A fair coin is tossed four times. What is the probability of obtaining exactly three heads?",
+    options: {
+      A: "1/16",
+      B: "1/8",
+      C: "1/4",
+      D: "3/8"
+    },
+    answer: "C",
+    explanation: "The possible successful arrangements are:\n\nHHHT, HHTH, HTHH and THHH.\n\nThere are 4 successful outcomes out of 16.\n\nProbability = 4/16 = **1/4**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_373",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 373,
+    text: "A bag contains 5 red and 4 blue balls. Two balls are drawn without replacement. Find the probability that both are red.",
+    options: {
+      A: "5/18",
+      B: "5/36",
+      C: "1/4",
+      D: "2/9"
+    },
+    answer: "A",
+    explanation: "Probability of first red = 5/9.\n\nProbability of second red = 4/8.\n\nCombined probability = (5/9) × (4/8) = **5/18**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_374",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 374,
+    text: "Events A and B are mutually exclusive. If P(A) = 0.35 and P(B) = 0.25, find P(A or B).",
+    options: {
+      A: "0.0875",
+      B: "0.35",
+      C: "0.60",
+      D: "0.70"
+    },
+    answer: "C",
+    explanation: "For mutually exclusive events:\n\nP(A ∪ B) = P(A) + P(B).\n\n= 0.35 + 0.25 = **0.60**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_375",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 375,
+    text: "If P(A) = 0.6, P(B) = 0.4 and P(A ∩ B) = 0.2, find P(A or B).",
+    options: {
+      A: "0.6",
+      B: "0.7",
+      C: "0.8",
+      D: "1.0"
+    },
+    answer: "C",
+    explanation: "P(A ∪ B) = P(A) + P(B) − P(A ∩ B).\n\n= 0.6 + 0.4 − 0.2 = **0.8**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_376",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 376,
+    text: "Events A and B are independent, with P(A) = 0.7 and P(B) = 0.2. Find the probability that both occur.",
+    options: {
+      A: "0.09",
+      B: "0.14",
+      C: "0.28",
+      D: "0.90"
+    },
+    answer: "B",
+    explanation: "For independent events:\n\nP(A ∩ B) = P(A) × P(B).\n\n= 0.7 × 0.2 = **0.14**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_377",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 377,
+    text: "The probability that a student passes Mathematics is 0.8. Find the probability that the student fails Mathematics.",
+    options: {
+      A: "0.1",
+      B: "0.2",
+      C: "0.4",
+      D: "0.8"
+    },
+    answer: "B",
+    explanation: "Probability of failure = 1 − probability of passing.\n\n= 1 − 0.8 = **0.2**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_378",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 378,
+    text: "A fair die is rolled twice. How many possible ordered outcomes are there?",
+    options: {
+      A: "12",
+      B: "24",
+      C: "30",
+      D: "36"
+    },
+    answer: "D",
+    explanation: "There are six possible results on each roll.\n\nTotal outcomes = 6 × 6 = **36**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_379",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 379,
+    text: "How many different arrangements can be made from the letters of the word PLANET?",
+    options: {
+      A: "120",
+      B: "360",
+      C: "540",
+      D: "720"
+    },
+    answer: "D",
+    explanation: "All six letters are different.\n\nNumber of arrangements = 6! = 6 × 5 × 4 × 3 × 2 × 1 = **720**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_380",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 380,
+    text: "How many distinct arrangements can be made from the letters of the word LEVEL?",
+    options: {
+      A: "30",
+      B: "60",
+      C: "90",
+      D: "120"
+    },
+    answer: "A",
+    explanation: "There are five letters.\n\nL is repeated twice and E is repeated twice.\n\nNumber of arrangements = 5!/(2! × 2!).\n\n= 120/4 = **30**.",
+    page: 38,
+    hasImage: false
+  },
+  {
+    id: "math_tough_381",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 381,
+    text: "A committee of four people is selected from seven men and five women. How many committees can be formed?",
+    options: {
+      A: "330",
+      B: "420",
+      C: "495",
+      D: "792"
+    },
+    answer: "C",
+    explanation: "Total people = 7 + 5 = 12.\n\nNumber of committees = ¹²C₄.\n\n= 12!/(4! × 8!) = **495**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_382",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 382,
+    text: "In how many ways can six people sit around a circular table?",
+    options: {
+      A: "60",
+      B: "120",
+      C: "360",
+      D: "720"
+    },
+    answer: "B",
+    explanation: "Circular arrangements = (n − 1)!.\n\n= (6 − 1)! = 5! = **120**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_383",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 383,
+    text: "A committee of three is selected from four men and three women. How many committees contain at least one woman?",
+    options: {
+      A: "25",
+      B: "30",
+      C: "31",
+      D: "35"
+    },
+    answer: "C",
+    explanation: "Total committees = ⁷C₃ = 35.\n\nAll-male committees = ⁴C₃ = 4.\n\nRequired committees = 35 − 4 = **31**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_384",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 384,
+    text: "How many arrangements of the letters A, B, C, D and E are possible if A and B must stay together?",
+    options: {
+      A: "24",
+      B: "36",
+      C: "48",
+      D: "60"
+    },
+    answer: "C",
+    explanation: "Treat A and B as one block.\n\nThe objects are now AB, C, D and E.\n\nNumber of arrangements = 4!.\n\nA and B can switch places in 2 ways.\n\nTotal = 4! × 2 = **48**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_385",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 385,
+    text: "A student must select two Mathematics books from five different books and three Physics books from six different books. In how many ways can the selection be made?",
+    options: {
+      A: "100",
+      B: "120",
+      C: "150",
+      D: "200"
+    },
+    answer: "D",
+    explanation: "Mathematics selections = ⁵C₂ = 10.\n\nPhysics selections = ⁶C₃ = 20.\n\nTotal selections = 10 × 20 = **200**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_386",
+    originalChapter: 13,
+    chapterTitle: "Permutations & Combinations",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 386,
+    text: "A four-digit code is formed using the digits 0–7 without repetition. If the first digit cannot be zero, how many codes are possible?",
+    options: {
+      A: "840",
+      B: "1,200",
+      C: "1,470",
+      D: "1,680"
+    },
+    answer: "C",
+    explanation: "First digit: 7 choices.\n\nSecond digit: 7 choices.\n\nThird digit: 6 choices.\n\nFourth digit: 5 choices.\n\nTotal = 7 × 7 × 6 × 5 = **1,470**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_387",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 387,
+    text: "A fair coin is tossed three times. Find the probability of getting at least two heads.",
+    options: {
+      A: "1/8",
+      B: "3/8",
+      C: "1/2",
+      D: "5/8"
+    },
+    answer: "C",
+    explanation: "Successful outcomes are HHT, HTH, THH and HHH.\n\nProbability = 4/8 = **1/2**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_388",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 388,
+    text: "A die is rolled 120 times and a six appears 18 times. Find the experimental probability of obtaining a six.",
+    options: {
+      A: "1/5",
+      B: "3/20",
+      C: "1/6",
+      D: "3/10"
+    },
+    answer: "B",
+    explanation: "Experimental probability = 18/120.\n\nSimplifying gives **3/20**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_389",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 389,
+    text: "If the probability of a defective item is 0.04, how many defective items would be expected in a batch of 750?",
+    options: {
+      A: "20",
+      B: "25",
+      C: "30",
+      D: "40"
+    },
+    answer: "C",
+    explanation: "Expected number = 0.04 × 750 = **30**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_390",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 390,
+    text: "A box contains 6 good bulbs and 4 defective bulbs. Two bulbs are selected without replacement. What is the probability that the first is good and the second is defective?",
+    options: {
+      A: "2/15",
+      B: "4/15",
+      C: "1/3",
+      D: "2/5"
+    },
+    answer: "B",
+    explanation: "Probability of first good = 6/10.\n\nProbability of second defective = 4/9.\n\nCombined probability = 6/10 × 4/9 = **4/15**.",
+    page: 39,
+    hasImage: false
+  },
+  {
+    id: "math_tough_391",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 391,
+    text: "Two fair dice are thrown. Find the probability that their sum is either 7 or 11.",
+    options: {
+      A: "1/6",
+      B: "2/9",
+      C: "1/4",
+      D: "1/3"
+    },
+    answer: "B",
+    explanation: "There are six outcomes that give a sum of 7 and two outcomes that give a sum of 11.\n\nTotal favourable outcomes = 8.\n\nProbability = 8/36 = **2/9**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_392",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 392,
+    text: "A fair coin and a fair die are thrown together. Find the probability of getting a head and a number greater than 4.",
+    options: {
+      A: "1/12",
+      B: "1/6",
+      C: "1/4",
+      D: "1/3"
+    },
+    answer: "B",
+    explanation: "Probability of a head = ½.\n\nProbability of a number greater than 4 = 2/6 = ⅓.\n\nCombined probability = ½ × ⅓ = **⅙**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_393",
+    originalChapter: 1,
+    chapterTitle: "Number and Numeration: Sets & Number Bases",
+    topic: "Sets & Venn Diagrams",
+    bookQuestionNum: 393,
+    text: "In a group of 100 students, 60 study Mathematics, 45 study Physics and 30 study Chemistry. If 20 study both Mathematics and Physics, 15 study both Mathematics and Chemistry, 10 study both Physics and Chemistry, and 5 study all three, how many study at least one subject?",
+    options: {
+      A: "80",
+      B: "85",
+      C: "90",
+      D: "95"
+    },
+    answer: "D",
+    explanation: "Using the inclusion-exclusion principle:\n\nn(M ∪ P ∪ C) = n(M) + n(P) + n(C) − n(M ∩ P) − n(M ∩ C) − n(P ∩ C) + n(M ∩ P ∩ C).\n\n= 60 + 45 + 30 − 20 − 15 − 10 + 5.\n\n= **95 students**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_394",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 394,
+    text: "The mean of five numbers is 8. The numbers are 4, 6, x, 10 and 12. Find x.",
+    options: {
+      A: "6",
+      B: "7",
+      C: "8",
+      D: "9"
+    },
+    answer: "C",
+    explanation: "Total = 5 × 8 = 40.\n\nKnown sum = 4 + 6 + 10 + 12 = 32.\n\nx = 40 − 32 = **8**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_395",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 395,
+    text: "A grouped distribution has class intervals 0–10, 10–20, 20–30 and 30–40 with frequencies 4, 8, 12 and 6. Find the median class.",
+    options: {
+      A: "0–10",
+      B: "10–20",
+      C: "20–30",
+      D: "30–40"
+    },
+    answer: "C",
+    explanation: "Total frequency = 4 + 8 + 12 + 6 = 30.\n\nMedian position = 30/2 = 15.\n\nCumulative frequencies = 4, 12, 24 and 30.\n\nThe 15th value falls in the class **20–30**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_396",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Central Tendency",
+    bookQuestionNum: 396,
+    text: "The grouped frequency distribution below has modal class 20–30. Find the estimated mode.\n\n| Class interval | Frequency |\n|---|---:|\n| 0–10 | 4 |\n| 10–20 | 8 |\n| 20–30 | 14 |\n| 30–40 | 6 |",
+    options: {
+      A: "22",
+      B: "23",
+      C: "24.3",
+      D: "26"
+    },
+    answer: "C",
+    explanation: "Mode = L + [(f₁ − f₀)/(2f₁ − f₀ − f₂)] × h.\n\nWhere:\n\nL = 20, f₁ = 14, f₀ = 8, f₂ = 6 and h = 10.\n\nMode = 20 + [(14 − 8)/(28 − 8 − 6)] × 10.\n\n= 20 + (6/14 × 10).\n\n= 24.29 ≈ **24.3**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_397",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 397,
+    text: "Find the population variance of the distribution below.\n\n| x | 1 | 2 | 3 |\n|---|---:|---:|---:|\n| Frequency | 2 | 2 | 2 |",
+    options: {
+      A: "⅓",
+      B: "⅔",
+      C: "1",
+      D: "2"
+    },
+    answer: "B",
+    explanation: "Mean = (2 × 1 + 2 × 2 + 2 × 3)/6.\n\n= 12/6 = 2.\n\nVariance = Σf(x − x̄)²/Σf.\n\n= [2(1 − 2)² + 2(2 − 2)² + 2(3 − 2)²]/6.\n\n= (2 + 0 + 2)/6 = **⅔**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_398",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 398,
+    text: "Find the mean deviation from the mean of 4, 6, 8, 10 and 12.",
+    options: {
+      A: "2",
+      B: "2.4",
+      C: "3",
+      D: "4"
+    },
+    answer: "B",
+    explanation: "Mean = 8.\n\nAbsolute deviations = 4, 2, 0, 2 and 4.\n\nMean deviation = (4 + 2 + 0 + 2 + 4)/5.\n\n= 12/5 = **2.4**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_399",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Statistics: Measures of Dispersion",
+    bookQuestionNum: 399,
+    text: "In an ordered data set of 40 values, the first quartile corresponds approximately to which position?",
+    options: {
+      A: "5th",
+      B: "10th",
+      C: "20th",
+      D: "30th"
+    },
+    answer: "B",
+    explanation: "First quartile position = N/4.\n\n= 40/4 = **10th position**.",
+    page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_tough_400",
+    originalChapter: 12,
+    chapterTitle: "Statistics & Probability",
+    topic: "Probability: Elementary & Compound Events",
+    bookQuestionNum: 400,
+    text: "A bag contains 4 red balls, 5 blue balls and 3 green balls. Two balls are selected without replacement. Find the probability that both are of the same colour.",
+    options: {
+      A: "19/66",
+      B: "17/66",
+      C: "7/22",
+      D: "5/18"
+    },
+    answer: "A",
+    explanation: "Total balls = 4 + 5 + 3 = 12.\n\nFavourable pairs:\n\nRed: ⁴C₂ = 6.\n\nBlue: ⁵C₂ = 10.\n\nGreen: ³C₂ = 3.\n\nTotal favourable pairs = 6 + 10 + 3 = 19.\n\nTotal possible pairs = ¹²C₂ = 66.\n\nProbability = **19/66**.",
+    page: 40,
     hasImage: false
   }
 ];
