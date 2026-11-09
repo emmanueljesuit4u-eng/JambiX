@@ -76,6 +76,42 @@ function getStoredJson<T>(key: string, defaultValue: T): T {
   }
 }
 
+function getTestQuestionsKey(testId: string): string {
+  return `jambix_test_questions_${testId}`;
+}
+
+export function getStoredTestQuestions(testId: string): VerifiedQuestion[] | undefined {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    const raw = localStorage.getItem(getTestQuestionsKey(testId));
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (err) {
+    console.warn(`Could not read questions for test ${testId}:`, err);
+  }
+  return undefined;
+}
+
+export function saveStoredTestQuestions(testId: string, questions: VerifiedQuestion[]): void {
+  if (typeof window === 'undefined' || !questions || questions.length === 0) return;
+  try {
+    localStorage.setItem(getTestQuestionsKey(testId), JSON.stringify(questions));
+  } catch (err) {
+    // If quota exceeded, strip SVG diagrams from this session's questions to save space
+    try {
+      const lightweight = questions.map((q) => ({
+        ...q,
+        imageSvg: undefined,
+      }));
+      localStorage.setItem(getTestQuestionsKey(testId), JSON.stringify(lightweight));
+    } catch (innerErr) {
+      console.warn(`Could not persist isolated questions for test ${testId}:`, innerErr);
+    }
+  }
+}
+
 function setStoredJson<T>(key: string, value: T): void {
   if (typeof window === 'undefined') return;
   try {
@@ -84,14 +120,14 @@ function setStoredJson<T>(key: string, value: T): void {
     console.warn(`Error writing ${key} to storage, attempting resilient compaction:`, err);
     if (key === STORAGE_KEYS.TESTS && Array.isArray(value)) {
       try {
-        // Quota safeguard: preserve up to 25 latest tests; for tests older than 3, strip heavy SVG diagram strings
-        const compacted = (value as OfflineTestResult[]).slice(0, 25).map((t, idx) => {
+        // Quota safeguard: preserve up to 35 latest tests; for tests older than 3, strip heavy SVG diagram strings
+        const compacted = (value as OfflineTestResult[]).slice(0, 35).map((t, idx) => {
           if (idx >= 3 && t.questions) {
             return {
               ...t,
               questions: t.questions.map((q) => ({
                 ...q,
-                imageSvg: undefined, // drop large SVG markup from older tests while keeping question text and choices
+                imageSvg: undefined, // drop large SVG markup from older tests while keeping question text, choices, and answers
               })),
             };
           }
@@ -100,8 +136,8 @@ function setStoredJson<T>(key: string, value: T): void {
         localStorage.setItem(key, JSON.stringify(compacted));
       } catch (innerErr) {
         try {
-          // If still tight on storage, retain the latest 10 full tests
-          const latestOnly = (value as OfflineTestResult[]).slice(0, 10);
+          // If still tight on storage, preserve the latest 15 tests
+          const latestOnly = (value as OfflineTestResult[]).slice(0, 15);
           localStorage.setItem(key, JSON.stringify(latestOnly));
         } catch (fatalErr) {
           console.error('Fatal localStorage quota error:', fatalErr);
@@ -122,6 +158,11 @@ export function saveLocalTestResult(
     createdAt: new Date().toISOString(),
     syncedToCloud: !!test.syncedToCloud,
   };
+
+  // Ensure this session's exact questions are saved in a dedicated storage key as an extra safeguard
+  if (newTest.questions && newTest.questions.length > 0) {
+    saveStoredTestQuestions(newTest.id, newTest.questions);
+  }
 
   // Prepend new test to guarantee newest test is always first
   const updated = [newTest, ...allTests.filter((t) => t.id !== test.id)];
@@ -163,9 +204,24 @@ export function saveLocalTestResult(
 
 export function getLocalTestResults(userId?: string, userEmail?: string): OfflineTestResult[] {
   const tests = getStoredJson<OfflineTestResult[]>(STORAGE_KEYS.TESTS, []);
-  if (!userId && !userEmail) return tests;
+  
+  // Hydrate questions from dedicated session storage key if missing on the main record
+  const hydratedTests = tests.map((t) => {
+    if (!t.questions || t.questions.length === 0) {
+      const isolatedQs = getStoredTestQuestions(t.id);
+      if (isolatedQs && isolatedQs.length > 0) {
+        return {
+          ...t,
+          questions: isolatedQs,
+        };
+      }
+    }
+    return t;
+  });
 
-  const filtered = tests.filter((t) => {
+  if (!userId && !userEmail) return hydratedTests;
+
+  const filtered = hydratedTests.filter((t) => {
     if (!t.userId || t.userId === 'offline_candidate') return true;
     if (userId && t.userId === userId) return true;
     if (userEmail && t.userEmail && t.userEmail.toLowerCase() === userEmail.toLowerCase()) return true;
@@ -173,7 +229,7 @@ export function getLocalTestResults(userId?: string, userEmail?: string): Offlin
   });
 
   // If filtered is non-empty, return candidate tests; otherwise fallback to all local tests so tests are never hidden
-  return filtered.length > 0 ? filtered : tests;
+  return filtered.length > 0 ? filtered : hydratedTests;
 }
 
 export function clearLocalTestResults(): void {

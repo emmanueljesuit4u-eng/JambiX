@@ -173,8 +173,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   // Load offline data first, then merge cloud data if online
   const loadStoredData = () => {
-    // 1. Load local test results
-    const localTests = getLocalTestResults(auth.currentUser?.uid);
+    // 1. Load local test results (with questions hydrated)
+    const localTests = getLocalTestResults(auth.currentUser?.uid, user?.email);
     if (localTests.length > 0) {
       setUserTests(localTests);
     }
@@ -185,21 +185,37 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         .then((cloudTests) => {
           if (cloudTests && cloudTests.length > 0) {
             setUserTests((prev) => {
-              const prevIds = new Set(prev.map((t) => t.id));
-              const freshCloud: OfflineTestResult[] = cloudTests
-                .filter((ct) => !prevIds.has(ct.id))
-                .map((ct) => ({
-                  id: ct.id,
-                  userId: ct.userId,
-                  testTitle: ct.testTitle,
-                  testType: ct.testType,
-                  score: ct.score,
-                  totalQuestions: ct.totalQuestions,
-                  percentage: ct.percentage,
-                  timeSpentSeconds: ct.timeSpentSeconds,
-                  createdAt: new Date().toISOString(),
-                  syncedToCloud: true,
-                }));
+              const prevMap = new Map(prev.map((t) => [t.id, t]));
+              // If cloud has tests not in local, add them; if already in local, preserve local questions!
+              const freshCloud: OfflineTestResult[] = [];
+              cloudTests.forEach((ct) => {
+                if (!prevMap.has(ct.id)) {
+                  freshCloud.push({
+                    id: ct.id,
+                    userId: ct.userId,
+                    testTitle: ct.testTitle,
+                    testType: ct.testType,
+                    score: ct.score,
+                    totalQuestions: ct.totalQuestions,
+                    percentage: ct.percentage,
+                    timeSpentSeconds: ct.timeSpentSeconds,
+                    createdAt: new Date().toISOString(),
+                    syncedToCloud: true,
+                    jambScore: ct.jambScore,
+                    candidateName: ct.candidateName,
+                    subjectScores: ct.subjectScores
+                      ? ct.subjectScores.map((sb) => ({
+                          subject: sb.subject,
+                          score: sb.score,
+                          total: sb.total,
+                          correct: typeof sb.correct === 'number' ? sb.correct : Math.round((sb.score / 100) * sb.total),
+                          percentage: typeof sb.percentage === 'number' ? sb.percentage : Math.round(sb.score),
+                          bookTitle: sb.bookTitle,
+                        }))
+                      : undefined,
+                  });
+                }
+              });
               return [...freshCloud, ...prev];
             });
           }
@@ -821,18 +837,27 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     {/* Review Header */}
                     <div className="p-4 sm:p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="space-y-1">
-                        <button
-                          onClick={() => setReviewingTest(null)}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline mb-1 cursor-pointer"
-                        >
-                          <ChevronLeft className="w-4 h-4" />
-                          <span>View all {userTests.length} test submissions</span>
-                        </button>
+                        <div className="flex items-center gap-2 flex-wrap mb-1">
+                          <button
+                            onClick={() => setReviewingTest(null)}
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline cursor-pointer mr-2"
+                          >
+                            <ChevronLeft className="w-4 h-4" />
+                            <span>View all {userTests.length} test submissions</span>
+                          </button>
+                          <span className="text-[10px] font-black uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-100 dark:bg-rose-950/70 border border-rose-300 dark:border-rose-800 px-2.5 py-0.5 rounded-full">
+                            Session #{userTests.length - userTests.indexOf(reviewingTest)}
+                          </span>
+                          <span className="text-[10px] font-bold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                            <span>Exact Session Questions ({reviewingTest.questions?.length || reviewingTest.totalQuestions})</span>
+                          </span>
+                        </div>
                         <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
                           {reviewingTest.testTitle}
                         </h3>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                          Submitted on {new Date(reviewingTest.createdAt).toLocaleString()} · {reviewingTest.totalQuestions} Questions
+                          Submitted on {new Date(reviewingTest.createdAt).toLocaleString()} · {reviewingTest.totalQuestions} Questions Taken
                         </p>
 
                         {/* Switch between each test attempt */}
@@ -1139,9 +1164,12 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 hover:border-rose-400 dark:hover:border-rose-500 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all shadow-2xs cursor-pointer group"
                       >
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded">
                               {t.testType.toUpperCase()}
+                            </span>
+                            <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700/60 px-1.5 py-0.5 rounded">
+                              Session #{userTests.length - userTests.indexOf(t)}
                             </span>
                             <span className="text-xs text-slate-400">
                               {new Date(t.createdAt).toLocaleDateString(undefined, {
@@ -1151,6 +1179,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                 hour: '2-digit',
                                 minute: '2-digit',
                               })}
+                            </span>
+                            <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200/60 dark:border-emerald-800/60">
+                              {t.questions && t.questions.length > 0 ? `${t.questions.length} Questions Recorded` : `${t.totalQuestions} Questions`}
                             </span>
                           </div>
                           <h4 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
