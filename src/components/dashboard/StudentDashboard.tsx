@@ -118,14 +118,22 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     return Array.from(subs);
   }, [reviewingTest]);
 
-  const handleNavClick = (navId: string) => {
+  const handleNavClick = (navId: string, specificTest?: OfflineTestResult | null) => {
     setActiveNav(navId);
     if (navId === 'History') {
-      const localTests = getLocalTestResults(auth.currentUser?.uid);
+      const localTests = getLocalTestResults(auth.currentUser?.uid, user?.email);
       const tests = localTests.length > 0 ? localTests : userTests;
       if (tests.length > 0) {
         setUserTests(tests);
-        setReviewingTest(tests[0]);
+        if (specificTest) {
+          setReviewingTest(specificTest);
+        } else if (tests.length === 1) {
+          // If only 1 test, show it directly
+          setReviewingTest(tests[0]);
+        } else {
+          // If multiple tests, show the test history list by default so they see all tests
+          setReviewingTest(null);
+        }
         setHistoryReviewStatus('All');
         setHistoryReviewSubject('All');
       } else {
@@ -307,13 +315,23 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       updateStatsFromResults(latestCloud);
       loadStoredData();
     };
+    const handleOpenHistory = (e: any) => {
+      loadStoredData();
+      const targetTestId = e?.detail?.testId;
+      const allTests = getLocalTestResults(auth.currentUser?.uid, user?.email);
+      const target = allTests.find((t) => t.id === targetTestId) || allTests[0];
+      handleNavClick('History', target || null);
+    };
+
     window.addEventListener('storage', handleEvent);
     window.addEventListener('jambix_test_submitted', handleEvent);
+    window.addEventListener('jambix_open_history', handleOpenHistory);
 
     return () => {
       unsubscribe();
       window.removeEventListener('storage', handleEvent);
       window.removeEventListener('jambix_test_submitted', handleEvent);
+      window.removeEventListener('jambix_open_history', handleOpenHistory);
     };
   }, [user?.name, user?.email]);
 
@@ -349,6 +367,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
           <nav className="flex-1 flex flex-col gap-2 w-full px-2">
             {[
               { id: 'Home', icon: Home, label: 'Home' },
+              { id: 'History', icon: Clock, label: 'History' },
               { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
               { id: 'Novels', icon: BookMarked, label: 'Novels' },
               { id: 'Test', icon: Monitor, label: 'Test' },
@@ -623,26 +642,49 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                   {/* Card 2: HISTORY */}
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xs flex flex-col justify-between transition-colors">
                     <div>
-                      <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
-                        <Clock className="w-4 h-4" />
-                        <span>HISTORY</span>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 text-xs font-bold uppercase tracking-wider">
+                          <Clock className="w-4 h-4" />
+                          <span>HISTORY</span>
+                        </div>
+                        {userTests.length > 0 && (
+                          <span className="text-[11px] font-black px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/50">
+                            {userTests.length} Saved
+                          </span>
+                        )}
                       </div>
                       <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                        {userTests.length > 0 ? `${userTests.length} Tests Recorded` : 'No Tests Taken Yet'}
+                        {userTests.length > 0 ? `${userTests.length} CBT Tests Recorded` : 'No Tests Taken Yet'}
                       </h4>
                       <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                         {userTests.length > 0
-                          ? `Latest score: ${userTests[0].jambScore || userTests[0].score}/${userTests[0].totalQuestions} (${userTests[0].percentage}%) — Click HISTORY below to review all questions and step-by-step explanations.`
+                          ? `Latest score: ${userTests[0].jambScore || userTests[0].score}/${userTests[0].totalQuestions > 100 ? 400 : userTests[0].totalQuestions} (${userTests[0].percentage}%) — Click HISTORY below to inspect all questions, chosen options, correct answers, and step-by-step textbook explanations.`
                           : 'Review past CBT examination attempts, question-by-question breakdown, and step-by-step textbook explanations.'}
                       </p>
                     </div>
-                    <button
-                      onClick={() => handleNavClick('History')}
-                      className="mt-3 w-full py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-98 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
-                    >
-                      <Clock className="w-4 h-4" />
-                      <span>HISTORY</span>
-                    </button>
+
+                    <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2">
+                      <button
+                        onClick={() => handleNavClick('History')}
+                        className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 active:scale-98 text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
+                      >
+                        <Clock className="w-4 h-4" />
+                        <span>{userTests.length > 0 ? 'Go Through Test' : 'HISTORY'}</span>
+                      </button>
+                      {userTests.length > 1 && (
+                        <button
+                          onClick={() => {
+                            setActiveNav('History');
+                            setReviewingTest(null);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          className="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition-colors cursor-pointer whitespace-nowrap"
+                          title="View all test submissions list"
+                        >
+                          All ({userTests.length})
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -705,20 +747,20 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 <div className="max-w-xl mx-auto py-8">
                   <div className="p-6 sm:p-8 rounded-2xl border border-rose-200 dark:border-rose-900/60 bg-slate-50 dark:bg-slate-800/40 hover:border-rose-400 dark:hover:border-rose-500 transition-all flex flex-col items-center text-center shadow-xs">
                     <span className="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider bg-rose-50 dark:bg-rose-950/60 px-3 py-1 rounded-full border border-rose-200 dark:border-rose-900/50 mb-3">
-                      180 Questions · 120 Mins
+                      180 Questions · Exactly 120 Mins
                     </span>
                     <h3 className="text-xl font-black text-slate-900 dark:text-white">
                       JAMB CBT Full Simulation
                     </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 max-w-md">
-                      Comprehensive 4-subject standard UTME test (English with 60 questions plus 3 registered subjects with 40 questions each) under authentic 2-hour countdown rules.
+                      Comprehensive 4-subject standard UTME test (English with 60 questions plus 3 registered subjects with 40 questions each) under authentic 120-minute countdown rules (exactly 120:00).
                     </p>
                     <button
                       onClick={() => handleLaunchTest('JAMB CBT Full Simulation', 'jamb')}
                       className="mt-6 w-full sm:w-auto px-8 py-3.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white rounded-xl text-sm font-bold transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
                     >
                       <Play className="w-4 h-4 fill-current" />
-                      <span>180 QUESTIONS. 120 MINS</span>
+                      <span>180 QUESTIONS · EXACTLY 120 MINS</span>
                     </button>
                   </div>
                 </div>
@@ -835,6 +877,31 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         </div>
                       </div>
                     </div>
+
+                    {/* Subject Scores Breakdown for 4 subjects */}
+                    {reviewingTest.subjectScores && reviewingTest.subjectScores.length > 0 && (
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        {reviewingTest.subjectScores.map((sb, sbIdx) => (
+                          <div
+                            key={`rev-sb-${sb.subject}-${sbIdx}`}
+                            className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80"
+                          >
+                            <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 block truncate">
+                              {sb.subject}
+                            </span>
+                            <div className="flex items-baseline gap-1 mt-0.5">
+                              <span className="text-base font-black text-rose-600 dark:text-rose-400">
+                                {sb.score}
+                              </span>
+                              <span className="text-[10px] text-slate-400">/ 100</span>
+                            </div>
+                            <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold block">
+                              {sb.correct}/{sb.total} correct ({sb.percentage}%)
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Filter controls if questions are available */}
                     {reviewingTest.questions && reviewingTest.questions.length > 0 ? (
@@ -1090,13 +1157,27 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             {t.testTitle}
                           </h4>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Raw Score: {t.score} / {t.totalQuestions} ({t.percentage}%) · UTME Projected: {t.jambScore || t.score} / 400
+                            Raw Score: {t.score} / {t.totalQuestions} ({t.percentage}%) · UTME Projected: {t.jambScore || t.score} / {t.totalQuestions > 100 ? 400 : t.totalQuestions}
                           </p>
+
+                          {/* Subject Breakdown Chips if available */}
+                          {t.subjectScores && t.subjectScores.length > 0 && (
+                            <div className="flex items-center gap-1.5 flex-wrap pt-1.5">
+                              {t.subjectScores.map((sb, sbIdx) => (
+                                <span
+                                  key={`sb-${t.id}-${sb.subject}-${sbIdx}`}
+                                  className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/80 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-600/80"
+                                >
+                                  {sb.subject}: <strong className="text-rose-600 dark:text-rose-400">{sb.score}</strong>/100
+                                </span>
+                              ))}
+                            </div>
+                          )}
                         </div>
 
-                        <div className="flex items-center gap-3 self-end sm:self-center">
+                        <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
                           <div className="text-right">
-                            <span className="text-sm font-black text-rose-600 dark:text-rose-400">
+                            <span className="text-base font-black text-rose-600 dark:text-rose-400">
                               {t.percentage}%
                             </span>
                             <p className="text-[10px] text-slate-400 font-medium">
@@ -1104,15 +1185,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             </p>
                           </div>
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               setReviewingTest(t);
                               setHistoryReviewStatus('All');
                               setHistoryReviewSubject('All');
                             }}
-                            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-rose-600 dark:hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 shadow-2xs"
+                            className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
                           >
-                            <span>Review Questions</span>
+                            <span>Go Through Test</span>
                             <ChevronRight className="w-3.5 h-3.5" />
                           </button>
                         </div>
@@ -1189,6 +1271,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 py-1.5 flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
+          { id: 'History', icon: Clock, label: 'History' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
           { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Archive', icon: BookOpen, label: '1978-2026' },

@@ -6,7 +6,8 @@
  * QUESTIONS 1–100: TOUGH QUESTIONS ACROSS ALL TOPICS
  * QUESTIONS 201–400: 200 CHALLENGING QUESTIONS
  * Indexed directly from official syllabus specifications.
- * Total questions: 320 (including 20 Illustrated Diagram Questions)
+ * QUESTIONS 101–200: 100 TOUGH QUESTIONS (SET 2)
+ * Total questions: 420 (including 20 Illustrated Diagram Questions)
  */
 
 export interface JambixMathematicsItem {
@@ -5432,6 +5433,1806 @@ export const JAMBIX_MATHEMATICS_ITEMS: JambixMathematicsItem[] = [
     answer: "A",
     explanation: "Total balls = 4 + 5 + 3 = 12.\n\nFavourable pairs:\n\nRed: ⁴C₂ = 6.\n\nBlue: ⁵C₂ = 10.\n\nGreen: ³C₂ = 3.\n\nTotal favourable pairs = 6 + 10 + 3 = 19.\n\nTotal possible pairs = ¹²C₂ = 66.\n\nProbability = **19/66**.",
     page: 40,
+    hasImage: false
+  },
+  {
+    id: "math_adv_1",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 101,
+    text: "Solve 3x² - 11x + 6 = 0.",
+    options: {
+      A: "2, 3",
+      B: "3, 2/3",
+      C: "1, 6",
+      D: "4, 1/2"
+    },
+    answer: "B",
+    explanation: "Factorize: (3x - 2)(x - 3) = 0. Therefore, x = 2/3 or 3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_2",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 102,
+    text: "Evaluate log₂ 64 - log₃ 27.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "C",
+    explanation: "log₂ 64 = 6 and log₃ 27 = 3. Difference = 3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_3",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 103,
+    text: "Find the sum of the first 25 terms of the AP 4, 7, 10, 13, ...",
+    options: {
+      A: "925",
+      B: "950",
+      C: "975",
+      D: "1000"
+    },
+    answer: "D",
+    explanation: "S₂₅ = 25/2[2(4) + 24(3)] = 25/2(80) = 1000.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_4",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 104,
+    text: "If sin θ = 8/17 and θ is acute, find cos θ.",
+    options: {
+      A: "15/17",
+      B: "8/15",
+      C: "17/15",
+      D: "9/17"
+    },
+    answer: "A",
+    explanation: "cos θ = √(1 - 64/289) = √225/289 = 15/17.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_5",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 105,
+    text: "Solve 5^(2x - 1) = 125.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "B",
+    explanation: "125 = 5³. Therefore, 2x - 1 = 3, giving x = 2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_6",
+    originalChapter: 9,
+    chapterTitle: "Coordinate Geometry, Straight Lines & Circles",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 106,
+    text: "Find the gradient of the line joining (-3, 4) and (5, -12).",
+    options: {
+      A: "-2",
+      B: "2",
+      C: "-3",
+      D: "3"
+    },
+    answer: "A",
+    explanation: "Gradient = (-12 - 4)/(5 + 3) = -16/8 = -2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_7",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Probability",
+    bookQuestionNum: 107,
+    text: "A bag contains 7 red, 5 blue and 8 green balls. Find the probability of selecting a blue ball.",
+    options: {
+      A: "1/4",
+      B: "1/3",
+      C: "2/5",
+      D: "1/2"
+    },
+    answer: "A",
+    explanation: "Total = 20. Probability = 5/20 = 1/4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_8",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 108,
+    text: "Simplify (x² - 16)/(x² - 6x + 8).",
+    options: {
+      A: "(x + 4)/(x - 2)",
+      B: "(x - 4)/(x - 2)",
+      C: "(x + 4)/(x - 4)",
+      D: "(x - 2)/(x + 4)"
+    },
+    answer: "A",
+    explanation: "Factorize and cancel: [(x - 4)(x + 4)]/[(x - 2)(x - 4)].",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_9",
+    originalChapter: 8,
+    chapterTitle: "Matrices, Determinants & Linear Transformations",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 109,
+    text: "Find x if the determinant of [[x, 4], [3, 2]] is 10.",
+    options: {
+      A: "5",
+      B: "8",
+      C: "11",
+      D: "12"
+    },
+    answer: "C",
+    explanation: "2x - 12 = 10. Therefore, x = 11.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_10",
+    originalChapter: 11,
+    chapterTitle: "Differential Calculus: Derivatives, Tangents & Maxima/Minima",
+    topic: "Calculus: Differentiation",
+    bookQuestionNum: 110,
+    text: "Differentiate y = 5x³ - 4x² + 6x - 8.",
+    options: {
+      A: "15x² - 8x + 6",
+      B: "15x² - 4x + 6",
+      C: "5x² - 8x + 6",
+      D: "15x³ - 8x² + 6"
+    },
+    answer: "A",
+    explanation: "Apply the power rule to each term.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_11",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 111,
+    text: "Find the roots of x² - 9x + 20 = 0.",
+    options: {
+      A: "4 and 5",
+      B: "2 and 10",
+      C: "3 and 6",
+      D: "1 and 20"
+    },
+    answer: "A",
+    explanation: "(x - 4)(x - 5) = 0.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_12",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 112,
+    text: "Express 0.00000482 in standard form.",
+    options: {
+      A: "4.82 × 10⁻⁴",
+      B: "4.82 × 10⁻⁵",
+      C: "4.82 × 10⁻⁶",
+      D: "48.2 × 10⁻⁷"
+    },
+    answer: "C",
+    explanation: "Move the decimal point six places right.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_13",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 113,
+    text: "The exterior angle of a regular polygon is 24°. Find its number of sides.",
+    options: {
+      A: "12",
+      B: "15",
+      C: "18",
+      D: "24"
+    },
+    answer: "B",
+    explanation: "Number of sides = 360°/24° = 15.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_14",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Simultaneous Linear Equations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 114,
+    text: "If 3x + 2y = 16 and x - y = 2, find x and y.",
+    options: {
+      A: "4, 2",
+      B: "5, 1",
+      C: "6, 2",
+      D: "3, 4"
+    },
+    answer: "A",
+    explanation: "x = y + 2. Substitute: 3(y + 2) + 2y = 16. Thus, y = 2 and x = 4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_15",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 115,
+    text: "Evaluate 5/6 ÷ 10/9.",
+    options: {
+      A: "2/3",
+      B: "3/4",
+      C: "4/5",
+      D: "5/6"
+    },
+    answer: "B",
+    explanation: "5/6 × 9/10 = 45/60 = 3/4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_16",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 116,
+    text: "Find the equation of a line with gradient -2 passing through (3, 4).",
+    options: {
+      A: "y = -2x + 10",
+      B: "y = 2x - 10",
+      C: "y = -2x + 4",
+      D: "y = 3x - 2"
+    },
+    answer: "A",
+    explanation: "y - 4 = -2(x - 3). Hence, y = -2x + 10.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_17",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 117,
+    text: "If Sₙ = 2n² + 3n, find the 6th term.",
+    options: {
+      A: "23",
+      B: "25",
+      C: "27",
+      D: "29"
+    },
+    answer: "B",
+    explanation: "T₆ = S₆ - S₅ = 90 - 65 = 25.\n\nCorrect answer: B. 25.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_18",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 118,
+    text: "Evaluate tan 30° + sin 90°.",
+    options: {
+      A: "1",
+      B: "1 + √3/3",
+      C: "√3",
+      D: "2"
+    },
+    answer: "B",
+    explanation: "tan 30° = √3/3 and sin 90° = 1.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_19",
+    originalChapter: 1,
+    chapterTitle: "Commercial Mathematics & Practical Arithmetic",
+    topic: "Commercial Arithmetic",
+    bookQuestionNum: 119,
+    text: "₦80,000 is invested at 5% compound interest annually for 3 years. Find the amount.",
+    options: {
+      A: "₦90,000",
+      B: "₦92,000",
+      C: "₦92,610",
+      D: "₦94,000"
+    },
+    answer: "C",
+    explanation: "A = 80,000(1.05)³ = ₦92,610.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_20",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 120,
+    text: "Find the area of a sector of radius 21 cm and angle 60°. Take π = 22/7.",
+    options: {
+      A: "231 cm²",
+      B: "242 cm²",
+      C: "264 cm²",
+      D: "276 cm²"
+    },
+    answer: "A",
+    explanation: "Area = 60/360 × 22/7 × 21² = 231 cm².",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_21",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 121,
+    text: "Evaluate 6!/(4! × 2!).",
+    options: {
+      A: "10",
+      B: "12",
+      C: "15",
+      D: "20"
+    },
+    answer: "C",
+    explanation: "720/(24 × 2) = 15.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_22",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 122,
+    text: "If f(x) = 3x² - 5x + 2, find f(-3).",
+    options: {
+      A: "20",
+      B: "30",
+      C: "35",
+      D: "44"
+    },
+    answer: "D",
+    explanation: "3(9) + 15 + 2 = 44.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_23",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 123,
+    text: "Find the 7th term of 2, 6, 18, 54, ...",
+    options: {
+      A: "486",
+      B: "729",
+      C: "1458",
+      D: "2187"
+    },
+    answer: "C",
+    explanation: "T₇ = 2 × 3⁶ = 1458.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_24",
+    originalChapter: 13,
+    chapterTitle: "Statistics: Measures of Location & Dispersion",
+    topic: "Statistics",
+    bookQuestionNum: 124,
+    text: "The mean of 6, 8, 11, 15 and x is 12. Find x.",
+    options: {
+      A: "18",
+      B: "20",
+      C: "22",
+      D: "24"
+    },
+    answer: "B",
+    explanation: "Total = 5 × 12 = 60. x = 60 - 40 = 20.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_25",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 125,
+    text: "Find the distance between (1, 2) and (7, 10).",
+    options: {
+      A: "8",
+      B: "9",
+      C: "10",
+      D: "12"
+    },
+    answer: "C",
+    explanation: "Distance = √(6² + 8²) = √100 = 10.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_26",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 126,
+    text: "Solve 3^(x + 2) = 243.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "C",
+    explanation: "243 = 3⁵. Therefore, x + 2 = 5 and x = 3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_27",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 127,
+    text: "Find x if log₁₀ x = 3.2.",
+    options: {
+      A: "1000",
+      B: "1584.9",
+      C: "1500",
+      D: "2000"
+    },
+    answer: "B",
+    explanation: "x = 10³·² ≈ 1584.89.\n\nCorrect answer: approximately 1584.89.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_28",
+    originalChapter: 1,
+    chapterTitle: "Commercial Mathematics & Practical Arithmetic",
+    topic: "Commercial Arithmetic",
+    bookQuestionNum: 128,
+    text: "A vehicle travels 360 km in 4 hours 30 minutes. Find its average speed.",
+    options: {
+      A: "70 km/h",
+      B: "75 km/h",
+      C: "80 km/h",
+      D: "90 km/h"
+    },
+    answer: "C",
+    explanation: "Time = 4.5 hours. Speed = 360/4.5 = 80 km/h.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_29",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 129,
+    text: "Solve 4(x - 3) = 2(x + 5).",
+    options: {
+      A: "6",
+      B: "8",
+      C: "11",
+      D: "12"
+    },
+    answer: "C",
+    explanation: "4x - 12 = 2x + 10. Therefore, 2x = 22 and x = 11.\n\nCorrect answer: 11 (not listed).",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_30",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 130,
+    text: "If the radius of a sphere is tripled, its volume becomes how many times the original?",
+    options: {
+      A: "3",
+      B: "6",
+      C: "9",
+      D: "27"
+    },
+    answer: "D",
+    explanation: "Volume varies as r³. Therefore, 3³ = 27.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_31",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 131,
+    text: "Evaluate 3sin 30° + 2cos 60°.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "5/2",
+      D: "3"
+    },
+    answer: "C",
+    explanation: "3(1/2) + 2(1/2) = 3/2 + 1 = 5/2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_32",
+    originalChapter: 13,
+    chapterTitle: "Statistics: Measures of Location & Dispersion",
+    topic: "Statistics",
+    bookQuestionNum: 132,
+    text: "Find the median of 4, 6, 8, 10, 12, 14.",
+    options: {
+      A: "8",
+      B: "9",
+      C: "10",
+      D: "11"
+    },
+    answer: "B",
+    explanation: "Median = (8 + 10)/2 = 9.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_33",
+    originalChapter: 15,
+    chapterTitle: "Vectors in Two Dimensions & Dot Products",
+    topic: "Vectors in Two Dimensions",
+    bookQuestionNum: 133,
+    text: "Find the scalar product of vectors of magnitudes 5 and 8 with an angle of 60° between them.",
+    options: {
+      A: "10",
+      B: "20",
+      C: "30",
+      D: "40"
+    },
+    answer: "B",
+    explanation: "5 × 8 × cos 60° = 40 × 1/2 = 20.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_34",
+    originalChapter: 4,
+    chapterTitle: "Polynomials, Functions & Algebraic Operations",
+    topic: "Algebra: Polynomials & Functions",
+    bookQuestionNum: 134,
+    text: "Find the coefficient of x³ in (x + 2)⁵.",
+    options: {
+      A: "40",
+      B: "60",
+      C: "80",
+      D: "100"
+    },
+    answer: "A",
+    explanation: "⁵C₃ × x³ × 2² = 10 × 4x³ = 40x³.\n\nCorrect answer: 40.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_35",
+    originalChapter: 6,
+    chapterTitle: "Inequalities & Linear Programming",
+    topic: "Inequalities",
+    bookQuestionNum: 135,
+    text: "Solve 5x + 2 < 17.",
+    options: {
+      A: "x < 3",
+      B: "x > 3",
+      C: "x < 5",
+      D: "x > 5"
+    },
+    answer: "A",
+    explanation: "5x < 15. Hence, x < 3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_36",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 136,
+    text: "Find the circumference of a circle of radius 14 cm. Take π = 22/7.",
+    options: {
+      A: "44 cm",
+      B: "66 cm",
+      C: "88 cm",
+      D: "110 cm"
+    },
+    answer: "C",
+    explanation: "C = 2πr = 2 × 22/7 × 14 = 88 cm.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_37",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Simultaneous Linear Equations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 137,
+    text: "If x:y = 4:7 and x + y = 99, find x.",
+    options: {
+      A: "32",
+      B: "36",
+      C: "42",
+      D: "63"
+    },
+    answer: "B",
+    explanation: "Total ratio = 11. One part = 9. Therefore, x = 4 × 9 = 36.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_38",
+    originalChapter: 8,
+    chapterTitle: "Matrices, Determinants & Linear Transformations",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 138,
+    text: "Find the determinant of [[5, 2], [3, 4]].",
+    options: {
+      A: "10",
+      B: "12",
+      C: "14",
+      D: "16"
+    },
+    answer: "C",
+    explanation: "5 × 4 - 2 × 3 = 20 - 6 = 14.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_39",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 139,
+    text: "Solve 9ˣ = 1/729.",
+    options: {
+      A: "-2",
+      B: "-3",
+      C: "2",
+      D: "3"
+    },
+    answer: "B",
+    explanation: "729 = 9³. Therefore, 9ˣ = 9⁻³ and x = -3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_40",
+    originalChapter: 1,
+    chapterTitle: "Commercial Mathematics & Practical Arithmetic",
+    topic: "Commercial Arithmetic",
+    bookQuestionNum: 140,
+    text: "An article bought for ₦12,000 is sold for ₦15,000. Find the percentage profit.",
+    options: {
+      A: "20%",
+      B: "25%",
+      C: "30%",
+      D: "35%"
+    },
+    answer: "B",
+    explanation: "Profit = ₦3,000. Percentage = 3,000/12,000 × 100 = 25%.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_41",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 141,
+    text: "Find the sum of the interior angles of a 20-sided polygon.",
+    options: {
+      A: "2880°",
+      B: "3060°",
+      C: "3240°",
+      D: "3600°"
+    },
+    answer: "C",
+    explanation: "(20 - 2) × 180° = 3240°.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_42",
+    originalChapter: 6,
+    chapterTitle: "Variations: Direct, Inverse, Joint and Partial",
+    topic: "Variations",
+    bookQuestionNum: 142,
+    text: "If y varies inversely as x and y = 15 when x = 3, find y when x = 9.",
+    options: {
+      A: "3",
+      B: "5",
+      C: "6",
+      D: "9"
+    },
+    answer: "B",
+    explanation: "xy = 45. Therefore, y = 45/9 = 5.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_43",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 143,
+    text: "Evaluate cos 150°.",
+    options: {
+      A: "1/2",
+      B: "-1/2",
+      C: "√3/2",
+      D: "-√3/2"
+    },
+    answer: "D",
+    explanation: "cos 150° = -cos 30° = -√3/2.\n\nCorrect answer: -√3/2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_44",
+    originalChapter: 9,
+    chapterTitle: "Coordinate Geometry, Straight Lines & Circles",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 144,
+    text: "Find the equation of a circle with centre (2, -3) and radius 4.",
+    options: {
+      A: "(x - 2)² + (y + 3)² = 16",
+      B: "(x + 2)² + (y - 3)² = 16",
+      C: "(x - 2)² + (y - 3)² = 4",
+      D: "x² + y² = 16"
+    },
+    answer: "A",
+    explanation: "Use (x - h)² + (y - k)² = r².",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_45",
+    originalChapter: 12,
+    chapterTitle: "Integral Calculus: Definite Integrals & Area Under Curves",
+    topic: "Calculus: Integration",
+    bookQuestionNum: 145,
+    text: "Evaluate ∫(4x³ - 6x + 5) dx.",
+    options: {
+      A: "x⁴ - 3x² + 5x + C",
+      B: "4x⁴ - 6x² + 5x + C",
+      C: "x⁴ - 6x² + 5x + C",
+      D: "4x³ - 3x² + 5x + C"
+    },
+    answer: "A",
+    explanation: "Integrate each term using the power rule.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_46",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Probability",
+    bookQuestionNum: 146,
+    text: "A fair die is thrown. Find the probability of obtaining a number greater than 4.",
+    options: {
+      A: "1/6",
+      B: "1/3",
+      C: "1/2",
+      D: "2/3"
+    },
+    answer: "B",
+    explanation: "Outcomes are 5 and 6. Probability = 2/6 = 1/3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_47",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 147,
+    text: "Solve 2ˣ × 8 = 64.",
+    options: {
+      A: "2",
+      B: "3",
+      C: "4",
+      D: "5"
+    },
+    answer: "B",
+    explanation: "2ˣ = 8 = 2³. Hence, x = 3.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_48",
+    originalChapter: 4,
+    chapterTitle: "Polynomials, Functions & Algebraic Operations",
+    topic: "Algebra: Polynomials & Functions",
+    bookQuestionNum: 148,
+    text: "Find the second term in the expansion of (2x + 3)⁴.",
+    options: {
+      A: "48x³",
+      B: "64x³",
+      C: "72x³",
+      D: "96x³"
+    },
+    answer: "D",
+    explanation: "⁴C₁(2x)³(3) = 4 × 8x³ × 3 = 96x³.\n\nCorrect answer: 96x³.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_49",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 149,
+    text: "Find the volume of a cylinder of radius 14 cm and height 5 cm. Take π = 22/7.",
+    options: {
+      A: "2,640 cm³",
+      B: "3,080 cm³",
+      C: "3,240 cm³",
+      D: "3,520 cm³"
+    },
+    answer: "B",
+    explanation: "V = πr²h = 22/7 × 196 × 5 = 3,080 cm³.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_50",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 150,
+    text: "If f(x) = 2x + 3 and g(x) = x² - 1, find f(g(3)).",
+    options: {
+      A: "15",
+      B: "17",
+      C: "19",
+      D: "21"
+    },
+    answer: "C",
+    explanation: "g(3) = 8. Then f(8) = 19.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_51",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 151,
+    text: "Find the sum of the roots of 5x² - 12x + 7 = 0.",
+    options: {
+      A: "7/5",
+      B: "12/5",
+      C: "-12/5",
+      D: "5/12"
+    },
+    answer: "B",
+    explanation: "Sum of roots = -b/a = 12/5.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_52",
+    originalChapter: 6,
+    chapterTitle: "Variations: Direct, Inverse, Joint and Partial",
+    topic: "Variations",
+    bookQuestionNum: 152,
+    text: "If 6 workers complete a job in 15 days, how many days will 10 workers take?",
+    options: {
+      A: "6",
+      B: "9",
+      C: "10",
+      D: "12"
+    },
+    answer: "B",
+    explanation: "Total work = 6 × 15 = 90 worker-days. Time = 90/10 = 9 days.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_53",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 153,
+    text: "Evaluate sin²45° + cos²45°.",
+    options: {
+      A: "0",
+      B: "1/2",
+      C: "1",
+      D: "2"
+    },
+    answer: "C",
+    explanation: "The identity sin²θ + cos²θ = 1 applies.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_54",
+    originalChapter: 11,
+    chapterTitle: "Differential Calculus: Derivatives, Tangents & Maxima/Minima",
+    topic: "Calculus: Differentiation",
+    bookQuestionNum: 154,
+    text: "Find the tangent to y = x² + 2x at x = 2.",
+    options: {
+      A: "y = 6x - 4",
+      B: "y = 4x + 2",
+      C: "y = 6x + 4",
+      D: "y = 2x + 6"
+    },
+    answer: "A",
+    explanation: "Gradient = 2x + 2 = 6. Point = (2, 8). Thus, y - 8 = 6(x - 2).",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_55",
+    originalChapter: 13,
+    chapterTitle: "Statistics: Measures of Location & Dispersion",
+    topic: "Statistics",
+    bookQuestionNum: 155,
+    text: "Find the geometric mean of 9 and 49.",
+    options: {
+      A: "14",
+      B: "21",
+      C: "28",
+      D: "36"
+    },
+    answer: "B",
+    explanation: "√(9 × 49) = √441 = 21.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_56",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 156,
+    text: "If 35% of a number is 84, find the number.",
+    options: {
+      A: "200",
+      B: "220",
+      C: "240",
+      D: "260"
+    },
+    answer: "C",
+    explanation: "0.35x = 84. Therefore, x = 240.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_57",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 157,
+    text: "The angles of a triangle are 2x, 3x and 4x. Find the largest angle.",
+    options: {
+      A: "60°",
+      B: "70°",
+      C: "80°",
+      D: "90°"
+    },
+    answer: "C",
+    explanation: "9x = 180°. x = 20°. Largest angle = 4x = 80°.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_58",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 158,
+    text: "Simplify (3x²y³)² ÷ 9xy².",
+    options: {
+      A: "x³y⁴",
+      B: "x³y⁵",
+      C: "3x³y⁴",
+      D: "x⁴y³"
+    },
+    answer: "A",
+    explanation: "9x⁴y⁶ ÷ 9xy² = x³y⁴.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_59",
+    originalChapter: 13,
+    chapterTitle: "Statistics: Measures of Location & Dispersion",
+    topic: "Statistics",
+    bookQuestionNum: 159,
+    text: "Find the mode of 3, 5, 7, 5, 9, 5, 11.",
+    options: {
+      A: "3",
+      B: "5",
+      C: "7",
+      D: "9"
+    },
+    answer: "B",
+    explanation: "5 occurs three times, more than any other number.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_60",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 160,
+    text: "Evaluate tan 45° × cos 30°.",
+    options: {
+      A: "1/2",
+      B: "√3/2",
+      C: "1",
+      D: "√3"
+    },
+    answer: "B",
+    explanation: "1 × √3/2 = √3/2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_61",
+    originalChapter: 9,
+    chapterTitle: "Coordinate Geometry, Straight Lines & Circles",
+    topic: "Coordinate Geometry",
+    bookQuestionNum: 161,
+    text: "Find the midpoint of (4, 7) and (10, 13).",
+    options: {
+      A: "(6, 9)",
+      B: "(7, 10)",
+      C: "(8, 11)",
+      D: "(9, 12)"
+    },
+    answer: "B",
+    explanation: "Midpoint = ((4 + 10)/2, (7 + 13)/2) = (7, 10).",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_62",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 162,
+    text: "Find the sum of the first 5 terms of 3, 9, 27, ...",
+    options: {
+      A: "243",
+      B: "363",
+      C: "486",
+      D: "729"
+    },
+    answer: "B",
+    explanation: "S₅ = 3(3⁵ - 1)/(3 - 1) = 363.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_63",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 163,
+    text: "If x² + y² = 34 and xy = 15, find (x - y)².",
+    options: {
+      A: "2",
+      B: "4",
+      C: "6",
+      D: "8"
+    },
+    answer: "B",
+    explanation: "(x - y)² = x² + y² - 2xy = 34 - 30 = 4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_64",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 164,
+    text: "A cone has radius 5 cm and height 12 cm. Find its slant height.",
+    options: {
+      A: "10 cm",
+      B: "12 cm",
+      C: "13 cm",
+      D: "15 cm"
+    },
+    answer: "C",
+    explanation: "l = √(5² + 12²) = √169 = 13 cm.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_65",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 165,
+    text: "Solve log₅(x + 2) = 2.",
+    options: {
+      A: "21",
+      B: "23",
+      C: "25",
+      D: "27"
+    },
+    answer: "B",
+    explanation: "x + 2 = 25. Therefore, x = 23.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_66",
+    originalChapter: 15,
+    chapterTitle: "Vectors in Two Dimensions & Dot Products",
+    topic: "Vectors in Two Dimensions",
+    bookQuestionNum: 166,
+    text: "If a = 3i + 4j and b = 2i - 5j, find a - b.",
+    options: {
+      A: "i + 9j",
+      B: "5i - j",
+      C: "i - j",
+      D: "5i + 9j"
+    },
+    answer: "A",
+    explanation: "(3 - 2)i + (4 - (-5))j = i + 9j.\n\nCorrect option: A.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_67",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 167,
+    text: "Find the remainder when x³ + 2x² - 5x + 4 is divided by x + 1.",
+    options: {
+      A: "2",
+      B: "4",
+      C: "10",
+      D: "8"
+    },
+    answer: "C",
+    explanation: "Substitute x = -1: -1 + 2 + 5 + 4 = 10.\n\nCorrect answer: 10 (not listed).",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_68",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 168,
+    text: "Find the sum of the first 12 positive odd numbers.",
+    options: {
+      A: "132",
+      B: "144",
+      C: "156",
+      D: "169"
+    },
+    answer: "B",
+    explanation: "Sum of first n odd numbers = n². Thus, 12² = 144.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_69",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 169,
+    text: "The bearing of B from A is 070°. Find the bearing of A from B.",
+    options: {
+      A: "110°",
+      B: "180°",
+      C: "250°",
+      D: "290°"
+    },
+    answer: "C",
+    explanation: "Reverse bearing = 070° + 180° = 250°.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_70",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 170,
+    text: "Evaluate (√72 - √32)/√2.",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "B",
+    explanation: "√72 = 6√2 and √32 = 4√2. Difference divided by √2 = 2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_71",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 171,
+    text: "A person spends 1/3 of his money on food and 1/5 on transport. Find the fraction remaining.",
+    options: {
+      A: "7/15",
+      B: "8/15",
+      C: "9/15",
+      D: "11/15"
+    },
+    answer: "A",
+    explanation: "Remaining = 1 - 1/3 - 1/5 = 7/15.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_72",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 172,
+    text: "Solve 4^(x - 1) = 64.",
+    options: {
+      A: "2",
+      B: "3",
+      C: "4",
+      D: "5"
+    },
+    answer: "C",
+    explanation: "64 = 4³. Therefore, x - 1 = 3 and x = 4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_73",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 173,
+    text: "Find the area of a triangle with base 18 cm and height 12 cm.",
+    options: {
+      A: "96 cm²",
+      B: "108 cm²",
+      C: "120 cm²",
+      D: "216 cm²"
+    },
+    answer: "B",
+    explanation: "Area = 1/2 × 18 × 12 = 108 cm².",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_74",
+    originalChapter: 5,
+    chapterTitle: "Quadratic Equations & Simultaneous Linear-Quadratic Systems",
+    topic: "Quadratic Equations",
+    bookQuestionNum: 174,
+    text: "If x² + px + 25 = 0 has equal roots, find p.",
+    options: {
+      A: "±5",
+      B: "±10",
+      C: "±15",
+      D: "±25"
+    },
+    answer: "B",
+    explanation: "Discriminant = p² - 100 = 0. Therefore, p = ±10.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_75",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Probability",
+    bookQuestionNum: 175,
+    text: "A bag contains 5 red and 7 blue balls. Two are selected without replacement. Find the probability both are red.",
+    options: {
+      A: "5/22",
+      B: "5/33",
+      C: "7/22",
+      D: "1/3"
+    },
+    answer: "B",
+    explanation: "5/12 × 4/11 = 20/132 = 5/33.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_76",
+    originalChapter: 11,
+    chapterTitle: "Differential Calculus: Derivatives, Tangents & Maxima/Minima",
+    topic: "Calculus: Differentiation",
+    bookQuestionNum: 176,
+    text: "Differentiate y = (x + 2)(3x² - 1).",
+    options: {
+      A: "9x² + 12x - 1",
+      B: "9x² + 12x + 3",
+      C: "6x² + 12x - 1",
+      D: "3x² + 6x + 1"
+    },
+    answer: "A",
+    explanation: "Expand to 3x³ + 6x² - x - 2. Differentiate: 9x² + 12x - 1.\n\nCorrect answer: A.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_77",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 177,
+    text: "Evaluate sin 210°.",
+    options: {
+      A: "1/2",
+      B: "-1/2",
+      C: "√3/2",
+      D: "-√3/2"
+    },
+    answer: "B",
+    explanation: "sin 210° = -sin 30° = -1/2.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_78",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 178,
+    text: "Two numbers have sum 20 and product 96. Find them.",
+    options: {
+      A: "8 and 12",
+      B: "6 and 14",
+      C: "4 and 16",
+      D: "10 and 10"
+    },
+    answer: "A",
+    explanation: "8 + 12 = 20 and 8 × 12 = 96.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_79",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 179,
+    text: "Evaluate (1/3)⁻².",
+    options: {
+      A: "1/9",
+      B: "3",
+      C: "6",
+      D: "9"
+    },
+    answer: "D",
+    explanation: "Reciprocal of 1/3 is 3. Therefore, 3² = 9.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_80",
+    originalChapter: 13,
+    chapterTitle: "Statistics: Measures of Location & Dispersion",
+    topic: "Statistics",
+    bookQuestionNum: 180,
+    text: "If the variance is 25, find the standard deviation.",
+    options: {
+      A: "3",
+      B: "4",
+      C: "5",
+      D: "6"
+    },
+    answer: "C",
+    explanation: "Standard deviation = √25 = 5.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_81",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 181,
+    text: "Find the equation of a line perpendicular to y = 3x - 4 and passing through (6, 2).",
+    options: {
+      A: "y = -x/3 + 4",
+      B: "y = 3x - 16",
+      C: "y = -3x + 20",
+      D: "y = x/3 + 2"
+    },
+    answer: "A",
+    explanation: "Perpendicular gradient = -1/3. Use y - 2 = -1/3(x - 6).",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_82",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 182,
+    text: "Find the sum to infinity of 20, 10, 5, ...",
+    options: {
+      A: "30",
+      B: "35",
+      C: "40",
+      D: "45"
+    },
+    answer: "C",
+    explanation: "S∞ = 20/(1 - 1/2) = 40.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_83",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Permutations & Combinations",
+    bookQuestionNum: 183,
+    text: "Evaluate ⁸C₃.",
+    options: {
+      A: "28",
+      B: "56",
+      C: "70",
+      D: "84"
+    },
+    answer: "B",
+    explanation: "8!/(3!5!) = 56.\n\nCorrect answer: B. 56.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_84",
+    originalChapter: 1,
+    chapterTitle: "Number Bases, Fractions & Modular Arithmetic",
+    topic: "Number & Numeration",
+    bookQuestionNum: 184,
+    text: "Solve 7x - 4 = 3x + 20.",
+    options: {
+      A: "4",
+      B: "5",
+      C: "6",
+      D: "7"
+    },
+    answer: "C",
+    explanation: "4x = 24. Therefore, x = 6.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_85",
+    originalChapter: 1,
+    chapterTitle: "Commercial Mathematics & Practical Arithmetic",
+    topic: "Commercial Arithmetic",
+    bookQuestionNum: 185,
+    text: "A circle's radius increases by 30%. Find the percentage increase in area.",
+    options: {
+      A: "30%",
+      B: "60%",
+      C: "69%",
+      D: "90%"
+    },
+    answer: "C",
+    explanation: "New area factor = 1.3² = 1.69. Increase = 69%.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_86",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Simultaneous Linear Equations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 186,
+    text: "If x + y = 10 and x - y = 4, find xy.",
+    options: {
+      A: "18",
+      B: "21",
+      C: "24",
+      D: "28"
+    },
+    answer: "B",
+    explanation: "x = 7 and y = 3. Product = 21.\n\nCorrect answer: B. 21.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_87",
+    originalChapter: 10,
+    chapterTitle: "Trigonometry: Ratios, Identities, Sine/Cosine Rules & Bearings",
+    topic: "Trigonometry",
+    bookQuestionNum: 187,
+    text: "If cos θ = 4/5 and θ is acute, find cos 2θ.",
+    options: {
+      A: "7/25",
+      B: "9/25",
+      C: "16/25",
+      D: "24/25"
+    },
+    answer: "A",
+    explanation: "cos 2θ = 2cos²θ - 1 = 32/25 - 1 = 7/25.\n\nCorrect answer: A. 7/25.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_88",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 188,
+    text: "Find the volume of a cuboid with dimensions 9 cm, 6 cm and 4 cm.",
+    options: {
+      A: "180 cm³",
+      B: "196 cm³",
+      C: "216 cm³",
+      D: "240 cm³"
+    },
+    answer: "C",
+    explanation: "Volume = 9 × 6 × 4 = 216 cm³.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_89",
+    originalChapter: 5,
+    chapterTitle: "Algebra: Simultaneous Linear Equations",
+    topic: "Simultaneous Equations",
+    bookQuestionNum: 189,
+    text: "Solve 5x + 2y = 16 and x - y = 2.",
+    options: {
+      A: "x = 4, y = 2",
+      B: "x = 3, y = 1",
+      C: "x = 5, y = 3",
+      D: "x = 2, y = 4"
+    },
+    answer: "A",
+    explanation: "Substitute x = y + 2 into the first equation: 5(y + 2) + 2y = 16. Thus, y = 2 and x = 4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_90",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 190,
+    text: "Find the sum of the first 20 terms of 2, 5, 8, 11, ...",
+    options: {
+      A: "590",
+      B: "600",
+      C: "610",
+      D: "620"
+    },
+    answer: "C",
+    explanation: "S₂₀ = 20/2[2(2) + 19(3)] = 10(61) = 610.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_91",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 191,
+    text: "Solve log₂ x + log₂ 8 = 5.",
+    options: {
+      A: "4",
+      B: "6",
+      C: "8",
+      D: "16"
+    },
+    answer: "A",
+    explanation: "log₂8 = 3. Thus, log₂x = 2 and x = 4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_92",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 192,
+    text: "Find the angle between the hands of a clock at 4:00.",
+    options: {
+      A: "90°",
+      B: "100°",
+      C: "120°",
+      D: "140°"
+    },
+    answer: "C",
+    explanation: "Each hour represents 30°. At 4:00, angle = 4 × 30° = 120°.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_93",
+    originalChapter: 7,
+    chapterTitle: "Sequences & Series: AP, GP and Sum to Infinity",
+    topic: "Sequences & Series",
+    bookQuestionNum: 193,
+    text: "Find the 6th term of a GP whose first term is 4 and common ratio is 2.",
+    options: {
+      A: "32",
+      B: "64",
+      C: "128",
+      D: "256"
+    },
+    answer: "C",
+    explanation: "T₆ = 4 × 2⁵ = 128.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_94",
+    originalChapter: 2,
+    chapterTitle: "Indices, Logarithms & Surds",
+    topic: "Indices, Logarithms & Surds",
+    bookQuestionNum: 194,
+    text: "Solve √(5x - 4) = 6.",
+    options: {
+      A: "6",
+      B: "7",
+      C: "8",
+      D: "9"
+    },
+    answer: "C",
+    explanation: "5x - 4 = 36. Therefore, x = 8.\n\nCorrect answer: C. 8.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_95",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Probability",
+    bookQuestionNum: 195,
+    text: "A number is selected from 1 to 40. Find the probability it is divisible by 4.",
+    options: {
+      A: "1/5",
+      B: "1/4",
+      C: "1/3",
+      D: "2/5"
+    },
+    answer: "B",
+    explanation: "There are 10 multiples of 4 from 1 to 40. Probability = 10/40 = 1/4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_96",
+    originalChapter: 4,
+    chapterTitle: "Polynomials, Functions & Algebraic Operations",
+    topic: "Algebra: Polynomials & Functions",
+    bookQuestionNum: 196,
+    text: "Find the inverse of f(x) = 4x + 9.",
+    options: {
+      A: "(x - 9)/4",
+      B: "(x + 9)/4",
+      C: "4x - 9",
+      D: "9 - 4x"
+    },
+    answer: "A",
+    explanation: "Let y = 4x + 9. Interchange and solve: x = 4y + 9. Hence, y = (x - 9)/4.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_97",
+    originalChapter: 8,
+    chapterTitle: "Matrices, Determinants & Linear Transformations",
+    topic: "Matrices & Determinants",
+    bookQuestionNum: 197,
+    text: "Find the determinant of [[3, 7], [2, 5]].",
+    options: {
+      A: "1",
+      B: "2",
+      C: "3",
+      D: "4"
+    },
+    answer: "A",
+    explanation: "3 × 5 - 7 × 2 = 15 - 14 = 1.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_98",
+    originalChapter: 9,
+    chapterTitle: "Geometry & Mensuration: Plane Shapes and Solids",
+    topic: "Mensuration & Geometry",
+    bookQuestionNum: 198,
+    text: "A circle has circumference 88 cm. Find its area. Take π = 22/7.",
+    options: {
+      A: "484 cm²",
+      B: "616 cm²",
+      C: "704 cm²",
+      D: "784 cm²"
+    },
+    answer: "B",
+    explanation: "Radius = 88/(2 × 22/7) = 14 cm. Area = 22/7 × 14² = 616 cm².",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_99",
+    originalChapter: 14,
+    chapterTitle: "Permutations, Combinations & Probability",
+    topic: "Probability",
+    bookQuestionNum: 199,
+    text: "If the probability of success is 0.72, find the probability of failure.",
+    options: {
+      A: "0.18",
+      B: "0.22",
+      C: "0.28",
+      D: "0.32"
+    },
+    answer: "C",
+    explanation: "1 - 0.72 = 0.28.",
+    page: 1,
+    hasImage: false
+  },
+  {
+    id: "math_adv_100",
+    originalChapter: 11,
+    chapterTitle: "Differential Calculus: Derivatives, Tangents & Maxima/Minima",
+    topic: "Calculus: Differentiation",
+    bookQuestionNum: 200,
+    text: "Find the minimum value of y = x² - 10x + 21.",
+    options: {
+      A: "-5",
+      B: "-4",
+      C: "-3",
+      D: "-2"
+    },
+    answer: "B",
+    explanation: "Complete the square: y = (x - 5)² - 4. The minimum value is -4.",
+    page: 1,
     hasImage: false
   },
   {

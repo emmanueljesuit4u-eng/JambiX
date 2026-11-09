@@ -126,6 +126,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
   // Completed Test State
   const [testCompleted, setTestCompleted] = useState<{
+    testId?: string;
     grade: JambGradingResult;
     savedLocally: boolean;
     syncedToCloud: boolean;
@@ -254,7 +255,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const effectiveSubjects = isLekkiNovel ? ['The Lekki Headmaster'] : selectedSubjects;
     const effectiveMode = isLekkiNovel ? 'novel' : examMode;
     const effectiveCount = isLekkiNovel ? 30 : examMode === 'sprint' ? 20 : undefined;
-    const effectiveDurationMinutes = isLekkiNovel ? 20 : duration;
+    // During a full CBT test, ensure the system reads exactly 120 minutes and nothing more
+    const isFullCbtExam = !isLekkiNovel && (effectiveMode === 'full' || effectiveSubjects.length >= 4);
+    const effectiveDurationMinutes = isLekkiNovel ? 20 : isFullCbtExam ? 120 : Math.min(120, duration);
 
     const difficultyTier = getCompletedTwoHourTestsCount();
 
@@ -378,11 +381,15 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       finalQuestions = processedQuestions;
     }
 
+    // Final validation: during a full CBT test, ensure the system reads exactly 120 minutes and nothing more
+    const isFullTwoHourTest = (effectiveMode === 'full' || finalQuestions.length === 180) && !isLekkiNovel;
+    const finalAllocatedMinutes = isLekkiNovel ? 20 : isFullTwoHourTest ? 120 : Math.min(120, effectiveDurationMinutes);
+
     setActiveQuestions(finalQuestions);
     setSelectedAnswers({});
     setCurrentQuestionIndex(0);
-    setTimeLeftSeconds(effectiveDurationMinutes * 60);
-    setDuration(effectiveDurationMinutes);
+    setTimeLeftSeconds(finalAllocatedMinutes * 60);
+    setDuration(finalAllocatedMinutes);
     setTestCompleted(null);
     setTestStarted(true);
 
@@ -395,7 +402,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setSeenCount(getSeenQuestionsCount());
 
     // Advance 2-hour test progression counter so every subsequent 2-hour test becomes progressively tougher
-    if ((effectiveMode === 'full' || finalQuestions.length === 180) && effectiveDurationMinutes >= 120) {
+    if (isFullTwoHourTest) {
       try {
         const prevStarted = parseInt(localStorage.getItem('jambix_2hr_tests_started_count') || '0', 10);
         localStorage.setItem('jambix_2hr_tests_started_count', String((isNaN(prevStarted) ? 0 : prevStarted) + 1));
@@ -421,20 +428,22 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     return () => clearInterval(interval);
   }, [testStarted, testCompleted]);
 
-  // Format time (MM:SS for <= 1 hour, HH:MM:SS for > 1 hour)
+  // Format time:
+  // In authentic JAMB CBT exams, the on-screen countdown timer reads strictly in MINUTES and SECONDS
+  // (MM:SS, starting at exactly 120:00 for a full CBT exam and counting down to 00:00).
+  // This guarantees that during a full CBT test, the system reads exactly 120 minutes and nothing more.
   const formattedTime = useMemo(() => {
-    const hours = Math.floor(timeLeftSeconds / 3600);
-    const minutes = Math.floor((timeLeftSeconds % 3600) / 60);
-    const seconds = timeLeftSeconds % 60;
-    if (hours === 0) {
-      return `${minutes.toString().padStart(2, '0')}:${seconds
-        .toString()
-        .padStart(2, '0')}`;
-    }
-    return `${hours.toString().padStart(2, '0')}:${minutes
-      .toString()
-      .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  }, [timeLeftSeconds]);
+    const isFullTest = examMode === 'full' || activeQuestions.length === 180 || duration === 120;
+    // Strict clamp: never allow seconds to exceed 120 minutes (7200 seconds) for a full CBT test
+    const clampedSeconds = isFullTest
+      ? Math.min(120 * 60, Math.max(0, timeLeftSeconds))
+      : Math.max(0, timeLeftSeconds);
+
+    const totalMinutes = Math.floor(clampedSeconds / 60);
+    const seconds = clampedSeconds % 60;
+
+    return `${totalMinutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }, [timeLeftSeconds, examMode, activeQuestions.length, duration]);
 
   // Subject partition ranges for quick jumping in the CBT interface
   const subjectPartitions = useMemo(() => {
@@ -618,6 +627,14 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       timeSpentSeconds: timeSpent > 0 ? timeSpent : 180,
       subjects: selectedSubjects,
       syncedToCloud: synced,
+      subjectScores: grade.subjectBreakdowns.map((sb) => ({
+        subject: sb.subject,
+        score: sb.jambScaledScore,
+        total: sb.total,
+        correct: sb.correct,
+        percentage: sb.percentage,
+        bookTitle: sb.bookTitle,
+      })),
       questions: activeQuestions,
       selectedAnswers: selectedAnswers,
     });
@@ -634,6 +651,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     }
 
     setTestCompleted({
+      testId,
       grade,
       savedLocally: true,
       syncedToCloud: synced,
@@ -994,25 +1012,44 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
               </div>
 
               {/* Done / Retake controls */}
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
+                  type="button"
                   onClick={() => {
-                    handleStartExam();
-                  }}
-                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl cursor-pointer transition-colors"
-                >
-                  Retake Exam
-                </button>
-                <button
-                  onClick={() => {
+                    const finishedTestId = testCompleted?.testId;
                     setTestCompleted(null);
                     setTestStarted(false);
                     onClose();
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('jambix_open_history', { detail: { testId: finishedTestId } }));
+                    }
                   }}
-                  className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl cursor-pointer transition-colors shadow-xs"
+                  className="px-4 py-2 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/60 text-xs font-bold rounded-xl cursor-pointer transition-colors flex items-center gap-1.5"
                 >
-                  Finish Review &amp; Close
+                  <Clock className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                  <span>Go Through Test in History</span>
                 </button>
+
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      handleStartExam();
+                    }}
+                    className="px-4 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl cursor-pointer transition-colors"
+                  >
+                    Retake Exam
+                  </button>
+                  <button
+                    onClick={() => {
+                      setTestCompleted(null);
+                      setTestStarted(false);
+                      onClose();
+                    }}
+                    className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl cursor-pointer transition-colors shadow-xs"
+                  >
+                    Finish Review &amp; Close
+                  </button>
+                </div>
               </div>
             </div>
           ) : !testStarted ? (
@@ -1148,11 +1185,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-xs">Full JAMB CBT Exam</span>
                           <span className="text-[10px] font-black px-1.5 py-0.5 bg-rose-600 text-white rounded">
-                            180 Qs
+                            180 Qs · Exactly 120 Mins
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                          60 English + 40 each for 3 other subjects. Graded over 400.
+                          60 English + 40 each for 3 other subjects. Exactly 120 minutes. Graded over 400.
                         </p>
                       </button>
 
@@ -1527,9 +1564,15 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     <span>Calculator</span>
                   </button>
 
-                  <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60">
+                  <div
+                    className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60"
+                    title="Authentic JAMB CBT Countdown: Exactly 120 Minutes"
+                  >
                     <Clock className="w-4 h-4 animate-pulse" />
                     <span>{formattedTime}</span>
+                    <span className="text-[10px] font-sans font-extrabold text-rose-500/80 uppercase">
+                      Mins
+                    </span>
                   </div>
                 </div>
               </div>

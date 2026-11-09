@@ -4224,10 +4224,10 @@ export function generateUniqueSubjectQuestions(
   if (subjectKey === 'mathematics' && JAMBIX_MATHEMATICS_ITEMS.length > 0) {
     // 1. Separate the 20 verified diagram questions from the non-diagram question pool
     const diagramPool = JAMBIX_MATHEMATICS_ITEMS.filter(
-      (item) => item.originalChapter === 15 || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420)
+      (item) => item.hasImage && (item.id.startsWith('math_diag_') || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420))
     );
     const nonDiagramPool = JAMBIX_MATHEMATICS_ITEMS.filter(
-      (item) => !(item.originalChapter === 15 || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420))
+      (item) => !(item.hasImage && (item.id.startsWith('math_diag_') || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420)))
     );
 
     // 2. Select EXACTLY 4 diagram questions per test in cyclic sequence (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
@@ -4245,13 +4245,90 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 3. The remaining questions (e.g. 36 questions in a 40-question test) are drawn
-    // evenly via round-robin across all syllabus topic clusters
+    // 3. Balanced Topic Distribution: The remaining 36 questions are drawn
+    // evenly via round-robin across all 16 syllabus topic clusters
     const nonDiagramQuota = Math.max(0, targetCount - pickedDiagramItems.length);
+
+    const getMathematicsTopicCluster = (item: typeof JAMBIX_MATHEMATICS_ITEMS[0]) => {
+      const t = (item.topic || '').toLowerCase();
+      const c = (item.chapterTitle || '').toLowerCase();
+      const txt = (item.text || '').toLowerCase();
+
+      // 1. Differential Calculus
+      if (t.includes('differentiat') || t.includes('derivative') || t.includes('tangent') || t.includes('calculus: diff') || c.includes('differential calculus') || txt.includes('dy/dx') || txt.includes('maximum value') || txt.includes('minimum value')) {
+        return 'Differential Calculus: Derivatives, Tangents & Extremum';
+      }
+      // 2. Integral Calculus
+      if (t.includes('integrat') || t.includes('integral') || c.includes('integral calculus') || txt.includes('∫') || txt.includes('definite integral') || txt.includes('area under')) {
+        return 'Integral Calculus: Definite Integrals & Area Under Curves';
+      }
+      // 3. Vectors in Two Dimensions
+      if (t.includes('vector') || c.includes('vector') || txt.includes('scalar product') || txt.includes('dot product') || txt.includes('magnitude of the vector') || txt.includes('magnitude of vector') || txt.includes('i + ') || txt.includes('i - ')) {
+        return 'Vectors in Two Dimensions & Dot Products';
+      }
+      // 4. Probability
+      if (t.includes('probability') || txt.includes('probability') || txt.includes('die is thrown') || txt.includes('without replacement') || txt.includes('balls are selected') || txt.includes('bag contains')) {
+        return 'Probability: Elementary & Compound Events';
+      }
+      // 5. Permutations & Combinations
+      if (t.includes('combination') || t.includes('permutation') || txt.includes('combinations') || txt.includes('permutations') || txt.includes('⁸c₃') || txt.includes('⁶c₂') || txt.includes('⁵c₃') || txt.includes('6!/')) {
+        return 'Permutations & Combinations';
+      }
+      // 6. Statistics: Measures of Location & Dispersion
+      if (t.includes('statistic') || t.includes('mean') || t.includes('median') || t.includes('mode') || t.includes('dispersion') || t.includes('variance') || t.includes('standard deviation') || c.includes('statistic')) {
+        return 'Statistics: Measures of Location & Dispersion';
+      }
+      // 7. Sequences & Series: AP, GP and Sum to Infinity
+      if (t.includes('sequence') || t.includes('series') || t.includes('ap') || t.includes('gp') || t.includes('progression') || c.includes('sequence') || txt.includes('first 25 terms') || txt.includes('first 20 terms') || txt.includes('7th term') || txt.includes('6th term') || txt.includes('sum to infinity')) {
+        return 'Sequences & Series: AP, GP & Sum to Infinity';
+      }
+      // 8. Matrices & Determinants
+      if (t.includes('matri') || t.includes('determinant') || c.includes('matri') || txt.includes('determinant') || txt.includes('det(')) {
+        return 'Matrices, Determinants & Linear Transformations';
+      }
+      // 9. Coordinate Geometry: Straight Lines & Circles
+      if (t.includes('coordinate') || t.includes('gradient') || t.includes('straight line') || t.includes('circle equation') || t.includes('midpoint') || t.includes('distance between') || c.includes('coordinate geometry') || txt.includes('gradient of the line') || txt.includes('equation of a line') || txt.includes('equation of a circle') || txt.includes('perpendicular to')) {
+        return 'Coordinate Geometry: Straight Lines & Circles';
+      }
+      // 10. Trigonometry: Ratios, Identities, Special Angles & Bearings
+      if (t.includes('trigonomet') || t.includes('ratio') || t.includes('sin') || t.includes('cos') || t.includes('tan') || t.includes('bearing') || c.includes('trigonomet') || txt.includes('sin θ') || txt.includes('cos θ') || txt.includes('tan θ') || txt.includes('bearing of')) {
+        return 'Trigonometry: Identities, Equations & Bearings';
+      }
+      // 11. Geometry & Mensuration: Plane Shapes, Polygons & Solids
+      if (t.includes('mensuration') || t.includes('polygon') || t.includes('angle') || t.includes('circle') || t.includes('cylinder') || t.includes('sphere') || t.includes('cone') || t.includes('cuboid') || t.includes('sector') || t.includes('area') || t.includes('volume') || txt.includes('regular polygon') || txt.includes('circumference') || txt.includes('volume of') || txt.includes('radius of a sphere')) {
+        return 'Geometry & Mensuration: Plane Shapes & Solids';
+      }
+      // 12. Indices, Logarithms & Surds
+      if (t.includes('index') || t.includes('indices') || t.includes('logarithm') || t.includes('log') || t.includes('surd') || c.includes('indices') || txt.includes('log₂') || txt.includes('log₃') || txt.includes('log₁₀') || txt.includes('log₅') || txt.includes('5^(') || txt.includes('3^(') || txt.includes('9ˣ') || txt.includes('√')) {
+        return 'Indices, Logarithms & Surds';
+      }
+      // 13. Quadratic Equations & Simultaneous Systems
+      if (t.includes('quadratic') || t.includes('roots') || t.includes('simultaneous') || c.includes('quadratic') || txt.includes('3x² - 11x') || txt.includes('x² - 9x') || txt.includes('roots of') || txt.includes('equal roots') || txt.includes('x + y =') || txt.includes('3x + 2y =')) {
+        return 'Quadratic Equations & Simultaneous Systems';
+      }
+      // 14. Inequalities, Linear Programming & Variations
+      if (t.includes('inequalit') || t.includes('variation') || c.includes('inequalit') || txt.includes('varies inversely') || txt.includes('varies directly') || txt.includes('5x + 2 < 17') || txt.includes('workers')) {
+        return 'Inequalities, Linear Programming & Variations';
+      }
+      // 15. Polynomials, Functions & Algebraic Fractions
+      if (t.includes('polynomial') || t.includes('function') || t.includes('algebra') || t.includes('remainder') || t.includes('factor') || txt.includes('f(x)') || txt.includes('f(g(') || txt.includes('inverse of f') || txt.includes('remainder when') || txt.includes('simplify (x²')) {
+        return 'Polynomials, Functions & Algebraic Fractions';
+      }
+      // 16. Commercial Mathematics & Practical Arithmetic
+      if (t.includes('commercial') || t.includes('compound interest') || t.includes('profit') || t.includes('percentage') || t.includes('ratio') || t.includes('speed') || txt.includes('compound interest') || txt.includes('percentage profit') || txt.includes('average speed')) {
+        return 'Commercial Mathematics & Practical Arithmetic';
+      }
+      // 17. Number Bases, Modular Arithmetic & Sets
+      if (t.includes('base') || t.includes('modular') || t.includes('set') || t.includes('fraction') || c.includes('number base') || c.includes('sets')) {
+        return 'Number Bases, Fractions & Modular Arithmetic';
+      }
+
+      return item.chapterTitle || item.topic || 'General Mathematics';
+    };
 
     const byTopic: Record<string, typeof JAMBIX_MATHEMATICS_ITEMS> = {};
     for (const item of nonDiagramPool) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      const topicKey = getMathematicsTopicCluster(item);
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
@@ -4326,7 +4403,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Mathematics',
-        topic: item.topic || item.chapterTitle || 'General Mathematics',
+        topic: item.topic || getMathematicsTopicCluster(item),
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
@@ -4778,25 +4855,95 @@ export function generateUniqueSubjectQuestions(
   // Fairly distributes across all syllabus topic clusters via round-robin,
   // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
+  // JAMBIX ECONOMICS QUESTION BANK (300 QUESTIONS ACROSS 15 TOPIC CLUSTERS)
+  // Balanced Topic Distribution During Tests:
+  // Round-robins evenly across all 15 syllabus topic clusters so questions
+  // are drawn evenly from all branches of the syllabus without clustering into any single topic.
+  // =========================================================================
   if (subjectKey === 'economics' && JAMBIX_ECONOMICS_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
+    const getEconomicsTopicCluster = (item: typeof JAMBIX_ECONOMICS_ITEMS[0]) => {
+      const t = (item.topic || '').toLowerCase();
+      const c = (item.chapterTitle || '').toLowerCase();
+      const txt = (item.text || '').toLowerCase();
+
+      // 1. Basic Economic Concepts & Methodology (Scarcity, Choice, Scale of Preference, Opportunity Cost, PPC)
+      if (t.includes('scarcity') || t.includes('opportunity cost') || t.includes('ppc') || t.includes('possibility curve') || c.includes('basic economic') || t.includes('methodology') || t.includes('scale of preference')) {
+        return 'Basic Economic Concepts, Scarcity & PPC';
+      }
+      // 2. Consumer Behaviour & Utility Analysis
+      if (t.includes('utility') || t.includes('consumer behaviour') || t.includes('indifference') || t.includes('budget') || c.includes('consumer behaviour')) {
+        return 'Theory of Consumer Behaviour & Utility Analysis';
+      }
+      // 3. Elasticity of Demand & Supply
+      if (t.includes('elasticity') || txt.includes('elasticity') || txt.includes('ped') || txt.includes('pes')) {
+        return 'Elasticity of Demand & Supply';
+      }
+      // 4. Theory of Demand, Supply & Price Determination
+      if (t.includes('demand') || t.includes('supply') || t.includes('ceiling') || t.includes('floor') || t.includes('equilibrium price') || c.includes('demand and supply')) {
+        return 'Demand, Supply & Price Determination';
+      }
+      // 5. Market Structures & Pricing (Perfect competition, Monopoly, Oligopoly, etc.)
+      if (t.includes('market structure') || t.includes('competition') || t.includes('monopoly') || t.includes('oligopoly') || t.includes('cartel') || t.includes('kinked') || c.includes('market structure') || txt.includes('perfect competition') || txt.includes('monopolist') || txt.includes('monopolistic')) {
+        return 'Market Structures, Monopoly & Oligopoly';
+      }
+      // 6. Theory of Costs & Revenue
+      if (t.includes('cost') || t.includes('revenue') || t.includes('shutdown') || t.includes('break-even') || txt.includes('fixed cost') || txt.includes('variable cost') || txt.includes('average cost') || txt.includes('marginal cost') || txt.includes('total revenue')) {
+        return 'Cost & Revenue Theory';
+      }
+      // 7. Theory of Production & Diminishing Returns
+      if (t.includes('production') || t.includes('isoquant') || t.includes('mrts') || t.includes('marginal product') || t.includes('returns to scale') || c.includes('production') || t.includes('division of labour')) {
+        return 'Theory of Production & Returns to Scale';
+      }
+      // 8. Factor Markets & Theory of Distribution (Labour, Wages, Economic Rent, Transfer Earnings, Interest, Profit)
+      if (t.includes('factor') || t.includes('labour') || t.includes('labor') || t.includes('wage') || t.includes('rent') || t.includes('interest') || t.includes('trade union') || c.includes('labour') || c.includes('unemployment') || txt.includes('derived demand')) {
+        return 'Factor Markets, Wages & Distribution';
+      }
+      // 9. National Income & Macroeconomic Aggregates (GDP, Multiplier, Accelerator, Circular Flow)
+      if (t.includes('national income') || t.includes('gdp') || t.includes('gnp') || t.includes('multiplier') || t.includes('accelerator') || t.includes('circular flow') || t.includes('paradox of thrift') || t.includes('recession') || t.includes('stagflation') || c.includes('national income') || txt.includes('gdp deflator')) {
+        return 'National Income, Multiplier & Macroeconomics';
+      }
+      // 10. Money, Banking, Inflation & Monetary Policy
+      if (t.includes('money') || t.includes('banking') || t.includes('inflation') || t.includes('central bank') || t.includes('commercial bank') || t.includes('liquidity') || t.includes('monetary') || t.includes('deposit multiplier') || c.includes('money') || c.includes('monetary') || txt.includes('quantity theory of money')) {
+        return 'Money, Banking, Inflation & Monetary Policy';
+      }
+      // 11. Public Finance, Taxation & Fiscal Policy
+      if (t.includes('public finance') || t.includes('tax') || t.includes('fiscal') || t.includes('public debt') || t.includes('budget') || t.includes('subsidy') || c.includes('public finance') || txt.includes('benefit principle')) {
+        return 'Public Finance, Taxation & Fiscal Policy';
+      }
+      // 12. International Trade, Balance of Payments & Exchange Rates
+      if (t.includes('international') || t.includes('trade') || t.includes('balance of payments') || t.includes('exchange rate') || t.includes('tariff') || t.includes('dumping') || t.includes('customs union') || t.includes('terms of trade') || c.includes('international trade') || txt.includes('comparative advantage')) {
+        return 'International Trade, BOP & Exchange Rates';
+      }
+      // 13. Economic Growth, Development, Population & Planning
+      if (t.includes('development') || t.includes('growth') || t.includes('population') || t.includes('dependency') || t.includes('hdi') || t.includes('lewis') || t.includes('poverty') || t.includes('planning') || c.includes('development') || c.includes('population') || txt.includes('dependency ratio')) {
+        return 'Economic Growth, Development & Planning';
+      }
+      // 14. Agriculture, Industry, Public Enterprises & Environmental Economics
+      if (t.includes('agriculture') || t.includes('industrial') || t.includes('environment') || t.includes('externality') || t.includes('public good') || t.includes('coase') || c.includes('agriculture') || c.includes('business organisation') || txt.includes('externality') || txt.includes('public good')) {
+        return 'Agriculture, Industry & Environmental Economics';
+      }
+
+      return item.chapterTitle || item.topic || 'General Economics';
+    };
+
+    // 1. Group items into syllabus topic clusters to guarantee balanced round-robin distribution
     const byTopic: Record<string, typeof JAMBIX_ECONOMICS_ITEMS> = {};
     for (const item of JAMBIX_ECONOMICS_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
+      const topicKey = getEconomicsTopicCluster(item);
       if (!byTopic[topicKey]) byTopic[topicKey] = [];
       byTopic[topicKey].push(item);
     }
 
-    // 2. Shuffle within each topic
+    // 2. Shuffle within each topic cluster
     for (const tKey of Object.keys(byTopic)) {
       byTopic[tKey] = shuffleArr(byTopic[tKey]);
     }
 
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
+    // 3. Shuffle cluster keys so tests don't always pick topics in the exact same sequence
     const topicKeys = shuffleArr(Object.keys(byTopic));
     const pickedEconItems: typeof JAMBIX_ECONOMICS_ITEMS = [];
 
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
+    // 4. Pass 1: Round-robin across all topic clusters, drawing evenly from every branch of the syllabus
     let added = true;
     while (pickedEconItems.length < targetCount && added) {
       added = false;
@@ -4805,7 +4952,12 @@ export function generateUniqueSubjectQuestions(
         const pool = byTopic[tKey];
         const nextItem = pool.find((item) => {
           const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
+          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
+          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+            return false;
+          }
+          return true;
         });
         if (nextItem) {
           const sig = getQuestionCoreSignature(nextItem.text);
@@ -4825,13 +4977,17 @@ export function generateUniqueSubjectQuestions(
         if (pickedEconItems.length >= targetCount) break;
         const sig = getQuestionCoreSignature(item.text);
         if (!safeSessionUsed.has(sig)) {
+          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
+          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+            continue;
+          }
           safeSessionUsed.add(sig);
           pickedEconItems.push(item);
         }
       }
     }
 
-    // 6. Complete random shuffle of all selected questions so questions are diversified
+    // 6. Complete random shuffle of all selected questions so questions are naturally diversified across the exam
     const finalOrderedEcon = shuffleArr(pickedEconItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -4845,7 +5001,7 @@ export function generateUniqueSubjectQuestions(
         year: effYear,
         questionNumber: qNum,
         subject: 'Economics',
-        topic: item.topic,
+        topic: item.topic || getEconomicsTopicCluster(item),
         text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
         options: {
           A: item.options.A,
@@ -4857,8 +5013,11 @@ export function generateUniqueSubjectQuestions(
         explanation: item.explanation,
         bookTitle: 'JAMBIX ECONOMICS QUESTION BANK',
         author: 'JAMBIX UTME Preparatory Series',
-        textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
-        hasImage: false,
+        textbookRef: item.chapterTitle || 'Economics Syllabus Topic',
+        hasImage: Boolean(item.hasImage),
+        imageUrl: item.imageUrl,
+        imageCaption: item.imageCaption,
+        imageAlt: item.imageAlt,
       };
       // Exactly preserve the author's answer and explanation without scrambling
       picked.push(vq);

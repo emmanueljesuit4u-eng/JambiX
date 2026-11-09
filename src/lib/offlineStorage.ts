@@ -25,6 +25,14 @@ export interface OfflineTestResult {
   totalRawCorrect?: number;
   questions?: VerifiedQuestion[];
   selectedAnswers?: Record<number, string>;
+  subjectScores?: {
+    subject: string;
+    score: number;
+    total: number;
+    correct: number;
+    percentage: number;
+    bookTitle?: string;
+  }[];
 }
 
 export interface OfflinePostItem {
@@ -56,7 +64,7 @@ const STORAGE_KEYS = {
   LAST_SYNC: 'jambix_last_sync_time',
 };
 
-// Safe localStorage helpers
+// Safe localStorage helpers with automatic quota management for extensive test history
 function getStoredJson<T>(key: string, defaultValue: T): T {
   if (typeof window === 'undefined') return defaultValue;
   try {
@@ -73,7 +81,33 @@ function setStoredJson<T>(key: string, value: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (err) {
-    console.warn(`Error writing ${key} to storage:`, err);
+    console.warn(`Error writing ${key} to storage, attempting resilient compaction:`, err);
+    if (key === STORAGE_KEYS.TESTS && Array.isArray(value)) {
+      try {
+        // Quota safeguard: preserve up to 25 latest tests; for tests older than 3, strip heavy SVG diagram strings
+        const compacted = (value as OfflineTestResult[]).slice(0, 25).map((t, idx) => {
+          if (idx >= 3 && t.questions) {
+            return {
+              ...t,
+              questions: t.questions.map((q) => ({
+                ...q,
+                imageSvg: undefined, // drop large SVG markup from older tests while keeping question text and choices
+              })),
+            };
+          }
+          return t;
+        });
+        localStorage.setItem(key, JSON.stringify(compacted));
+      } catch (innerErr) {
+        try {
+          // If still tight on storage, retain the latest 10 full tests
+          const latestOnly = (value as OfflineTestResult[]).slice(0, 10);
+          localStorage.setItem(key, JSON.stringify(latestOnly));
+        } catch (fatalErr) {
+          console.error('Fatal localStorage quota error:', fatalErr);
+        }
+      }
+    }
   }
 }
 
@@ -89,9 +123,16 @@ export function saveLocalTestResult(
     syncedToCloud: !!test.syncedToCloud,
   };
 
-  // Prepend new test
+  // Prepend new test to guarantee newest test is always first
   const updated = [newTest, ...allTests.filter((t) => t.id !== test.id)];
   setStoredJson(STORAGE_KEYS.TESTS, updated);
+
+  // Notify active windows and tabs immediately of the saved test
+  if (typeof window !== 'undefined') {
+    try {
+      window.dispatchEvent(new CustomEvent('jambix_test_submitted', { detail: { testId: newTest.id } }));
+    } catch {}
+  }
 
   // Strict Leaderboard Regulation: Only 2-hour full CBT mock tests (180 questions) are enqueued for live cloud leaderboard sync
   const isTwoHourFullCbt =
@@ -120,10 +161,19 @@ export function saveLocalTestResult(
   return newTest;
 }
 
-export function getLocalTestResults(userId?: string): OfflineTestResult[] {
+export function getLocalTestResults(userId?: string, userEmail?: string): OfflineTestResult[] {
   const tests = getStoredJson<OfflineTestResult[]>(STORAGE_KEYS.TESTS, []);
-  if (!userId) return tests;
-  return tests.filter((t) => !t.userId || t.userId === userId || t.userId === 'offline_candidate');
+  if (!userId && !userEmail) return tests;
+
+  const filtered = tests.filter((t) => {
+    if (!t.userId || t.userId === 'offline_candidate') return true;
+    if (userId && t.userId === userId) return true;
+    if (userEmail && t.userEmail && t.userEmail.toLowerCase() === userEmail.toLowerCase()) return true;
+    return false;
+  });
+
+  // If filtered is non-empty, return candidate tests; otherwise fallback to all local tests so tests are never hidden
+  return filtered.length > 0 ? filtered : tests;
 }
 
 export function clearLocalTestResults(): void {

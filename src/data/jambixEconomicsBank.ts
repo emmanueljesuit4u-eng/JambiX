@@ -5,7 +5,7 @@
  * JAMBIX ECONOMICS QUESTION BANK
  * 200 TOUGH JAMB UTME-STYLE QUESTIONS (SET 1 & SET 3) ACROSS ALL TOPICS (QUESTIONS 1–100)
  * Indexed directly from official syllabus specifications.
- * Total questions: 200
+ * Total questions: 300 (including 100 Tough Questions - Advanced Practice Set)
  */
 
 export interface JambixEconomicsItem {
@@ -25,6 +25,7 @@ export interface JambixEconomicsItem {
   explanation: string;
   page: number;
   hasImage?: boolean;
+  imageSvg?: string;
   imageUrl?: string;
   imageCaption?: string;
   imageAlt?: string;
@@ -3630,5 +3631,1805 @@ export const JAMBIX_ECONOMICS_ITEMS: JambixEconomicsItem[] = [
     "explanation": "Per capita growth factor = 1.10/1.04 ≈ 1.05769. Therefore, real GDP per capita rises by approximately 5.77%.",
     "page": 10,
     "hasImage": false
+  },
+  {
+    id: "econ_adv_1",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 201,
+    text: "A consumer obtains 40 utils from consuming four units of a commodity and 47 utils from consuming five units. The marginal utility of the fifth unit is",
+    options: {
+      A: "5 utils",
+      B: "7 utils",
+      C: "8 utils",
+      D: "12 utils"
+    },
+    answer: "B",
+    explanation: "Marginal utility = 47 − 40 = 7 utils.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_2",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 202,
+    text: "A consumer is in equilibrium when purchasing two commodities if",
+    options: {
+      A: "Their prices are equal",
+      B: "Their marginal utilities are equal",
+      C: "The ratio of their marginal utilities equals the ratio of their prices",
+      D: "Their total utilities are zero"
+    },
+    answer: "C",
+    explanation: "Consumer equilibrium requires MUx/Px = MUy/Py, assuming an interior solution.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_3",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 203,
+    text: "The total utility of a consumer is maximum when marginal utility is",
+    options: {
+      A: "Negative",
+      B: "Zero",
+      C: "Equal to total utility",
+      D: "Increasing continuously"
+    },
+    answer: "B",
+    explanation: "Total utility reaches its maximum when marginal utility becomes zero, assuming utility is increasing before that point.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_4",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 204,
+    text: "If the marginal utility of a commodity becomes negative, consuming additional units will",
+    options: {
+      A: "Increase total utility",
+      B: "Reduce total utility",
+      C: "Leave total utility unchanged",
+      D: "Increase its market price"
+    },
+    answer: "B",
+    explanation: "Negative marginal utility means an additional unit reduces total satisfaction.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_5",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 205,
+    text: "A consumer's income increases while the prices of all commodities remain constant. The budget line will",
+    options: {
+      A: "Shift inward parallel to itself",
+      B: "Shift outward parallel to itself",
+      C: "Rotate towards the horizontal axis",
+      D: "Become vertical"
+    },
+    answer: "B",
+    explanation: "Higher income increases purchasing power without changing the slope of the budget line.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_6",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 206,
+    text: "If a consumer spends all income on commodities X and Y, the budget equation is",
+    options: {
+      A: "Px + Py = I",
+      B: "Qx + Qy = I",
+      C: "PxQx + PyQy = I",
+      D: "PxQy + PyQx = 0"
+    },
+    answer: "C",
+    explanation: "Total expenditure on both commodities must equal income.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_7",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 207,
+    text: "The marginal rate of substitution of X for Y measures",
+    options: {
+      A: "The market price of X",
+      B: "The quantity of Y a consumer is willing to sacrifice for an additional unit of X",
+      C: "The total utility of both goods",
+      D: "The income earned by the consumer"
+    },
+    answer: "B",
+    explanation: "MRS measures the rate at which a consumer exchanges one good for another while maintaining the same level of satisfaction.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_8",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 208,
+    text: "Indifference curves are generally convex to the origin because of",
+    options: {
+      A: "Increasing marginal utility",
+      B: "Diminishing marginal rate of substitution",
+      C: "Constant prices",
+      D: "Increasing income"
+    },
+    answer: "B",
+    explanation: "As a consumer obtains more of X, they are generally willing to sacrifice less Y for another unit of X.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_9",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 209,
+    text: "If two goods are perfect substitutes, their indifference curves are usually",
+    options: {
+      A: "L-shaped",
+      B: "Straight lines",
+      C: "Circular",
+      D: "Vertical lines only"
+    },
+    answer: "B",
+    explanation: "Perfect substitutes can be exchanged at a constant rate.",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_10",
+    originalChapter: 3,
+    chapterTitle: "Theory of Consumer Behaviour",
+    topic: "Utility, Consumer Behaviour & Choice",
+    bookQuestionNum: 210,
+    text: "A consumer's equilibrium occurs where the budget line is tangent to an indifference curve because",
+    options: {
+      A: "Total income becomes zero",
+      B: "The marginal rate of substitution equals the price ratio",
+      C: "Marginal utility is negative",
+      D: "Both goods have equal prices"
+    },
+    answer: "B",
+    explanation: "At an interior optimum, the consumer's willingness to substitute equals the market trade-off.\n\n## SECTION 2: ELASTICITY AND MARKET ANALYSIS",
+    page: 11,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_11",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 211,
+    text: "The price of a commodity rises from ₦20 to ₦25, while quantity demanded falls from 100 to 70 units. Using the initial-value method, the price elasticity of demand is",
+    options: {
+      A: "0.8",
+      B: "1.0",
+      C: "1.2",
+      D: "1.5"
+    },
+    answer: "C",
+    explanation: "PED = (30/100) ÷ (5/20) = 0.30 ÷ 0.25 = 1.2.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_12",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 212,
+    text: "A commodity has an income elasticity of demand of −0.6. This commodity is",
+    options: {
+      A: "A luxury good",
+      B: "A normal good",
+      C: "An inferior good",
+      D: "A substitute good"
+    },
+    answer: "C",
+    explanation: "Negative income elasticity means demand falls as consumer income rises.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_13",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 213,
+    text: "If the cross elasticity of demand between two commodities is positive, the commodities are",
+    options: {
+      A: "Complements",
+      B: "Substitutes",
+      C: "Unrelated in every case",
+      D: "Inferior goods"
+    },
+    answer: "B",
+    explanation: "A rise in the price of one increases demand for the other.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_14",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 214,
+    text: "A firm reduces the price of a product by 10%, resulting in a 20% increase in quantity demanded. The price elasticity of demand is",
+    options: {
+      A: "0.5",
+      B: "1",
+      C: "2",
+      D: "3"
+    },
+    answer: "C",
+    explanation: "PED = 20% ÷ 10% = 2.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_15",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 215,
+    text: "If demand is price inelastic, an increase in price will generally cause total revenue to",
+    options: {
+      A: "Decrease",
+      B: "Increase",
+      C: "Remain constant",
+      D: "Become zero"
+    },
+    answer: "B",
+    explanation: "The percentage fall in quantity demanded is smaller than the percentage rise in price.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_16",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 216,
+    text: "A vertical supply curve indicates that",
+    options: {
+      A: "Supply is perfectly elastic",
+      B: "Supply is perfectly inelastic",
+      C: "Supply is unit elastic",
+      D: "Supply is negatively elastic"
+    },
+    answer: "B",
+    explanation: "Quantity supplied remains constant regardless of price changes.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_17",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 217,
+    text: "If the elasticity of supply is 1.5, a 4% increase in price will cause quantity supplied to increase by",
+    options: {
+      A: "2%",
+      B: "4%",
+      C: "6%",
+      D: "8%"
+    },
+    answer: "C",
+    explanation: "PES = percentage change in quantity supplied ÷ percentage change in price. Therefore, 1.5 × 4 = 6%.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_18",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 218,
+    text: "The burden of an indirect tax falls more heavily on consumers when",
+    options: {
+      A: "Demand is relatively inelastic",
+      B: "Demand is perfectly elastic",
+      C: "Supply is perfectly elastic",
+      D: "Consumers have many substitutes"
+    },
+    answer: "A",
+    explanation: "Consumers are less able to reduce their purchases when price rises, so producers can pass more of the tax to them.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_19",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 219,
+    text: "A price ceiling fixed below the equilibrium price will most likely result in",
+    options: {
+      A: "Excess supply",
+      B: "Excess demand",
+      C: "Market equilibrium",
+      D: "Falling demand"
+    },
+    answer: "B",
+    explanation: "At the controlled low price, consumers want more than producers are willing to supply.",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_20",
+    originalChapter: 2,
+    chapterTitle: "Theory of Demand and Supply",
+    topic: "Elasticity & Market Analysis",
+    bookQuestionNum: 220,
+    text: "A minimum price fixed above equilibrium price is likely to create",
+    options: {
+      A: "Shortage",
+      B: "Surplus",
+      C: "Equilibrium",
+      D: "Deflation"
+    },
+    answer: "B",
+    explanation: "Producers supply more while consumers demand less at the higher controlled price.\n\n## SECTION 3: PRODUCTION AND COST THEORY",
+    page: 12,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_21",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 221,
+    text: "A firm's total product increases from 120 units to 150 units when labour increases from 5 to 6 workers. The marginal product of the sixth worker is",
+    options: {
+      A: "20 units",
+      B: "25 units",
+      C: "30 units",
+      D: "35 units"
+    },
+    answer: "C",
+    explanation: "Marginal product = 150 − 120 = 30 units.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_22",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 222,
+    text: "When marginal product is greater than average product, average product will",
+    options: {
+      A: "Increase",
+      B: "Decrease",
+      C: "Remain constant",
+      D: "Become negative"
+    },
+    answer: "A",
+    explanation: "An additional worker producing above the current average raises the average product.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_23",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 223,
+    text: "A firm's average fixed cost decreases as output increases because",
+    options: {
+      A: "Fixed cost increases",
+      B: "Fixed cost is spread over more units",
+      C: "Variable cost becomes zero",
+      D: "Marginal cost becomes negative"
+    },
+    answer: "B",
+    explanation: "Average fixed cost equals total fixed cost divided by output.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_24",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 224,
+    text: "If total fixed cost is ₦600 and output is 30 units, average fixed cost is",
+    options: {
+      A: "₦10",
+      B: "₦15",
+      C: "₦20",
+      D: "₦30"
+    },
+    answer: "C",
+    explanation: "AFC = 600 ÷ 30 = ₦20.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_25",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 225,
+    text: "A firm produces 50 units at a total cost of ₦2,000. Its average cost is",
+    options: {
+      A: "₦20",
+      B: "₦30",
+      C: "₦40",
+      D: "₦50"
+    },
+    answer: "C",
+    explanation: "AC = TC ÷ Q = 2,000 ÷ 50.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_26",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 226,
+    text: "If marginal cost is below average cost, average cost will",
+    options: {
+      A: "Rise",
+      B: "Fall",
+      C: "Remain unchanged",
+      D: "Become equal to fixed cost"
+    },
+    answer: "B",
+    explanation: "A marginal value below the average pulls the average downward.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_27",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 227,
+    text: "A firm experiences increasing returns to scale when output",
+    options: {
+      A: "Increases by a smaller proportion than inputs",
+      B: "Increases in the same proportion as inputs",
+      C: "Increases by a greater proportion than inputs",
+      D: "Remains unchanged despite increasing inputs"
+    },
+    answer: "C",
+    explanation: "Increasing returns to scale occur when output rises proportionately more than all inputs.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_28",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 228,
+    text: "An isoquant represents combinations of",
+    options: {
+      A: "Two goods giving equal satisfaction",
+      B: "Two factors producing the same output",
+      C: "Prices and quantities demanded",
+      D: "Income and expenditure"
+    },
+    answer: "B",
+    explanation: "An isoquant shows different combinations of inputs that produce the same level of output.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_29",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 229,
+    text: "The marginal rate of technical substitution measures the rate at which",
+    options: {
+      A: "Output is exchanged for income",
+      B: "One input can replace another while output remains constant",
+      C: "Price replaces demand",
+      D: "Labour replaces capital without changing cost"
+    },
+    answer: "B",
+    explanation: "MRTS describes the substitution between productive inputs along an isoquant.",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_30",
+    originalChapter: 4,
+    chapterTitle: "Theory of Production & Costs",
+    topic: "Production & Cost Theory",
+    bookQuestionNum: 230,
+    text: "A firm's shutdown point in the short run occurs when price falls below the minimum",
+    options: {
+      A: "Average total cost",
+      B: "Average fixed cost",
+      C: "Average variable cost",
+      D: "Marginal revenue"
+    },
+    answer: "C",
+    explanation: "Below minimum AVC, revenue cannot cover variable costs, so shutting down minimises short-run losses.\n\n## SECTION 4: REVENUE, PROFIT AND MARKET STRUCTURES",
+    page: 13,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_31",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 231,
+    text: "A firm sells 40 units at ₦50 each. Its total revenue is",
+    options: {
+      A: "₦1,000",
+      B: "₦1,500",
+      C: "₦2,000",
+      D: "₦2,500"
+    },
+    answer: "C",
+    explanation: "TR = P × Q = 50 × 40.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_32",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 232,
+    text: "A firm earns total revenue of ₦8,000 and incurs total cost of ₦6,500. Its profit is",
+    options: {
+      A: "₦1,000",
+      B: "₦1,500",
+      C: "₦2,000",
+      D: "₦2,500"
+    },
+    answer: "B",
+    explanation: "Profit = TR − TC = ₦1,500.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_33",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 233,
+    text: "A perfectly competitive firm maximises profit where",
+    options: {
+      A: "AR = AC",
+      B: "MR = MC",
+      C: "TR = TC",
+      D: "Price = average fixed cost"
+    },
+    answer: "B",
+    explanation: "Profit maximisation generally occurs where marginal revenue equals marginal cost, with marginal cost rising through marginal revenue.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_34",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 234,
+    text: "Under perfect competition, the firm's marginal revenue is equal to",
+    options: {
+      A: "Average cost only",
+      B: "Market price",
+      C: "Total cost",
+      D: "Fixed cost"
+    },
+    answer: "B",
+    explanation: "A perfectly competitive firm is a price taker and can sell additional output at the prevailing market price.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_35",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 235,
+    text: "Price discrimination is possible when a firm",
+    options: {
+      A: "Faces perfectly elastic demand in every market",
+      B: "Can separate markets and prevent resale",
+      C: "Has no control over price",
+      D: "Produces only public goods"
+    },
+    answer: "B",
+    explanation: "Price discrimination requires market separation and differences in consumers' willingness to pay, among other conditions.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_36",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 236,
+    text: "A monopolist's marginal revenue curve lies below its demand curve because",
+    options: {
+      A: "It sells at zero price",
+      B: "It must lower price to sell additional units",
+      C: "Demand is perfectly elastic",
+      D: "Its marginal cost is always zero"
+    },
+    answer: "B",
+    explanation: "To sell more output, a monopolist generally lowers the price, affecting revenue from previous units as well.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_37",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 237,
+    text: "In the long run, firms in monopolistic competition generally earn",
+    options: {
+      A: "Persistent supernormal profit",
+      B: "Only economic losses",
+      C: "Normal profit",
+      D: "Zero revenue"
+    },
+    answer: "C",
+    explanation: "Free entry and exit tend to eliminate supernormal economic profits in long-run equilibrium.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_38",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 238,
+    text: "A cartel is formed when firms",
+    options: {
+      A: "Compete independently on prices",
+      B: "Agree to coordinate output or prices",
+      C: "Sell completely unrelated products",
+      D: "Operate without market power"
+    },
+    answer: "B",
+    explanation: "A cartel is an agreement among firms to coordinate decisions, often to restrict competition.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_39",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 239,
+    text: "The kinked demand curve model is used to explain",
+    options: {
+      A: "Price rigidity in oligopoly",
+      B: "Perfect competition",
+      C: "Agricultural productivity",
+      D: "Consumer equilibrium"
+    },
+    answer: "A",
+    explanation: "Firms may hesitate to change prices because competitors may react differently to price increases and decreases.",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_40",
+    originalChapter: 5,
+    chapterTitle: "Market Structures & Pricing",
+    topic: "Revenue, Profit & Market Structures",
+    bookQuestionNum: 240,
+    text: "The major difference between accounting profit and economic profit is that economic profit includes",
+    options: {
+      A: "Only explicit costs",
+      B: "Implicit opportunity costs",
+      C: "Sales revenue alone",
+      D: "Fixed costs alone"
+    },
+    answer: "B",
+    explanation: "Economic profit subtracts both explicit and implicit costs from total revenue.\n\n## SECTION 5: FACTOR MARKETS AND DISTRIBUTION",
+    page: 14,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_41",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 241,
+    text: "The demand for labour is described as derived demand because",
+    options: {
+      A: "Workers determine all market prices",
+      B: "Labour is demanded for the goods and services it helps produce",
+      C: "Labour has no independent value",
+      D: "Wages determine population size"
+    },
+    answer: "B",
+    explanation: "Firms demand labour because it contributes to the production of goods and services consumers want.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_42",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 242,
+    text: "A firm will employ additional workers as long as the value of marginal product of labour is",
+    options: {
+      A: "Below the wage rate",
+      B: "Equal to or greater than the wage rate",
+      C: "Zero",
+      D: "Negative"
+    },
+    answer: "B",
+    explanation: "Hiring remains worthwhile while the additional revenue generated by a worker covers their wage.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_43",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 243,
+    text: "Economic rent is best described as",
+    options: {
+      A: "Payment for the use of land only",
+      B: "Surplus payment to a factor above its transfer earnings",
+      C: "Payment made to entrepreneurs",
+      D: "Interest paid on loans"
+    },
+    answer: "B",
+    explanation: "Economic rent is the excess of actual factor earnings over the minimum amount needed to keep the factor in its current use.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_44",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 244,
+    text: "Transfer earnings refer to the",
+    options: {
+      A: "Minimum payment required to keep a factor in its present occupation",
+      B: "Total national income",
+      C: "Profit earned by a monopolist",
+      D: "Tax paid by workers"
+    },
+    answer: "A",
+    explanation: "Transfer earnings represent the opportunity cost of keeping a factor in its current employment.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_45",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 245,
+    text: "The interest rate is primarily the price paid for the use of",
+    options: {
+      A: "Land",
+      B: "Labour",
+      C: "Capital funds",
+      D: "Entrepreneurship"
+    },
+    answer: "C",
+    explanation: "Interest is the reward or price for borrowing funds.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_46",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 246,
+    text: "A trade union may increase the wages of its members by",
+    options: {
+      A: "Increasing the supply of labour indefinitely",
+      B: "Collective bargaining",
+      C: "Reducing labour productivity",
+      D: "Eliminating all firms"
+    },
+    answer: "B",
+    explanation: "Workers negotiate collectively with employers over wages and working conditions.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_47",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 247,
+    text: "The marginal productivity theory of wages states that wages tend to equal",
+    options: {
+      A: "Average product of labour",
+      B: "Value of marginal product of labour",
+      C: "Total product of labour",
+      D: "Fixed cost of production"
+    },
+    answer: "B",
+    explanation: "Under competitive conditions, a worker's wage tends towards the value of the additional output they produce.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_48",
+    originalChapter: 9,
+    chapterTitle: "Population, Labour & Unemployment",
+    topic: "Factor Markets & Distribution",
+    bookQuestionNum: 248,
+    text: "A rise in the supply of labour, with demand unchanged, will generally cause equilibrium wages to",
+    options: {
+      A: "Rise",
+      B: "Fall",
+      C: "Remain constant",
+      D: "Become negative"
+    },
+    answer: "B",
+    explanation: "More workers competing for available jobs tend to put downward pressure on wages.\n\n## SECTION 6: NATIONAL INCOME AND MACROECONOMICS",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_49",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 249,
+    text: "If consumption is ₦500 million and saving is ₦100 million, disposable income is",
+    options: {
+      A: "₦400 million",
+      B: "₦500 million",
+      C: "₦600 million",
+      D: "₦700 million"
+    },
+    answer: "C",
+    explanation: "Disposable income = Consumption + Saving.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_50",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 250,
+    text: "If autonomous consumption is ₦100 million and the marginal propensity to consume is 0.8, consumption at disposable income of ₦500 million is",
+    options: {
+      A: "₦400 million",
+      B: "₦450 million",
+      C: "₦500 million",
+      D: "₦600 million"
+    },
+    answer: "C",
+    explanation: "C = a + bY = 100 + (0.8 × 500) = 500.",
+    page: 15,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_51",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 251,
+    text: "If the marginal propensity to consume is 0.75, the marginal propensity to save is",
+    options: {
+      A: "0.15",
+      B: "0.20",
+      C: "0.25",
+      D: "0.75"
+    },
+    answer: "C",
+    explanation: "MPC + MPS = 1. Therefore, MPS = 1 − 0.75.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_52",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 252,
+    text: "If the marginal propensity to consume is 0.8, the simple expenditure multiplier is",
+    options: {
+      A: "2",
+      B: "4",
+      C: "5",
+      D: "8"
+    },
+    answer: "C",
+    explanation: "Multiplier = 1/(1 − MPC) = 1/(1 − 0.8) = 5.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_53",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 253,
+    text: "If autonomous investment increases by ₦40 million and the multiplier is 4, national income will increase by",
+    options: {
+      A: "₦80 million",
+      B: "₦120 million",
+      C: "₦160 million",
+      D: "₦200 million"
+    },
+    answer: "C",
+    explanation: "Change in income = multiplier × change in investment = 4 × ₦40 million.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_54",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 254,
+    text: "The accelerator principle explains the relationship between",
+    options: {
+      A: "Consumption and taxation",
+      B: "Changes in output and induced investment",
+      C: "Imports and exports",
+      D: "Inflation and unemployment only"
+    },
+    answer: "B",
+    explanation: "An increase in demand or output may cause firms to increase investment in productive capacity.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_55",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 255,
+    text: "If nominal GDP is ₦900 billion and the GDP deflator is 150, real GDP is",
+    options: {
+      A: "₦450 billion",
+      B: "₦500 billion",
+      C: "₦600 billion",
+      D: "₦750 billion"
+    },
+    answer: "C",
+    explanation: "Real GDP = (Nominal GDP ÷ GDP deflator) × 100 = (900 ÷ 150) × 100 = 600.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_56",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 256,
+    text: "Which of the following is an example of a leakage from the circular flow of income?",
+    options: {
+      A: "Investment",
+      B: "Government expenditure",
+      C: "Exports",
+      D: "Savings"
+    },
+    answer: "D",
+    explanation: "Savings, taxation and imports are leakages because they reduce immediate spending in the domestic circular flow.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_57",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 257,
+    text: "In the circular flow model, injections include",
+    options: {
+      A: "Savings, taxes and imports",
+      B: "Investment, government expenditure and exports",
+      C: "Consumption, savings and taxes",
+      D: "Imports, exports and savings"
+    },
+    answer: "B",
+    explanation: "Investment, government expenditure and exports add spending to the circular flow.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_58",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 258,
+    text: "The paradox of thrift suggests that an attempt by everyone to save more may",
+    options: {
+      A: "Always increase national income",
+      B: "Reduce aggregate demand and national income",
+      C: "Eliminate unemployment immediately",
+      D: "Increase consumption automatically"
+    },
+    answer: "B",
+    explanation: "If everyone cuts consumption at once, total demand and income may fall, making actual aggregate saving fail to increase.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_59",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 259,
+    text: "A recession is commonly associated with",
+    options: {
+      A: "Sustained expansion in output",
+      B: "Declining economic activity",
+      C: "Full employment",
+      D: "Zero inflation"
+    },
+    answer: "B",
+    explanation: "A recession is a significant decline in economic activity across the economy.",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_60",
+    originalChapter: 7,
+    chapterTitle: "National Income & Macroeconomic aggregates",
+    topic: "National Income & Macroeconomics",
+    bookQuestionNum: 260,
+    text: "Stagflation occurs when an economy experiences",
+    options: {
+      A: "Inflation and high unemployment together",
+      B: "Falling prices and rising output",
+      C: "Full employment and stable prices",
+      D: "Rising exports and falling imports"
+    },
+    answer: "A",
+    explanation: "Stagflation combines inflation with weak economic growth and high unemployment.\n\n## SECTION 7: MONEY, BANKING AND MONETARY POLICY",
+    page: 16,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_61",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 261,
+    text: "The quantity theory of money is commonly expressed as",
+    options: {
+      A: "MV = PT",
+      B: "M + V = P + T",
+      C: "M = P + T",
+      D: "MV = P/T"
+    },
+    answer: "A",
+    explanation: "The equation links money supply, velocity of circulation, price level and volume of transactions.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_62",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 262,
+    text: "If money supply is ₦200 billion, velocity is 4 and real transaction volume is 800 billion units, the implied average price level is",
+    options: {
+      A: "0.5",
+      B: "1",
+      C: "2",
+      D: "4"
+    },
+    answer: "B",
+    explanation: "MV = PT. Therefore, P = (200 × 4) ÷ 800 = 1.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_63",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 263,
+    text: "Open market operations involve the Central Bank",
+    options: {
+      A: "Buying and selling government securities",
+      B: "Fixing workers' wages",
+      C: "Collecting customs duties",
+      D: "Controlling agricultural output"
+    },
+    answer: "A",
+    explanation: "The Central Bank buys or sells securities to influence liquidity and money supply.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_64",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 264,
+    text: "When the Central Bank sells government securities to commercial banks and the public, it generally",
+    options: {
+      A: "Increases liquidity",
+      B: "Reduces liquidity",
+      C: "Increases government consumption",
+      D: "Eliminates interest rates"
+    },
+    answer: "B",
+    explanation: "Buyers pay money for the securities, withdrawing funds from circulation.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_65",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 265,
+    text: "An increase in the monetary policy rate is generally intended to",
+    options: {
+      A: "Encourage excessive borrowing",
+      B: "Discourage borrowing and reduce inflationary pressure",
+      C: "Increase money creation by banks",
+      D: "Eliminate taxation"
+    },
+    answer: "B",
+    explanation: "Higher policy rates tend to make borrowing more expensive and reduce demand pressures.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_66",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 266,
+    text: "The lender of last resort function is performed by the",
+    options: {
+      A: "Commercial bank",
+      B: "Stock exchange",
+      C: "Central bank",
+      D: "Insurance company"
+    },
+    answer: "C",
+    explanation: "A central bank can provide emergency liquidity to banks facing serious funding shortages.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_67",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 267,
+    text: "The cashless policy is mainly designed to",
+    options: {
+      A: "Eliminate all forms of money",
+      B: "Encourage electronic payment systems",
+      C: "Prevent international trade",
+      D: "Abolish commercial banks"
+    },
+    answer: "B",
+    explanation: "Cashless policies promote electronic transactions and reduce dependence on physical cash.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_68",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 268,
+    text: "If the legal reserve requirement is 20%, the simple deposit multiplier is",
+    options: {
+      A: "2",
+      B: "4",
+      C: "5",
+      D: "10"
+    },
+    answer: "C",
+    explanation: "Deposit multiplier = 1 ÷ 0.20 = 5. This is the simplified model, assuming no excess reserves or cash leakages.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_69",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 269,
+    text: "The major difference between narrow money and broad money is that broad money includes",
+    options: {
+      A: "Only coins",
+      B: "Only currency outside banks",
+      C: "Additional liquid deposits and near-money assets",
+      D: "Foreign exchange alone"
+    },
+    answer: "C",
+    explanation: "Broad money includes narrow money plus additional deposits and other relatively liquid monetary assets, depending on the official definition.",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_70",
+    originalChapter: 8,
+    chapterTitle: "Money, Banking & Inflation",
+    topic: "Money, Banking & Monetary Policy",
+    bookQuestionNum: 270,
+    text: "A bank run occurs when",
+    options: {
+      A: "Banks increase lending",
+      B: "Many depositors attempt to withdraw their money at the same time",
+      C: "Government increases taxes",
+      D: "The Central Bank prints new notes"
+    },
+    answer: "B",
+    explanation: "Large-scale withdrawals can create liquidity problems for banks.\n\n## SECTION 8: PUBLIC FINANCE AND ECONOMIC POLICY",
+    page: 17,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_71",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 271,
+    text: "The benefit principle of taxation states that individuals should pay taxes according to",
+    options: {
+      A: "Their age",
+      B: "The benefits they receive from public services",
+      C: "Their political positions",
+      D: "The number of goods they import"
+    },
+    answer: "B",
+    explanation: "The principle links tax contributions to the benefits received from government services.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_72",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 272,
+    text: "A tax that takes a larger proportion of income from low-income earners than high-income earners is",
+    options: {
+      A: "Progressive",
+      B: "Proportional",
+      C: "Regressive",
+      D: "Direct"
+    },
+    answer: "C",
+    explanation: "The tax burden, measured as a percentage of income, decreases as income rises.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_73",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 273,
+    text: "Fiscal policy is primarily concerned with the use of",
+    options: {
+      A: "Taxation and government expenditure",
+      B: "Bank reserves only",
+      C: "Exchange rates only",
+      D: "Wages and salaries only"
+    },
+    answer: "A",
+    explanation: "Government uses taxation, spending and borrowing to influence economic activity.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_74",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 274,
+    text: "During an inflationary boom, a government may adopt contractionary fiscal policy by",
+    options: {
+      A: "Increasing government expenditure",
+      B: "Reducing taxes and increasing spending",
+      C: "Reducing expenditure or increasing taxes",
+      D: "Increasing transfer payments without limits"
+    },
+    answer: "C",
+    explanation: "Reducing aggregate demand can help ease inflationary pressure.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_75",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 275,
+    text: "Public debt refers to",
+    options: {
+      A: "The total private savings in an economy",
+      B: "Money owed by government",
+      C: "The total value of exports",
+      D: "Taxes collected by government"
+    },
+    answer: "B",
+    explanation: "Public debt is the outstanding borrowing of government.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_76",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 276,
+    text: "A balanced budget occurs when",
+    options: {
+      A: "Government revenue equals government expenditure",
+      B: "Government revenue exceeds imports",
+      C: "Expenditure is greater than revenue",
+      D: "Exports equal imports"
+    },
+    answer: "A",
+    explanation: "A balanced budget has equal planned revenue and expenditure.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_77",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 277,
+    text: "The main purpose of a subsidy is to",
+    options: {
+      A: "Increase the cost of production",
+      B: "Reduce the cost of producing or purchasing selected goods",
+      C: "Eliminate all taxes",
+      D: "Discourage production"
+    },
+    answer: "B",
+    explanation: "Subsidies reduce costs for producers or consumers and may encourage production or consumption.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_78",
+    originalChapter: 6,
+    chapterTitle: "Market Failure & Public Finance",
+    topic: "Public Finance & Economic Policy",
+    bookQuestionNum: 278,
+    text: "A major disadvantage of excessive public borrowing is that it may",
+    options: {
+      A: "Crowd out private investment",
+      B: "Eliminate interest payments",
+      C: "Reduce all government liabilities",
+      D: "Guarantee economic growth"
+    },
+    answer: "A",
+    explanation: "Government borrowing may raise interest rates or absorb funds that private businesses could otherwise use.\n\n## SECTION 9: INTERNATIONAL ECONOMICS",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_79",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 279,
+    text: "The balance of payments records",
+    options: {
+      A: "Only visible exports",
+      B: "All economic transactions between residents of a country and the rest of the world",
+      C: "Only government expenditure",
+      D: "Only foreign loans"
+    },
+    answer: "B",
+    explanation: "It records trade, income flows, transfers and financial transactions with the rest of the world.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_80",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 280,
+    text: "Which of the following is recorded in the current account of the balance of payments?",
+    options: {
+      A: "Purchase of foreign shares",
+      B: "Foreign direct investment",
+      C: "Export of crude oil",
+      D: "Purchase of foreign government bonds"
+    },
+    answer: "C",
+    explanation: "Exports of goods are recorded in the current account.",
+    page: 18,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_81",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 281,
+    text: "A current account deficit means that",
+    options: {
+      A: "Current account debits exceed credits",
+      B: "Exports always exceed imports",
+      C: "Government revenue exceeds expenditure",
+      D: "Foreign reserves must be zero"
+    },
+    answer: "A",
+    explanation: "A deficit occurs when payments recorded as current-account debits exceed receipts.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_82",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 282,
+    text: "If a country's currency appreciates, its imports generally become",
+    options: {
+      A: "More expensive",
+      B: "Cheaper in domestic currency",
+      C: "Unavailable",
+      D: "Completely tax-free"
+    },
+    answer: "B",
+    explanation: "An appreciated currency has greater purchasing power over foreign currencies, all else equal.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_83",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 283,
+    text: "A floating exchange rate is determined mainly by",
+    options: {
+      A: "The forces of demand and supply",
+      B: "The national assembly alone",
+      C: "Fixed government orders",
+      D: "The price of gold alone"
+    },
+    answer: "A",
+    explanation: "Under a floating exchange rate system, market demand and supply determine the currency's value, subject to possible intervention.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_84",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 284,
+    text: "The terms of trade improve when",
+    options: {
+      A: "Import prices rise faster than export prices",
+      B: "Export prices rise relative to import prices",
+      C: "Export prices fall relative to import prices",
+      D: "Imports become greater than exports"
+    },
+    answer: "B",
+    explanation: "The terms of trade are commonly measured as the export price index divided by the import price index, multiplied by 100.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_85",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 285,
+    text: "A customs union differs from a free trade area because a customs union has",
+    options: {
+      A: "No trade between members",
+      B: "A common external tariff",
+      C: "No internal trade",
+      D: "A single currency in every case"
+    },
+    answer: "B",
+    explanation: "Members remove tariffs among themselves and adopt a common tariff against non-members.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_86",
+    originalChapter: 11,
+    chapterTitle: "International Trade & Finance",
+    topic: "International Economics",
+    bookQuestionNum: 286,
+    text: "Dumping occurs when a firm",
+    options: {
+      A: "Sells goods abroad at an unusually low price, often below the home-market price",
+      B: "Refuses to export goods",
+      C: "Increases domestic wages",
+      D: "Imports goods at full market value"
+    },
+    answer: "A",
+    explanation: "Dumping involves selling in a foreign market at a price considered unfairly low, sometimes below normal value.\n\n## SECTION 10: DEVELOPMENT ECONOMICS AND POPULATION",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_87",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 287,
+    text: "The Human Development Index combines indicators relating to",
+    options: {
+      A: "Exports, imports and taxation",
+      B: "Health, education and standard of living",
+      C: "Population, land and rainfall",
+      D: "Interest, inflation and exchange rates"
+    },
+    answer: "B",
+    explanation: "HDI measures achievements in life expectancy, education and income.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_88",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 288,
+    text: "The dependency ratio compares",
+    options: {
+      A: "Employed people with unemployed people only",
+      B: "Dependent-age population with working-age population",
+      C: "Imports with exports",
+      D: "Savings with investment"
+    },
+    answer: "B",
+    explanation: "It indicates the burden of supporting children and older people relative to the working-age population.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_89",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 289,
+    text: "If a country has a population of 20 million, with 8 million below working age and 2 million above working age, its dependency ratio is",
+    options: {
+      A: "50%",
+      B: "75%",
+      C: "100%",
+      D: "125%"
+    },
+    answer: "C",
+    explanation: "Working-age population = 20 − 8 − 2 = 10 million. Dependency ratio = (10 ÷ 10) × 100 = 100%.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_90",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 290,
+    text: "The Lewis model of development focuses on the transfer of labour from",
+    options: {
+      A: "Modern industry to subsistence agriculture",
+      B: "Traditional agriculture to the modern industrial sector",
+      C: "Government to private schools",
+      D: "Exports to imports"
+    },
+    answer: "B",
+    explanation: "The model explains how surplus labour in traditional agriculture can move into a modern industrial sector.",
+    page: 19,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_91",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 291,
+    text: "The vicious circle of poverty suggests that poor countries may remain poor because",
+    options: {
+      A: "Low income leads to low savings and low investment",
+      B: "High income always causes unemployment",
+      C: "Exports automatically eliminate poverty",
+      D: "Savings always exceed investment"
+    },
+    answer: "A",
+    explanation: "Low income limits savings, which reduces investment and productivity, reinforcing low income.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_92",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 292,
+    text: "Import substitution industrialisation aims to",
+    options: {
+      A: "Increase dependence on foreign manufactured goods",
+      B: "Replace imported manufactured goods with domestic production",
+      C: "Eliminate all exports",
+      D: "Discourage local industries"
+    },
+    answer: "B",
+    explanation: "The strategy encourages local industries to produce goods previously imported.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_93",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 293,
+    text: "Sustainable development means",
+    options: {
+      A: "Using all resources for present consumption",
+      B: "Meeting present needs without compromising future generations' ability to meet theirs",
+      C: "Increasing industrial output regardless of environmental damage",
+      D: "Preventing all forms of economic growth"
+    },
+    answer: "B",
+    explanation: "Sustainable development balances present economic and social needs with long-term environmental and resource protection.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_94",
+    originalChapter: 12,
+    chapterTitle: "Economic Integration & Development",
+    topic: "Development Economics & Population",
+    bookQuestionNum: 294,
+    text: "A major advantage of economic planning is that it can",
+    options: {
+      A: "Coordinate resources towards national development goals",
+      B: "Eliminate every economic problem",
+      C: "Guarantee equal income for all citizens",
+      D: "Prevent private investment entirely"
+    },
+    answer: "A",
+    explanation: "Planning helps governments set priorities and coordinate the use of scarce resources.\n\n## SECTION 11: AGRICULTURAL, INDUSTRIAL AND ENVIRONMENTAL ECONOMICS",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_95",
+    originalChapter: 13,
+    chapterTitle: "Agriculture & Industrialization",
+    topic: "Agricultural, Industrial & Environmental Economics",
+    bookQuestionNum: 295,
+    text: "The theory of comparative advantage explains why two countries can benefit from trade even when",
+    options: {
+      A: "One country has an absolute advantage in producing both goods",
+      B: "Both countries have identical resources",
+      C: "Neither country produces anything",
+      D: "Both countries have the same currency"
+    },
+    answer: "A",
+    explanation: "Trade can benefit both countries when they specialise according to their relative opportunity costs.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_96",
+    originalChapter: 13,
+    chapterTitle: "Agriculture & Industrialization",
+    topic: "Agricultural, Industrial & Environmental Economics",
+    bookQuestionNum: 296,
+    text: "An externality occurs when",
+    options: {
+      A: "Production costs are paid entirely by the producer",
+      B: "An economic activity affects third parties not directly involved in the transaction",
+      C: "Demand equals supply",
+      D: "All costs are included in market prices"
+    },
+    answer: "B",
+    explanation: "Externalities are spillover effects, such as pollution affecting people who are not part of the transaction.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_97",
+    originalChapter: 13,
+    chapterTitle: "Agriculture & Industrialization",
+    topic: "Agricultural, Industrial & Environmental Economics",
+    bookQuestionNum: 297,
+    text: "Pollution from a factory that harms nearby residents is an example of",
+    options: {
+      A: "Positive externality",
+      B: "Negative externality",
+      C: "Public revenue",
+      D: "Economies of scale"
+    },
+    answer: "B",
+    explanation: "The factory imposes an external cost on people outside the transaction.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_98",
+    originalChapter: 13,
+    chapterTitle: "Agriculture & Industrialization",
+    topic: "Agricultural, Industrial & Environmental Economics",
+    bookQuestionNum: 298,
+    text: "A public good is characterised by",
+    options: {
+      A: "Rivalry and excludability",
+      B: "Non-rivalry and non-excludability",
+      C: "Private ownership only",
+      D: "Scarcity of demand"
+    },
+    answer: "B",
+    explanation: "One person's use does not significantly reduce another's ability to use it, and people cannot easily be excluded from benefiting.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_99",
+    originalChapter: 13,
+    chapterTitle: "Agriculture & Industrialization",
+    topic: "Agricultural, Industrial & Environmental Economics",
+    bookQuestionNum: 299,
+    text: "The free-rider problem arises because",
+    options: {
+      A: "Consumers pay more than the market price",
+      B: "Individuals can benefit from public goods without contributing to their provision",
+      C: "Producers cannot make profits",
+      D: "All public goods are privately owned"
+    },
+    answer: "B",
+    explanation: "Non-excludability makes it difficult to prevent people from benefiting without paying.",
+    page: 20,
+    hasImage: false
+  },
+  {
+    id: "econ_adv_100",
+    originalChapter: 13,
+    chapterTitle: "Agriculture & Industrialization",
+    topic: "Agricultural, Industrial & Environmental Economics",
+    bookQuestionNum: 300,
+    text: "The Coase theorem suggests that externality problems may be resolved through private bargaining when",
+    options: {
+      A: "Transaction costs are low and property rights are clearly defined",
+      B: "Government owns all productive resources",
+      C: "Consumers have no information",
+      D: "Markets are completely absent"
+    },
+    answer: "A",
+    explanation: "With clearly defined rights and low transaction costs, affected parties may negotiate an efficient outcome.",
+    page: 20,
+    hasImage: false
   }
 ];

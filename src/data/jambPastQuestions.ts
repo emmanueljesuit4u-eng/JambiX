@@ -33,6 +33,7 @@ import {
 import { PHYSICS_DEMYSTIFIED_ITEMS } from './physicsDemystifiedBank';
 import { JAMBIX_CHEMISTRY_ITEMS } from './jambixChemistryBank';
 import { JAMBIX_MATHEMATICS_ITEMS } from './jambixMathematicsBank';
+import { JAMBIX_ECONOMICS_ITEMS } from './jambixEconomicsBank';
 
 export type SubjectKey =
   | 'english'
@@ -1408,12 +1409,17 @@ export function generateQuestionForYear(
     return scatterQuestionOptions(baseQuestion, year * 100 + qNum);
   }
 
-  // For Mathematics: Pull directly from JAMBIX MATHEMATICS QUESTION BANK (300 verified questions)
+  // For Mathematics: Pull directly from JAMBIX MATHEMATICS QUESTION BANK (420 verified questions)
   if (subjectKey === 'mathematics' && JAMBIX_MATHEMATICS_ITEMS.length > 0) {
     const qNum = qIndex + 1;
     // Deterministic selection based on year and index: no repeats within year, and no question repeats consecutively for more than 2 years
-    const itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_MATHEMATICS_ITEMS.length;
-    const item = JAMBIX_MATHEMATICS_ITEMS[itemIdx];
+    let itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_MATHEMATICS_ITEMS.length;
+    let item = JAMBIX_MATHEMATICS_ITEMS[itemIdx];
+    const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
+    if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+      itemIdx = (itemIdx + 1) % JAMBIX_MATHEMATICS_ITEMS.length;
+      item = JAMBIX_MATHEMATICS_ITEMS[itemIdx];
+    }
     const subCode = SUBJECT_ID_OFFSETS.mathematics || 910000;
     const id = subCode + (year * 100) + qNum;
 
@@ -1514,6 +1520,47 @@ export function generateQuestionForYear(
       bookTitle: 'JAMBIX CHEMISTRY QUESTION BANK',
       author: 'JAMBIX UTME Preparatory Series',
       textbookRef: item.chapterTitle || 'Topic: Organic Chemistry',
+      hasImage: Boolean(item.hasImage),
+      imageSvg: item.imageSvg,
+      imageCaption: item.imageCaption,
+      imageAlt: item.imageAlt,
+      imageUrl: item.imageUrl,
+    };
+
+    return baseQuestion;
+  }
+
+  // For Economics: Pull directly from JAMBIX ECONOMICS QUESTION BANK (300 verified questions)
+  if (subjectKey === 'economics' && JAMBIX_ECONOMICS_ITEMS.length > 0) {
+    const qNum = qIndex + 1;
+    let itemIdx = Math.abs((year - 1978) * 41 + qIndex * 7) % JAMBIX_ECONOMICS_ITEMS.length;
+    let item = JAMBIX_ECONOMICS_ITEMS[itemIdx];
+    const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
+    if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
+      itemIdx = (itemIdx + 1) % JAMBIX_ECONOMICS_ITEMS.length;
+      item = JAMBIX_ECONOMICS_ITEMS[itemIdx];
+    }
+    const subCode = SUBJECT_ID_OFFSETS.economics || 600000;
+    const id = subCode + (year * 100) + qNum;
+
+    const baseQuestion: VerifiedQuestion = {
+      id,
+      year,
+      questionNumber: qNum,
+      subject: 'Economics',
+      topic: item.topic,
+      text: `[JAMB UTME ${year} Q${qNum}] ${item.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
+      options: {
+        A: item.options.A,
+        B: item.options.B,
+        C: item.options.C,
+        D: item.options.D,
+      },
+      answer: item.answer,
+      explanation: item.explanation,
+      bookTitle: 'JAMBIX ECONOMICS QUESTION BANK',
+      author: 'JAMBIX UTME Preparatory Series',
+      textbookRef: item.chapterTitle || 'COMPREHENSIVE ECONOMICS by J.U. Anyaele',
       hasImage: Boolean(item.hasImage),
       imageSvg: item.imageSvg,
       imageCaption: item.imageCaption,
