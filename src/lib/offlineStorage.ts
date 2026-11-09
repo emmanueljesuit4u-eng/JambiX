@@ -219,16 +219,23 @@ export function getLocalTestResults(userId?: string, userEmail?: string): Offlin
     return t;
   });
 
+  // Always return all tests stored locally on this device so tests taken by the student are never hidden
   if (!userId && !userEmail) return hydratedTests;
 
+  const targetEmail = (userEmail || '').trim().toLowerCase();
+  const targetUid = (userId || '').trim();
+
   const filtered = hydratedTests.filter((t) => {
-    if (!t.userId || t.userId === 'offline_candidate') return true;
-    if (userId && t.userId === userId) return true;
-    if (userEmail && t.userEmail && t.userEmail.toLowerCase() === userEmail.toLowerCase()) return true;
+    // 1. Unassigned / offline local tests are always included
+    if (!t.userId || t.userId === 'offline_candidate' || !t.userEmail) return true;
+    // 2. Direct UID match
+    if (targetUid && t.userId === targetUid) return true;
+    // 3. Direct email match
+    if (targetEmail && t.userEmail && t.userEmail.toLowerCase() === targetEmail) return true;
     return false;
   });
 
-  // If filtered is non-empty, return candidate tests; otherwise fallback to all local tests so tests are never hidden
+  // Safe fallback: If user ID changed (e.g. Google Sign-In with different UID format), return all tests so no test is ever hidden
   return filtered.length > 0 ? filtered : hydratedTests;
 }
 
