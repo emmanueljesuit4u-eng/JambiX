@@ -95,6 +95,17 @@ service cloud.firestore {
              (!('isEmailVerified' in data) || (data.isEmailVerified is bool));
     }
 
+    function isValidBasicRegistration(data) {
+      return data.keys().hasAll(['id', 'userId', 'email', 'fullName', 'submittedAt', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'userId', 'email', 'fullName', 'submittedAt', 'createdAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.email is string && data.email.size() > 3 && data.email.size() <= 120 &&
+             data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 120 &&
+             data.submittedAt is number &&
+             data.createdAt == request.time;
+    }
+
     // Health check / connection test doc
     match /test/{docId} {
       allow read: if true;
@@ -146,6 +157,15 @@ service cloud.firestore {
                        incoming().id == existing().id &&
                        incoming().registeredAt == existing().registeredAt &&
                        (isAdmin() || incoming().diff(existing()).affectedKeys().hasOnly(['isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified']));
+      allow delete: if isAdmin();
+    }
+
+    // Basic tab student submissions (PII Isolation: Only submitter or admin can read single doc; only admin can list all)
+    match /basicRegistrations/{registrationId} {
+      allow get: if isAdmin() || (isSignedIn() && existing().userId == request.auth.uid);
+      allow list: if isAdmin();
+      allow create: if isSignedIn() && isValidId(registrationId) && isValidBasicRegistration(incoming()) && incoming().id == registrationId;
+      allow update: if false;
       allow delete: if isAdmin();
     }
 

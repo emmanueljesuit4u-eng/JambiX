@@ -240,6 +240,44 @@
         }
       },
       "required": ["id", "email", "registeredAt", "isActivated"]
+    },
+    "BasicRegistration": {
+      "title": "BasicRegistration",
+      "description": "Student email and full name submitted from the Basic tab popup form",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique basic registration submission ID",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID of the authenticated student who submitted the form",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Student email address",
+          "maxLength": 120
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Student correct full name",
+          "maxLength": 120
+        },
+        "submittedAt": {
+          "type": "number",
+          "description": "Epoch timestamp in milliseconds when submitted"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of submission"
+        }
+      },
+      "required": ["id", "userId", "email", "fullName", "submittedAt"]
     }
   },
   "firestore": {
@@ -258,6 +296,10 @@
     "/accountActivations/{activationId}": {
       "schema": "AccountActivation",
       "description": "Authoritative cross-device registration countdown and activation status"
+    },
+    "/basicRegistrations/{registrationId}": {
+      "schema": "BasicRegistration",
+      "description": "Student email and full name submissions from the Basic tab popup form"
     }
   }
 }

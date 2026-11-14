@@ -772,3 +772,106 @@ export async function createAdminAnnouncement(title: string, content: string): P
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
+
+// ==========================================
+// 6. UNIPORT Basic Tab Submissions
+// ==========================================
+
+export interface BasicRegistrationData {
+  id: string;
+  userId: string;
+  email: string;
+  fullName: string;
+  submittedAt: number;
+  createdAt?: unknown;
+}
+
+export async function submitBasicRegistration(
+  email: string,
+  fullName: string
+): Promise<BasicRegistrationData> {
+  if (!auth.currentUser) {
+    throw new Error('Please log in again to submit your details.');
+  }
+
+  const cleanEmail = email.trim().toLowerCase().slice(0, 120);
+  const cleanName = fullName.trim().slice(0, 120);
+  const id = `basic_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const submittedAt = Date.now();
+  const path = `basicRegistrations/${id}`;
+
+  const payload = {
+    id,
+    userId: auth.currentUser.uid,
+    email: cleanEmail,
+    fullName: cleanName,
+    submittedAt,
+    createdAt: serverTimestamp(),
+  };
+
+  try {
+    await setDoc(doc(db, 'basicRegistrations', id), payload);
+    return {
+      id,
+      userId: auth.currentUser.uid,
+      email: cleanEmail,
+      fullName: cleanName,
+      submittedAt,
+    };
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, path);
+    throw error;
+  }
+}
+
+export function subscribeToBasicRegistrations(
+  onUpdate: (registrations: BasicRegistrationData[]) => void
+): () => void {
+  const path = 'basicRegistrations';
+  try {
+    const q = query(collection(db, 'basicRegistrations'), limit(500));
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const items = snapshot.docs
+          .map((d) => ({
+            ...d.data(),
+            id: d.id,
+          } as BasicRegistrationData))
+          .sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
+        onUpdate(items);
+      },
+      (error) => {
+        if (isOfflineError(error)) {
+          console.warn('subscribeToBasicRegistrations offline');
+          return;
+        }
+        handleFirestoreError(error, OperationType.LIST, path);
+      }
+    );
+  } catch (error) {
+    if (!isOfflineError(error)) {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+    return () => {};
+  }
+}
+
+export async function getAllBasicRegistrations(): Promise<BasicRegistrationData[]> {
+  const path = 'basicRegistrations';
+  try {
+    const q = query(collection(db, 'basicRegistrations'), limit(500));
+    const snapshot = await getDocs(q);
+    return snapshot.docs
+      .map((d) => ({
+        ...d.data(),
+        id: d.id,
+      } as BasicRegistrationData))
+      .sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
+  } catch (error) {
+    if (!isOfflineError(error)) {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+    return [];
+  }
+}

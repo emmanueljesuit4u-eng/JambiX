@@ -76,6 +76,9 @@ import {
   subscribeToAllUsers,
   subscribeToAllAccountActivations,
   subscribeToAllTestResults,
+  subscribeToBasicRegistrations,
+  getAllBasicRegistrations,
+  BasicRegistrationData,
 } from '../../lib/firestoreService';
 import {
   SUBJECT_CONFIGS,
@@ -104,6 +107,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
   const [activations, setActivations] = useState<AccountActivationData[]>([]);
   const [testResults, setTestResults] = useState<TestResultData[]>([]);
   const [feedPosts, setFeedPosts] = useState<FeedPostData[]>([]);
+  const [basicRegistrations, setBasicRegistrations] = useState<BasicRegistrationData[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
 
@@ -262,11 +266,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
       setFeedPosts(posts);
     });
 
+    // 5. Live UNIPORT Basic Tab Submissions Stream
+    const unsubBasic = subscribeToBasicRegistrations((items) => {
+      setBasicRegistrations(items);
+    });
+
     return () => {
       unsubUsers();
       unsubActivations();
       unsubTests();
       unsubFeed();
+      unsubBasic();
     };
   }, [isAuthorizedAdmin]);
 
@@ -275,14 +285,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
     if (!isAuthorizedAdmin) return;
     setIsLoadingData(true);
     try {
-      const [usersData, activationsData, testsData] = await Promise.all([
+      const [usersData, activationsData, testsData, basicData] = await Promise.all([
         getAllUsers(),
         getAllAccountActivations(),
         getAllTestResults(),
+        getAllBasicRegistrations(),
       ]);
       setStudents(usersData);
       setActivations(activationsData);
       setTestResults(testsData);
+      setBasicRegistrations(basicData);
     } catch (err) {
       console.warn('Manual refresh note:', err);
     } finally {
@@ -1013,6 +1025,61 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
         {/* TAB 1: OVERVIEW & QUICK ACTIONS */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
+            {/* Live UNIPORT Basic Tab Student Submissions */}
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 space-y-4 shadow-2xs">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <span>Basic Tab Student Submissions</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                        {basicRegistrations.length} Live
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Student names and emails submitted from the Basic tab popup appear here immediately.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {basicRegistrations.length > 0 ? (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                      <tr>
+                        <th className="py-2.5 px-3 font-semibold">Correct Full Name</th>
+                        <th className="py-2.5 px-3 font-semibold">Email</th>
+                        <th className="py-2.5 px-3 font-semibold text-right">Submitted</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                      {basicRegistrations.map((item) => (
+                        <tr key={item.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                          <td className="py-2.5 px-3 font-bold text-slate-900 dark:text-white">
+                            {item.fullName}
+                          </td>
+                          <td className="py-2.5 px-3 font-mono text-slate-600 dark:text-slate-300">
+                            {item.email}
+                          </td>
+                          <td className="py-2.5 px-3 text-right text-slate-500 tabular-nums">
+                            {new Date(item.submittedAt).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="py-5 text-center text-xs text-slate-400">
+                  No submissions from the Basic tab yet.
+                </div>
+              )}
+            </div>
+
             {/* Quick Admin Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Quick Manual License Activation */}
