@@ -680,36 +680,41 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
             {/* View: basic */}
             {activeNav === 'Basic' && (
-              <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
-                <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
-                  <img
-                    src="/assets/aistudio/acadia_9e76a954.jpg"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-cover blur-sm scale-110 pointer-events-none"
-                  />
-                  <div
-                    className="absolute inset-0 bg-slate-950/50 pointer-events-none"
-                    aria-hidden="true"
-                  />
-                  <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-sm">
-                    100 questions, 50 mins
-                  </h3>
-                </div>
-                <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
-                  <img
-                    src="/assets/aistudio/acadia_9e76a954.jpg"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 w-full h-full object-cover blur-sm scale-110 pointer-events-none"
-                  />
-                  <div
-                    className="absolute inset-0 bg-slate-950/50 pointer-events-none"
-                    aria-hidden="true"
-                  />
-                  <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-sm">
-                    50 questions, 30 mins
-                  </h3>
+              <div className="max-w-2xl mx-auto space-y-5">
+                <h2 className="text-center text-sm sm:text-base font-black tracking-wide text-slate-900 dark:text-white">
+                  PREPARE FOR UNIPORT BASIC EXAM
+                </h2>
+                <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
+                    <img
+                      src="/assets/aistudio/acadia_9e76a954.jpg"
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover blur-[2px] scale-105 pointer-events-none"
+                    />
+                    <div
+                      className="absolute inset-0 bg-slate-950/40 pointer-events-none"
+                      aria-hidden="true"
+                    />
+                    <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-md">
+                      100 questions, 50 mins
+                    </h3>
+                  </div>
+                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
+                    <img
+                      src="/assets/aistudio/acadia_9e76a954.jpg"
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover blur-[2px] scale-105 pointer-events-none"
+                    />
+                    <div
+                      className="absolute inset-0 bg-slate-950/40 pointer-events-none"
+                      aria-hidden="true"
+                    />
+                    <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-md">
+                      50 questions, 30 mins
+                    </h3>
+                  </div>
                 </div>
               </div>
             )}
