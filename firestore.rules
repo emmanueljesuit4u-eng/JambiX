@@ -96,14 +96,14 @@ service cloud.firestore {
     }
 
     function isValidBasicRegistration(data) {
-      return data.keys().hasAll(['id', 'userId', 'email', 'fullName', 'submittedAt', 'createdAt']) &&
+      return data.keys().hasAll(['id', 'userId', 'email', 'fullName', 'submittedAt']) &&
              data.keys().hasOnly(['id', 'userId', 'email', 'fullName', 'submittedAt', 'createdAt']) &&
              data.id is string && isValidId(data.id) &&
              data.userId is string && data.userId == request.auth.uid &&
              data.email is string && data.email.size() > 3 && data.email.size() <= 120 &&
              data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 120 &&
              data.submittedAt is number &&
-             data.createdAt == request.time;
+             (!('createdAt' in data) || data.createdAt is timestamp);
     }
 
     // Health check / connection test doc
