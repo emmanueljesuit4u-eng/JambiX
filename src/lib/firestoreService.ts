@@ -796,7 +796,7 @@ export async function submitBasicRegistration(
 
   const cleanEmail = email.trim().toLowerCase().slice(0, 120);
   const cleanName = fullName.trim().slice(0, 120);
-  const id = `basic_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  const id = `basic_${auth.currentUser.uid}`;
   const submittedAt = Date.now();
   const path = `basicRegistrations/${id}`;
 
@@ -821,6 +821,17 @@ export async function submitBasicRegistration(
   } catch (error) {
     handleFirestoreError(error, OperationType.CREATE, path);
     throw error;
+  }
+}
+
+export async function hasSubmittedBasicRegistration(): Promise<boolean> {
+  if (!auth.currentUser) return false;
+  const id = `basic_${auth.currentUser.uid}`;
+  try {
+    const snap = await getDoc(doc(db, 'basicRegistrations', id));
+    return snap.exists();
+  } catch {
+    return false;
   }
 }
 

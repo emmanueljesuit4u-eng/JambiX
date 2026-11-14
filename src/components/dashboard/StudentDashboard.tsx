@@ -58,6 +58,7 @@ import { auth } from '../../lib/firebase';
 import {
   getUserTestResults,
   submitBasicRegistration,
+  hasSubmittedBasicRegistration,
 } from '../../lib/firestoreService';
 import {
   getLocalTestResults,
@@ -109,6 +110,47 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const [basicFullName, setBasicFullName] = useState('');
   const [basicFormError, setBasicFormError] = useState<string | null>(null);
   const [isSubmittingBasicForm, setIsSubmittingBasicForm] = useState(false);
+  const [hasSubmittedBasicForm, setHasSubmittedBasicForm] = useState<boolean>(() => {
+    try {
+      const uid = auth.currentUser?.uid;
+      const emailKey = (user?.email || '').trim().toLowerCase();
+      return Boolean(
+        (uid && localStorage.getItem(`jambix_basic_submitted_${uid}`) === '1') ||
+        (emailKey && localStorage.getItem(`jambix_basic_submitted_${emailKey}`) === '1')
+      );
+    } catch {
+      return false;
+    }
+  });
+
+  const markBasicFormSubmittedLocally = (submittedEmail?: string) => {
+    setHasSubmittedBasicForm(true);
+    try {
+      const uid = auth.currentUser?.uid;
+      const emailKey = (user?.email || '').trim().toLowerCase();
+      const formEmailKey = (submittedEmail || '').trim().toLowerCase();
+      if (uid) localStorage.setItem(`jambix_basic_submitted_${uid}`, '1');
+      if (emailKey) localStorage.setItem(`jambix_basic_submitted_${emailKey}`, '1');
+      if (formEmailKey) localStorage.setItem(`jambix_basic_submitted_${formEmailKey}`, '1');
+    } catch {
+      // ignore storage errors
+    }
+  };
+
+  useEffect(() => {
+    let active = true;
+    hasSubmittedBasicRegistration()
+      .then((exists) => {
+        if (active && exists) {
+          markBasicFormSubmittedLocally();
+          setIsBasicFormOpen(false);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [user?.email]);
 
   // Test History Review State
   const [reviewingTest, setReviewingTest] = useState<OfflineTestResult | null>(null);
@@ -142,6 +184,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     setIsSubmittingBasicForm(true);
     try {
       await submitBasicRegistration(cleanEmail, cleanName);
+      markBasicFormSubmittedLocally(cleanEmail);
       setIsBasicFormOpen(false);
       setBasicEmail('');
       setBasicFullName('');
@@ -153,13 +196,39 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     }
   };
 
-  const handleNavClick = (navId: string, specificTest?: OfflineTestResult | null) => {
+  const handleNavClick = async (navId: string, specificTest?: OfflineTestResult | null) => {
     setActiveNav(navId);
     if (navId === 'Basic') {
-      setBasicEmail('');
-      setBasicFullName('');
-      setBasicFormError(null);
-      setIsBasicFormOpen(true);
+      let alreadySubmitted = hasSubmittedBasicForm;
+      try {
+        const uid = auth.currentUser?.uid;
+        const emailKey = (user?.email || '').trim().toLowerCase();
+        if (
+          (uid && localStorage.getItem(`jambix_basic_submitted_${uid}`) === '1') ||
+          (emailKey && localStorage.getItem(`jambix_basic_submitted_${emailKey}`) === '1')
+        ) {
+          alreadySubmitted = true;
+        }
+      } catch {
+        // ignore storage errors
+      }
+
+      if (!alreadySubmitted) {
+        const existsInCloud = await hasSubmittedBasicRegistration();
+        if (existsInCloud) {
+          markBasicFormSubmittedLocally();
+          alreadySubmitted = true;
+        }
+      }
+
+      if (!alreadySubmitted) {
+        setBasicEmail('');
+        setBasicFullName('');
+        setBasicFormError(null);
+        setIsBasicFormOpen(true);
+      } else {
+        setIsBasicFormOpen(false);
+      }
     }
     if (navId === 'History') {
       const localTests = getLocalTestResults(auth.currentUser?.uid, user?.email);
@@ -728,11 +797,29 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View: basic */}
             {activeNav === 'Basic' && (
               <div className="max-w-2xl mx-auto space-y-5">
-                <h2 className="text-center text-sm sm:text-base font-black tracking-wide text-slate-900 dark:text-white">
-                  PREPARE FOR UNIPORT BASIC EXAM
-                </h2>
+                <div className="space-y-3">
+                  <h2 className="text-center text-sm sm:text-base font-black tracking-wide text-slate-900 dark:text-white">
+                    PREPARE FOR UNIPORT BASIC EXAM
+                  </h2>
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 text-center space-y-2 shadow-2xs">
+                    <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100">
+                      To activate and get access, pay ₦200 (naira) to the account below to activate for one month
+                    </p>
+                    <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-0.5 font-medium tabular-nums">
+                      <p>
+                        <span className="font-bold text-slate-900 dark:text-white">Account number:</span> 2076620559
+                      </p>
+                      <p>
+                        <span className="font-bold text-slate-900 dark:text-white">Account name:</span> Ikue Jesuit Barilemeloo
+                      </p>
+                      <p>
+                        <span className="font-bold text-slate-900 dark:text-white">Bank:</span> Kuda Mfb
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
+                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors">
                     <img
                       src="/assets/aistudio/acadia_9e76a954.jpg"
                       alt=""
@@ -746,8 +833,18 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-md">
                       100 questions, 50 mins
                     </h3>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                      }
+                      className="relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950/75 hover:bg-slate-950/90 text-white border border-white/25 text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer"
+                    >
+                      <Lock className="w-3.5 h-3.5" />
+                      <span>Locked</span>
+                    </button>
                   </div>
-                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
+                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors">
                     <img
                       src="/assets/aistudio/acadia_9e76a954.jpg"
                       alt=""
@@ -761,6 +858,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-md">
                       50 questions, 30 mins
                     </h3>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                      }
+                      className="relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950/75 hover:bg-slate-950/90 text-white border border-white/25 text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer"
+                    >
+                      <Lock className="w-3.5 h-3.5" />
+                      <span>Locked</span>
+                    </button>
                   </div>
                 </div>
               </div>

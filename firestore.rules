@@ -162,10 +162,10 @@ service cloud.firestore {
 
     // Basic tab student submissions (PII Isolation: Only submitter or admin can read single doc; only admin can list all)
     match /basicRegistrations/{registrationId} {
-      allow get: if isAdmin() || (isSignedIn() && existing().userId == request.auth.uid);
+      allow get: if isAdmin() || (isSignedIn() && (registrationId == ('basic_' + request.auth.uid) || (resource != null && existing().userId == request.auth.uid)));
       allow list: if isAdmin();
       allow create: if isSignedIn() && isValidId(registrationId) && isValidBasicRegistration(incoming()) && incoming().id == registrationId;
-      allow update: if false;
+      allow update: if isSignedIn() && isValidId(registrationId) && registrationId == ('basic_' + request.auth.uid) && isValidBasicRegistration(incoming()) && incoming().id == existing().id && incoming().userId == existing().userId;
       allow delete: if isAdmin();
     }
 
