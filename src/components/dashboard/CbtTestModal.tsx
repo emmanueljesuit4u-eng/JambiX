@@ -57,6 +57,14 @@ import {
   getLocalCustomQuestions,
   convertToVerifiedQuestion,
 } from '../../lib/customQuestionsService';
+import {
+  generateUniportBasicTest,
+  getBasicSeenSignatures,
+  recordBasicSeenSignatures,
+  getBasicQuestionSignature,
+  BASIC_SUBJECT_ORDER,
+  BASIC_QUESTION_BANK_STATS,
+} from '../../data/basicQuestionBank';
 
 interface CbtTestModalProps {
   isOpen: boolean;
@@ -84,6 +92,33 @@ export const isLekkiNovelCheck = (title?: string, type?: string, subject?: strin
   );
 };
 
+export const isBasicBiologyCheck = (title?: string, type?: string, subject?: string) => {
+  const t = (title || '').toLowerCase();
+  const s = (subject || '').toLowerCase().trim();
+  const tp = (type || '').toLowerCase().trim();
+  return (
+    tp === 'basic_biology_100' ||
+    tp === 'basic_biology_50' ||
+    tp === 'basic_100' ||
+    tp === 'basic_50' ||
+    s === 'uniport basic' ||
+    s === 'basic biology' ||
+    t.includes('uniport basic') ||
+    t.includes('basic biology')
+  );
+};
+
+export const isUniportBasicCheck = isBasicBiologyCheck;
+
+export const getBasicBiologyFormat = (title?: string, type?: string): 'basic_100' | 'basic_50' => {
+  const t = (title || '').toLowerCase();
+  const tp = (type || '').toLowerCase().trim();
+  if (tp === 'basic_biology_50' || tp === 'basic_50' || t.includes('50 questions') || t.includes('30 mins')) {
+    return 'basic_50';
+  }
+  return 'basic_100';
+};
+
 export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   isOpen,
   onClose,
@@ -95,21 +130,27 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   studentEmail,
 }) => {
   const { effectiveOnline } = useNetwork();
-  const isInitialLekki = isLekkiNovelCheck(testTitle, testType, initialSubject);
+  const isInitialBasic = isBasicBiologyCheck(testTitle, testType, initialSubject);
+  const initialBasicMode = getBasicBiologyFormat(testTitle, testType);
+  const isInitialLekki = !isInitialBasic && isLekkiNovelCheck(testTitle, testType, initialSubject);
 
   // Test Configuration State
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(
-    isInitialLekki
+    isInitialBasic
+      ? [...BASIC_SUBJECT_ORDER]
+      : isInitialLekki
       ? ['The Lekki Headmaster']
       : ['Use of English', 'Mathematics', 'Physics', 'Chemistry']
   );
   const [selectedYear, setSelectedYear] = useState<number | 'random'>(
     initialYear || 2026
   );
-  const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint' | 'novel'>(
-    isInitialLekki ? 'novel' : 'full'
+  const [examMode, setExamMode] = useState<'full' | 'single' | 'sprint' | 'novel' | 'basic_100' | 'basic_50'>(
+    isInitialBasic ? initialBasicMode : isInitialLekki ? 'novel' : 'full'
   );
-  const [duration, setDuration] = useState<number>(isInitialLekki ? 20 : 120);
+  const [duration, setDuration] = useState<number>(
+    isInitialBasic ? (initialBasicMode === 'basic_50' ? 30 : 50) : isInitialLekki ? 20 : 120
+  );
   const [seenCount, setSeenCount] = useState<number>(0);
   const [includeCustomPdfQuestions, setIncludeCustomPdfQuestions] = useState<boolean>(true);
   const [customQuestionsCount, setCustomQuestionsCount] = useState<number>(0);
@@ -120,7 +161,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(
-    (isInitialLekki ? 20 : 120) * 60
+    (isInitialBasic ? (initialBasicMode === 'basic_50' ? 30 : 50) : isInitialLekki ? 20 : 120) * 60
   );
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
@@ -152,10 +193,18 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     const titleLower = (testTitle || '').toLowerCase();
     const typeLower = (testType || '').toLowerCase();
-    const isLekkiNovel = isLekkiNovelCheck(testTitle, testType, initialSubject);
-    const isCustomPdf = typeLower === 'custom_pdf' || titleLower.includes('pdf') || titleLower.includes('extracted');
+    const isBasicBio = isBasicBiologyCheck(testTitle, testType, initialSubject);
+    const isLekkiNovel = !isBasicBio && isLekkiNovelCheck(testTitle, testType, initialSubject);
+    const isCustomPdf = !isBasicBio && (typeLower === 'custom_pdf' || titleLower.includes('pdf') || titleLower.includes('extracted'));
 
-    if (isCustomPdf) {
+    if (isBasicBio) {
+      const basicFmt = getBasicBiologyFormat(testTitle, testType);
+      const mins = basicFmt === 'basic_50' ? 30 : 50;
+      setSelectedSubjects([...BASIC_SUBJECT_ORDER]);
+      setExamMode(basicFmt);
+      setDuration(mins);
+      setTimeLeftSeconds(mins * 60);
+    } else if (isCustomPdf) {
       const filtered = initialSubject && initialSubject !== 'Custom Extracted Questions'
         ? customList.filter((q) => q.subject.toLowerCase() === initialSubject.toLowerCase())
         : customList;
@@ -250,24 +299,55 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
   // Start Exam
   const handleStartExam = () => {
-    const isLekkiNovel = isLekkiNovelCheck(testTitle, testType, initialSubject) || examMode === 'novel';
+    const isBasicBio =
+      examMode === 'basic_100' ||
+      examMode === 'basic_50' ||
+      isBasicBiologyCheck(testTitle, testType, initialSubject);
+    const basicMode: 'basic_100' | 'basic_50' =
+      examMode === 'basic_50'
+        ? 'basic_50'
+        : examMode === 'basic_100'
+        ? 'basic_100'
+        : getBasicBiologyFormat(testTitle, testType);
+    const isLekkiNovel = !isBasicBio && (isLekkiNovelCheck(testTitle, testType, initialSubject) || examMode === 'novel');
 
-    const effectiveSubjects = isLekkiNovel ? ['The Lekki Headmaster'] : selectedSubjects;
-    const effectiveMode = isLekkiNovel ? 'novel' : examMode;
-    const effectiveCount = isLekkiNovel ? 30 : examMode === 'sprint' ? 20 : undefined;
+    const effectiveSubjects = isBasicBio
+      ? [...BASIC_SUBJECT_ORDER]
+      : isLekkiNovel
+      ? ['The Lekki Headmaster']
+      : selectedSubjects;
+    const effectiveMode = isBasicBio ? basicMode : isLekkiNovel ? 'novel' : examMode;
+    const effectiveCount = isBasicBio
+      ? basicMode === 'basic_50'
+        ? 50
+        : 100
+      : isLekkiNovel
+      ? 30
+      : examMode === 'sprint'
+      ? 20
+      : undefined;
     // During a full CBT test, ensure the system reads exactly 120 minutes and nothing more
-    const isFullCbtExam = !isLekkiNovel && (effectiveMode === 'full' || effectiveSubjects.length >= 4);
-    const effectiveDurationMinutes = isLekkiNovel ? 20 : isFullCbtExam ? 120 : Math.min(120, duration);
+    const isFullCbtExam = !isBasicBio && !isLekkiNovel && (effectiveMode === 'full' || effectiveSubjects.length >= 4);
+    const effectiveDurationMinutes = isBasicBio
+      ? basicMode === 'basic_50'
+        ? 30
+        : 50
+      : isLekkiNovel
+      ? 20
+      : isFullCbtExam
+      ? 120
+      : Math.min(120, duration);
 
     const difficultyTier = getCompletedTwoHourTestsCount();
 
     // Generate questions according to user requirements:
     // Full CBT test brings out 60 questions from English and 40 from the 3 other subjects;
+    // Basic Biology brings out 100 Qs (50 mins) or 50 Qs (30 mins) via round-robin across all 14 topic clusters;
     // Lekki Headmaster test brings out strictly 30 questions on The Lekki Headmaster for 20 minutes;
     // Progressive toughness increases with every completed 2-hour test without repeating questions.
     const titleLower = (testTitle || '').toLowerCase();
     const typeLower = (testType || '').toLowerCase();
-    const isCustomPdf = typeLower === 'custom_pdf' || titleLower.includes('pdf') || titleLower.includes('extracted');
+    const isCustomPdf = !isBasicBio && !isLekkiNovel && (typeLower === 'custom_pdf' || titleLower.includes('pdf') || titleLower.includes('extracted'));
     let finalQuestions: VerifiedQuestion[] = [];
 
     if (isCustomPdf) {
@@ -306,14 +386,16 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     }
 
     if (finalQuestions.length === 0) {
-      const questions = assembleUtmeTest({
-        subjects: effectiveSubjects,
-        year: isCustomPdf || isLekkiNovel ? selectedYear : (initialYear ? selectedYear : 'random'),
-        mode: effectiveMode,
-        customQuestionCount: effectiveCount,
-        difficultyTier,
-        excludeSignatures: getSeenQuestionSignatures(),
-      });
+      const questions = isBasicBio
+        ? generateUniportBasicTest(basicMode, getBasicSeenSignatures())
+        : assembleUtmeTest({
+            subjects: effectiveSubjects,
+            year: isCustomPdf || isLekkiNovel ? selectedYear : (initialYear ? selectedYear : 'random'),
+            mode: effectiveMode as 'full' | 'single' | 'sprint' | 'novel',
+            customQuestionCount: effectiveCount,
+            difficultyTier,
+            excludeSignatures: getSeenQuestionSignatures(),
+          });
 
       // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English
       let processedQuestions = isLekkiNovel
@@ -327,8 +409,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           }))
         : questions;
 
-      // Inject user-uploaded custom PDF questions if toggle is active
-      if (includeCustomPdfQuestions && !isLekkiNovel) {
+      // Inject user-uploaded custom PDF questions if toggle is active (not for Lekki Novel or Basic Biology)
+      if (includeCustomPdfQuestions && !isLekkiNovel && !isBasicBio) {
         const customQs = getLocalCustomQuestions();
         if (customQs.length > 0) {
           const matchingCustom = customQs
@@ -382,24 +464,40 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     }
 
     // Final validation: during a full CBT test, ensure the system reads exactly 120 minutes and nothing more
-    const isFullTwoHourTest = (effectiveMode === 'full' || finalQuestions.length === 180) && !isLekkiNovel;
-    const finalAllocatedMinutes = isLekkiNovel ? 20 : isFullTwoHourTest ? 120 : Math.min(120, effectiveDurationMinutes);
+    const isFullTwoHourTest = (effectiveMode === 'full' || finalQuestions.length === 180) && !isLekkiNovel && !isBasicBio;
+    const finalAllocatedMinutes = isBasicBio
+      ? basicMode === 'basic_50'
+        ? 30
+        : 50
+      : isLekkiNovel
+      ? 20
+      : isFullTwoHourTest
+      ? 120
+      : Math.min(120, effectiveDurationMinutes);
 
     setActiveQuestions(finalQuestions);
     setSelectedAnswers({});
     setCurrentQuestionIndex(0);
     setTimeLeftSeconds(finalAllocatedMinutes * 60);
     setDuration(finalAllocatedMinutes);
+    setReviewSubjectFilter('All');
+    setReviewStatusFilter('All');
     setTestCompleted(null);
     setTestStarted(true);
 
-    // Record question IDs and signatures as seen to guarantee zero repetition in future random tests
-    markQuestionsSeen(finalQuestions.map((q) => q.id));
-    recordSeenSignatures(
-      finalQuestions.map((q) => getQuestionCoreSignature(q.text)),
-      finalQuestions.map((q) => q.id)
-    );
-    setSeenCount(getSeenQuestionsCount());
+    // Record question IDs and signatures as seen to guarantee zero repetition in future tests
+    if (isBasicBio) {
+      recordBasicSeenSignatures(
+        finalQuestions.map((q) => getBasicQuestionSignature(q.text))
+      );
+    } else {
+      markQuestionsSeen(finalQuestions.map((q) => q.id));
+      recordSeenSignatures(
+        finalQuestions.map((q) => getQuestionCoreSignature(q.text)),
+        finalQuestions.map((q) => q.id)
+      );
+      setSeenCount(getSeenQuestionsCount());
+    }
 
     // Advance 2-hour test progression counter so every subsequent 2-hour test becomes progressively tougher
     if (isFullTwoHourTest) {
@@ -433,9 +531,15 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   // (MM:SS, starting at exactly 120:00 for a full CBT exam and counting down to 00:00).
   // This guarantees that during a full CBT test, the system reads exactly 120 minutes and nothing more.
   const formattedTime = useMemo(() => {
-    const isFullTest = examMode === 'full' || activeQuestions.length === 180 || duration === 120;
-    // Strict clamp: never allow seconds to exceed 120 minutes (7200 seconds) for a full CBT test
-    const clampedSeconds = isFullTest
+    const isBasic50 = examMode === 'basic_50';
+    const isBasic100 = examMode === 'basic_100';
+    const isFullTest = !isBasic50 && !isBasic100 && (examMode === 'full' || activeQuestions.length === 180 || duration === 120);
+    // Strict clamp: never allow seconds to exceed allocated CBT time (30m / 50m for Basic, 120m for Full UTME)
+    const clampedSeconds = isBasic50
+      ? Math.min(30 * 60, Math.max(0, timeLeftSeconds))
+      : isBasic100
+      ? Math.min(50 * 60, Math.max(0, timeLeftSeconds))
+      : isFullTest
       ? Math.min(120 * 60, Math.max(0, timeLeftSeconds))
       : Math.max(0, timeLeftSeconds);
 
@@ -493,11 +597,28 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
   // Determine if active session is strictly The Lekki Headmaster Novel CBT
   const isCurrentLekkiTest = useMemo(() => {
-    if (examMode === 'full') return false;
+    if (examMode === 'full' || examMode === 'basic_100' || examMode === 'basic_50') return false;
     return (
       isLekkiNovelCheck(testTitle, testType, initialSubject) ||
       examMode === 'novel' ||
       (activeQuestions.length === 30 && activeQuestions.every((q) => q.subject === 'The Lekki Headmaster'))
+    );
+  }, [testTitle, testType, initialSubject, examMode, activeQuestions]);
+
+  // Determine if active session is strictly UNIPORT Basic CBT
+  const isCurrentBasicTest = useMemo(() => {
+    if (examMode === 'full' || examMode === 'novel') return false;
+    return (
+      examMode === 'basic_100' ||
+      examMode === 'basic_50' ||
+      isBasicBiologyCheck(testTitle, testType, initialSubject) ||
+      (activeQuestions.length > 0 &&
+        activeQuestions.every(
+          (q) =>
+            q.bookTitle === 'UNIPORT BASIC QUESTION BANK' ||
+            q.bookTitle === 'UNIPORT BASIC BIOLOGY QUESTION BANK' ||
+            q.subject === 'Basic Biology'
+        ))
     );
   }, [testTitle, testType, initialSubject, examMode, activeQuestions]);
 
@@ -551,9 +672,16 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const timeSpent = duration * 60 - timeLeftSeconds;
 
     // Strict Leaderboard Regulation: ONLY 2-hour full CBT exams (180 questions across 4 subjects and 120-minute duration) are submitted to the live leaderboard
-    const isFullTwoHour = (examMode === 'full' || activeQuestions.length === 180) && (duration === 120 || !duration);
+    const isFullTwoHour =
+      (examMode === 'full' || activeQuestions.length === 180) &&
+      (duration === 120 || !duration) &&
+      !isCurrentBasicTest;
     const computedTestType = isFullTwoHour ? 'full' : (examMode || testType || 'single');
-    const computedTitle = isFullTwoHour
+    const computedTitle = isCurrentBasicTest
+      ? (examMode === 'basic_50' || activeQuestions.length === 50
+          ? 'UNIPORT Basic CBT (50 Questions · 30 Mins)'
+          : 'UNIPORT Basic CBT (100 Questions · 50 Mins)')
+      : isFullTwoHour
       ? (selectedYear === 'random'
           ? 'Full JAMB UTME CBT (2-Hr Standard Mock - 1978-2026 Mix)'
           : `Full JAMB UTME CBT (2-Hr Standard Mock - ${selectedYear})`)
@@ -620,7 +748,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       testTitle: computedTitle,
       testType: computedTestType,
       score: grade.totalRawCorrect,
-      jambScore: grade.totalJambScore,
+      jambScore: isCurrentBasicTest ? undefined : grade.totalJambScore,
       totalRawCorrect: grade.totalRawCorrect,
       totalQuestions: grade.totalQuestions,
       percentage: grade.overallPercentage,
@@ -629,11 +757,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       syncedToCloud: synced,
       subjectScores: grade.subjectBreakdowns.map((sb) => ({
         subject: sb.subject,
-        score: sb.jambScaledScore,
+        score: isCurrentBasicTest ? sb.correct : sb.jambScaledScore,
         total: sb.total,
         correct: sb.correct,
         percentage: sb.percentage,
-        bookTitle: sb.bookTitle,
+        bookTitle: isCurrentBasicTest ? 'UNIPORT BASIC QUESTION BANK' : sb.bookTitle,
       })),
       questions: activeQuestions,
       selectedAnswers: selectedAnswers,
@@ -690,14 +818,22 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-xs">
                   {testTitle}
                 </h3>
-                {selectedYear !== 'random' && (
+                {isCurrentBasicTest ? (
+                  <span className="hidden sm:inline-block px-1.5 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded text-[10px] font-bold">
+                    UNIPORT Basic
+                  </span>
+                ) : selectedYear !== 'random' ? (
                   <span className="hidden sm:inline-block px-1.5 py-0.5 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 rounded text-[10px] font-bold">
                     UTME {selectedYear}
                   </span>
-                )}
+                ) : null}
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-                {testStarted && !testCompleted ? 'Exam in progress' : 'Official CBT Simulator'}
+                {testStarted && !testCompleted
+                  ? 'Exam in progress'
+                  : isCurrentBasicTest
+                  ? 'UNIPORT Basic CBT Simulator'
+                  : 'Official CBT Simulator'}
               </p>
             </div>
           </div>
@@ -711,10 +847,10 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     ? 'bg-amber-500 text-slate-950 font-black ring-2 ring-amber-400/50'
                     : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700'
                 }`}
-                title="Toggle JAMB CBT On-Screen Calculator"
+                title={isCurrentBasicTest ? 'Toggle On-Screen Calculator' : 'Toggle JAMB CBT On-Screen Calculator'}
               >
                 <Calculator className="w-3.5 h-3.5 text-amber-500" />
-                <span className="hidden sm:inline">JAMB Calculator</span>
+                <span className="hidden sm:inline">{isCurrentBasicTest ? 'Calculator' : 'JAMB Calculator'}</span>
                 <span className="sm:hidden">Calc</span>
               </button>
             )}
@@ -738,27 +874,33 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                1. JAMB-STYLE RESULTS SCREEN (GRADED OVER 400 MARKS)
                ======================================================== */
             <div className="space-y-6">
-              {/* Aggregate Score Over 400 */}
+              {/* Aggregate Score Over 400 (or Raw Score for UNIPORT Basic) */}
               <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-50 dark:from-emerald-950/40 dark:via-slate-900 dark:to-slate-900 border-2 border-emerald-500/40 text-center relative overflow-hidden">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 text-white rounded-full text-xs font-black uppercase tracking-wider mb-2 shadow-xs">
                   <Award className="w-4 h-4" />
-                  <span>Official JAMB UTME Aggregate Score</span>
+                  <span>
+                    {isCurrentBasicTest
+                      ? 'UNIPORT Basic CBT Score'
+                      : 'Official JAMB UTME Aggregate Score'}
+                  </span>
                 </div>
 
                 <div className="mt-2 flex flex-col items-center justify-center">
                   <div className="flex items-baseline gap-2">
                     <span className="text-5xl sm:text-6xl font-black text-emerald-700 dark:text-emerald-400 tracking-tight">
-                      {testCompleted.grade.totalJambScore}
+                      {isCurrentBasicTest ? testCompleted.grade.totalRawCorrect : testCompleted.grade.totalJambScore}
                     </span>
                     <span className="text-2xl sm:text-3xl font-extrabold text-slate-400 dark:text-slate-500">
-                      / 400
+                      / {isCurrentBasicTest ? testCompleted.grade.totalQuestions : 400}
                     </span>
                   </div>
                   <p className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">
                     {testCompleted.grade.performanceRemark}
                   </p>
                   <p className="mt-0.5 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
-                    {testCompleted.grade.admissionTier}
+                    {isCurrentBasicTest
+                      ? 'Balanced Round-Robin · Use of English, Biology, Physics, Chemistry & Mathematics'
+                      : testCompleted.grade.admissionTier}
                   </p>
                 </div>
 
@@ -783,32 +925,39 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   </div>
                   <div>
                     <span className="text-lg font-black text-teal-600 dark:text-teal-400">
-                      {selectedYear === 'random' ? '1978–2026' : `${selectedYear}`}
+                      {isCurrentBasicTest ? 'UNIPORT' : selectedYear === 'random' ? '1978–2026' : `${selectedYear}`}
                     </span>
-                    <p className="text-[10px] text-slate-500 uppercase font-semibold">Exam Year</p>
+                    <p className="text-[10px] text-slate-500 uppercase font-semibold">
+                      {isCurrentBasicTest ? 'Basic Syllabus' : 'Exam Year'}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              {/* Subject Breakdown (Each Scaled to 100 Marks) */}
+              {/* Subject Breakdown */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
                   <Layers className="w-4 h-4 text-emerald-600" />
-                  <span>Subject Score Breakdown (Graded / 100 Each)</span>
+                  <span>
+                    {isCurrentBasicTest
+                      ? 'UNIPORT Basic Subject Score Breakdown'
+                      : 'Subject Score Breakdown (Graded / 100 Each)'}
+                  </span>
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className={`grid grid-cols-1 sm:grid-cols-2 ${isCurrentBasicTest ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-3`}>
                   {testCompleted.grade.subjectBreakdowns.map((sb) => (
                     <div
                       key={sb.subject}
                       className="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 flex flex-col justify-between"
                     >
                       <div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <span className="text-xs font-bold text-slate-900 dark:text-white truncate">
                             {sb.subject}
                           </span>
-                          <span className="text-base font-black text-emerald-600 dark:text-emerald-400">
-                            {sb.jambScaledScore} <span className="text-xs text-slate-400">/ 100</span>
+                          <span className="text-base font-black text-emerald-600 dark:text-emerald-400 shrink-0">
+                            {isCurrentBasicTest ? sb.correct : sb.jambScaledScore}{' '}
+                            <span className="text-xs text-slate-400">/ {isCurrentBasicTest ? sb.total : 100}</span>
                           </span>
                         </div>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
@@ -817,7 +966,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                       </div>
                       <div className="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60">
                         <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 truncate block">
-                          Ref: {sb.bookTitle}
+                          Ref: {isCurrentBasicTest ? 'UNIPORT BASIC QUESTION BANK' : sb.bookTitle}
                         </span>
                       </div>
                     </div>
@@ -831,10 +980,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                   <div>
                     <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
                       <BookOpen className="w-4 h-4 text-emerald-600" />
-                      <span>Answers &amp; Verified Textbook Explanations</span>
+                      <span>Answers &amp; Verified Explanations</span>
                     </h4>
                     <p className="text-[11px] text-slate-500">
-                      Step-by-step solutions cited from the 5 standard UTME textbooks
+                      {isCurrentBasicTest
+                        ? 'Detailed explanations cited from the UNIPORT Basic Question Bank'
+                        : 'Step-by-step solutions cited from the 5 standard UTME textbooks'}
                     </p>
                   </div>
 
@@ -907,7 +1058,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                                 {q.subject}
                               </span>
                               <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 rounded font-bold text-[10px]">
-                                JAMB {q.year}
+                                {isCurrentBasicTest || q.bookTitle === 'UNIPORT BASIC QUESTION BANK' || q.subject === 'Basic Biology'
+                                  ? 'UNIPORT Basic'
+                                  : `JAMB ${q.year}`}
                               </span>
                               <span className="text-slate-500 text-[11px] font-medium">
                                 [{q.topic}]
@@ -995,7 +1148,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                           <div className="p-3 bg-white/95 dark:bg-slate-800/90 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1.5 shadow-2xs">
                             <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-bold text-[11px]">
                               <BookMarked className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                              <span>Verified Textbook Reference:</span>
+                              <span>
+                                {isCurrentBasicTest || q.bookTitle === 'UNIPORT BASIC QUESTION BANK' || q.subject === 'Basic Biology'
+                                  ? 'Basic Question Bank Syllabus:'
+                                  : 'Verified Textbook Reference:'}
+                              </span>
                               <span className="font-mono text-emerald-900 dark:text-emerald-200">
                                 {q.textbookRef}
                               </span>
@@ -1057,7 +1214,118 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                2. EXAM SETUP & YEAR SELECTION SCREEN (1978 - 2025)
                ======================================================== */
             <div className="space-y-5">
-              {examMode === 'novel' ? (
+              {examMode === 'basic_100' || examMode === 'basic_50' ? (
+                /* DEDICATED UNIPORT BASIC CBT EXAM PANEL (5 SUBJECTS · 700 QUESTIONS) */
+                <div className="space-y-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-2 border-emerald-500/50 text-white shadow-lg space-y-3 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 -mr-12 -mt-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+
+                    <div className="relative z-10 flex items-center justify-between flex-wrap gap-2">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>UNIPORT Basic Question Bank</span>
+                      </div>
+                      <span className="px-2.5 py-1 bg-amber-400 text-slate-950 font-black rounded-lg text-xs shadow-xs">
+                        {BASIC_QUESTION_BANK_STATS.totalQuestions} Syllabus Questions · 5 Subjects
+                      </span>
+                    </div>
+
+                    <div className="relative z-10">
+                      <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                        UNIPORT Basic CBT Mock Examination
+                      </h3>
+                      <p className="text-xs sm:text-sm text-emerald-100/90 mt-1 leading-relaxed">
+                        Draws evenly via round-robin sampling across all 5 UNIPORT Basic subjects —{' '}
+                        <strong>Use of English</strong>, <strong>Biology</strong>, <strong>Physics</strong>,{' '}
+                        <strong>Chemistry</strong>, and <strong>Mathematics</strong> — ensuring balanced syllabus coverage without topic clustering.
+                      </p>
+                    </div>
+
+                    <div className="relative z-10 grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-white/10 text-xs">
+                      <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-emerald-300 uppercase font-bold block">Exam Format</span>
+                        <span className="text-base sm:text-lg font-black text-white">
+                          {examMode === 'basic_50' ? '50 Questions' : '100 Questions'}
+                        </span>
+                        <span className="text-[10px] text-emerald-200/70 block">
+                          {examMode === 'basic_50' ? '10 Qs per Subject × 5' : '20 Qs per Subject × 5'}
+                        </span>
+                      </div>
+                      <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                        <span className="text-[10px] text-emerald-300 uppercase font-bold block">CBT Timer</span>
+                        <span className="text-base sm:text-lg font-black text-amber-300">
+                          {examMode === 'basic_50' ? '30 Minutes' : '50 Minutes'}
+                        </span>
+                        <span className="text-[10px] text-emerald-200/70 block">Strict Countdown</span>
+                      </div>
+                      <div className="bg-white/5 p-3 rounded-xl border border-white/10 col-span-2 sm:col-span-1">
+                        <span className="text-[10px] text-emerald-300 uppercase font-bold block">Subjects Included</span>
+                        <span className="text-base sm:text-lg font-black text-emerald-400">All 5 Subjects</span>
+                        <span className="text-[10px] text-emerald-200/70 block">Round-Robin Sampling</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Format Switcher between 100 Qs / 50 mins and 50 Qs / 30 mins */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setExamMode('basic_100');
+                        setDuration(50);
+                        setTimeLeftSeconds(50 * 60);
+                      }}
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                        examMode === 'basic_100'
+                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-950 dark:text-emerald-200 shadow-2xs'
+                          : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs">100 questions, 50 mins</span>
+                        <span className="text-[10px] font-black px-1.5 py-0.5 bg-emerald-600 text-white rounded">
+                          100 Qs · 50 Mins
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                        20 questions each from Use of English, Biology, Physics, Chemistry &amp; Mathematics.
+                      </p>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setExamMode('basic_50');
+                        setDuration(30);
+                        setTimeLeftSeconds(30 * 60);
+                      }}
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
+                        examMode === 'basic_50'
+                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 text-emerald-950 dark:text-emerald-200 shadow-2xs'
+                          : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-xs">50 questions, 30 mins</span>
+                        <span className="text-[10px] font-black px-1.5 py-0.5 bg-slate-900 dark:bg-slate-700 text-white rounded">
+                          50 Qs · 30 Mins
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                        10 questions each from Use of English, Biology, Physics, Chemistry &amp; Mathematics.
+                      </p>
+                    </button>
+                  </div>
+
+                  {/* Round-Robin & Zero repetition guarantee banner */}
+                  <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200 flex items-start gap-2.5">
+                    <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <p className="leading-relaxed">
+                      <strong>Balanced Topic Distribution:</strong> Within every subject, the engine round-robins across all syllabus topic clusters and prioritizes unseen questions, guaranteeing every Basic mock exam draws evenly without clustering.
+                    </p>
+                  </div>
+                </div>
+              ) : examMode === 'novel' ? (
                 /* DEDICATED THE LEKKI HEADMASTER CBT EXAM PANEL */
                 <div className="space-y-4">
                   <div className="p-5 rounded-2xl bg-gradient-to-r from-emerald-950 via-teal-950 to-slate-900 border-2 border-emerald-500/50 text-white shadow-lg space-y-3 relative overflow-hidden">
@@ -1424,8 +1692,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                3. ACTIVE CBT EXAM SIMULATION (WITH SUBJECT QUICK JUMP)
                ======================================================== */
             <div className="space-y-4">
-              {/* Official JAMB CBT Subject Tabs (Showing 60 Qs for English and 40 Qs each for other subjects) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {/* Subject Tabs (4 UTME subjects OR 5 UNIPORT Basic subjects) */}
+              <div
+                className={`grid grid-cols-2 ${
+                  subjectPartitions.length >= 5 ? 'sm:grid-cols-3 lg:grid-cols-5' : 'sm:grid-cols-4'
+                } gap-2`}
+              >
                 {isCurrentLekkiTest ? (
                   <div className="col-span-2 sm:col-span-4 p-3 rounded-xl bg-emerald-600 text-white shadow-sm flex items-center justify-between">
                     <div>
@@ -1448,14 +1720,20 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         onClick={() => setCurrentQuestionIndex(part.startIndex)}
                         className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                           isCurrentSubject
-                            ? 'bg-rose-600 text-white border-rose-700 shadow-md ring-2 ring-rose-400/50'
+                            ? isCurrentBasicTest
+                              ? 'bg-emerald-600 text-white border-emerald-700 shadow-md ring-2 ring-emerald-400/50'
+                              : 'bg-rose-600 text-white border-rose-700 shadow-md ring-2 ring-rose-400/50'
                             : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1">
                           <span
                             className={`text-[10px] font-black uppercase tracking-wider ${
-                              isCurrentSubject ? 'text-rose-100' : 'text-slate-500 dark:text-slate-400'
+                              isCurrentSubject
+                                ? isCurrentBasicTest
+                                  ? 'text-emerald-100'
+                                  : 'text-rose-100'
+                                : 'text-slate-500 dark:text-slate-400'
                             }`}
                           >
                             Subject {pIdx + 1}
@@ -1475,7 +1753,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         </div>
                         <div
                           className={`mt-1 text-[10px] font-medium ${
-                            isCurrentSubject ? 'text-rose-100' : 'text-emerald-600 dark:text-emerald-400'
+                            isCurrentSubject
+                              ? isCurrentBasicTest
+                                ? 'text-emerald-100'
+                                : 'text-rose-100'
+                              : 'text-emerald-600 dark:text-emerald-400'
                           }`}
                         >
                           {part.answeredCount} of {part.count} Answered
@@ -1558,7 +1840,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         ? 'bg-amber-500 text-slate-950 border-amber-600 font-black shadow-xs ring-2 ring-amber-400/50'
                         : 'bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700'
                     }`}
-                    title="JAMB CBT On-Screen Calculator"
+                    title={isCurrentBasicTest ? 'Toggle On-Screen Calculator' : 'JAMB CBT On-Screen Calculator'}
                   >
                     <Calculator className="w-3.5 h-3.5 text-amber-500" />
                     <span>Calculator</span>
@@ -1566,7 +1848,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
                   <div
                     className="flex items-center gap-1.5 text-rose-600 dark:text-rose-400 font-mono font-black text-sm bg-rose-50 dark:bg-rose-950/40 px-3 py-1 rounded-xl border border-rose-200/60 dark:border-rose-900/60"
-                    title="Authentic JAMB CBT Countdown: Exactly 120 Minutes"
+                    title={
+                      isCurrentBasicTest
+                        ? `UNIPORT Basic CBT Countdown: ${duration} Minutes`
+                        : 'Authentic JAMB CBT Countdown: Exactly 120 Minutes'
+                    }
                   >
                     <Clock className="w-4 h-4 animate-pulse" />
                     <span>{formattedTime}</span>
@@ -1722,7 +2008,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
             >
               <Play className="w-4 h-4 fill-current" />
               <span>
-                {examMode === 'novel'
+                {examMode === 'basic_100'
+                  ? 'START UNIPORT BASIC CBT EXAM (100 Qs · 50 MINS)'
+                  : examMode === 'basic_50'
+                  ? 'START UNIPORT BASIC CBT EXAM (50 Qs · 30 MINS)'
+                  : examMode === 'novel'
                   ? 'START LEKKI HEADMASTER CBT EXAM (30 Qs)'
                   : 'START EXAM NOW'}
               </span>

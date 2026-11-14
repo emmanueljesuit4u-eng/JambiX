@@ -899,7 +899,32 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() =>
+                      isBasicActivated
+                        ? handleLaunchTest(
+                            'UNIPORT Basic CBT (100 Questions · 50 Mins)',
+                            'basic_100',
+                            'UNIPORT Basic'
+                          )
+                        : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        isBasicActivated
+                          ? handleLaunchTest(
+                              'UNIPORT Basic CBT (100 Questions · 50 Mins)',
+                              'basic_100',
+                              'UNIPORT Basic'
+                            )
+                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                      }
+                    }}
+                    className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors cursor-pointer"
+                  >
                     <img
                       src="/assets/aistudio/acadia_9e76a954.jpg"
                       alt=""
@@ -915,11 +940,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </h3>
                     <button
                       type="button"
-                      onClick={() =>
+                      onClick={(e) => {
+                        e.stopPropagation();
                         isBasicActivated
-                          ? showToast('UNIPORT Basic access (100 questions, 50 mins) is unlocked!')
-                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
-                      }
+                          ? handleLaunchTest(
+                              'UNIPORT Basic CBT (100 Questions · 50 Mins)',
+                              'basic_100',
+                              'UNIPORT Basic'
+                            )
+                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                      }}
                       className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-white border text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer ${
                         isBasicActivated
                           ? 'bg-emerald-600/90 hover:bg-emerald-500 border-emerald-300/40'
@@ -939,7 +969,32 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       )}
                     </button>
                   </div>
-                  <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors">
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() =>
+                      isBasicActivated
+                        ? handleLaunchTest(
+                            'UNIPORT Basic CBT (50 Questions · 30 Mins)',
+                            'basic_50',
+                            'UNIPORT Basic'
+                          )
+                        : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        isBasicActivated
+                          ? handleLaunchTest(
+                              'UNIPORT Basic CBT (50 Questions · 30 Mins)',
+                              'basic_50',
+                              'UNIPORT Basic'
+                            )
+                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                      }
+                    }}
+                    className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors cursor-pointer"
+                  >
                     <img
                       src="/assets/aistudio/acadia_9e76a954.jpg"
                       alt=""
@@ -955,11 +1010,16 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </h3>
                     <button
                       type="button"
-                      onClick={() =>
+                      onClick={(e) => {
+                        e.stopPropagation();
                         isBasicActivated
-                          ? showToast('UNIPORT Basic access (50 questions, 30 mins) is unlocked!')
-                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
-                      }
+                          ? handleLaunchTest(
+                              'UNIPORT Basic CBT (50 Questions · 30 Mins)',
+                              'basic_50',
+                              'UNIPORT Basic'
+                            )
+                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                      }}
                       className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-white border text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer ${
                         isBasicActivated
                           ? 'bg-emerald-600/90 hover:bg-emerald-500 border-emerald-300/40'
@@ -1075,9 +1135,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       </div>
                     </div>
 
-                    {/* Subject Scores Breakdown for 4 subjects */}
+                    {/* Subject Scores Breakdown */}
                     {reviewingTest.subjectScores && reviewingTest.subjectScores.length > 0 && (
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      <div className={`grid grid-cols-2 gap-2.5 ${reviewingTest.subjectScores.length >= 5 ? 'sm:grid-cols-3 lg:grid-cols-5' : 'sm:grid-cols-4'}`}>
                         {reviewingTest.subjectScores.map((sb, sbIdx) => (
                           <div
                             key={`rev-sb-${sb.subject}-${sbIdx}`}
@@ -1090,7 +1150,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               <span className="text-base font-black text-rose-600 dark:text-rose-400">
                                 {sb.score}
                               </span>
-                              <span className="text-[10px] text-slate-400">/ 100</span>
+                              <span className="text-[10px] text-slate-400">
+                                / {reviewingTest.testType === 'basic_100' || reviewingTest.testType === 'basic_50' || reviewingTest.testType === 'basic_biology_100' || reviewingTest.testType === 'basic_biology_50' || sb.subject === 'Basic Biology' ? sb.total : 100}
+                              </span>
                             </div>
                             <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold block">
                               {sb.correct}/{sb.total} correct ({sb.percentage}%)
@@ -1189,11 +1251,19 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                       <span className="text-xs font-bold text-rose-600 dark:text-rose-400">
                                         {q.subject}
                                       </span>
-                                      {q.year && (
+                                      {q.bookTitle === 'UNIPORT BASIC QUESTION BANK' ||
+                                      q.bookTitle === 'UNIPORT BASIC BIOLOGY QUESTION BANK' ||
+                                      q.subject === 'Basic Biology' ||
+                                      reviewingTest.testType === 'basic_100' ||
+                                      reviewingTest.testType === 'basic_50' ? (
+                                        <span className="text-xs text-slate-400 font-medium">
+                                          · UNIPORT Basic
+                                        </span>
+                                      ) : q.year ? (
                                         <span className="text-xs text-slate-400 font-medium">
                                           · UTME {q.year}
                                         </span>
-                                      )}
+                                      ) : null}
                                     </div>
 
                                     {/* Student Status Badge */}
