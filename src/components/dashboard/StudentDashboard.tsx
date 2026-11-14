@@ -59,6 +59,9 @@ import {
   getUserTestResults,
   submitBasicRegistration,
   hasSubmittedBasicRegistration,
+  subscribeToMyBasicRegistration,
+  subscribeToAccountActivation,
+  getAccountActivation,
 } from '../../lib/firestoreService';
 import {
   getLocalTestResults,
@@ -122,6 +125,18 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       return false;
     }
   });
+  const [submittedBasicEmail, setSubmittedBasicEmail] = useState<string>(() => {
+    try {
+      const uid = auth.currentUser?.uid;
+      return (uid && localStorage.getItem(`jambix_basic_email_${uid}`)) || '';
+    } catch {
+      return '';
+    }
+  });
+  const [basicRegActivated, setBasicRegActivated] = useState(false);
+  const [loginEmailActivated, setLoginEmailActivated] = useState(false);
+  const [submittedEmailActivated, setSubmittedEmailActivated] = useState(false);
+  const isBasicActivated = basicRegActivated || loginEmailActivated || submittedEmailActivated;
 
   const markBasicFormSubmittedLocally = (submittedEmail?: string) => {
     setHasSubmittedBasicForm(true);
@@ -131,7 +146,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       const formEmailKey = (submittedEmail || '').trim().toLowerCase();
       if (uid) localStorage.setItem(`jambix_basic_submitted_${uid}`, '1');
       if (emailKey) localStorage.setItem(`jambix_basic_submitted_${emailKey}`, '1');
-      if (formEmailKey) localStorage.setItem(`jambix_basic_submitted_${formEmailKey}`, '1');
+      if (formEmailKey) {
+        localStorage.setItem(`jambix_basic_submitted_${formEmailKey}`, '1');
+        setSubmittedBasicEmail(formEmailKey);
+        if (uid) localStorage.setItem(`jambix_basic_email_${uid}`, formEmailKey);
+      }
     } catch {
       // ignore storage errors
     }
@@ -147,10 +166,71 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         }
       })
       .catch(() => {});
+
+    // Real-time monitor on student's basicRegistrations doc
+    const unsubMyBasic = subscribeToMyBasicRegistration((reg) => {
+      if (!active) return;
+      if (reg) {
+        markBasicFormSubmittedLocally(reg.email);
+        setIsBasicFormOpen(false);
+        setBasicRegActivated(Boolean(reg.isActivated));
+      } else {
+        setBasicRegActivated(false);
+      }
+    });
+
+    // Real-time monitor on student's login email in accountActivations (Admin Dashboard)
+    const loginEmail = (auth.currentUser?.email || user?.email || '').trim().toLowerCase();
+    let unsubLoginAct = () => {};
+    if (loginEmail) {
+      getAccountActivation(loginEmail)
+        .then((act) => {
+          if (active && act) {
+            setLoginEmailActivated(Boolean(act.isActivated));
+          }
+        })
+        .catch(() => {});
+      unsubLoginAct = subscribeToAccountActivation(loginEmail, (act) => {
+        if (!active) return;
+        setLoginEmailActivated(Boolean(act?.isActivated));
+      });
+    }
+
     return () => {
       active = false;
+      unsubMyBasic();
+      unsubLoginAct();
     };
   }, [user?.email]);
+
+  // Also monitor the email submitted in the Basic tab popup if different from login email
+  useEffect(() => {
+    const cleanSubEmail = submittedBasicEmail.trim().toLowerCase();
+    const loginEmail = (auth.currentUser?.email || user?.email || '').trim().toLowerCase();
+    if (!cleanSubEmail || cleanSubEmail === loginEmail) {
+      setSubmittedEmailActivated(false);
+      return;
+    }
+
+    let active = true;
+    getAccountActivation(cleanSubEmail)
+      .then((act) => {
+        if (active && act) {
+          setSubmittedEmailActivated(Boolean(act.isActivated));
+        }
+      })
+      .catch(() => {});
+
+    const unsubSubAct = subscribeToAccountActivation(cleanSubEmail, (act) => {
+      if (!active) return;
+      setSubmittedEmailActivated(Boolean(act?.isActivated));
+    });
+
+    return () => {
+      active = false;
+      unsubSubAct();
+    };
+  }, [submittedBasicEmail, user?.email]);
 
   // Test History Review State
   const [reviewingTest, setReviewingTest] = useState<OfflineTestResult | null>(null);
@@ -836,12 +916,27 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     <button
                       type="button"
                       onClick={() =>
-                        showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                        isBasicActivated
+                          ? showToast('UNIPORT Basic access (100 questions, 50 mins) is unlocked!')
+                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
                       }
-                      className="relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950/75 hover:bg-slate-950/90 text-white border border-white/25 text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer"
+                      className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-white border text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer ${
+                        isBasicActivated
+                          ? 'bg-emerald-600/90 hover:bg-emerald-500 border-emerald-300/40'
+                          : 'bg-slate-950/75 hover:bg-slate-950/90 border-white/25'
+                      }`}
                     >
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>Locked</span>
+                      {isBasicActivated ? (
+                        <>
+                          <Unlock className="w-3.5 h-3.5" />
+                          <span>Unlocked</span>
+                        </>
+                      ) : (
+                        <>
+                          <Lock className="w-3.5 h-3.5" />
+                          <span>Locked</span>
+                        </>
+                      )}
                     </button>
                   </div>
                   <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors">
@@ -861,12 +956,27 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     <button
                       type="button"
                       onClick={() =>
-                        showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                        isBasicActivated
+                          ? showToast('UNIPORT Basic access (50 questions, 30 mins) is unlocked!')
+                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
                       }
-                      className="relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-950/75 hover:bg-slate-950/90 text-white border border-white/25 text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer"
+                      className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-white border text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer ${
+                        isBasicActivated
+                          ? 'bg-emerald-600/90 hover:bg-emerald-500 border-emerald-300/40'
+                          : 'bg-slate-950/75 hover:bg-slate-950/90 border-white/25'
+                      }`}
                     >
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>Locked</span>
+                      {isBasicActivated ? (
+                        <>
+                          <Unlock className="w-3.5 h-3.5" />
+                          <span>Unlocked</span>
+                        </>
+                      ) : (
+                        <>
+                          <Lock className="w-3.5 h-3.5" />
+                          <span>Locked</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>

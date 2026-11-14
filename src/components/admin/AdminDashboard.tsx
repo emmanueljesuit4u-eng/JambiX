@@ -78,6 +78,7 @@ import {
   subscribeToAllTestResults,
   subscribeToBasicRegistrations,
   getAllBasicRegistrations,
+  adminToggleBasicActivation,
   BasicRegistrationData,
 } from '../../lib/firestoreService';
 import {
@@ -351,7 +352,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
         fullName: usr.fullName || existing?.fullName || 'Candidate',
         phoneNumber: usr.phoneNumber || existing?.phoneNumber,
         registeredAt: usr.registeredAt || existing?.registeredAt || Date.now(),
-        isActivated: usr.isActivated !== undefined ? usr.isActivated : Boolean(existing?.isActivated),
+        isActivated: existing !== undefined ? Boolean(existing.isActivated) : false,
         paymentReference: usr.paymentReference || existing?.paymentReference,
         opayAccount: usr.opayAccount || existing?.opayAccount,
         targetScore: usr.targetScore,
@@ -472,6 +473,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
       await loadAdminData();
     } catch (err) {
       console.error('Failed to toggle activation:', err);
+    }
+  };
+
+  // Toggle Basic tab activation directly from Basic Tab Student Submissions
+  const handleToggleBasicActivation = async (item: BasicRegistrationData, currentStatus: boolean) => {
+    try {
+      const nextStatus = !currentStatus;
+      await adminToggleBasicActivation(item.id, item.email, nextStatus);
+      setActionFeedback(`Basic access ${nextStatus ? 'activated' : 'locked'} for ${item.fullName} (${item.email})`);
+      setTimeout(() => setActionFeedback(null), 3500);
+      await loadAdminData();
+    } catch (err) {
+      console.error('Failed to toggle Basic activation:', err);
     }
   };
 
@@ -1053,23 +1067,55 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateHome }
                       <tr>
                         <th className="py-2.5 px-3 font-semibold">Correct Full Name</th>
                         <th className="py-2.5 px-3 font-semibold">Email</th>
-                        <th className="py-2.5 px-3 font-semibold text-right">Submitted</th>
+                        <th className="py-2.5 px-3 font-semibold">Submitted</th>
+                        <th className="py-2.5 px-3 font-semibold">Basic Status</th>
+                        <th className="py-2.5 px-3 font-semibold text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                      {basicRegistrations.map((item) => (
-                        <tr key={item.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
-                          <td className="py-2.5 px-3 font-bold text-slate-900 dark:text-white">
-                            {item.fullName}
-                          </td>
-                          <td className="py-2.5 px-3 font-mono text-slate-600 dark:text-slate-300">
-                            {item.email}
-                          </td>
-                          <td className="py-2.5 px-3 text-right text-slate-500 tabular-nums">
-                            {new Date(item.submittedAt).toLocaleString()}
-                          </td>
-                        </tr>
-                      ))}
+                      {basicRegistrations.map((item) => {
+                        const matchedAct = activations.find(
+                          (a) => a.email.toLowerCase().trim() === item.email.toLowerCase().trim()
+                        );
+                        const isItemActivated = Boolean(item.isActivated || matchedAct?.isActivated);
+                        return (
+                          <tr key={item.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                            <td className="py-2.5 px-3 font-bold text-slate-900 dark:text-white">
+                              {item.fullName}
+                            </td>
+                            <td className="py-2.5 px-3 font-mono text-slate-600 dark:text-slate-300">
+                              {item.email}
+                            </td>
+                            <td className="py-2.5 px-3 text-slate-500 tabular-nums">
+                              {new Date(item.submittedAt).toLocaleString()}
+                            </td>
+                            <td className="py-2.5 px-3">
+                              {isItemActivated ? (
+                                <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded-md font-bold text-[10px]">
+                                  Activated
+                                </span>
+                              ) : (
+                                <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 rounded-md font-bold text-[10px]">
+                                  Locked
+                                </span>
+                              )}
+                            </td>
+                            <td className="py-2.5 px-3 text-right">
+                              <button
+                                type="button"
+                                onClick={() => handleToggleBasicActivation(item, isItemActivated)}
+                                className={`px-3 py-1 rounded-lg text-[11px] font-bold cursor-pointer transition-colors ${
+                                  isItemActivated
+                                    ? 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-rose-50 hover:text-rose-600'
+                                    : 'bg-emerald-600 text-white hover:bg-emerald-500'
+                                }`}
+                              >
+                                {isItemActivated ? 'Deactivate' : 'Activate'}
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

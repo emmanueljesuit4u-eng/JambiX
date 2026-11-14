@@ -640,15 +640,20 @@ export async function adminToggleActivation(
   isActivated: boolean,
   paymentReference: string = 'MANUAL-ADMIN-OVERRIDE'
 ): Promise<void> {
-  const activationId = sanitizeActivationId(email);
+  const cleanEmail = email.toLowerCase().trim();
+  const activationId = sanitizeActivationId(cleanEmail);
   const path = `accountActivations/${activationId}`;
   try {
     const actRef = doc(db, 'accountActivations', activationId);
+    const existingSnap = await getDoc(actRef);
+    const existingData = existingSnap.exists() ? (existingSnap.data() as AccountActivationData) : null;
+
     await setDoc(
       actRef,
       {
         id: activationId,
-        email: email.toLowerCase().trim(),
+        email: cleanEmail,
+        registeredAt: existingData?.registeredAt || Date.now(),
         isActivated,
         activatedAt: isActivated ? Date.now() : 0,
         paymentReference: isActivated ? paymentReference : 'DEACTIVATED-BY-ADMIN',
@@ -656,12 +661,29 @@ export async function adminToggleActivation(
       },
       { merge: true }
     );
+
+    // Also synchronize any matching UNIPORT Basic tab submission(s) with this email
+    try {
+      const basicQ = query(collection(db, 'basicRegistrations'), where('email', '==', cleanEmail));
+      const basicSnap = await getDocs(basicQ);
+      await Promise.all(
+        basicSnap.docs.map((docSnap) =>
+          updateDoc(doc(db, 'basicRegistrations', docSnap.id), {
+            isActivated,
+            activatedAt: isActivated ? Date.now() : 0,
+          })
+        )
+      );
+    } catch (syncErr) {
+      console.warn('basicRegistrations email sync note:', syncErr);
+    }
   } catch (error) {
     if (isOfflineError(error)) {
       console.warn('adminToggleActivation offline note');
       return;
     }
     handleFirestoreError(error, OperationType.WRITE, path);
+    throw error;
   }
 }
 
@@ -783,6 +805,8 @@ export interface BasicRegistrationData {
   email: string;
   fullName: string;
   submittedAt: number;
+  isActivated?: boolean;
+  activatedAt?: number;
   createdAt?: unknown;
 }
 
@@ -806,6 +830,7 @@ export async function submitBasicRegistration(
     email: cleanEmail,
     fullName: cleanName,
     submittedAt,
+    isActivated: false,
     createdAt: serverTimestamp(),
   };
 
@@ -817,6 +842,7 @@ export async function submitBasicRegistration(
       email: cleanEmail,
       fullName: cleanName,
       submittedAt,
+      isActivated: false,
     };
   } catch (error) {
     handleFirestoreError(error, OperationType.CREATE, path);
@@ -832,6 +858,62 @@ export async function hasSubmittedBasicRegistration(): Promise<boolean> {
     return snap.exists();
   } catch {
     return false;
+  }
+}
+
+export function subscribeToMyBasicRegistration(
+  onUpdate: (data: BasicRegistrationData | null) => void
+): () => void {
+  if (!auth.currentUser) return () => {};
+  const id = `basic_${auth.currentUser.uid}`;
+  const path = `basicRegistrations/${id}`;
+  try {
+    return onSnapshot(
+      doc(db, 'basicRegistrations', id),
+      (snap) => {
+        if (snap.exists()) {
+          onUpdate({
+            ...snap.data(),
+            id: snap.id,
+          } as BasicRegistrationData);
+        } else {
+          onUpdate(null);
+        }
+      },
+      (error) => {
+        if (!isOfflineError(error)) {
+          console.warn('subscribeToMyBasicRegistration note:', error);
+        }
+      }
+    );
+  } catch (error) {
+    if (!isOfflineError(error)) {
+      handleFirestoreError(error, OperationType.GET, path);
+    }
+    return () => {};
+  }
+}
+
+export async function adminToggleBasicActivation(
+  registrationId: string,
+  email: string,
+  isActivated: boolean
+): Promise<void> {
+  const path = `basicRegistrations/${registrationId}`;
+  try {
+    await updateDoc(doc(db, 'basicRegistrations', registrationId), {
+      isActivated,
+      activatedAt: isActivated ? Date.now() : 0,
+    });
+    if (email) {
+      await adminToggleActivation(email, isActivated, 'BASIC-ADMIN-ACTIVATION');
+    }
+  } catch (error) {
+    if (isOfflineError(error)) {
+      return;
+    }
+    handleFirestoreError(error, OperationType.UPDATE, path);
+    throw error;
   }
 }
 

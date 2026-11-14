@@ -272,6 +272,14 @@
           "type": "number",
           "description": "Epoch timestamp in milliseconds when submitted"
         },
+        "isActivated": {
+          "type": "boolean",
+          "description": "Whether admin has activated Basic tab access for this student"
+        },
+        "activatedAt": {
+          "type": "number",
+          "description": "Epoch timestamp in milliseconds when Basic access was activated"
+        },
         "createdAt": {
           "type": "string",
           "description": "Server timestamp of submission"

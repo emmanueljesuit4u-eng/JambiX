@@ -97,12 +97,14 @@ service cloud.firestore {
 
     function isValidBasicRegistration(data) {
       return data.keys().hasAll(['id', 'userId', 'email', 'fullName', 'submittedAt']) &&
-             data.keys().hasOnly(['id', 'userId', 'email', 'fullName', 'submittedAt', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'userId', 'email', 'fullName', 'submittedAt', 'createdAt', 'isActivated', 'activatedAt']) &&
              data.id is string && isValidId(data.id) &&
-             data.userId is string && data.userId == request.auth.uid &&
+             data.userId is string && isValidId(data.userId) &&
              data.email is string && data.email.size() > 3 && data.email.size() <= 120 &&
              data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 120 &&
              data.submittedAt is number &&
+             (!('isActivated' in data) || (data.isActivated is bool)) &&
+             (!('activatedAt' in data) || (data.activatedAt is number)) &&
              (!('createdAt' in data) || data.createdAt is timestamp);
     }
 
@@ -155,17 +157,26 @@ service cloud.firestore {
       allow create: if isValidId(activationId) && isValidAccountActivation(incoming()) && incoming().id == activationId;
       allow update: if isSignedIn() && isValidId(activationId) && isValidAccountActivation(incoming()) &&
                        incoming().id == existing().id &&
-                       incoming().registeredAt == existing().registeredAt &&
+                       (!('registeredAt' in existing()) || incoming().registeredAt == existing().registeredAt) &&
                        (isAdmin() || incoming().diff(existing()).affectedKeys().hasOnly(['isActivated', 'activatedAt', 'paymentReference', 'opayAccount', 'isEmailVerified']));
       allow delete: if isAdmin();
     }
 
-    // Basic tab student submissions (PII Isolation: Only submitter or admin can read single doc; only admin can list all)
+    // Basic tab student submissions (PII Isolation: Only submitter or admin can read single doc; only admin can list all or activate)
     match /basicRegistrations/{registrationId} {
       allow get: if isAdmin() || (isSignedIn() && (registrationId == ('basic_' + request.auth.uid) || (resource != null && existing().userId == request.auth.uid)));
       allow list: if isAdmin();
-      allow create: if isSignedIn() && isValidId(registrationId) && isValidBasicRegistration(incoming()) && incoming().id == registrationId;
-      allow update: if isSignedIn() && isValidId(registrationId) && registrationId == ('basic_' + request.auth.uid) && isValidBasicRegistration(incoming()) && incoming().id == existing().id && incoming().userId == existing().userId;
+      allow create: if isSignedIn() && isValidId(registrationId) && isValidBasicRegistration(incoming()) &&
+                       incoming().id == registrationId &&
+                       incoming().userId == request.auth.uid &&
+                       (!('isActivated' in incoming()) || incoming().isActivated == false);
+      allow update: if isSignedIn() && isValidId(registrationId) && isValidBasicRegistration(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().userId == existing().userId && (
+                         isAdmin() ||
+                         (incoming().userId == request.auth.uid &&
+                          incoming().diff(existing()).affectedKeys().hasOnly(['email', 'fullName', 'submittedAt', 'createdAt']))
+                       );
       allow delete: if isAdmin();
     }
 
