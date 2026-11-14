@@ -47,19 +47,12 @@ import {
 import { CbtTestModal } from './CbtTestModal';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
-import {
-  LiveLeaderboardTab,
-  isTwoHourFullCbtRecord,
-  formatCandidateName,
-} from './LiveLeaderboardTab';
 import { ActivationPaywallModal } from './ActivationPaywallModal';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { auth } from '../../lib/firebase';
 import {
   getUserTestResults,
-  subscribeToAllTestResults,
-  TestResultData,
 } from '../../lib/firestoreService';
 import {
   getLocalTestResults,
@@ -225,111 +218,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     }
   };
 
-  // Live 2-Hour CBT Top Score State
-  const [leaderboardTopScore, setLeaderboardTopScore] = useState<{
-    topScore: number;
-    leaderName: string;
-    totalCandidates: number;
-    timeSpentSeconds: number;
-    userBestScore?: number;
-    userRank?: number;
-  }>({
-    topScore: 0,
-    leaderName: '',
-    totalCandidates: 0,
-    timeSpentSeconds: 0,
-  });
-
-  // Real-time synchronization of the National 2-Hour CBT Top Score
+  // Listen for test submissions and history navigation events
   useEffect(() => {
-    const updateStatsFromResults = (results: TestResultData[]) => {
-      let localTwoHourTests: TestResultData[] = [];
-      try {
-        const rawLocal = localStorage.getItem('jambix_offline_tests_v1');
-        if (rawLocal) {
-          const parsed = JSON.parse(rawLocal) as any[];
-          localTwoHourTests = parsed
-            .filter((lt) => lt.totalQuestions === 180 && (lt.testType === 'full' || lt.testType === 'full_2hr_cbt' || (lt.testTitle && lt.testTitle.toLowerCase().includes('full'))))
-            .map((lt) => ({
-              id: lt.id,
-              userId: lt.userId || auth.currentUser?.uid || '',
-              testTitle: lt.testTitle,
-              testType: lt.testType,
-              score: lt.score,
-              totalQuestions: 180,
-              percentage: lt.percentage,
-              timeSpentSeconds: lt.timeSpentSeconds,
-              candidateName: lt.candidateName || user?.name || 'UTME Candidate',
-              userEmail: lt.userEmail || user?.email || '',
-              jambScore: lt.jambScore,
-            }));
-        }
-      } catch (e) {
-        console.warn('Could not read local tests for dashboard topscore:', e);
-      }
-
-      const cloudIds = new Set(results.map((d) => d.id));
-      const combined = [...results, ...localTwoHourTests.filter((lt) => !cloudIds.has(lt.id))];
-
-      // Strictly 2-hour tests
-      const allTwoHour = combined
-        .filter(isTwoHourFullCbtRecord)
-        .map((t) => {
-          const scaledScore =
-            typeof t.jambScore === 'number' && t.jambScore >= 0
-              ? Math.min(400, Math.round(t.jambScore))
-              : t.totalQuestions > 0
-              ? Math.min(400, Math.round((t.score / t.totalQuestions) * 400))
-              : 0;
-          return {
-            ...t,
-            scaledScore,
-            candidateName: formatCandidateName(t.candidateName, t.userEmail, t.userId),
-          };
-        })
-        .sort((a, b) => {
-          if (b.scaledScore !== a.scaledScore) return b.scaledScore - a.scaledScore;
-          return a.timeSpentSeconds - b.timeSpentSeconds;
-        });
-
-      // High scorers (>= 200 marks out of 400)
-      const highScorers = allTwoHour.filter((t) => t.scaledScore >= 200);
-      const displayLeader = highScorers.length > 0 ? highScorers[0] : allTwoHour[0];
-
-      if (displayLeader) {
-        const myIndex = allTwoHour.findIndex(
-          (q) => (auth.currentUser && q.userId === auth.currentUser.uid) || (user?.email && q.userEmail === user.email)
-        );
-
-        setLeaderboardTopScore({
-          topScore: displayLeader.scaledScore,
-          leaderName: displayLeader.candidateName,
-          totalCandidates: highScorers.length > 0 ? highScorers.length : allTwoHour.length,
-          timeSpentSeconds: displayLeader.timeSpentSeconds,
-          userBestScore: myIndex >= 0 ? allTwoHour[myIndex].scaledScore : undefined,
-          userRank: myIndex >= 0 ? myIndex + 1 : undefined,
-        });
-      } else {
-        setLeaderboardTopScore({
-          topScore: 0,
-          leaderName: '',
-          totalCandidates: 0,
-          timeSpentSeconds: 0,
-        });
-      }
-    };
-
-    // Calculate immediately on mount from local storage cache
-    updateStatsFromResults([]);
-
-    let latestCloud: TestResultData[] = [];
-    const unsubscribe = subscribeToAllTestResults((data) => {
-      latestCloud = data;
-      updateStatsFromResults(data);
-    });
-
     const handleEvent = () => {
-      updateStatsFromResults(latestCloud);
       loadStoredData();
     };
     const handleOpenHistory = (e: any) => {
@@ -345,7 +236,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     window.addEventListener('jambix_open_history', handleOpenHistory);
 
     return () => {
-      unsubscribe();
       window.removeEventListener('storage', handleEvent);
       window.removeEventListener('jambix_test_submitted', handleEvent);
       window.removeEventListener('jambix_open_history', handleOpenHistory);
@@ -384,11 +274,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
           <nav className="flex-1 flex flex-col gap-2 w-full px-2">
             {[
               { id: 'Home', icon: Home, label: 'Home' },
-              { id: 'History', icon: Clock, label: 'History' },
-              { id: 'Leaderboard', icon: Trophy, label: 'Leaders' },
               { id: 'Novels', icon: BookMarked, label: 'Novels' },
               { id: 'Test', icon: Monitor, label: 'Test' },
               { id: 'Archive', icon: BookOpen, label: '1978-2026' },
+              { id: 'Basic', icon: Layers, label: 'basic' },
             ].map((item) => {
               const Icon = item.icon;
               const isActive = activeNav === item.id;
@@ -436,19 +325,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
             {/* Right Action Controls: Clean and spacious */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {/* Live 2-Hour Leaderboard Top Score Pill */}
-              {leaderboardTopScore.topScore > 0 && (
-                <button
-                  type="button"
-                  onClick={() => handleNavClick('Leaderboard')}
-                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-black bg-amber-100 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors cursor-pointer shadow-2xs"
-                  title="Click to view National Live 2-Hour Leaderboard"
-                >
-                  <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
-                  <span>2-Hr Top: <strong className="text-amber-700 dark:text-amber-300">{leaderboardTopScore.topScore}/400</strong></span>
-                </button>
-              )}
-
               {/* Free Access Badge */}
               <div
                 className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
@@ -786,16 +662,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
 
 
-            {/* View: Live National UTME Leaderboard */}
-            {activeNav === 'Leaderboard' && (
-              <LiveLeaderboardTab
-                onLaunchExam={() => handleLaunchTest('JAMB UTME Comprehensive 180 Qs CBT Mock', 'jamb')}
-                currentUserId={auth.currentUser?.uid}
-                currentUserEmail={user?.email}
-                currentUserName={user?.name}
-              />
-            )}
-
             {/* View: JAMB Novels Hub */}
             {activeNav === 'Novels' && (
               <NovelsTab
@@ -810,6 +676,42 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 onLaunchTest={handleLaunchTest}
                 showToast={showToast}
               />
+            )}
+
+            {/* View: basic */}
+            {activeNav === 'Basic' && (
+              <div className="grid grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto">
+                <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
+                  <img
+                    src="/assets/aistudio/acadia_9e76a954.jpg"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover blur-sm scale-110 pointer-events-none"
+                  />
+                  <div
+                    className="absolute inset-0 bg-slate-950/50 pointer-events-none"
+                    aria-hidden="true"
+                  />
+                  <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-sm">
+                    100 questions, 50 mins
+                  </h3>
+                </div>
+                <div className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex items-center justify-center text-center transition-colors">
+                  <img
+                    src="/assets/aistudio/acadia_9e76a954.jpg"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 w-full h-full object-cover blur-sm scale-110 pointer-events-none"
+                  />
+                  <div
+                    className="absolute inset-0 bg-slate-950/50 pointer-events-none"
+                    aria-hidden="true"
+                  />
+                  <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-sm">
+                    50 questions, 30 mins
+                  </h3>
+                </div>
+              </div>
             )}
 
             {/* View: Test History & Detailed Question-by-Question Review */}
@@ -1381,10 +1283,10 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 py-1.5 flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
-          { id: 'History', icon: Clock, label: 'History' },
           { id: 'Test', icon: Monitor, label: 'CBT' },
           { id: 'Novels', icon: BookMarked, label: 'Novels' },
           { id: 'Archive', icon: BookOpen, label: '1978-2026' },
+          { id: 'Basic', icon: Layers, label: 'basic' },
         ].map((item) => {
           const Icon = item.icon;
           const isActive = activeNav === item.id;
