@@ -883,7 +883,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                   </h2>
                   <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 text-center space-y-2 shadow-2xs">
                     <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100">
-                      To activate and get access, pay ₦200 (naira) to the account below to activate for one month
+                      To activate and get access, pay ₦500 (naira) to the account below to activate for one month
                     </p>
                     <div className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 space-y-0.5 font-medium tabular-nums">
                       <p>
@@ -909,7 +909,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             'basic_100',
                             'UNIPORT Basic'
                           )
-                        : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                        : showToast('To activate and get access, pay ₦500 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
@@ -920,7 +920,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               'basic_100',
                               'UNIPORT Basic'
                             )
-                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                          : showToast('To activate and get access, pay ₦500 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
                       }
                     }}
                     className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors cursor-pointer"
@@ -948,7 +948,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               'basic_100',
                               'UNIPORT Basic'
                             )
-                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                          : showToast('To activate and get access, pay ₦500 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
                       }}
                       className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-white border text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer ${
                         isBasicActivated
@@ -979,7 +979,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             'basic_50',
                             'UNIPORT Basic'
                           )
-                        : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
+                        : showToast('To activate and get access, pay ₦500 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).')
                     }
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
@@ -990,7 +990,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               'basic_50',
                               'UNIPORT Basic'
                             )
-                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                          : showToast('To activate and get access, pay ₦500 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
                       }
                     }}
                     className="relative overflow-hidden aspect-square bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs flex flex-col items-center justify-center gap-3 text-center transition-colors cursor-pointer"
@@ -1018,7 +1018,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                               'basic_50',
                               'UNIPORT Basic'
                             )
-                          : showToast('To activate and get access, pay ₦200 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
+                          : showToast('To activate and get access, pay ₦500 to Kuda Mfb (2076620559 - Ikue Jesuit Barilemeloo).');
                       }}
                       className={`relative z-10 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-white border text-xs font-bold shadow-md backdrop-blur-xs transition-colors cursor-pointer ${
                         isBasicActivated

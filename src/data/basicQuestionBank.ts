@@ -6,17 +6,20 @@
  * Completely isolated from the JAMB UTME bank.
  *
  * Composition:
- * - Use of English: 100 questions (Comprehension & Summary, Lexis & Structure, Oral Forms)
- * - Biology:        300 questions (Biological Organisation, Vertebrates, Invertebrates)
- * - Physics:        100 questions (7 syllabus clusters)
- * - Chemistry:      100 questions (11 syllabus clusters)
- * - Mathematics:    100 questions (6 syllabus clusters)
+ * - Use of English: 100 questions (5 balanced clusters: Comprehension & Summary, Lexis/Synonyms/Antonyms/Spelling,
+ *                                  Grammar/Concord/Sentence Structure, Idioms & Figurative Language, Oral Forms)
+ * - Biology:        300 questions (14 syllabus topic clusters across Part 1 Biological Organisation,
+ *                                  Part 2 Vertebrates, and Part 3 Invertebrates)
+ * - Physics:        100 questions (7 syllabus topic clusters across Sections A–G)
+ * - Chemistry:      100 questions (11 syllabus topic clusters across Sections A–K)
+ * - Mathematics:    100 questions (6 syllabus topic clusters across Sections A–F)
  *
- * Balanced Round-Robin Test Generation:
+ * Balanced Topic Distribution During Tests:
  * - 100-Question Exam (50 mins): 20 questions from each of the 5 subjects (100 total)
  * - 50-Question Exam (30 mins):  10 questions from each of the 5 subjects (50 total)
- * Within every subject, questions are drawn evenly via round-robin across all topic
- * clusters in that subject's syllabus while prioritizing unseen questions.
+ * Within every subject, the engine round-robins across all topic clusters (and across
+ * syllabus parts in Biology) while prioritizing unseen items within each cluster so no
+ * topic is ever starved or clustered—even across repeated practice sessions.
  */
 
 import type { VerifiedQuestion } from './verifiedTextbooks';
@@ -77,6 +80,80 @@ function shuffleItems<T>(items: T[]): T[] {
 
 type AnyBasicItem = BasicBankQuestion | BasicBiologyItem;
 
+/**
+ * Resolves a fine-grained syllabus cluster key for balanced round-robin sampling.
+ * In particular, refines Use of English's 60-item "Lexis and Structure" block into
+ * distinct Lexis, Grammar & Concord, and Idioms/Figurative clusters so all 5 branches
+ * of English are sampled evenly (4 each in a 20-Q test, 2 each in a 10-Q test).
+ */
+export function getEffectiveTopicCluster(
+  item: AnyBasicItem,
+  subjectLabel: BasicSubjectName
+): string {
+  if (subjectLabel === 'Use of English' && item.topicCluster === 'Lexis and Structure') {
+    const topicLower = (item.topic || '').toLowerCase();
+    if (
+      topicLower.includes('synonym') ||
+      topicLower.includes('antonym') ||
+      topicLower.includes('spelling')
+    ) {
+      return 'Lexis: Synonyms, Antonyms & Spelling';
+    }
+    if (
+      topicLower.includes('idiom') ||
+      topicLower.includes('figurative') ||
+      topicLower.includes('figures of speech')
+    ) {
+      return 'Idioms & Figurative Expressions';
+    }
+    return 'Grammar, Concord & Sentence Structure';
+  }
+  return item.topicCluster || 'General';
+}
+
+/**
+ * Orders clusters for round-robin traversal.
+ * For Biology (which spans 3 distinct syllabus parts across 14 clusters), interleaves
+ * clusters across Part 1, Part 2, and Part 3 so even a 10-question draw hits all
+ * three parts evenly (3–4 per part) without bias toward any branch.
+ */
+function buildRoundRobinClusterOrder(
+  clusterEntries: {
+    key: string;
+    partGroup: string;
+    hasUnseen: boolean;
+  }[]
+): string[] {
+  const byPart: Record<string, typeof clusterEntries> = {};
+  for (const entry of clusterEntries) {
+    if (!byPart[entry.partGroup]) byPart[entry.partGroup] = [];
+    byPart[entry.partGroup].push(entry);
+  }
+
+  // Within each part: shuffle clusters, prioritizing clusters with unseen items first
+  const partKeys = shuffleItems(Object.keys(byPart));
+  for (const pKey of partKeys) {
+    const unseenClusters = shuffleItems(byPart[pKey].filter((e) => e.hasUnseen));
+    const seenClusters = shuffleItems(byPart[pKey].filter((e) => !e.hasUnseen));
+    byPart[pKey] = [...unseenClusters, ...seenClusters];
+  }
+
+  // Interleave across parts (Part A -> Part B -> Part C -> ...)
+  const orderedKeys: string[] = [];
+  let added = true;
+  while (added) {
+    added = false;
+    for (const pKey of partKeys) {
+      const next = byPart[pKey].shift();
+      if (next) {
+        orderedKeys.push(next.key);
+        added = true;
+      }
+    }
+  }
+  return orderedKeys;
+}
+
 function pickBalancedFromSubject(
   items: AnyBasicItem[],
   perSubjectCount: number,
@@ -88,81 +165,105 @@ function pickBalancedFromSubject(
   const target = Math.max(1, Math.min(perSubjectCount, items.length));
   const localUsed = new Set<string>();
 
-  // 1. Group items by topicCluster
-  const byCluster: Record<string, AnyBasicItem[]> = {};
+  // 1. Group items into fine-grained topic clusters and partition unseen vs seen inside each cluster
+  const clusterMap = new Map<
+    string,
+    {
+      unseen: AnyBasicItem[];
+      seen: AnyBasicItem[];
+      partGroup: string;
+    }
+  >();
+
   for (const item of items) {
-    const cluster = item.topicCluster || 'General';
-    if (!byCluster[cluster]) {
-      byCluster[cluster] = [];
+    const clusterKey = getEffectiveTopicCluster(item, subjectLabel);
+    const partGroup =
+      'part' in item && item.part ? item.part : 'Default';
+    let bucket = clusterMap.get(clusterKey);
+    if (!bucket) {
+      bucket = { unseen: [], seen: [], partGroup };
+      clusterMap.set(clusterKey, bucket);
     }
-    byCluster[cluster].push(item);
-  }
-
-  // 2. Shuffle within each cluster and shuffle cluster traversal order
-  for (const key of Object.keys(byCluster)) {
-    byCluster[key] = shuffleItems(byCluster[key]);
-  }
-  const clusterKeys = shuffleItems(Object.keys(byCluster));
-
-  const picked: AnyBasicItem[] = [];
-
-  // 3. Pass 1: Round-robin across all topic clusters, prioritizing unseen items
-  let addedInPass1 = true;
-  while (picked.length < target && addedInPass1) {
-    addedInPass1 = false;
-    for (const cKey of clusterKeys) {
-      if (picked.length >= target) break;
-      const pool = byCluster[cKey];
-      const nextIdx = pool.findIndex((item) => {
-        const sig = getBasicQuestionSignature(item.text);
-        return (
-          !localUsed.has(sig) &&
-          !globalSessionUsed.has(sig) &&
-          !excludeSignatures.has(sig)
-        );
-      });
-      if (nextIdx !== -1) {
-        const [item] = pool.splice(nextIdx, 1);
-        const sig = getBasicQuestionSignature(item.text);
-        localUsed.add(sig);
-        globalSessionUsed.add(sig);
-        picked.push(item);
-        addedInPass1 = true;
-      }
+    const sig = getBasicQuestionSignature(item.text);
+    if (excludeSignatures.has(sig)) {
+      bucket.seen.push(item);
+    } else {
+      bucket.unseen.push(item);
     }
   }
 
-  // 4. Pass 2: Fallback round-robin across remaining items without intra-test duplicates
-  let addedInPass2 = true;
-  while (picked.length < target && addedInPass2) {
-    addedInPass2 = false;
+  // 2. Shuffle unseen and seen pools independently inside each cluster,
+  //    then combine into [unseen..., seen...] so every cluster prioritizes fresh questions first
+  //    without ever starving smaller clusters when their unseen pool runs out.
+  const clusterPools: Record<string, AnyBasicItem[]> = {};
+  const clusterMeta: { key: string; partGroup: string; hasUnseen: boolean }[] = [];
+
+  for (const [key, bucket] of clusterMap.entries()) {
+    clusterPools[key] = [
+      ...shuffleItems(bucket.unseen),
+      ...shuffleItems(bucket.seen),
+    ];
+    clusterMeta.push({
+      key,
+      partGroup: bucket.partGroup,
+      hasUnseen: bucket.unseen.length > 0,
+    });
+  }
+
+  const clusterKeys = buildRoundRobinClusterOrder(clusterMeta);
+
+  // 3. Strict Cluster-First Round-Robin across all clusters in rounds.
+  //    Every cluster contributes 1 question before any cluster contributes a 2nd, guaranteeing
+  //    balanced topic distribution without clustering into any single topic.
+  const rounds: { item: AnyBasicItem; cluster: string }[][] = [];
+  let totalPicked = 0;
+
+  while (totalPicked < target) {
+    const currentRound: { item: AnyBasicItem; cluster: string }[] = [];
     for (const cKey of clusterKeys) {
-      if (picked.length >= target) break;
-      const pool = byCluster[cKey];
+      if (totalPicked >= target) break;
+      const pool = clusterPools[cKey];
       const nextIdx = pool.findIndex((item) => {
         const sig = getBasicQuestionSignature(item.text);
         return !localUsed.has(sig) && !globalSessionUsed.has(sig);
       });
       if (nextIdx !== -1) {
-        const [item] = pool.splice(nextIdx, 1);
-        const sig = getBasicQuestionSignature(item.text);
+        const [pickedItem] = pool.splice(nextIdx, 1);
+        const sig = getBasicQuestionSignature(pickedItem.text);
         localUsed.add(sig);
         globalSessionUsed.add(sig);
-        picked.push(item);
-        addedInPass2 = true;
+        currentRound.push({ item: pickedItem, cluster: cKey });
+        totalPicked++;
       }
     }
+    if (currentRound.length === 0) break;
+    rounds.push(currentRound);
   }
 
-  // 5. Shuffle the picked items inside this subject so topic clusters interleave naturally
-  const ordered = shuffleItems(picked);
+  // 4. Shuffle within each round while preventing back-to-back same-cluster questions across round boundaries
+  const ordered: { item: AnyBasicItem; cluster: string }[] = [];
+  for (const round of rounds) {
+    const shuffledRound = shuffleItems(round);
+    if (ordered.length > 0 && shuffledRound.length > 1) {
+      const prevCluster = ordered[ordered.length - 1].cluster;
+      if (shuffledRound[0].cluster === prevCluster) {
+        const diffIdx = shuffledRound.findIndex((entry) => entry.cluster !== prevCluster);
+        if (diffIdx > 0) {
+          const tmp = shuffledRound[0];
+          shuffledRound[0] = shuffledRound[diffIdx];
+          shuffledRound[diffIdx] = tmp;
+        }
+      }
+    }
+    ordered.push(...shuffledRound);
+  }
 
-  return ordered.map((item, idx): VerifiedQuestion => {
+  return ordered.map(({ item, cluster }, idx): VerifiedQuestion => {
     const subNum = idx + 1;
     const partLabel =
       'part' in item && item.part
-        ? `${item.part} — ${item.topicCluster}`
-        : `UNIPORT Basic ${subjectLabel} — ${item.topicCluster}`;
+        ? `${item.part} — ${cluster}`
+        : `UNIPORT Basic ${subjectLabel} — ${cluster}`;
 
     return {
       id: idOffset + item.questionNumber,
@@ -171,7 +272,7 @@ function pickBalancedFromSubject(
       subjectQuestionNumber: subNum,
       subjectTotalQuestions: ordered.length,
       subject: subjectLabel,
-      topic: `${item.topicCluster} · ${item.topic}`,
+      topic: `${cluster} · ${item.topic}`,
       text: item.text,
       options: {
         A: item.options.A,

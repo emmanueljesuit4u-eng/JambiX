@@ -4915,67 +4915,92 @@ export function generateBasicBiologyTest(
   const count = Math.max(1, Math.min(targetCount, BASIC_BIOLOGY_ITEMS.length));
   const sessionUsed = new Set<string>();
 
-  // 1. Group all 300 questions into their syllabus topic clusters
-  const byCluster: Record<string, BasicBiologyItem[]> = {};
+  // 1. Group all 300 questions into their syllabus topic clusters and split unseen vs seen per cluster
+  const clusterMap = new Map<
+    string,
+    { unseen: BasicBiologyItem[]; seen: BasicBiologyItem[]; part: string }
+  >();
   for (const item of BASIC_BIOLOGY_ITEMS) {
-    if (!byCluster[item.topicCluster]) {
-      byCluster[item.topicCluster] = [];
+    let bucket = clusterMap.get(item.topicCluster);
+    if (!bucket) {
+      bucket = { unseen: [], seen: [], part: item.part };
+      clusterMap.set(item.topicCluster, bucket);
     }
-    byCluster[item.topicCluster].push(item);
+    if (excludeSignatures.has(getBasicQuestionSignature(item.text))) {
+      bucket.seen.push(item);
+    } else {
+      bucket.unseen.push(item);
+    }
   }
 
-  // 2. Shuffle items inside every cluster so draws vary on every test run
-  for (const clusterKey of Object.keys(byCluster)) {
-    byCluster[clusterKey] = shuffleItems(byCluster[clusterKey]);
+  // 2. Prioritize unseen items inside each cluster without ever starving smaller clusters
+  const clusterPools: Record<string, BasicBiologyItem[]> = {};
+  const byPart: Record<string, { key: string; hasUnseen: boolean }[]> = {};
+
+  for (const [key, bucket] of clusterMap.entries()) {
+    clusterPools[key] = [...shuffleItems(bucket.unseen), ...shuffleItems(bucket.seen)];
+    if (!byPart[bucket.part]) byPart[bucket.part] = [];
+    byPart[bucket.part].push({ key, hasUnseen: bucket.unseen.length > 0 });
   }
 
-  // 3. Shuffle cluster order so tests don't always pick clusters in the same order
-  const clusterKeys = shuffleItems(Object.keys(byCluster));
-  const selectedItems: BasicBiologyItem[] = [];
-
-  // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
-  let addedInPass1 = true;
-  while (selectedItems.length < count && addedInPass1) {
-    addedInPass1 = false;
-    for (const cKey of clusterKeys) {
-      if (selectedItems.length >= count) break;
-      const pool = byCluster[cKey];
-      const nextIdx = pool.findIndex((item) => {
-        const sig = getBasicQuestionSignature(item.text);
-        return !sessionUsed.has(sig) && !excludeSignatures.has(sig);
-      });
-      if (nextIdx !== -1) {
-        const [pickedItem] = pool.splice(nextIdx, 1);
-        sessionUsed.add(getBasicQuestionSignature(pickedItem.text));
-        selectedItems.push(pickedItem);
-        addedInPass1 = true;
+  // 3. Interleave clusters across Parts 1, 2, and 3 so any test length draws evenly across all branches
+  const partKeys = shuffleItems(Object.keys(byPart));
+  for (const pKey of partKeys) {
+    const withUnseen = shuffleItems(byPart[pKey].filter((e) => e.hasUnseen));
+    const withoutUnseen = shuffleItems(byPart[pKey].filter((e) => !e.hasUnseen));
+    byPart[pKey] = [...withUnseen, ...withoutUnseen];
+  }
+  const clusterKeys: string[] = [];
+  let addedKey = true;
+  while (addedKey) {
+    addedKey = false;
+    for (const pKey of partKeys) {
+      const next = byPart[pKey].shift();
+      if (next) {
+        clusterKeys.push(next.key);
+        addedKey = true;
       }
     }
   }
 
-  // 5. Pass 2: If unseen questions across clusters are exhausted, continue round-robin across remaining
-  // items in each cluster (without session duplicates) so topic balance is STILL preserved.
-  let addedInPass2 = true;
-  while (selectedItems.length < count && addedInPass2) {
-    addedInPass2 = false;
+  // 4. Strict cluster-first round-robin across all 14 topic clusters
+  const rounds: BasicBiologyItem[][] = [];
+  let totalPicked = 0;
+
+  while (totalPicked < count) {
+    const currentRound: BasicBiologyItem[] = [];
     for (const cKey of clusterKeys) {
-      if (selectedItems.length >= count) break;
-      const pool = byCluster[cKey];
-      const nextIdx = pool.findIndex((item) => {
-        const sig = getBasicQuestionSignature(item.text);
-        return !sessionUsed.has(sig);
-      });
+      if (totalPicked >= count) break;
+      const pool = clusterPools[cKey];
+      const nextIdx = pool.findIndex((item) => !sessionUsed.has(getBasicQuestionSignature(item.text)));
       if (nextIdx !== -1) {
         const [pickedItem] = pool.splice(nextIdx, 1);
         sessionUsed.add(getBasicQuestionSignature(pickedItem.text));
-        selectedItems.push(pickedItem);
-        addedInPass2 = true;
+        currentRound.push(pickedItem);
+        totalPicked++;
       }
     }
+    if (currentRound.length === 0) break;
+    rounds.push(currentRound);
   }
 
-  // 6. Complete random shuffle of selected questions so exam flow mixes all syllabus branches naturally
-  const finalOrdered = shuffleItems(selectedItems);
+  // 5. Shuffle inside each round while preventing back-to-back same-cluster questions across round boundaries
+  const finalOrdered: BasicBiologyItem[] = [];
+  for (const round of rounds) {
+    const shuffledRound = shuffleItems(round);
+    if (finalOrdered.length > 0 && shuffledRound.length > 1) {
+      const prevCluster = finalOrdered[finalOrdered.length - 1].topicCluster;
+      if (shuffledRound[0].topicCluster === prevCluster) {
+        const diffIdx = shuffledRound.findIndex((item) => item.topicCluster !== prevCluster);
+        if (diffIdx > 0) {
+          const tmp = shuffledRound[0];
+          shuffledRound[0] = shuffledRound[diffIdx];
+          shuffledRound[diffIdx] = tmp;
+        }
+      }
+    }
+    finalOrdered.push(...shuffledRound);
+  }
 
   return finalOrdered.map((item, idx): VerifiedQuestion => {
     const qNum = idx + 1;
