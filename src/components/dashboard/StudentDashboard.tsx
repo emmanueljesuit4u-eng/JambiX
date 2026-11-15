@@ -898,7 +898,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </div>
                     <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800 space-y-2">
                       <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        send screenshot of payment and full name to the link below
+                        Tap the WhatsApp number below to send receipt of payment, full name and email address for verification and account activation
                       </p>
                       <a
                         href="https://wa.me/2349016679401"
