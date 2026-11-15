@@ -112,7 +112,7 @@ export const isUniportBasicCheck = isBasicBiologyCheck;
 export const getBasicBiologyFormat = (title?: string, type?: string): 'basic_100' | 'basic_50' => {
   const t = (title || '').toLowerCase();
   const tp = (type || '').toLowerCase().trim();
-  if (tp === 'basic_biology_50' || tp === 'basic_50' || t.includes('50 questions') || t.includes('30 mins')) {
+  if (tp === 'basic_biology_50' || tp === 'basic_50' || t.includes('50 questions') || t.includes('25 mins') || t.includes('30 mins')) {
     return 'basic_50';
   }
   return 'basic_100';
@@ -148,7 +148,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     isInitialBasic ? initialBasicMode : isInitialLekki ? 'novel' : 'full'
   );
   const [duration, setDuration] = useState<number>(
-    isInitialBasic ? (initialBasicMode === 'basic_50' ? 30 : 50) : isInitialLekki ? 20 : 120
+    isInitialBasic ? (initialBasicMode === 'basic_50' ? 25 : 45) : isInitialLekki ? 20 : 120
   );
   const [seenCount, setSeenCount] = useState<number>(0);
   const [includeCustomPdfQuestions, setIncludeCustomPdfQuestions] = useState<boolean>(true);
@@ -160,7 +160,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(
-    (isInitialBasic ? (initialBasicMode === 'basic_50' ? 30 : 50) : isInitialLekki ? 20 : 120) * 60
+    (isInitialBasic ? (initialBasicMode === 'basic_50' ? 25 : 45) : isInitialLekki ? 20 : 120) * 60
   );
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
 
@@ -198,7 +198,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     if (isBasicBio) {
       const basicFmt = getBasicBiologyFormat(testTitle, testType);
-      const mins = basicFmt === 'basic_50' ? 30 : 50;
+      const mins = basicFmt === 'basic_50' ? 25 : 45;
       setSelectedSubjects([...BASIC_SUBJECT_ORDER]);
       setExamMode(basicFmt);
       setDuration(mins);
@@ -329,8 +329,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const isFullCbtExam = !isBasicBio && !isLekkiNovel && (effectiveMode === 'full' || effectiveSubjects.length >= 4);
     const effectiveDurationMinutes = isBasicBio
       ? basicMode === 'basic_50'
-        ? 30
-        : 50
+        ? 25
+        : 45
       : isLekkiNovel
       ? 20
       : isFullCbtExam
@@ -341,7 +341,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     // Generate questions according to user requirements:
     // Full CBT test brings out 60 questions from English and 40 from the 3 other subjects;
-    // Basic Biology brings out 100 Qs (50 mins) or 50 Qs (30 mins) via round-robin across all 14 topic clusters;
+    // UNIPORT Basic brings out 100 Qs (45 mins) or 50 Qs (25 mins) via round-robin across all topic clusters;
     // Lekki Headmaster test brings out strictly 30 questions on The Lekki Headmaster for 20 minutes;
     // Progressive toughness increases with every completed 2-hour test without repeating questions.
     const titleLower = (testTitle || '').toLowerCase();
@@ -466,8 +466,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const isFullTwoHourTest = (effectiveMode === 'full' || finalQuestions.length === 180) && !isLekkiNovel && !isBasicBio;
     const finalAllocatedMinutes = isBasicBio
       ? basicMode === 'basic_50'
-        ? 30
-        : 50
+        ? 25
+        : 45
       : isLekkiNovel
       ? 20
       : isFullTwoHourTest
@@ -533,11 +533,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const isBasic50 = examMode === 'basic_50';
     const isBasic100 = examMode === 'basic_100';
     const isFullTest = !isBasic50 && !isBasic100 && (examMode === 'full' || activeQuestions.length === 180 || duration === 120);
-    // Strict clamp: never allow seconds to exceed allocated CBT time (30m / 50m for Basic, 120m for Full UTME)
+    // Strict clamp: never allow seconds to exceed allocated CBT time (25m / 45m for Basic, 120m for Full UTME)
     const clampedSeconds = isBasic50
-      ? Math.min(30 * 60, Math.max(0, timeLeftSeconds))
+      ? Math.min(25 * 60, Math.max(0, timeLeftSeconds))
       : isBasic100
-      ? Math.min(50 * 60, Math.max(0, timeLeftSeconds))
+      ? Math.min(45 * 60, Math.max(0, timeLeftSeconds))
       : isFullTest
       ? Math.min(120 * 60, Math.max(0, timeLeftSeconds))
       : Math.max(0, timeLeftSeconds);
@@ -678,8 +678,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const computedTestType = isFullTwoHour ? 'full' : (examMode || testType || 'single');
     const computedTitle = isCurrentBasicTest
       ? (examMode === 'basic_50' || activeQuestions.length === 50
-          ? 'UNIPORT Basic CBT (50 Questions · 30 Mins)'
-          : 'UNIPORT Basic CBT (100 Questions · 50 Mins)')
+          ? 'UNIPORT Basic CBT (50 Questions · 25 Mins)'
+          : 'UNIPORT Basic CBT (100 Questions · 45 Mins)')
       : isFullTwoHour
       ? (selectedYear === 'random'
           ? 'Full JAMB UTME CBT (2-Hr Standard Mock - 1978-2026 Mix)'
@@ -1220,8 +1220,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     type="button"
                     onClick={() => {
                       setExamMode('basic_100');
-                      setDuration(50);
-                      setTimeLeftSeconds(50 * 60);
+                      setDuration(45);
+                      setTimeLeftSeconds(45 * 60);
                     }}
                     className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                       examMode === 'basic_100'
@@ -1230,9 +1230,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs">100 questions, 50 mins</span>
+                      <span className="font-bold text-xs">100 questions, 45 mins</span>
                       <span className="text-[10px] font-black px-1.5 py-0.5 bg-emerald-600 text-white rounded">
-                        100 Qs · 50 Mins
+                        100 Qs · 45 Mins
                       </span>
                     </div>
                   </button>
@@ -1241,8 +1241,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     type="button"
                     onClick={() => {
                       setExamMode('basic_50');
-                      setDuration(30);
-                      setTimeLeftSeconds(30 * 60);
+                      setDuration(25);
+                      setTimeLeftSeconds(25 * 60);
                     }}
                     className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
                       examMode === 'basic_50'
@@ -1251,9 +1251,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs">50 questions, 30 mins</span>
+                      <span className="font-bold text-xs">50 questions, 25 mins</span>
                       <span className="text-[10px] font-black px-1.5 py-0.5 bg-slate-900 dark:bg-slate-700 text-white rounded">
-                        50 Qs · 30 Mins
+                        50 Qs · 25 Mins
                       </span>
                     </div>
                   </button>
@@ -1943,9 +1943,9 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
               <Play className="w-4 h-4 fill-current" />
               <span>
                 {examMode === 'basic_100'
-                  ? 'START UNIPORT BASIC CBT EXAM (100 Qs · 50 MINS)'
+                  ? 'START UNIPORT BASIC CBT EXAM (100 Qs · 45 MINS)'
                   : examMode === 'basic_50'
-                  ? 'START UNIPORT BASIC CBT EXAM (50 Qs · 30 MINS)'
+                  ? 'START UNIPORT BASIC CBT EXAM (50 Qs · 25 MINS)'
                   : examMode === 'novel'
                   ? 'START LEKKI HEADMASTER CBT EXAM (30 Qs)'
                   : 'START EXAM NOW'}

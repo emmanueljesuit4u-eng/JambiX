@@ -896,6 +896,20 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         <span className="font-bold text-slate-900 dark:text-white">Bank:</span> Kuda Mfb
                       </p>
                     </div>
+                    <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100">
+                        send screenshot of payment and full name to the link below
+                      </p>
+                      <a
+                        href="https://wa.me/2349016679401"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-xs transition-colors"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>09016679401</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 sm:gap-6">
@@ -905,7 +919,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     onClick={() =>
                       isBasicActivated
                         ? handleLaunchTest(
-                            'UNIPORT Basic CBT (100 Questions · 50 Mins)',
+                            'UNIPORT Basic CBT (100 Questions · 45 Mins)',
                             'basic_100',
                             'UNIPORT Basic'
                           )
@@ -916,7 +930,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         e.preventDefault();
                         isBasicActivated
                           ? handleLaunchTest(
-                              'UNIPORT Basic CBT (100 Questions · 50 Mins)',
+                              'UNIPORT Basic CBT (100 Questions · 45 Mins)',
                               'basic_100',
                               'UNIPORT Basic'
                             )
@@ -936,7 +950,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       aria-hidden="true"
                     />
                     <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-md">
-                      100 questions, 50 mins
+                      100 questions, 45 mins
                     </h3>
                     <button
                       type="button"
@@ -944,7 +958,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         e.stopPropagation();
                         isBasicActivated
                           ? handleLaunchTest(
-                              'UNIPORT Basic CBT (100 Questions · 50 Mins)',
+                              'UNIPORT Basic CBT (100 Questions · 45 Mins)',
                               'basic_100',
                               'UNIPORT Basic'
                             )
@@ -975,7 +989,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     onClick={() =>
                       isBasicActivated
                         ? handleLaunchTest(
-                            'UNIPORT Basic CBT (50 Questions · 30 Mins)',
+                            'UNIPORT Basic CBT (50 Questions · 25 Mins)',
                             'basic_50',
                             'UNIPORT Basic'
                           )
@@ -986,7 +1000,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         e.preventDefault();
                         isBasicActivated
                           ? handleLaunchTest(
-                              'UNIPORT Basic CBT (50 Questions · 30 Mins)',
+                              'UNIPORT Basic CBT (50 Questions · 25 Mins)',
                               'basic_50',
                               'UNIPORT Basic'
                             )
@@ -1006,7 +1020,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       aria-hidden="true"
                     />
                     <h3 className="relative z-10 text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-md">
-                      50 questions, 30 mins
+                      50 questions, 25 mins
                     </h3>
                     <button
                       type="button"
@@ -1014,7 +1028,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         e.stopPropagation();
                         isBasicActivated
                           ? handleLaunchTest(
-                              'UNIPORT Basic CBT (50 Questions · 30 Mins)',
+                              'UNIPORT Basic CBT (50 Questions · 25 Mins)',
                               'basic_50',
                               'UNIPORT Basic'
                             )

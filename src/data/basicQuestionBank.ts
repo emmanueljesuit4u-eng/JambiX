@@ -15,8 +15,8 @@
  * - Mathematics:    100 questions (6 syllabus topic clusters across Sections A–F)
  *
  * Balanced Topic Distribution During Tests:
- * - 100-Question Exam (50 mins): 20 questions from each of the 5 subjects (100 total)
- * - 50-Question Exam (30 mins):  10 questions from each of the 5 subjects (50 total)
+ * - 100-Question Exam (45 mins): 20 questions from each of the 5 subjects (100 total)
+ * - 50-Question Exam (25 mins):  10 questions from each of the 5 subjects (50 total)
  * Within every subject, the engine round-robins across all topic clusters (and across
  * syllabus parts in Biology) while prioritizing unseen items within each cluster so no
  * topic is ever starved or clustered—even across repeated practice sessions.
@@ -292,8 +292,8 @@ function pickBalancedFromSubject(
 
 /**
  * Generates a balanced 5-subject UNIPORT Basic CBT mock exam:
- * - 'basic_100' (50 mins): 20 questions × 5 subjects = 100 questions
- * - 'basic_50'  (30 mins): 10 questions × 5 subjects = 50 questions
+ * - 'basic_100' (45 mins): 20 questions × 5 subjects = 100 questions
+ * - 'basic_50'  (25 mins): 10 questions × 5 subjects = 50 questions
  */
 export function generateUniportBasicTest(
   mode: 'basic_100' | 'basic_50' = 'basic_100',
