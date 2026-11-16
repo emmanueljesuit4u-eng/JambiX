@@ -2,7 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  *
- * UNIPORT BASIC QUESTION BANK (1,000 QUESTIONS ACROSS 5 SUBJECTS)
+ * UNIPORT BASIC QUESTION BANK (1,100 QUESTIONS ACROSS 5 SUBJECTS)
  * Completely isolated from the JAMB UTME bank.
  *
  * Composition:
@@ -11,7 +11,7 @@
  *                                  Grammar/Concord/Sentence Structure, Idioms & Figurative Language, Oral Forms)
  * - Biology:        300 questions (14 syllabus topic clusters across Part 1 Biological Organisation,
  *                                  Part 2 Vertebrates, and Part 3 Invertebrates)
- * - Physics:        100 questions (7 syllabus topic clusters across Sections A–G)
+ * - Physics:        200 questions (11 syllabus topic clusters across Set 1 Q1–100 + Set 2 Q101–200)
  * - Chemistry:      200 questions (13 syllabus topic clusters across Set 1 Q1–100 + Set 2 Q101–200)
  * - Mathematics:    200 questions (6 syllabus topic clusters across Sections A–F: Set 1 Q1–100 + Set 2 Q101–200)
  *
