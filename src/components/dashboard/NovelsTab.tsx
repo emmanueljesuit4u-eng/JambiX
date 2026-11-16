@@ -28,10 +28,9 @@ interface NovelsTabProps {
 
 export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest }) => {
   const [selectedNovelId] = useState<string>('the-lekki-headmaster');
-  const [activeSection, setActiveSection] = useState<'summary' | 'characters' | 'chapters'>('summary');
+  const [activeSection, setActiveSection] = useState<'summary' | 'characters' | 'chapters' | null>(null);
   const [selectedChapterNum, setSelectedChapterNum] = useState<number>(1);
   const [searchCharacter, setSearchCharacter] = useState<string>('');
-  const [showSynopsis, setShowSynopsis] = useState<boolean>(false);
   const [showChapters, setShowChapters] = useState<boolean>(false);
 
   const activeNovel: NovelDetails =
@@ -95,7 +94,7 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest }) => {
               key={tab.id}
               type="button"
               onClick={() => {
-                setActiveSection(tab.id);
+                setActiveSection((prev) => (prev === tab.id ? null : tab.id));
                 setShowChapters(false);
               }}
               className={`w-full px-4 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-between transition-all cursor-pointer border ${
@@ -114,90 +113,15 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest }) => {
         })}
       </div>
 
-      {/* SECTION 1: Overview & Themes */}
+      {/* SECTION 1: Overview */}
       {activeSection === 'summary' && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
-            <div>
-              <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">
-                {activeNovel.jambUsage}
-              </span>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white mt-1">
-                {activeNovel.title}
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Written by <strong className="text-slate-800 dark:text-slate-200">{activeNovel.author}</strong>
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2 shrink-0">
-              <button
-                type="button"
-                onClick={() => setShowSynopsis((prev) => !prev)}
-                aria-expanded={showSynopsis}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 border ${
-                  showSynopsis
-                    ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800'
-                    : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700'
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>{showSynopsis ? 'Hide Summary' : 'Read Summary'}</span>
-                {showSynopsis ? (
-                  <ChevronUp className="w-3.5 h-3.5" />
-                ) : (
-                  <ChevronDown className="w-3.5 h-3.5" />
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setShowChapters(true);
-                  setActiveSection('chapters');
-                }}
-                className="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 border bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700"
-              >
-                <Layers className="w-3.5 h-3.5" />
-                <span>View Chapters</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  onLaunchTest(
-                    'The Lekki Headmaster CBT Examination',
-                    'novel',
-                    'The Lekki Headmaster'
-                  )
-                }
-                className="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5"
-              >
-                <Play className="w-3.5 h-3.5 fill-white" />
-                <span>Start Practice</span>
-              </button>
-            </div>
-          </div>
-
-          {showSynopsis && (
-            <div>
-              <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-                Synopsis &amp; Core Plot
-              </h4>
-              <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
-                {activeNovel.overview}
-              </p>
-            </div>
-          )}
-
-          <div>
-            <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
-              Setting &amp; Cultural Context
-            </h4>
-            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-              {activeNovel.setting}
-            </div>
-          </div>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xs space-y-2">
+          <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            Synopsis &amp; Core Plot
+          </h4>
+          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+            {activeNovel.overview}
+          </p>
         </div>
       )}
 

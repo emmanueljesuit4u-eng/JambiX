@@ -817,16 +817,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
             )}
 
-
-
-            {/* View: JAMB Novels Hub */}
-            {activeNav === 'Novels' && (
-              <NovelsTab
-                onLaunchTest={handleLaunchTest}
-                showToast={showToast}
-              />
-            )}
-
             {/* View: 1978-2026 Past Questions Archive */}
             {activeNav === 'Archive' && (
               <PastQuestionsVaultTab
