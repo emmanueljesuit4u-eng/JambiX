@@ -25,7 +25,6 @@ import {
   Layers,
   Award,
   Cloud,
-  RefreshCw,
   Check,
   AlertTriangle,
   Bookmark,
@@ -35,7 +34,6 @@ import {
   BookMarked,
   Lock,
   Unlock,
-  ShieldCheck,
   XCircle,
   ChevronRight,
   ChevronLeft,
@@ -94,6 +92,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   } = useNetwork();
 
   const [activeNav, setActiveNav] = useState('Home');
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -520,74 +519,51 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             </div>
 
             {/* Right Action Controls: Clean and spacious */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {/* Free Access Badge */}
-              <div
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800"
-                title="100% Free JAMB Preparation Portal"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span>Free Access</span>
-              </div>
-
-              {/* Network Status Pill */}
-              <div
-                title={
-                  effectiveOnline
-                    ? 'Connected to internet. Real-time Firestore synchronization active.'
-                    : 'Operating in Offline Mode. Tests & questions are saved locally.'
-                }
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border select-none ${
-                  effectiveOnline
-                    ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200/80 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300'
-                    : 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-700/80 text-amber-800 dark:text-amber-300'
-                }`}
-              >
-                {effectiveOnline ? (
-                  <>
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="hidden sm:inline">Online</span>
-                  </>
-                ) : (
-                  <>
-                    <WifiOff className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                    <span>Offline</span>
-                  </>
-                )}
-              </div>
-
-              {/* Sync Button */}
-              <button
-                type="button"
-                onClick={handleManualSync}
-                disabled={isSyncing}
-                title="Sync offline data with Firebase Firestore"
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                  pendingSyncCount > 0
-                    ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300 animate-pulse'
-                    : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                }`}
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-rose-500' : ''}`} />
-                <span className="hidden sm:inline">Sync</span>
-                {pendingSyncCount > 0 && (
-                  <span className="ml-0.5 px-1.5 py-0.2 bg-rose-600 text-white rounded-full text-[10px] font-black">
-                    {pendingSyncCount}
-                  </span>
-                )}
-              </button>
-
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0 relative">
               {/* Light & Dark Mode Toggle */}
               <ThemeToggle showLabel={false} />
 
-              {/* Log Out Button */}
+              {/* Profile Button */}
               <button
                 type="button"
-                onClick={onLogOut}
-                className="px-3.5 py-1.5 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-full font-bold transition-colors cursor-pointer border border-rose-200 dark:border-rose-900/50"
+                onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                aria-expanded={isProfileMenuOpen}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
               >
-                Log Out
+                <User className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Profile</span>
               </button>
+
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-4 space-y-3 z-50">
+                  <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div className="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                      <User className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                        {user?.name || studentFirstName}
+                      </p>
+                      {(user?.email || user?.identifier) && (
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                          {user?.email || user?.identifier}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      onLogOut();
+                    }}
+                    className="w-full px-3 py-2 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Log Out</span>
+                  </button>
+                </div>
+              )}
             </div>
           </header>
 
@@ -634,34 +610,39 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View Render Based on Active Nav */}
             {activeNav === 'Home' && (
               <>
-                {/* In-App Offline Practice Center */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-2xs transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <div className="p-1.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-lg">
-                          <WifiOff className="w-4 h-4" />
-                        </div>
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-                          100% In-App Offline Practice Center
-                        </h2>
-                        <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md text-[10px] font-black uppercase tracking-wider">
-                          Zero Data Consumed
-                        </span>
+                {/* Quick Simulator Navigation Cards */}
+                <div className="space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => handleNavClick('Test')}
+                    className="w-full bg-white dark:bg-slate-900 hover:border-rose-400 dark:hover:border-rose-500 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4 text-left transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
+                        <Monitor className="w-5 h-5" />
                       </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                        Practice directly in this application without internet or downloading external past question files.
-                      </p>
+                      <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                        Jamb CBT Simulator
+                      </span>
                     </div>
+                    <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 shrink-0 transition-colors" />
+                  </button>
 
-                    <button
-                      onClick={() => handleLaunchTest('100% Offline In-App UTME CBT Practice', 'offline')}
-                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer shrink-0"
-                    >
-                      <Zap className="w-3.5 h-3.5 fill-white" />
-                      <span>Launch In-App Offline Practice</span>
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleNavClick('Basic')}
+                    className="w-full bg-white dark:bg-slate-900 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4 text-left transition-all cursor-pointer group"
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <Layers className="w-5 h-5" />
+                      </div>
+                      <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                        Basic CBT Simulator
+                      </span>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 shrink-0 transition-colors" />
+                  </button>
                 </div>
 
                 {/* Candidate Readiness & Recent Activity Section */}
