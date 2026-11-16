@@ -624,7 +624,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
           )}
 
           {/* Dashboard Canvas */}
-          <main className="p-3 sm:p-6 lg:p-7 max-w-7xl mx-auto w-full space-y-6 pb-24 md:pb-8">
+          <main className="flex-1 flex flex-col p-3 sm:p-6 lg:p-7 max-w-7xl mx-auto w-full space-y-6 pb-24 md:pb-8">
             {/* View Render Based on Active Nav */}
             {activeNav === 'Home' && (
               <>
@@ -664,7 +664,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                 </div>
 
                 {/* Student Home WhatsApp Channel Updates Footer */}
-                <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/5 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-300/80 dark:border-emerald-800/80 rounded-2xl p-4 sm:p-5 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
+                <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/5 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-300/80 dark:border-emerald-800/80 rounded-2xl p-4 sm:p-5 shadow-2xs flex flex-col gap-4 transition-colors">
                   <div className="flex items-start gap-3.5">
                     <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#25D366] text-white flex items-center justify-center shadow-md shadow-emerald-500/25 shrink-0">
                       <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
@@ -690,12 +690,30 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/30 transition-all shrink-0 cursor-pointer self-start sm:self-center"
+                    className="w-full px-4 py-2.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-99 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/30 transition-all cursor-pointer"
                   >
                     <span>Join WhatsApp Channel</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>
+
+                {/* Dashboard Footer Note */}
+                <footer className="mt-auto pt-8 pb-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+                    <p>© {new Date().getFullYear()} JAMB UTME Prep Hub. All curriculum citations verified against official textbooks.</p>
+                    <a
+                      href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-bold text-[#25D366] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>Join WhatsApp Channel for Updates</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                  <span className="font-semibold text-slate-400 dark:text-slate-500">Official IBASS Curriculum Syllabus Standard</span>
+                </footer>
               </>
             )}
 
@@ -1487,23 +1505,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
               </div>
             )}
 
-            {/* Dashboard Footer Note */}
-            <footer className="pt-8 pb-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
-              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
-                <p>© {new Date().getFullYear()} JAMB UTME Prep Hub. All curriculum citations verified against official textbooks.</p>
-                <a
-                  href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 font-bold text-[#25D366] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  <span>Join WhatsApp Channel for Updates</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
-              <span className="font-semibold text-slate-400 dark:text-slate-500">Official IBASS Curriculum Syllabus Standard</span>
-            </footer>
           </main>
         </div>
       </div>
