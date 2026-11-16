@@ -60,8 +60,7 @@ import {
 import {
   generateUniportBasicTest,
   getBasicSeenSignatures,
-  recordBasicSeenSignatures,
-  getBasicQuestionSignature,
+  recordBasicSubjectProgress,
   BASIC_SUBJECT_ORDER,
 } from '../../data/basicQuestionBank';
 
@@ -486,9 +485,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     // Record question IDs and signatures as seen to guarantee zero repetition in future tests
     if (isBasicBio) {
-      recordBasicSeenSignatures(
-        finalQuestions.map((q) => getBasicQuestionSignature(q.text))
-      );
+      recordBasicSubjectProgress(finalQuestions);
     } else {
       markQuestionsSeen(finalQuestions.map((q) => q.id));
       recordSeenSignatures(

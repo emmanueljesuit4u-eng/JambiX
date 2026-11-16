@@ -2,30 +2,32 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  *
- * UNIPORT BASIC QUESTION BANK (700 QUESTIONS ACROSS 5 SUBJECTS)
+ * UNIPORT BASIC QUESTION BANK (1,000 QUESTIONS ACROSS 5 SUBJECTS)
  * Completely isolated from the JAMB UTME bank.
  *
  * Composition:
- * - Use of English: 100 questions (5 balanced clusters: Comprehension & Summary, Lexis/Synonyms/Antonyms/Spelling,
+ * - Use of English: 200 questions (5 balanced clusters across Set 1 Q1–100 + Set 2 Q101–200:
+ *                                  Comprehension & Summary, Lexis/Synonyms/Antonyms/Spelling,
  *                                  Grammar/Concord/Sentence Structure, Idioms & Figurative Language, Oral Forms)
  * - Biology:        300 questions (14 syllabus topic clusters across Part 1 Biological Organisation,
  *                                  Part 2 Vertebrates, and Part 3 Invertebrates)
  * - Physics:        100 questions (7 syllabus topic clusters across Sections A–G)
- * - Chemistry:      100 questions (11 syllabus topic clusters across Sections A–K)
- * - Mathematics:    100 questions (6 syllabus topic clusters across Sections A–F)
+ * - Chemistry:      200 questions (13 syllabus topic clusters across Set 1 Q1–100 + Set 2 Q101–200)
+ * - Mathematics:    200 questions (6 syllabus topic clusters across Sections A–F: Set 1 Q1–100 + Set 2 Q101–200)
  *
- * Balanced Topic Distribution During Tests:
+ * Balanced Topic Distribution & Unseen Exhaustion During Tests:
  * - 100-Question Exam (45 mins): 20 questions from each of the 5 subjects (100 total)
  * - 50-Question Exam (25 mins):  10 questions from each of the 5 subjects (50 total)
- * Within every subject, the engine round-robins across all topic clusters (and across
- * syllabus parts in Biology) while prioritizing unseen items within each cluster so no
- * topic is ever starved or clustered—even across repeated practice sessions.
+ * Within every subject, the engine round-robins across all topic clusters that still have
+ * unseen items—guaranteeing zero repeated questions in each subject until every question in
+ * that subject is exhausted, then cleanly resetting that subject's cycle independently.
  */
 
 import type { VerifiedQuestion } from './verifiedTextbooks';
 import {
   BASIC_BIOLOGY_ITEMS,
   getBasicSeenSignatures,
+  saveBasicSeenSignatures,
   recordBasicSeenSignatures,
   getBasicQuestionSignature,
   type BasicBiologyItem,
@@ -37,6 +39,7 @@ import { BASIC_MATHEMATICS_ITEMS } from './basicMathematicsBank';
 
 export {
   getBasicSeenSignatures,
+  saveBasicSeenSignatures,
   recordBasicSeenSignatures,
   getBasicQuestionSignature,
 };
@@ -184,7 +187,7 @@ function pickBalancedFromSubject(
       bucket = { unseen: [], seen: [], partGroup };
       clusterMap.set(clusterKey, bucket);
     }
-    const sig = getBasicQuestionSignature(item.text);
+    const sig = getBasicQuestionSignature(item.text, item.options);
     if (excludeSignatures.has(sig)) {
       bucket.seen.push(item);
     } else {
@@ -192,17 +195,15 @@ function pickBalancedFromSubject(
     }
   }
 
-  // 2. Shuffle unseen and seen pools independently inside each cluster,
-  //    then combine into [unseen..., seen...] so every cluster prioritizes fresh questions first
-  //    without ever starving smaller clusters when their unseen pool runs out.
-  const clusterPools: Record<string, AnyBasicItem[]> = {};
+  // 2. Keep unseen and seen pools separate per cluster so Pass 1 exhausts ALL unseen
+  //    questions across the entire subject before any seen question can repeat.
+  const unseenPools: Record<string, AnyBasicItem[]> = {};
+  const seenPools: Record<string, AnyBasicItem[]> = {};
   const clusterMeta: { key: string; partGroup: string; hasUnseen: boolean }[] = [];
 
   for (const [key, bucket] of clusterMap.entries()) {
-    clusterPools[key] = [
-      ...shuffleItems(bucket.unseen),
-      ...shuffleItems(bucket.seen),
-    ];
+    unseenPools[key] = shuffleItems(bucket.unseen);
+    seenPools[key] = shuffleItems(bucket.seen);
     clusterMeta.push({
       key,
       partGroup: bucket.partGroup,
@@ -212,9 +213,9 @@ function pickBalancedFromSubject(
 
   const clusterKeys = buildRoundRobinClusterOrder(clusterMeta);
 
-  // 3. Strict Cluster-First Round-Robin across all clusters in rounds.
-  //    Every cluster contributes 1 question before any cluster contributes a 2nd, guaranteeing
-  //    balanced topic distribution without clustering into any single topic.
+  // 3A. Pass 1 — Strict Unseen Cluster Round-Robin:
+  //     Round-robins across every cluster that still has unseen questions until target is met
+  //     or all unseen questions in this subject are 100% exhausted.
   const rounds: { item: AnyBasicItem; cluster: string }[][] = [];
   let totalPicked = 0;
 
@@ -222,14 +223,39 @@ function pickBalancedFromSubject(
     const currentRound: { item: AnyBasicItem; cluster: string }[] = [];
     for (const cKey of clusterKeys) {
       if (totalPicked >= target) break;
-      const pool = clusterPools[cKey];
+      const pool = unseenPools[cKey];
       const nextIdx = pool.findIndex((item) => {
-        const sig = getBasicQuestionSignature(item.text);
+        const sig = getBasicQuestionSignature(item.text, item.options);
         return !localUsed.has(sig) && !globalSessionUsed.has(sig);
       });
       if (nextIdx !== -1) {
         const [pickedItem] = pool.splice(nextIdx, 1);
-        const sig = getBasicQuestionSignature(pickedItem.text);
+        const sig = getBasicQuestionSignature(pickedItem.text, pickedItem.options);
+        localUsed.add(sig);
+        globalSessionUsed.add(sig);
+        currentRound.push({ item: pickedItem, cluster: cKey });
+        totalPicked++;
+      }
+    }
+    if (currentRound.length === 0) break;
+    rounds.push(currentRound);
+  }
+
+  // 3B. Pass 2 — Fallback Seen Cluster Round-Robin (ONLY when all unseen questions are exhausted):
+  //     If the subject had fewer than `target` unseen items remaining, top up remaining slots
+  //     via round-robin across seen pools without repeating any question from the current exam.
+  while (totalPicked < target) {
+    const currentRound: { item: AnyBasicItem; cluster: string }[] = [];
+    for (const cKey of clusterKeys) {
+      if (totalPicked >= target) break;
+      const pool = seenPools[cKey];
+      const nextIdx = pool.findIndex((item) => {
+        const sig = getBasicQuestionSignature(item.text, item.options);
+        return !localUsed.has(sig) && !globalSessionUsed.has(sig);
+      });
+      if (nextIdx !== -1) {
+        const [pickedItem] = pool.splice(nextIdx, 1);
+        const sig = getBasicQuestionSignature(pickedItem.text, pickedItem.options);
         localUsed.add(sig);
         globalSessionUsed.add(sig);
         currentRound.push({ item: pickedItem, cluster: cKey });
@@ -290,6 +316,18 @@ function pickBalancedFromSubject(
   });
 }
 
+const BASIC_SUBJECT_CONFIGS: {
+  subject: BasicSubjectName;
+  items: AnyBasicItem[];
+  idOffset: number;
+}[] = [
+  { subject: 'Use of English', items: BASIC_ENGLISH_ITEMS, idOffset: 970000 },
+  { subject: 'Biology', items: BASIC_BIOLOGY_ITEMS, idOffset: 960000 },
+  { subject: 'Physics', items: BASIC_PHYSICS_ITEMS, idOffset: 980000 },
+  { subject: 'Chemistry', items: BASIC_CHEMISTRY_ITEMS, idOffset: 990000 },
+  { subject: 'Mathematics', items: BASIC_MATHEMATICS_ITEMS, idOffset: 950000 },
+];
+
 /**
  * Generates a balanced 5-subject UNIPORT Basic CBT mock exam:
  * - 'basic_100' (45 mins): 20 questions × 5 subjects = 100 questions
@@ -302,20 +340,8 @@ export function generateUniportBasicTest(
   const perSubject = mode === 'basic_50' ? 10 : 20;
   const globalSessionUsed = new Set<string>();
 
-  const subjectConfigs: {
-    subject: BasicSubjectName;
-    items: AnyBasicItem[];
-    idOffset: number;
-  }[] = [
-    { subject: 'Use of English', items: BASIC_ENGLISH_ITEMS, idOffset: 970000 },
-    { subject: 'Biology', items: BASIC_BIOLOGY_ITEMS, idOffset: 960000 },
-    { subject: 'Physics', items: BASIC_PHYSICS_ITEMS, idOffset: 980000 },
-    { subject: 'Chemistry', items: BASIC_CHEMISTRY_ITEMS, idOffset: 990000 },
-    { subject: 'Mathematics', items: BASIC_MATHEMATICS_ITEMS, idOffset: 950000 },
-  ];
-
   const combined: VerifiedQuestion[] = [];
-  for (const cfg of subjectConfigs) {
+  for (const cfg of BASIC_SUBJECT_CONFIGS) {
     const picked = pickBalancedFromSubject(
       cfg.items,
       perSubject,
@@ -331,4 +357,52 @@ export function generateUniportBasicTest(
     ...q,
     questionNumber: idx + 1,
   }));
+}
+
+/**
+ * Records seen signatures for a UNIPORT Basic test and resets any individual subject
+ * whose question pool has reached 100% exhaustion—keeping only the questions picked in
+ * the just-started test so subsequent tests never repeat items back-to-back while
+ * leaving every other subject's unseen progress untouched.
+ */
+export function recordBasicSubjectProgress(
+  pickedQuestions: VerifiedQuestion[],
+  existingSet?: Set<string>
+): Set<string> {
+  const nextSeen = new Set<string>(existingSet ?? getBasicSeenSignatures());
+
+  const pickedBySubject = new Map<string, Set<string>>();
+  for (const q of pickedQuestions) {
+    const sig = getBasicQuestionSignature(q.text, q.options);
+    if (!sig) continue;
+    nextSeen.add(sig);
+    let subSet = pickedBySubject.get(q.subject);
+    if (!subSet) {
+      subSet = new Set<string>();
+      pickedBySubject.set(q.subject, subSet);
+    }
+    subSet.add(sig);
+  }
+
+  for (const cfg of BASIC_SUBJECT_CONFIGS) {
+    const subjectSigs = cfg.items.map((item) =>
+      getBasicQuestionSignature(item.text, item.options)
+    );
+    const isExhausted =
+      subjectSigs.length > 0 && subjectSigs.every((sig) => nextSeen.has(sig));
+    if (isExhausted) {
+      for (const sig of subjectSigs) {
+        nextSeen.delete(sig);
+      }
+      const currentRunSigs = pickedBySubject.get(cfg.subject);
+      if (currentRunSigs) {
+        for (const sig of currentRunSigs) {
+          nextSeen.add(sig);
+        }
+      }
+    }
+  }
+
+  saveBasicSeenSignatures(nextSeen);
+  return nextSeen;
 }

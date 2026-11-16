@@ -11,8 +11,16 @@
 
 import type { VerifiedQuestion } from './verifiedTextbooks';
 
-export function getBasicQuestionSignature(text: string): string {
-  return (text || '').trim().toLowerCase();
+export function getBasicQuestionSignature(
+  text: string,
+  options?: { A?: string; B?: string; C?: string; D?: string }
+): string {
+  const base = (text || '').trim().toLowerCase();
+  if (!options) return base;
+  const optPart = [options.A, options.B, options.C, options.D]
+    .map((v) => (v || '').trim().toLowerCase())
+    .join('|');
+  return `${base}::${optPart}`;
 }
 
 const BASIC_SEEN_STORAGE_KEY = 'uniport_basic_seen_signatures_v1';
@@ -28,13 +36,21 @@ export function getBasicSeenSignatures(): Set<string> {
   }
 }
 
+export function saveBasicSeenSignatures(signatures: Set<string>): void {
+  try {
+    localStorage.setItem(BASIC_SEEN_STORAGE_KEY, JSON.stringify(Array.from(signatures)));
+  } catch {
+    // ignore storage errors
+  }
+}
+
 export function recordBasicSeenSignatures(signatures: string[]): void {
   try {
     const existing = getBasicSeenSignatures();
     signatures.forEach((sig) => {
       if (sig) existing.add(sig);
     });
-    localStorage.setItem(BASIC_SEEN_STORAGE_KEY, JSON.stringify(Array.from(existing)));
+    saveBasicSeenSignatures(existing);
   } catch {
     // ignore storage errors
   }
