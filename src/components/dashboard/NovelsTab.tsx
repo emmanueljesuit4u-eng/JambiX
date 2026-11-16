@@ -76,14 +76,11 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
           <div className="space-y-2 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-emerald-900/70 text-emerald-200 border border-emerald-400/30">
               <BookOpen className="w-3.5 h-3.5" />
-              <span>Official JAMB UTME Prescribed Novels</span>
+              <span>Official JAMB UTME Prescribed Novel</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
-              Master the Compulsory Novels &amp; Characters
+              Master The Lekki Headmaster &amp; Characters
             </h2>
-            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
-              JAMB tests 10 to 15 questions in Use of English strictly on the prescribed novels. Study full chapter-by-chapter summaries, in-depth character analyses, and authentic UTME exam questions.
-            </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -102,44 +99,6 @@ export const NovelsTab: React.FC<NovelsTabProps> = ({ onLaunchTest, showToast })
             </button>
           </div>
         </div>
-      </div>
-
-      {/* Novel Selector Bar (The Lekki Headmaster, The Life Changer, Sweet Sixteen) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 p-1.5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs">
-        {JAMB_NOVELS.map((novel) => {
-          const isSelected = selectedNovelId === novel.id;
-          return (
-            <button
-              key={novel.id}
-              onClick={() => {
-                setSelectedNovelId(novel.id);
-                setSelectedChapterNum(1);
-                setActiveSection('summary');
-                showToast(`Switched to: ${novel.title}`);
-              }}
-              className={`py-3 px-3.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 transition-all cursor-pointer ${
-                isSelected
-                  ? 'bg-emerald-700 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <BookOpen className="w-4 h-4 shrink-0" />
-              <div className="text-left min-w-0 flex-1">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="block truncate font-bold">{novel.title}</span>
-                  {novel.id === 'the-lekki-headmaster' && (
-                    <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase shrink-0 ${isSelected ? 'bg-emerald-900 text-emerald-200' : 'bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300'}`}>
-                      Active UTME Novel
-                    </span>
-                  )}
-                </div>
-                <span className={`text-[10px] block truncate font-normal ${isSelected ? 'text-emerald-100' : 'text-slate-400'}`}>
-                  By {novel.author}
-                </span>
-              </div>
-            </button>
-          );
-        })}
       </div>
 
       {/* Sub Navigation Tabs */}

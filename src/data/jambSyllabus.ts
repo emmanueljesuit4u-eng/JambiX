@@ -35,14 +35,14 @@ export const JAMB_SYLLABUS_DATA: JambSubjectSyllabus[] = [
     totalTopics: 18,
     recommendedTextbooks: [
       'A-Z OF ENGLISH (Complete Guide to Use of English, Grammatical Structures & Oral Forms) - Dele Ashade',
-      'The Life Changer (Prescribed Novel) - Khadija Abubakar Jalli',
+      'The Lekki Headmaster (Prescribed Novel) - Kabir Alabi Garba',
       'The Invisible Teacher - Dele Ashade',
       'Round-Up English - Idowu, O. et al.',
       'A-One in English - B.A. Epega',
     ],
     keyExamTips: [
       '60 questions in total: 10 on Comprehension/Summary, 10 on Prescribed Novel, 25 on Lexis & Structure, 15 on Oral Forms.',
-      'Carefully read the novel "The Life Changer"; focus on themes of morality, university freedom, peer influence, and deceit.',
+      'Carefully read the prescribed novel "The Lekki Headmaster" by Kabir Alabi Garba; focus on themes of patriotic service, the Japa syndrome, educational integrity, and leadership.',
       'Pay close attention to vowel contrasts (short vs long vowels, monophthongs vs diphthongs) and primary stress.',
     ],
     modules: [
@@ -79,17 +79,17 @@ export const JAMB_SYLLABUS_DATA: JambSubjectSyllabus[] = [
         ],
       },
       {
-        title: 'Section C: Prescribed Literary Text (The Life Changer)',
+        title: 'Section C: Prescribed Literary Text (The Lekki Headmaster)',
         topics: [
-          'Plot Overview, Setting, and Background of Lafayette Community & Campus',
-          'Character Analysis: Ummi, Salma, Habib, Labaran, Dr. Dibo, Tomiwa, Bintu',
-          'Major Themes: Academic integrity, bribery, vanity, parenting, resilience',
-          'Narrative Techniques: Flashback, story within a story, dialogue',
-          'Key Episodes: The Disciplinary Committee Hearing, The Fake Kidnapping, Drug Scandal',
+          'Plot Overview, Setting, and Background of Stardom Schools, Lekki, Lagos',
+          'Character Analysis: Mr. Bepo Adewale, Mrs. Ibidun Gloss, Chief Didi Ogba, Jide, Mrs. Ogunwale',
+          'Major Themes: "Japa" brain-drain syndrome vs patriotic service, educational integrity, parental pressure',
+          'Narrative Techniques: Flashback, internal monologue, symbolic chapter titles (Dusk, Dawn)',
+          'Key Episodes: Podium breakdown, Science Olympiad triumph, UK fellowship & Airport U-turn climax',
         ],
         objectives: [
-          'Identify key dialogues, speaker intents, and plot chronology.',
-          'Examine moral dilemmas and solutions illustrated in the novel.',
+          'Identify key dialogues, speaker intents, and plot chronology in The Lekki Headmaster.',
+          'Examine moral dilemmas, leadership integrity, and themes illustrated in the novel.',
         ],
       },
       {

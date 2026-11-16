@@ -635,8 +635,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {activeNav === 'Home' && (
               <>
                 {/* In-App Offline Practice Center */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-2xs space-y-5 transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-2xs transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-lg">
@@ -661,45 +661,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       <Zap className="w-3.5 h-3.5 fill-white" />
                       <span>Launch In-App Offline Practice</span>
                     </button>
-                  </div>
-
-                  {/* 3 Value Pillars */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-                    <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex items-start gap-3 transition-colors">
-                      <div className="p-2 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 rounded-lg shrink-0">
-                        <WifiOff className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-900 dark:text-white">Direct In-App Practice</h4>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                          Everything runs locally in your browser session. No separate installer or file download required.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex items-start gap-3 transition-colors">
-                      <div className="p-2 bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 rounded-lg shrink-0">
-                        <BookOpen className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-900 dark:text-white">Verified Textbook References</h4>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                          Accurate answers with direct reference to the official accredited textbooks.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 flex items-start gap-3 transition-colors">
-                      <div className="p-2 bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 rounded-lg shrink-0">
-                        <Monitor className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-900 dark:text-white">Official 8-Key Controls</h4>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
-                          Authentic JAMB keyboard controls: A, B, C, D options, N (Next), P (Previous), R (Reverse), S (Submit).
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
