@@ -28,7 +28,6 @@ import {
   XCircle,
   HelpCircle,
   Calculator,
-  FileUp,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
 import { saveTestResult, getUserProfile } from '../../lib/firestoreService';
@@ -43,12 +42,10 @@ import {
   JambGradingResult,
   SubjectKey,
   normalizeSubjectKey,
-  getSeenQuestionsCount,
   markQuestionsSeen,
-  recordSeenSignatures,
+  recordJambSubjectProgress,
   getSeenQuestionSignatures,
   getQuestionCoreSignature,
-  clearSeenQuestions,
   getCompletedTwoHourTestsCount,
 } from '../../data/verifiedTextbooks';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
@@ -149,9 +146,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [duration, setDuration] = useState<number>(
     isInitialBasic ? (initialBasicMode === 'basic_50' ? 25 : 45) : isInitialLekki ? 20 : 120
   );
-  const [seenCount, setSeenCount] = useState<number>(0);
-  const [includeCustomPdfQuestions, setIncludeCustomPdfQuestions] = useState<boolean>(true);
-  const [customQuestionsCount, setCustomQuestionsCount] = useState<number>(0);
   const [isSubjectSelectionMenuOpen, setIsSubjectSelectionMenuOpen] = useState<boolean>(false);
 
   // Active Test State
@@ -188,9 +182,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setActiveQuestions([]);
     setIsSubjectSelectionMenuOpen(false);
 
-    const customList = getLocalCustomQuestions();
-    setCustomQuestionsCount(customList.length);
-
     const titleLower = (testTitle || '').toLowerCase();
     const typeLower = (testType || '').toLowerCase();
     const isBasicBio = isBasicBiologyCheck(testTitle, testType, initialSubject);
@@ -205,6 +196,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       setDuration(mins);
       setTimeLeftSeconds(mins * 60);
     } else if (isCustomPdf) {
+      const customList = getLocalCustomQuestions();
       const filtered = initialSubject && initialSubject !== 'Custom Extracted Questions'
         ? customList.filter((q) => q.subject.toLowerCase() === initialSubject.toLowerCase())
         : customList;
@@ -268,7 +260,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     } else {
       setSelectedYear('random');
     }
-    setSeenCount(getSeenQuestionsCount());
   }, [testTitle, initialSubject, initialYear, isOpen, testType]);
 
   // Available subjects for UTME (all 18 accredited subjects)
@@ -290,6 +281,10 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     const updated = [...selectedSubjects];
     if (examMode === 'full') {
       updated[0] = 'Use of English'; // Compulsory
+      const existingIdx = updated.findIndex((s, idx) => idx !== slotIndex && idx > 0 && s === subjectName);
+      if (existingIdx !== -1 && updated[slotIndex]) {
+        updated[existingIdx] = updated[slotIndex];
+      }
       updated[slotIndex] = subjectName;
       setSelectedSubjects(updated.slice(0, 4));
     } else {
@@ -390,7 +385,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
         ? generateUniportBasicTest(basicMode, getBasicSeenSignatures())
         : assembleUtmeTest({
             subjects: effectiveSubjects,
-            year: isCustomPdf || isLekkiNovel ? selectedYear : (initialYear ? selectedYear : 'random'),
+            year: selectedYear,
             mode: effectiveMode as 'full' | 'single' | 'sprint' | 'novel',
             customQuestionCount: effectiveCount,
             difficultyTier,
@@ -398,7 +393,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           });
 
       // Enforce that every question has subject: 'The Lekki Headmaster' and no normal English
-      let processedQuestions = isLekkiNovel
+      const processedQuestions = isLekkiNovel
         ? questions.slice(0, 30).map((q, idx) => ({
             ...q,
             subject: 'The Lekki Headmaster',
@@ -409,57 +404,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
           }))
         : questions;
 
-      // Inject user-uploaded custom PDF questions if toggle is active (not for Lekki Novel or Basic Biology)
-      if (includeCustomPdfQuestions && !isLekkiNovel && !isBasicBio) {
-        const customQs = getLocalCustomQuestions();
-        if (customQs.length > 0) {
-          const matchingCustom = customQs
-            .filter((cq) => effectiveSubjects.some((s) => s.toLowerCase() === cq.subject.toLowerCase()))
-            .map((cq, idx) => convertToVerifiedQuestion(cq, 9000 + idx));
-
-          if (matchingCustom.length > 0) {
-            const subGroups: Record<string, VerifiedQuestion[]> = {};
-            processedQuestions.forEach((q) => {
-              if (!subGroups[q.subject]) subGroups[q.subject] = [];
-              subGroups[q.subject].push(q);
-            });
-
-            // Randomly shuffle matching custom questions
-            const shuffledCustom = [...matchingCustom].sort(() => Math.random() - 0.5);
-
-            const injected: VerifiedQuestion[] = [];
-            for (const sub of Object.keys(subGroups)) {
-              const subCustom = shuffledCustom.filter((cq) => cq.subject.toLowerCase() === sub.toLowerCase());
-              const group = subGroups[sub];
-              if (subCustom.length > 0) {
-                const injectCount = Math.min(subCustom.length, Math.floor(group.length * 0.35));
-                const slotIndices = Array.from({ length: group.length }, (_, i) => i)
-                  .sort(() => Math.random() - 0.5)
-                  .slice(0, injectCount);
-
-                for (let k = 0; k < injectCount; k++) {
-                  const targetSlot = slotIndices[k];
-                  group[targetSlot] = {
-                    ...subCustom[k],
-                    questionNumber: group[targetSlot].questionNumber,
-                    subjectQuestionNumber: group[targetSlot].subjectQuestionNumber,
-                    subjectTotalQuestions: group[targetSlot].subjectTotalQuestions,
-                  };
-                }
-                const shuffledGroup = [...group].sort(() => Math.random() - 0.5);
-                shuffledGroup.forEach((q, idx) => {
-                  q.questionNumber = idx + 1;
-                  q.subjectQuestionNumber = idx + 1;
-                });
-                injected.push(...shuffledGroup);
-              } else {
-                injected.push(...group);
-              }
-            }
-            processedQuestions = injected;
-          }
-        }
-      }
       finalQuestions = processedQuestions;
     }
 
@@ -485,16 +429,12 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setTestCompleted(null);
     setTestStarted(true);
 
-    // Record question IDs and signatures as seen to guarantee zero repetition in future tests
+    // Record question IDs and signatures per subject bucket so round-robin cycles reset cleanly
     if (isBasicBio) {
       recordBasicSubjectProgress(finalQuestions);
     } else {
       markQuestionsSeen(finalQuestions.map((q) => q.id));
-      recordSeenSignatures(
-        finalQuestions.map((q) => getQuestionCoreSignature(q.text)),
-        finalQuestions.map((q) => q.id)
-      );
-      setSeenCount(getSeenQuestionsCount());
+      recordJambSubjectProgress(finalQuestions);
     }
 
     // Advance 2-hour test progression counter so every subsequent 2-hour test becomes progressively tougher
@@ -1421,44 +1361,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         </optgroup>
                       </select>
                     </div>
-                  </div>
-
-                  {/* Extracted PDF Questions Integration Card */}
-                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <FileUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                        <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          Extracted PDF Questions Bank
-                        </span>
-                        {customQuestionsCount > 0 ? (
-                          <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold">
-                            {customQuestionsCount} indexed
-                          </span>
-                        ) : (
-                          <span className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-medium">
-                            0 in vault
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                        {customQuestionsCount > 0
-                          ? 'Incorporate your uploaded past question PDF items into matching subjects during this CBT session.'
-                          : 'Upload your own PDF question leaflets in the PDF Bank tab to automatically include custom questions.'}
-                      </p>
-                    </div>
-
-                    {customQuestionsCount > 0 && (
-                      <label className="relative inline-flex items-center cursor-pointer shrink-0">
-                        <input
-                          type="checkbox"
-                          checked={includeCustomPdfQuestions}
-                          onChange={(e) => setIncludeCustomPdfQuestions(e.target.checked)}
-                          className="sr-only peer"
-                        />
-                        <div className="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
-                      </label>
-                    )}
                   </div>
 
                   {/* Subject Selection Dropdown Menus */}

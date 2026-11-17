@@ -12,6 +12,7 @@
 import { NOVEL_EXAM_QUESTIONS } from './jambNovelsData';
 import { VerifiedQuestion, SubjectKey } from './jambPastQuestions';
 import { TOUGH_ENGLISH_QUESTIONS } from './jambToughQuestionsBank';
+import { getLastRunSubjectSignatures } from './jambQuestionBankEngine';
 
 export interface BankQuestionDefinition {
   topic: string;
@@ -842,76 +843,108 @@ export function getPrescribedNovelQuestions(
 ): VerifiedQuestion[] {
   const localTexts = sessionUsedTexts || new Set<string>();
   const excluded = excludeTexts || new Set<string>();
+  const lastRunNovel = getLastRunSubjectSignatures('english_novel');
 
   // Strictly filter for "The Lekki Headmaster" by Kabir Alabi Garba (exclude all other novels)
   const lekkiQuestions = NOVEL_EXAM_QUESTIONS.filter(
     (q) => q.novel === 'The Lekki Headmaster'
   );
 
-  // Random shuffle of The Lekki Headmaster questions
-  const candidatePool = [...lekkiQuestions];
-  for (let i = candidatePool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [candidatePool[i], candidatePool[j]] = [candidatePool[j], candidatePool[i]];
+  // Group by novel chapter for balanced chapter round-robin
+  const byChapter: Record<number, typeof lekkiQuestions> = {};
+  for (const nq of lekkiQuestions) {
+    const ch = nq.chapter || 1;
+    if (!byChapter[ch]) byChapter[ch] = [];
+    byChapter[ch].push(nq);
   }
+  const shuffleList = <T,>(arr: T[]): T[] => {
+    const copy = [...arr];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  };
+  for (const chKey of Object.keys(byChapter)) {
+    byChapter[Number(chKey)] = shuffleList(byChapter[Number(chKey)]);
+  }
+  const chapterKeys = shuffleList(Object.keys(byChapter).map(Number));
 
   const picked: VerifiedQuestion[] = [];
   const authorName = 'Kabir Alabi Garba';
 
-  // Pass 1: Draw strictly from The Lekki Headmaster, prioritizing questions unseen in previous tests
-  for (let i = 0; i < candidatePool.length && picked.length < count; i++) {
-    const nq = candidatePool[i];
+  const pushNovelQuestion = (nq: typeof lekkiQuestions[0]) => {
     const core = nq.question.trim().toLowerCase();
+    localTexts.add(core);
+    const qNum = picked.length + 1;
+    picked.push({
+      id: 950000 + (seed * 10) + qNum,
+      year: seed,
+      questionNumber: qNum,
+      subject: 'Use of English',
+      topic: `Chapter ${nq.chapter}: "The Lekki Headmaster"`,
+      text: `[JAMB UTME Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${nq.question}`,
+      options: nq.options,
+      answer: nq.answer,
+      explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
+      bookTitle: 'The Lekki Headmaster',
+      author: authorName,
+      textbookRef: `"The Lekki Headmaster" by ${authorName}`,
+    });
+  };
 
-    if (!localTexts.has(core) && !excluded.has(core)) {
-      localTexts.add(core);
-      const qNum = picked.length + 1;
-
-      picked.push({
-        id: 950000 + (seed * 10) + qNum,
-        year: seed,
-        questionNumber: qNum,
-        subject: 'Use of English',
-        topic: 'Prescribed Novel: "The Lekki Headmaster"',
-        text: `[JAMB UTME Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${nq.question}`,
-        options: nq.options,
-        answer: nq.answer,
-        explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
-        bookTitle: 'The Lekki Headmaster',
-        author: authorName,
-        textbookRef: `"The Lekki Headmaster" by ${authorName}`,
+  // Pass 1: Strict unseen chapter round-robin across The Lekki Headmaster
+  let added = true;
+  while (picked.length < count && added) {
+    added = false;
+    for (const chKey of chapterKeys) {
+      if (picked.length >= count) break;
+      const pool = byChapter[chKey];
+      const nextItem = pool.find((nq) => {
+        const core = nq.question.trim().toLowerCase();
+        return !localTexts.has(core) && !excluded.has(core);
       });
-    }
-  }
-
-  // Pass 2: Check any remaining items in candidatePool not seen in earlier tests
-  if (picked.length < count) {
-    for (let i = 0; i < candidatePool.length && picked.length < count; i++) {
-      const nq = candidatePool[i];
-      const core = nq.question.trim().toLowerCase();
-      if (!localTexts.has(core) && !excluded.has(core)) {
-        localTexts.add(core);
-        const qNum = picked.length + 1;
-
-        picked.push({
-          id: 950000 + (seed * 10) + qNum,
-          year: seed,
-          questionNumber: qNum,
-          subject: 'Use of English',
-          topic: 'Prescribed Novel: "The Lekki Headmaster"',
-          text: `[JAMB UTME Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${nq.question}`,
-          options: nq.options,
-          answer: nq.answer,
-          explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
-          bookTitle: 'The Lekki Headmaster',
-          author: authorName,
-          textbookRef: `"The Lekki Headmaster" by ${authorName}`,
-        });
+      if (nextItem) {
+        pushNovelQuestion(nextItem);
+        added = true;
       }
     }
   }
 
-  // Pass 3: Dynamic generation for The Lekki Headmaster to mathematically guarantee ZERO repeats across unlimited mock tests
+  // Pass 2: Clean wrap-around chapter round-robin avoiding immediately prior test's novel questions
+  added = true;
+  while (picked.length < count && added) {
+    added = false;
+    for (const chKey of chapterKeys) {
+      if (picked.length >= count) break;
+      const pool = byChapter[chKey];
+      const nextItem = pool.find((nq) => {
+        const core = nq.question.trim().toLowerCase();
+        return !localTexts.has(core) && !lastRunNovel.has(core);
+      });
+      if (nextItem) {
+        pushNovelQuestion(nextItem);
+        added = true;
+      }
+    }
+  }
+
+  // Pass 3: Safety net across any remaining novel items if count exceeds remaining unique slots
+  added = true;
+  while (picked.length < count && added) {
+    added = false;
+    for (const chKey of chapterKeys) {
+      if (picked.length >= count) break;
+      const pool = byChapter[chKey];
+      const nextItem = pool.find((nq) => !localTexts.has(nq.question.trim().toLowerCase()));
+      if (nextItem) {
+        pushNovelQuestion(nextItem);
+        added = true;
+      }
+    }
+  }
+
+  // Pass 4: Dynamic fallback only if count exceeds total novel bank size (75)
   let novelGenAttempts = 0;
   while (picked.length < count && novelGenAttempts < 500) {
     novelGenAttempts++;
@@ -945,14 +978,14 @@ export function getPrescribedNovelQuestions(
     ];
     const def = dynamicNovelDefs[(seed + novelGenAttempts) % dynamicNovelDefs.length];
     const core = def.q.trim().toLowerCase();
-    if (!localTexts.has(core) && !excluded.has(core)) {
+    if (!localTexts.has(core)) {
       localTexts.add(core);
       picked.push({
         id: 955000 + (seed * 10) + qNum * 7 + novelGenAttempts,
         year: seed,
         questionNumber: qNum,
         subject: 'Use of English',
-        topic: `Prescribed Novel: "The Lekki Headmaster" (Chapter ${ch})`,
+        topic: `Chapter ${ch}: "The Lekki Headmaster"`,
         text: `[JAMB UTME Q${qNum} · Prescribed Novel: "The Lekki Headmaster"] ${def.q}`,
         options: {
           A: def.ans,
@@ -973,15 +1006,7 @@ export function getPrescribedNovelQuestions(
 }
 
 // Helper to pull 45 distinct questions from General English Bank
-// 100% Evenly Diversified Across ALL Core English Topics:
-// 1. Grammatical Concord & Agreement
-// 2. Tenses, Modals & Conditional Clauses
-// 3. Prepositions & Phrasal Verbs
-// 4. Synonyms (Nearest in Meaning)
-// 5. Antonyms (Opposites in Meaning)
-// 6. Oral English (Vowel Contrasts, Consonants, Silent Letters & Stress)
-// 7. Idiomatic Expressions & Figurative Language
-// Filters against previous tests and guarantees zero duplicates in the current session
+// 100% Evenly Diversified Across ALL Core English Topics via Round-Robin
 export function getGeneralEnglishQuestions(
   count: number = 45,
   seed: number = 2026,
@@ -991,6 +1016,7 @@ export function getGeneralEnglishQuestions(
 ): VerifiedQuestion[] {
   const localTexts = sessionUsedTexts || new Set<string>();
   const excluded = excludeTexts || new Set<string>();
+  const lastRunGeneral = getLastRunSubjectSignatures('english_general');
 
   // Set of tough question signatures for priority selection in advanced tiers
   const toughSignatures = new Set(
@@ -1038,7 +1064,6 @@ export function getGeneralEnglishQuestions(
     }
 
     if (difficultyTier > 0) {
-      // Prioritize tougher historical UTME items for higher difficulty tiers
       b.items.sort((x, y) => {
         const isXTough = toughSignatures.has(x.text.trim().toLowerCase()) ? 1 : 0;
         const isYTough = toughSignatures.has(y.text.trim().toLowerCase()) ? 1 : 0;
@@ -1051,64 +1076,75 @@ export function getGeneralEnglishQuestions(
   const shuffledBuckets = [...buckets].sort(() => Math.random() - 0.5);
 
   const picked: VerifiedQuestion[] = [];
-
-  // Pass 1: Round-robin across all 8 topic buckets to guarantee 100% topic diversification!
-  for (let step = 0; step < count * 3 && picked.length < count; step++) {
-    const bucket = shuffledBuckets[step % shuffledBuckets.length];
-    const unseenItem = bucket.items.find((item) => {
-      const core = item.text.trim().toLowerCase();
-      return !localTexts.has(core) && !excluded.has(core);
+  const pushEnglishItem = (item: typeof ENGLISH_GENERAL_BANK[0]) => {
+    const core = item.text.trim().toLowerCase();
+    localTexts.add(core);
+    const qNum = 15 + picked.length + 1;
+    picked.push({
+      id: 960000 + (seed * 10) + qNum,
+      year: seed,
+      questionNumber: qNum,
+      subject: 'Use of English',
+      topic: item.topic,
+      text: `[JAMB UTME Q${qNum}] ${item.text}`,
+      options: item.options,
+      answer: item.answer,
+      explanation: item.explanation,
+      bookTitle: item.bookTitle,
+      author: item.author,
+      textbookRef: item.textbookRef,
     });
+  };
 
-    if (unseenItem) {
-      const core = unseenItem.text.trim().toLowerCase();
-      localTexts.add(core);
-      const qNum = 15 + picked.length + 1; // Numbered 16 to 60
-      picked.push({
-        id: 960000 + (seed * 10) + qNum,
-        year: seed,
-        questionNumber: qNum,
-        subject: 'Use of English',
-        topic: unseenItem.topic,
-        text: `[JAMB UTME Q${qNum}] ${unseenItem.text}`,
-        options: unseenItem.options,
-        answer: unseenItem.answer,
-        explanation: unseenItem.explanation,
-        bookTitle: unseenItem.bookTitle,
-        author: unseenItem.author,
-        textbookRef: unseenItem.textbookRef,
+  // Pass 1: Strict unseen round-robin across all 8 topic buckets
+  let added = true;
+  while (picked.length < count && added) {
+    added = false;
+    for (const bucket of shuffledBuckets) {
+      if (picked.length >= count) break;
+      const unseenItem = bucket.items.find((item) => {
+        const core = item.text.trim().toLowerCase();
+        return !localTexts.has(core) && !excluded.has(core);
       });
-    }
-  }
-
-  // Pass 2: Check any remaining items in allGeneral that have NOT been seen in previous tests
-  if (picked.length < count) {
-    const allGeneral = [...ENGLISH_GENERAL_BANK].sort(() => Math.random() - 0.5);
-    for (let i = 0; i < allGeneral.length && picked.length < count; i++) {
-      const item = allGeneral[i];
-      const core = item.text.trim().toLowerCase();
-      if (!localTexts.has(core) && !excluded.has(core)) {
-        localTexts.add(core);
-        const qNum = 15 + picked.length + 1;
-        picked.push({
-          id: 960000 + (seed * 10) + qNum,
-          year: seed,
-          questionNumber: qNum,
-          subject: 'Use of English',
-          topic: item.topic,
-          text: `[JAMB UTME Q${qNum}] ${item.text}`,
-          options: item.options,
-          answer: item.answer,
-          explanation: item.explanation,
-          bookTitle: item.bookTitle,
-          author: item.author,
-          textbookRef: item.textbookRef,
-        });
+      if (unseenItem) {
+        pushEnglishItem(unseenItem);
+        added = true;
       }
     }
   }
 
-  // Pass 3: Mathematical guarantee that picked reaches count with strictly ZERO repeated questions from any previous test!
+  // Pass 2: Wrap-around topic round-robin avoiding immediately prior test's general English questions
+  added = true;
+  while (picked.length < count && added) {
+    added = false;
+    for (const bucket of shuffledBuckets) {
+      if (picked.length >= count) break;
+      const wrapItem = bucket.items.find((item) => {
+        const core = item.text.trim().toLowerCase();
+        return !localTexts.has(core) && !lastRunGeneral.has(core);
+      });
+      if (wrapItem) {
+        pushEnglishItem(wrapItem);
+        added = true;
+      }
+    }
+  }
+
+  // Pass 3: Safety net topic round-robin without session duplicates
+  added = true;
+  while (picked.length < count && added) {
+    added = false;
+    for (const bucket of shuffledBuckets) {
+      if (picked.length >= count) break;
+      const anyItem = bucket.items.find((item) => !localTexts.has(item.text.trim().toLowerCase()));
+      if (anyItem) {
+        pushEnglishItem(anyItem);
+        added = true;
+      }
+    }
+  }
+
+  // Pass 4: Dynamic fallback only if count exceeds total ENGLISH_GENERAL_BANK size (122)
   let englishGenAttempt = 0;
   while (picked.length < count && englishGenAttempt < 1500) {
     englishGenAttempt++;
@@ -1122,7 +1158,7 @@ export function getGeneralEnglishQuestions(
       englishGenAttempt
     );
     const core = candidate.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '').trim().toLowerCase();
-    if (!localTexts.has(core) && !excluded.has(core)) {
+    if (!localTexts.has(core)) {
       localTexts.add(core);
       picked.push(candidate);
     }

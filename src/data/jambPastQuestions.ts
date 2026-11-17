@@ -13,11 +13,14 @@
  */
 
 import { NOVEL_EXAM_QUESTIONS } from './jambNovelsData';
-import { getCompleteEnglishSection } from './jambComprehensiveBank';
+import { getCompleteEnglishSection, getPrescribedNovelQuestions } from './jambComprehensiveBank';
 import {
   generateUniqueSubjectQuestions,
   getSeenQuestionSignatures,
   recordSeenSignatures,
+  recordJambSubjectProgress,
+  getLastRunSubjectSignatures,
+  clearLastRunSubjectSignatures,
   clearSeenSignatures,
   getCompletedTwoHourTestsCount,
 } from './jambQuestionBankEngine';
@@ -1809,7 +1812,8 @@ export function getSubjectQuestionsForYear(
       localUsedTexts,
       localUsedDiagrams,
       year * 1000 + 42,
-      0
+      0,
+      false
     );
   }
 
@@ -1836,6 +1840,8 @@ export function getSubjectQuestionsForYear(
 export function normalizeSubjectKey(raw: string): SubjectKey {
   const s = raw.toLowerCase().trim();
   if (s.includes('lit')) return 'literature';
+  if (s.includes('phe') || s.includes('physical') || s.includes('health ed')) return 'phe';
+  if (s.includes('home') || s.includes('food') || s.includes('nutrition') || s.includes('textile')) return 'home_economics';
   if (s.includes('eng') || s.includes('novel') || s.includes('lexis')) return 'english';
   if (s.includes('math') || s.includes('further math')) return 'mathematics';
   if (s.includes('phys')) return 'physics';
@@ -1843,7 +1849,6 @@ export function normalizeSubjectKey(raw: string): SubjectKey {
   if (s.includes('bio')) return 'biology';
   if (s.includes('econ')) return 'economics';
   if (s.includes('gov') || s.includes('pol')) return 'government';
-  if (s.includes('lit')) return 'literature';
   if (s.includes('comm') || s.includes('trade')) return 'commerce';
   if (s.includes('acc') || s.includes('bookkeeping') || s.includes('financial account')) return 'accounts';
   if (s.includes('crs') || s.includes('crk') || s.includes('christian')) return 'crs';
@@ -1854,10 +1859,8 @@ export function normalizeSubjectKey(raw: string): SubjectKey {
   if (s.includes('civic')) return 'civic_education';
   if (s.includes('hist')) return 'history';
   if (s.includes('french') || s.includes('français')) return 'french';
-  if (s.includes('phe') || s.includes('physical') || s.includes('health ed')) return 'phe';
   if (s.includes('music')) return 'music';
-  if (s.includes('visual') || s.includes('fine art') || s.includes('creative art') || s.includes('art')) return 'visual_arts';
-  if (s.includes('home') || s.includes('food') || s.includes('nutrition') || s.includes('textile')) return 'home_economics';
+  if (s.includes('visual') || s.includes('fine art') || s.includes('creative art') || /\bart\b/.test(s)) return 'visual_arts';
   if (s.includes('hausa')) return 'hausa';
   if (s.includes('yoruba')) return 'yoruba';
   if (s.includes('igbo')) return 'igbo';
@@ -1895,6 +1898,7 @@ export function clearSeenQuestions(): void {
   try {
     localStorage.removeItem(SEEN_QUESTIONS_STORAGE_KEY);
     clearSeenSignatures();
+    clearLastRunSubjectSignatures();
   } catch (err) {
     console.warn('Error clearing seen questions:', err);
   }
@@ -1909,6 +1913,8 @@ export function getSeenQuestionsCount(): number {
 export {
   getSeenQuestionSignatures,
   recordSeenSignatures,
+  recordJambSubjectProgress,
+  getLastRunSubjectSignatures,
   clearSeenSignatures,
   getCompletedTwoHourTestsCount,
 };
@@ -1952,58 +1958,19 @@ export function assembleUtmeTest(options: AssembleTestOptions = {}): VerifiedQue
   ) {
     const novelCount = options.customQuestionCount || 30;
     const chosenYear = typeof year === 'number' ? year : 2026;
-    const lekkiQuestions = NOVEL_EXAM_QUESTIONS.filter((q) => q.novel === 'The Lekki Headmaster');
-    const authorName = 'Kabir Alabi Garba';
-
-    // Deterministic shuffle using seed
-    const seed = typeof year === 'number' ? year : Math.floor(Math.random() * 100000);
-    const pool = [...lekkiQuestions];
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.abs((seed * (i + 17) + i * 3) % (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-
     const excludeSigs = options.excludeSignatures || getSeenQuestionSignatures();
     const sessionUsedTexts = new Set<string>();
-    const picked: typeof lekkiQuestions = [];
+    const pickedNovel = getPrescribedNovelQuestions(novelCount, chosenYear, excludeSigs, sessionUsedTexts);
 
-    // Pass 1: Prioritize unseen questions
-    for (let i = 0; i < pool.length && picked.length < novelCount; i++) {
-      const nq = pool[i];
-      const core = nq.question.trim().toLowerCase();
-      if (!sessionUsedTexts.has(core) && !excludeSigs.has(core)) {
-        sessionUsedTexts.add(core);
-        picked.push(nq);
-      }
-    }
-
-    // Pass 2: Remaining if pool of unseen questions is exhausted, while still guaranteeing zero duplicates in this session
-    if (picked.length < novelCount) {
-      for (let i = 0; i < pool.length && picked.length < novelCount; i++) {
-        const nq = pool[i];
-        const core = nq.question.trim().toLowerCase();
-        if (!sessionUsedTexts.has(core)) {
-          sessionUsedTexts.add(core);
-          picked.push(nq);
-        }
-      }
-    }
-
-    return picked.map((nq, i) => {
+    return pickedNovel.map((nq, i) => {
       const qNum = i + 1;
       const baseQ: VerifiedQuestion = {
+        ...nq,
         id: 950000 + (chosenYear * 10) + qNum,
         year: chosenYear,
         questionNumber: qNum,
         subject: 'The Lekki Headmaster',
-        topic: `Chapter ${nq.chapter}: "The Lekki Headmaster"`,
-        text: `[JAMB UTME · "The Lekki Headmaster" Q${qNum}] ${nq.question}`,
-        options: nq.options,
-        answer: nq.answer,
-        explanation: `${nq.explanation} (Official Prescribed Novel: "The Lekki Headmaster" by ${authorName}).`,
-        bookTitle: 'The Lekki Headmaster',
-        author: authorName,
-        textbookRef: `"The Lekki Headmaster" by ${authorName}`,
+        text: `[JAMB UTME · "The Lekki Headmaster" Q${qNum}] ${nq.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`,
       };
 
       return scatterQuestionOptions(baseQ, chosenYear * 10 + qNum);

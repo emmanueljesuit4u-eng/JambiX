@@ -21,7 +21,10 @@ import {
   SUBJECT_CONFIGS,
   scatterQuestionOptions,
   getQuestionCoreSignature,
+  normalizeSubjectKey,
 } from './jambPastQuestions';
+import { ENGLISH_GENERAL_BANK } from './jambComprehensiveBank';
+import { NOVEL_EXAM_QUESTIONS } from './jambNovelsData';
 import { getImageQuestionsForSubject } from './jambImageQuestions';
 import {
   ArtsCommercialSubjectKey,
@@ -52,7 +55,6 @@ import { JAMBIX_COMMERCE_ITEMS } from './jambixCommerceBank';
 import { JAMBIX_GOVERNMENT_ITEMS } from './jambixGovernmentBank';
 import { JAMBIX_LITERATURE_ITEMS } from './jambixLiteratureBank';
 import { JAMBIX_ACCOUNTS_ITEMS } from './jambixAccountsBank';
-import { LAMLAD_BIOLOGY_ITEMS, toUtmeFourOptions } from './lamladBiologyBank';
 
 export const SEEN_SIGNATURES_STORAGE_KEY = 'jambix_seen_signatures_v2';
 export const SEEN_IDS_STORAGE_KEY = 'jambix_seen_ids_v2';
@@ -72,6 +74,7 @@ const TOUGH_QUESTIONS_BY_SUBJECT: Record<string, ToughSubjectQuestion[]> = {
   crs: TOUGH_CRS_QUESTIONS,
   geography: TOUGH_GEOGRAPHY_QUESTIONS,
   agric: TOUGH_AGRIC_QUESTIONS,
+  agricultural_science: TOUGH_AGRIC_QUESTIONS,
 };
 
 /**
@@ -136,6 +139,49 @@ export function recordSeenSignatures(newSignatures: string[], newIds?: number[])
   }
 }
 
+export const LAST_RUN_SIGNATURES_STORAGE_KEY = 'jambix_last_run_sigs_v1';
+
+/**
+ * Loads per-subject last-run question signatures so when a subject's bank
+ * wraps around into its next cycle, it avoids repeating questions from the
+ * immediately preceding test back-to-back.
+ */
+export function getLastRunSignaturesMap(): Record<string, string[]> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(LAST_RUN_SIGNATURES_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function getLastRunSubjectSignatures(bucketKey: string): Set<string> {
+  const map = getLastRunSignaturesMap();
+  const arr = map[bucketKey];
+  return new Set(Array.isArray(arr) ? arr : []);
+}
+
+export function saveLastRunSignaturesMap(map: Record<string, string[]>): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(LAST_RUN_SIGNATURES_STORAGE_KEY, JSON.stringify(map));
+  } catch (err) {
+    console.warn('Error saving last-run signatures:', err);
+  }
+}
+
+export function clearLastRunSubjectSignatures(): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(LAST_RUN_SIGNATURES_STORAGE_KEY);
+  } catch (err) {
+    console.warn('Error clearing last-run signatures:', err);
+  }
+}
+
 /**
  * Resets candidate's seen questions history if requested
  */
@@ -144,6 +190,7 @@ export function clearSeenSignatures(): void {
   try {
     localStorage.removeItem(SEEN_SIGNATURES_STORAGE_KEY);
     localStorage.removeItem(SEEN_IDS_STORAGE_KEY);
+    localStorage.removeItem(LAST_RUN_SIGNATURES_STORAGE_KEY);
   } catch (err) {
     console.warn('Error clearing seen question signatures:', err);
   }
@@ -168,6 +215,9 @@ export function getPhysicsDiagramPointer(): number {
           inMemoryPhysicsDiagramPointer = parsed % 20;
           return inMemoryPhysicsDiagramPointer;
         }
+      } else {
+        inMemoryPhysicsDiagramPointer = 0;
+        return 0;
       }
     } catch {
       // fallback
@@ -214,6 +264,9 @@ export function getChemistryDiagramPointer(): number {
           inMemoryChemistryDiagramPointer = parsed % 20;
           return inMemoryChemistryDiagramPointer;
         }
+      } else {
+        inMemoryChemistryDiagramPointer = 0;
+        return 0;
       }
     } catch {
       // fallback
@@ -260,6 +313,9 @@ export function getMathematicsDiagramPointer(): number {
           inMemoryMathematicsDiagramPointer = parsed % 20;
           return inMemoryMathematicsDiagramPointer;
         }
+      } else {
+        inMemoryMathematicsDiagramPointer = 0;
+        return 0;
       }
     } catch {
       // fallback
@@ -285,6 +341,440 @@ export function advanceMathematicsDiagramPointer(step: number = 4): number {
   const next = (current + step) % 20;
   setMathematicsDiagramPointer(next);
   return current;
+}
+
+const MISSING_VISUAL_STANDARD_REGEX =
+  /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i;
+const MISSING_VISUAL_PHYSICS_REGEX =
+  /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bcircuit\s+shown|\bcircuit\s+in\b|\bwaveform\s+in\b)/i;
+const MISSING_VISUAL_CHEM_REGEX =
+  /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bapparatus\s+shown|\bsetup\s+shown|\bfigure\s+shows)/i;
+
+function isValidBankVisual(
+  item: { text: string; hasImage?: boolean; imageSvg?: string; imageUrl?: string },
+  regex: RegExp = MISSING_VISUAL_STANDARD_REGEX
+): boolean {
+  if (!regex.test(item.text)) return true;
+  return Boolean(item.hasImage || item.imageSvg || item.imageUrl);
+}
+
+interface ChapterPoolItem {
+  topic: string;
+  cluster: string;
+  text: string;
+  options: { A: string; B: string; C: string; D: string };
+  answer: 'A' | 'B' | 'C' | 'D';
+  explanation: string;
+  year?: number;
+  bookTitle: string;
+  author: string;
+  textbookRef: string;
+  hasImage?: boolean;
+  imageSvg?: string;
+  imageCaption?: string;
+  imageAlt?: string;
+}
+
+const STANDARD_ART_COMMERCIAL_CHAPTERS = [
+  { chapter: 1, title: 'Foundational Concepts, Definitions & Historical Theories' },
+  { chapter: 2, title: 'Structural Principles, Classifications & Taxonomy' },
+  { chapter: 3, title: 'Operational Mechanisms, Functions & Applied Processes' },
+  { chapter: 4, title: 'Statutory Frameworks, Institutional Rules & Legal Standards' },
+  { chapter: 5, title: 'Empirical Problem Solving, Quantitative Reasoning & Computation' },
+  { chapter: 6, title: 'Policy Evaluation, Socioeconomic Frameworks & National Applications' },
+  { chapter: 7, title: 'Comparative Analysis, Methodological Distinctions & Structural Relationships' },
+  { chapter: 8, title: 'Contemporary Developments, Ethics & Global Trends' },
+];
+
+function getChapterVariantDef(
+  cfg: { name: string; bookTitle: string; author: string },
+  chTitle: string,
+  variantType: number
+) {
+  if (variantType === 0) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `In UTME ${cfg.name}, which statement accurately articulates the core principle governing "${chTitle}"?`,
+      options: {
+        A: `It establishes the fundamental statutory rules, definitions, and operational mechanisms analyzed in ${cfg.bookTitle}`,
+        B: 'It advocates complete deregulation without legal or institutional accountability',
+        C: 'It restricts modern technological applications across academic curricula',
+        D: 'It assumes static equilibrium without allowing for socioeconomic adaptation',
+      },
+      answer: 'A' as const,
+      explanation: `In ${cfg.name}, the syllabus topic "${chTitle}" emphasizes structured principles and empirical methodologies documented in ${cfg.bookTitle} by ${cfg.author}.`,
+    };
+  }
+  if (variantType === 1) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `Under the accredited JAMB syllabus for ${cfg.name}, mastery of "${chTitle}" is vital for solving problems relating to:`,
+      options: {
+        A: 'Systemic resource allocation, policy evaluation, and analytical comprehension in Nigerian contexts',
+        B: 'Arbitrary price inflation and unverified speculative assumptions',
+        C: 'Disregarding official regulatory bodies and statutory examination standards',
+        D: 'Eliminating standard metric and quantitative evaluations across institutions',
+      },
+      answer: 'A' as const,
+      explanation: `According to ${cfg.bookTitle} by ${cfg.author}, "${chTitle}" equips candidates with analytical tools to assess institutional and empirical problems.`,
+    };
+  }
+  if (variantType === 2) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `When analyzing "${chTitle}" in ${cfg.name}, scholars and examiners primarily evaluate:`,
+      options: {
+        A: 'The causal relationships between theoretical principles and verifiable empirical outcomes',
+        B: 'Anecdotal conjecture without systematic observation or data',
+        C: 'The total elimination of documentation in official operations',
+        D: 'Subjective impressions detached from standard textbook doctrine',
+      },
+      answer: 'A' as const,
+      explanation: `Examiners test candidates on theoretical consistency and practical implications under "${chTitle}" as outlined in ${cfg.bookTitle} by ${cfg.author}.`,
+    };
+  }
+  if (variantType === 3) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `Which practical methodology is prescribed in ${cfg.bookTitle} for resolving complex scenarios under "${chTitle}" in ${cfg.name}?`,
+      options: {
+        A: 'Applying systematic comparative benchmarks and statutory criteria',
+        B: 'Relying exclusively on random unsystematic trials',
+        C: 'Exempting commercial institutions from statutory accountability',
+        D: 'Ignoring empirical verification and institutional records',
+      },
+      answer: 'A' as const,
+      explanation: `${cfg.bookTitle} by ${cfg.author} instructs candidates to utilize validated systematic frameworks and analytical criteria under "${chTitle}".`,
+    };
+  }
+  if (variantType === 4) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `A fundamental objective of examining "${chTitle}" in the official JAMB UTME ${cfg.name} curriculum is to test the candidate’s ability to:`,
+      options: {
+        A: 'Critically assess institutional mechanisms and formulate evidence-based conclusions',
+        B: 'Memorize unverified assumptions without theoretical context',
+        C: 'Bypass established legal, economic, or scientific procedures',
+        D: 'Conflate divergent analytical schools of thought indiscriminately',
+      },
+      answer: 'A' as const,
+      explanation: `Under ${cfg.name}, syllabus mastery of "${chTitle}" requires critical reasoning and coherent application as emphasized by ${cfg.author}.`,
+    };
+  }
+  if (variantType === 5) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `In applying "${chTitle}" within Nigerian and West African institutions, which condition best ensures valid ${cfg.name} outcomes?`,
+      options: {
+        A: 'Consistent adherence to standardized classification, empirical verification, and established operational controls',
+        B: 'Abandoning baseline regulatory guidelines during routine assessments',
+        C: 'Substituting historical evidence with uncorroborated oral estimates',
+        D: 'Treating all contextual variables as permanently invariant over time',
+      },
+      answer: 'A' as const,
+      explanation: `${cfg.bookTitle} highlights that reliable applications in "${chTitle}" depend on standardized classification and verifiable evidence.`,
+    };
+  }
+  if (variantType === 6) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `Which diagnostic error most commonly undermines student reasoning on UTME ${cfg.name} questions covering "${chTitle}"?`,
+      options: {
+        A: 'Confusing underlying causal mechanisms with superficial secondary symptoms',
+        B: 'Verifying foundational definitions against primary syllabus criteria',
+        C: 'Cross-checking comparative models using structured analytical steps',
+        D: 'Distinguishing normative policy prescriptions from empirical observations',
+      },
+      answer: 'A' as const,
+      explanation: `According to ${cfg.author}, candidates often err in "${chTitle}" by mistaking surface outcomes for root causal determinants.`,
+    };
+  }
+  if (variantType === 7) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `In ${cfg.name}, how does "${chTitle}" connect foundational theory to contemporary national development?`,
+      options: {
+        A: 'By translating structured disciplinary principles into measurable planning, governance, and practical reform',
+        B: 'By isolating theoretical models from all real-world civic and institutional feedback',
+        C: 'By discarding comparative benchmarks in favor of arbitrary discretion',
+        D: 'By limiting analytical inquiry strictly to obsolete pre-colonial precedents',
+      },
+      answer: 'A' as const,
+      explanation: `The JAMB syllabus links "${chTitle}" in ${cfg.name} directly to practical institutional design and informed civic application.`,
+    };
+  }
+  if (variantType === 8) {
+    return {
+      topic: `${cfg.name}: ${chTitle}`,
+      text: `When comparing competing approaches to "${chTitle}" in ${cfg.name}, which criterion provides the strongest scholarly justification?`,
+      options: {
+        A: 'Internal logical consistency supported by documented precedent and observable evidence',
+        B: 'Rhetorical appeal independent of factual accuracy or methodology',
+        C: 'Exclusion of anomalous cases without formal examination',
+        D: 'Reliance on single isolated anecdotes rather than systematic patterns',
+      },
+      answer: 'A' as const,
+      explanation: `${cfg.bookTitle} by ${cfg.author} emphasizes logical coherence and documented evidence when evaluating approaches in "${chTitle}".`,
+    };
+  }
+  return {
+    topic: `${cfg.name}: ${chTitle}`,
+    text: `During UTME evaluation of "${chTitle}" in ${cfg.name}, a candidate demonstrates highest-order competence by:`,
+    options: {
+      A: 'Synthesizing core rules with contextual constraints to justify an optimal solution',
+      B: 'Applying a single formulaic label without checking qualifying conditions',
+      C: 'Ignoring structural distinctions between closely related syllabus concepts',
+      D: 'Assuming empirical trends require no theoretical interpretation',
+    },
+    answer: 'A' as const,
+    explanation: `Top-tier UTME questions on "${chTitle}" test synthesis of core rules with situational constraints as taught in ${cfg.bookTitle}.`,
+  };
+}
+
+function getChapterSubjectPool(subjectKey: SubjectKey): ChapterPoolItem[] {
+  const cfg = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.economics;
+  const items: ChapterPoolItem[] = [];
+  const seenCore = new Set<string>();
+
+  const pushUnique = (entry: ChapterPoolItem) => {
+    const core = getQuestionCoreSignature(entry.text);
+    if (!core || seenCore.has(core)) return;
+    seenCore.add(core);
+    items.push(entry);
+  };
+
+  // 1. High-rigor curated questions for this subject if available
+  const toughList = TOUGH_QUESTIONS_BY_SUBJECT[subjectKey] || [];
+  for (const tq of toughList) {
+    pushUnique({
+      topic: tq.topic,
+      cluster: tq.topic,
+      text: tq.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, ''),
+      options: tq.options,
+      answer: (tq.answer as 'A' | 'B' | 'C' | 'D') || 'A',
+      explanation: `${tq.explanation} (${cfg.bookTitle} by ${cfg.author}).`,
+      year: tq.year,
+      bookTitle: cfg.bookTitle,
+      author: cfg.author,
+      textbookRef: `${cfg.bookTitle} by ${cfg.author}`,
+    });
+  }
+
+  // 2. Subject-specific curated past question templates
+  const templates = EXTRA_QUESTION_TEMPLATES[subjectKey as ArtsCommercialSubjectKey] || [];
+  templates.forEach((tmpl, idx) => {
+    const gen = tmpl.generate(2026, idx + 1);
+    const cleanText = gen.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '');
+    const chTitle =
+      STANDARD_ART_COMMERCIAL_CHAPTERS[tmpl.chapterIndex % STANDARD_ART_COMMERCIAL_CHAPTERS.length]?.title ||
+      tmpl.topic;
+    pushUnique({
+      topic: tmpl.topic || `${cfg.name}: ${chTitle}`,
+      cluster: chTitle,
+      text: cleanText,
+      options: gen.options,
+      answer: (gen.answer as 'A' | 'B' | 'C' | 'D') || 'A',
+      explanation: `${gen.explanation} (Official UTME Textbook: ${cfg.bookTitle} by ${cfg.author}).`,
+      bookTitle: cfg.bookTitle,
+      author: cfg.author,
+      textbookRef: `${cfg.bookTitle} by ${cfg.author}`,
+    });
+  });
+
+  // 3. Diagram questions for the subject (if any)
+  const imgDefs = getImageQuestionsForSubject(subjectKey) || [];
+  for (const def of imgDefs) {
+    pushUnique({
+      topic: def.topic,
+      cluster: def.topic || 'Diagram Analysis',
+      text: def.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, ''),
+      options: def.options,
+      answer: (def.answer as 'A' | 'B' | 'C' | 'D') || 'A',
+      explanation: def.explanation,
+      bookTitle: def.bookTitle || cfg.bookTitle,
+      author: def.author || cfg.author,
+      textbookRef: def.textbookRef || `${cfg.bookTitle} by ${cfg.author}`,
+      hasImage: true,
+      imageSvg: def.imageSvg,
+      imageCaption: def.imageCaption,
+      imageAlt: def.imageAlt,
+    });
+  }
+
+  // 4. Subject-specific syllabus chapters x 10 pedagogical variants
+  (cfg.standardChapters || []).forEach((ch) => {
+    for (let v = 0; v < 10; v++) {
+      const def = getChapterVariantDef(cfg, ch.title, v);
+      pushUnique({
+        topic: def.topic,
+        cluster: ch.title,
+        text: def.text,
+        options: def.options,
+        answer: def.answer,
+        explanation: `${def.explanation} (Official UTME Textbook: ${cfg.bookTitle} by ${cfg.author}).`,
+        bookTitle: cfg.bookTitle,
+        author: cfg.author,
+        textbookRef: `${cfg.bookTitle} by ${cfg.author}`,
+      });
+    }
+  });
+
+  // 5. Cross-syllabus domain chapters x 5 variants
+  STANDARD_ART_COMMERCIAL_CHAPTERS.forEach((ch) => {
+    for (let v = 0; v < 5; v++) {
+      const def = getChapterVariantDef(cfg, ch.title, v);
+      pushUnique({
+        topic: def.topic,
+        cluster: ch.title,
+        text: def.text,
+        options: def.options,
+        answer: def.answer,
+        explanation: `${def.explanation} (Official UTME Textbook: ${cfg.bookTitle} by ${cfg.author}).`,
+        bookTitle: cfg.bookTitle,
+        author: cfg.author,
+        textbookRef: `${cfg.bookTitle} by ${cfg.author}`,
+      });
+    }
+  });
+
+  return items;
+}
+
+function getBankCoreSignaturesForBucket(bucketKey: string): string[] {
+  if (bucketKey === 'english_novel') {
+    return NOVEL_EXAM_QUESTIONS.filter((q) => q.novel === 'The Lekki Headmaster').map((q) =>
+      getQuestionCoreSignature(q.question)
+    );
+  }
+  if (bucketKey === 'english_general') {
+    return ENGLISH_GENERAL_BANK.map((q) => getQuestionCoreSignature(q.text));
+  }
+  if (bucketKey === 'physics') {
+    return PHYSICS_DEMYSTIFIED_ITEMS.filter(
+      (item) =>
+        !(item.originalChapter === 6 || (item.bookQuestionNum >= 601 && item.bookQuestionNum <= 620)) &&
+        isValidBankVisual(item, MISSING_VISUAL_PHYSICS_REGEX)
+    ).map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'chemistry') {
+    return JAMBIX_CHEMISTRY_ITEMS.filter(
+      (item) =>
+        !(item.originalChapter === 5 || (item.bookQuestionNum >= 501 && item.bookQuestionNum <= 520)) &&
+        isValidBankVisual(item, MISSING_VISUAL_CHEM_REGEX)
+    ).map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'mathematics') {
+    return JAMBIX_MATHEMATICS_ITEMS.filter(
+      (item) =>
+        !(
+          item.hasImage &&
+          (item.id.startsWith('math_diag_') || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420))
+        ) && isValidBankVisual(item, MISSING_VISUAL_STANDARD_REGEX)
+    ).map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'biology') {
+    return JAMBIX_BIOLOGY_ITEMS.map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'economics') {
+    return JAMBIX_ECONOMICS_ITEMS.filter((item) =>
+      isValidBankVisual(item, MISSING_VISUAL_STANDARD_REGEX)
+    ).map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'commerce') {
+    return JAMBIX_COMMERCE_ITEMS.map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'government') {
+    return JAMBIX_GOVERNMENT_ITEMS.map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'literature') {
+    return JAMBIX_LITERATURE_ITEMS.map((item) => getQuestionCoreSignature(item.text));
+  }
+  if (bucketKey === 'accounts') {
+    return JAMBIX_ACCOUNTS_ITEMS.map((item) => getQuestionCoreSignature(item.text));
+  }
+  return getChapterSubjectPool(bucketKey as SubjectKey).map((item) => getQuestionCoreSignature(item.text));
+}
+
+/**
+ * Records seen question signatures for a JAMB CBT test and updates per-subject
+ * last-run history. Whenever an individual subject's question bank reaches 100%
+ * exhaustion, cleanly resets ONLY that subject's seen cycle (retaining the questions
+ * from the just-started test so consecutive tests never repeat back-to-back) while
+ * leaving all other subjects' unseen progress completely untouched.
+ */
+export function recordJambSubjectProgress(pickedQuestions: VerifiedQuestion[]): Set<string> {
+  const nextSeen = new Set<string>(getSeenQuestionSignatures());
+  const lastRunMap = getLastRunSignaturesMap();
+  const pickedByBucket = new Map<string, Set<string>>();
+  const newIds: number[] = [];
+
+  for (const q of pickedQuestions) {
+    if (q.id) newIds.push(q.id);
+    const sig = getQuestionCoreSignature(q.text);
+    if (!sig) continue;
+
+    let bucketKey: string;
+    if (
+      q.subject === 'The Lekki Headmaster' ||
+      (q.subject === 'Use of English' && q.bookTitle === 'The Lekki Headmaster')
+    ) {
+      bucketKey = 'english_novel';
+    } else if (q.subject === 'Use of English') {
+      bucketKey = 'english_general';
+    } else {
+      bucketKey = normalizeSubjectKey(q.subject);
+      // Diagram questions in Physics, Chemistry & Mathematics cycle independently via their 0..19 batch pointers
+      if (
+        (bucketKey === 'physics' || bucketKey === 'chemistry' || bucketKey === 'mathematics') &&
+        q.hasImage
+      ) {
+        continue;
+      }
+    }
+
+    nextSeen.add(sig);
+    let bucketSet = pickedByBucket.get(bucketKey);
+    if (!bucketSet) {
+      bucketSet = new Set<string>();
+      pickedByBucket.set(bucketKey, bucketSet);
+    }
+    bucketSet.add(sig);
+  }
+
+  for (const [bucketKey, currentRunSigs] of pickedByBucket.entries()) {
+    lastRunMap[bucketKey] = Array.from(currentRunSigs);
+
+    const bankSigs = getBankCoreSignaturesForBucket(bucketKey);
+    const isExhausted =
+      bankSigs.length > 0 && bankSigs.every((sig) => nextSeen.has(sig));
+
+    if (isExhausted) {
+      for (const sig of bankSigs) {
+        nextSeen.delete(sig);
+      }
+      for (const sig of currentRunSigs) {
+        nextSeen.add(sig);
+      }
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    try {
+      const trimmed = Array.from(nextSeen).slice(-MAX_SEEN_HISTORY);
+      localStorage.setItem(SEEN_SIGNATURES_STORAGE_KEY, JSON.stringify(trimmed));
+      if (newIds.length > 0) {
+        const rawIds = localStorage.getItem(SEEN_IDS_STORAGE_KEY);
+        const existingIds: number[] = rawIds ? JSON.parse(rawIds) : [];
+        const mergedIds = Array.from(new Set([...existingIds, ...newIds])).slice(-MAX_SEEN_HISTORY);
+        localStorage.setItem(SEEN_IDS_STORAGE_KEY, JSON.stringify(mergedIds));
+      }
+    } catch (err) {
+      console.warn('Error persisting JAMB subject progress:', err);
+    }
+    saveLastRunSignaturesMap(lastRunMap);
+  }
+
+  return nextSeen;
 }
 
 // ============================================================================
@@ -3722,7 +4212,7 @@ export function getSubjectChapterGenerators(subjectKey: SubjectKey): ChapterGene
         const generated = selectedTmpl.generate(year, qNum);
         return {
           topic: selectedTmpl.topic || `${cfg.name}: ${ch.title}`,
-          text: generated.text.replace(/^[JAMB UTME[^]]+]s*/i, ''),
+          text: generated.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, ''),
           options: generated.options,
           answer: generated.answer,
           explanation: generated.explanation,
@@ -3854,10 +4344,11 @@ export function generateUniqueSubjectQuestions(
   sessionUsedTexts: Set<string> = new Set(),
   sessionUsedDiagrams: Set<string> = new Set(),
   baseSeed: number = Date.now(),
-  difficultyTier: number = 0
+  difficultyTier: number = 0,
+  consumePersistentPointers: boolean = true
 ): VerifiedQuestion[] {
   const picked: VerifiedQuestion[] = [];
-  const chosenYear = typeof year === 'number' ? year : 1978 + (baseSeed % 49);
+  const chosenYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
   const chapterGens = getSubjectChapterGenerators(subjectKey);
   const numChapters = chapterGens.length;
   const config = SUBJECT_CONFIGS[subjectKey] || SUBJECT_CONFIGS.english;
@@ -3885,10 +4376,107 @@ export function generateUniqueSubjectQuestions(
     return copy;
   };
 
+  /**
+   * Shared Balanced Topic Round-Robin Picker:
+   * 1. Pass 1: Round-robins across all topic clusters for strictly unseen items (!safeExclude && !safeSessionUsed).
+   * 2. Pass 2: If fewer than `quota` unseen items remain (end of bank cycle), wraps around via topic round-robin
+   *    skipping items from `lastRunSigs` so the previous test never repeats back-to-back.
+   * 3. Pass 3: Final topic round-robin safety net guaranteeing !safeSessionUsed.
+   */
+  const pickRoundRobinBankItems = <T extends { text: string; hasImage?: boolean; imageSvg?: string; imageUrl?: string }>(
+    items: T[],
+    quota: number,
+    getTopicCluster: (item: T) => string,
+    bucketKey: string,
+    visualRegex?: RegExp
+  ): T[] => {
+    if (quota <= 0 || items.length === 0) return [];
+    const lastRunSigs = getLastRunSubjectSignatures(bucketKey);
+
+    const byTopic: Record<string, { unseen: T[]; seen: T[] }> = {};
+    for (const item of items) {
+      if (visualRegex && !isValidBankVisual(item, visualRegex)) continue;
+      const tKey = getTopicCluster(item);
+      if (!byTopic[tKey]) byTopic[tKey] = { unseen: [], seen: [] };
+      const sig = getQuestionCoreSignature(item.text);
+      if (!sig || safeSessionUsed.has(sig)) continue;
+      if (safeExclude.has(sig)) {
+        byTopic[tKey].seen.push(item);
+      } else {
+        byTopic[tKey].unseen.push(item);
+      }
+    }
+
+    for (const tKey of Object.keys(byTopic)) {
+      byTopic[tKey].unseen = shuffleArr(byTopic[tKey].unseen);
+      byTopic[tKey].seen = shuffleArr(byTopic[tKey].seen);
+    }
+
+    const topicKeys = shuffleArr(Object.keys(byTopic));
+    const result: T[] = [];
+
+    // Pass 1: Exhaust unseen items across topic clusters via round-robin
+    let added = true;
+    while (result.length < quota && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (result.length >= quota) break;
+        const pool = byTopic[tKey].unseen;
+        const nextIdx = pool.findIndex((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
+        });
+        if (nextIdx !== -1) {
+          const [pickedItem] = pool.splice(nextIdx, 1);
+          safeSessionUsed.add(getQuestionCoreSignature(pickedItem.text));
+          result.push(pickedItem);
+          added = true;
+        }
+      }
+    }
+
+    // Pass 2: Wrap-around via topic round-robin avoiding immediate prior test's questions
+    added = true;
+    while (result.length < quota && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (result.length >= quota) break;
+        const pool = byTopic[tKey].seen;
+        const nextIdx = pool.findIndex((item) => {
+          const sig = getQuestionCoreSignature(item.text);
+          return !safeSessionUsed.has(sig) && !lastRunSigs.has(sig);
+        });
+        if (nextIdx !== -1) {
+          const [pickedItem] = pool.splice(nextIdx, 1);
+          safeSessionUsed.add(getQuestionCoreSignature(pickedItem.text));
+          result.push(pickedItem);
+          added = true;
+        }
+      }
+    }
+
+    // Pass 3: Final topic round-robin safety net (if lastRunSigs + result exceed total pool size)
+    added = true;
+    while (result.length < quota && added) {
+      added = false;
+      for (const tKey of topicKeys) {
+        if (result.length >= quota) break;
+        const pool = byTopic[tKey].seen;
+        const nextIdx = pool.findIndex((item) => !safeSessionUsed.has(getQuestionCoreSignature(item.text)));
+        if (nextIdx !== -1) {
+          const [pickedItem] = pool.splice(nextIdx, 1);
+          safeSessionUsed.add(getQuestionCoreSignature(pickedItem.text));
+          result.push(pickedItem);
+          added = true;
+        }
+      }
+    }
+
+    return result;
+  };
+
   // =========================================================================
   // JAMBIX PHYSICS QUESTION BANK (600 VERIFIED QUESTIONS ACROSS 25+ TOPIC CLUSTERS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
   // =========================================================================
   if (subjectKey === 'physics' && PHYSICS_DEMYSTIFIED_ITEMS.length > 0) {
     const getPhysicsTopic = (item: typeof PHYSICS_DEMYSTIFIED_ITEMS[0]) => {
@@ -3899,24 +4487,20 @@ export function generateUniqueSubjectQuestions(
         return item.topic || 'General Physics & Mechanics';
       }
       const qNum = item.bookQuestionNum;
-      // Topic 1: Measurements & Units (1-100)
       if (item.originalChapter === 1 || qNum <= 100) {
         if (qNum <= 35) return 'Fundamental & Derived Quantities and Units';
         if (qNum <= 70) return 'Dimensional Analysis & Verification';
         return 'Vernier Caliper, Micrometer & Error Analysis';
       }
-      // Topic 2: Scalars & Vectors (101-200)
       if (item.originalChapter === 2 || qNum <= 200) {
         if (qNum <= 150) return 'Scalars, Vectors & Component Resolution';
         return 'Vector Addition, Resultants & Equilibrium';
       }
-      // Topic 3: Motion (201-300)
       if (item.originalChapter === 3 || qNum <= 300) {
         if (qNum <= 240) return 'Linear Motion & Equations of Motion';
         if (qNum <= 275) return 'Motion Under Gravity & Projectiles';
         return 'Newton\'s Laws, Dynamics & Friction';
       }
-      // Topic 4: Alternating Current (AC) Circuits (301-500)
       if (qNum <= 340) return 'AC Waveforms, Peak & RMS Values';
       if (qNum <= 380) return 'Inductive & Capacitive Reactance';
       if (qNum <= 430) return 'Series RLC Circuits & Impedance';
@@ -3924,7 +4508,6 @@ export function generateUniqueSubjectQuestions(
       return 'Power in AC Circuits & Power Factor';
     };
 
-    // 1. Separate the 20 verified diagram questions from the non-diagram question pool
     const diagramPool = PHYSICS_DEMYSTIFIED_ITEMS.filter(
       (item) => item.originalChapter === 6 || (item.bookQuestionNum >= 601 && item.bookQuestionNum <= 620)
     );
@@ -3932,12 +4515,13 @@ export function generateUniqueSubjectQuestions(
       (item) => !(item.originalChapter === 6 || (item.bookQuestionNum >= 601 && item.bookQuestionNum <= 620))
     );
 
-    // 2. Select EXACTLY 4 diagram questions per test in cyclic sequence (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
     const targetDiagramCount = Math.min(4, targetCount, diagramPool.length);
     const pickedDiagramItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
 
     if (targetDiagramCount > 0 && diagramPool.length > 0) {
-      const diagramStartIndex = advancePhysicsDiagramPointer(targetDiagramCount);
+      const diagramStartIndex = consumePersistentPointers
+        ? advancePhysicsDiagramPointer(targetDiagramCount)
+        : (Math.abs(chosenYear) * 4) % diagramPool.length;
       for (let d = 0; d < targetDiagramCount; d++) {
         const dIdx = (diagramStartIndex + d) % diagramPool.length;
         const dItem = diagramPool[dIdx];
@@ -3947,73 +4531,15 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 3. The remaining questions (e.g. 36 questions in a 40-question test) are drawn
-    // evenly via round-robin across all syllabus topic clusters
     const nonDiagramQuota = Math.max(0, targetCount - pickedDiagramItems.length);
+    const pickedNonDiagramItems = pickRoundRobinBankItems(
+      nonDiagramPool,
+      nonDiagramQuota,
+      getPhysicsTopic,
+      'physics',
+      MISSING_VISUAL_PHYSICS_REGEX
+    );
 
-    const byTopic: Record<string, typeof PHYSICS_DEMYSTIFIED_ITEMS> = {};
-    for (const item of nonDiagramPool) {
-      const topicKey = getPhysicsTopic(item);
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
-
-    // Shuffle within each topic cluster
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // Shuffle topic cluster keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedNonDiagramItems: typeof PHYSICS_DEMYSTIFIED_ITEMS = [];
-
-    // Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
-    let added = true;
-    while (pickedNonDiagramItems.length < nonDiagramQuota && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
-          // Guard: If item specifies a diagram/graph/circuit, ensure it actually has visual content for students
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bcircuit\s+shown|\bcircuit\s+in\b|\bwaveform\s+in\b)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            return false;
-          }
-          return true;
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedNonDiagramItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // Pass 2: Fallback across nonDiagramPool without session duplicates
-    if (pickedNonDiagramItems.length < nonDiagramQuota) {
-      const allShuffled = shuffleArr(nonDiagramPool);
-      for (const item of allShuffled) {
-        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bcircuit\s+shown|\bcircuit\s+in\b|\bwaveform\s+in\b)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            continue;
-          }
-          safeSessionUsed.add(sig);
-          pickedNonDiagramItems.push(item);
-        }
-      }
-    }
-
-    // 4. Combine the 4 diagram questions and the 36 non-diagram questions,
-    // and randomly shuffle their order so diagram questions are naturally dispersed throughout the exam
     const finalOrderedPhysics = shuffleArr([...pickedDiagramItems, ...pickedNonDiagramItems]);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -4022,7 +4548,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 880000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -4045,8 +4571,7 @@ export function generateUniqueSubjectQuestions(
         imageCaption: item.imageCaption,
         imageAlt: item.imageAlt,
         imageUrl: item.imageUrl,
-      };
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -4055,11 +4580,7 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX CHEMISTRY QUESTION BANK (TOPIC 1: ORGANIC & TOPIC 2: ANALYTICAL — 300 QUESTIONS)
-  // Fairly distributes across all 35+ topic clusters via round-robin, and balances with
-  // all other syllabus chapters (Separation, Gas Laws, Bonding, Acids/Bases/Salts,
-  // Redox, Electrolysis, Metals, Non-metals, Environmental Chemistry, etc.)
-  // so the test covers diverse topics across the entire syllabus.
+  // JAMBIX CHEMISTRY QUESTION BANK (520 QUESTIONS ACROSS ALL TOPICS)
   // =========================================================================
   if (subjectKey === 'chemistry' && JAMBIX_CHEMISTRY_ITEMS.length > 0) {
     const getChemTopic = (item: typeof JAMBIX_CHEMISTRY_ITEMS[0]) => {
@@ -4074,16 +4595,13 @@ export function generateUniqueSubjectQuestions(
         if (qNum <= 75) return 'Nitrogen Compounds: Amines & Amides';
         return 'Polymers, Biomolecules & Purification';
       }
-      if (item.topic) {
-        return item.topic;
-      }
+      if (item.topic) return item.topic;
       if (item.originalChapter === 2 || item.bookQuestionNum > 100) {
         return 'Analytical Chemistry';
       }
       return 'General Chemistry';
     };
 
-    // 1. Separate the 20 verified diagram questions from the non-diagram question pool
     const diagramPool = JAMBIX_CHEMISTRY_ITEMS.filter(
       (item) => item.originalChapter === 5 || (item.bookQuestionNum >= 501 && item.bookQuestionNum <= 520)
     );
@@ -4091,12 +4609,13 @@ export function generateUniqueSubjectQuestions(
       (item) => !(item.originalChapter === 5 || (item.bookQuestionNum >= 501 && item.bookQuestionNum <= 520))
     );
 
-    // 2. Select EXACTLY 4 diagram questions per test in cyclic sequence (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
     const targetDiagramCount = Math.min(4, targetCount, diagramPool.length);
     const pickedDiagramItems: typeof JAMBIX_CHEMISTRY_ITEMS = [];
 
     if (targetDiagramCount > 0 && diagramPool.length > 0) {
-      const diagramStartIndex = advanceChemistryDiagramPointer(targetDiagramCount);
+      const diagramStartIndex = consumePersistentPointers
+        ? advanceChemistryDiagramPointer(targetDiagramCount)
+        : (Math.abs(chosenYear) * 4) % diagramPool.length;
       for (let d = 0; d < targetDiagramCount; d++) {
         const dIdx = (diagramStartIndex + d) % diagramPool.length;
         const dItem = diagramPool[dIdx];
@@ -4106,73 +4625,15 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 3. The remaining questions (e.g. 36 questions in a 40-question test) are drawn
-    // evenly via round-robin across all syllabus topic clusters
     const nonDiagramQuota = Math.max(0, targetCount - pickedDiagramItems.length);
+    const pickedNonDiagramItems = pickRoundRobinBankItems(
+      nonDiagramPool,
+      nonDiagramQuota,
+      getChemTopic,
+      'chemistry',
+      MISSING_VISUAL_CHEM_REGEX
+    );
 
-    const byTopic: Record<string, typeof JAMBIX_CHEMISTRY_ITEMS> = {};
-    for (const item of nonDiagramPool) {
-      const topicKey = getChemTopic(item);
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
-
-    // Shuffle within each cluster
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // Shuffle cluster keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedNonDiagramItems: typeof JAMBIX_CHEMISTRY_ITEMS = [];
-
-    // Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
-    let added = true;
-    while (pickedNonDiagramItems.length < nonDiagramQuota && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
-          // Guard: If item specifies or references a diagram/graph, ensure it actually has visual content for students
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bapparatus\s+shown|\bsetup\s+shown|\bfigure\s+shows)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            return false;
-          }
-          return true;
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedNonDiagramItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // Pass 2: Fallback across nonDiagramPool without session duplicates
-    if (pickedNonDiagramItems.length < nonDiagramQuota) {
-      const allShuffled = shuffleArr(nonDiagramPool);
-      for (const item of allShuffled) {
-        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bapparatus\s+shown|\bsetup\s+shown|\bfigure\s+shows)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            continue;
-          }
-          safeSessionUsed.add(sig);
-          pickedNonDiagramItems.push(item);
-        }
-      }
-    }
-
-    // 4. Combine the 4 diagram questions and the 36 non-diagram questions,
-    // and randomly shuffle their order so diagram questions are naturally dispersed throughout the exam
     const finalOrderedChem = shuffleArr([...pickedDiagramItems, ...pickedNonDiagramItems]);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -4181,7 +4642,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 890000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -4204,9 +4665,7 @@ export function generateUniqueSubjectQuestions(
         imageCaption: item.imageCaption,
         imageAlt: item.imageAlt,
         imageUrl: item.imageUrl,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -4215,14 +4674,9 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX MATHEMATICS QUESTION BANK (320 QUESTIONS INCLUDING 20 DIAGRAM QUESTIONS)
-  // Ensures exactly 4 diagram questions per test in cyclic rotation (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
-  // IF AND ONLY IF the student selects Mathematics.
-  // The remaining 36 questions are fairly distributed across all syllabus topic clusters
-  // via round-robin, ensuring every 40-question CBT mock exam draws evenly without clustering.
+  // JAMBIX MATHEMATICS QUESTION BANK (420 QUESTIONS INCLUDING 20 DIAGRAM QUESTIONS)
   // =========================================================================
   if (subjectKey === 'mathematics' && JAMBIX_MATHEMATICS_ITEMS.length > 0) {
-    // 1. Separate the 20 verified diagram questions from the non-diagram question pool
     const diagramPool = JAMBIX_MATHEMATICS_ITEMS.filter(
       (item) => item.hasImage && (item.id.startsWith('math_diag_') || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420))
     );
@@ -4230,12 +4684,13 @@ export function generateUniqueSubjectQuestions(
       (item) => !(item.hasImage && (item.id.startsWith('math_diag_') || (item.bookQuestionNum >= 401 && item.bookQuestionNum <= 420)))
     );
 
-    // 2. Select EXACTLY 4 diagram questions per test in cyclic sequence (0-3, 4-7, 8-11, 12-15, 16-19 -> restart at 0-3)
     const targetDiagramCount = Math.min(4, targetCount, diagramPool.length);
     const pickedDiagramItems: typeof JAMBIX_MATHEMATICS_ITEMS = [];
 
     if (targetDiagramCount > 0 && diagramPool.length > 0) {
-      const diagramStartIndex = advanceMathematicsDiagramPointer(targetDiagramCount);
+      const diagramStartIndex = consumePersistentPointers
+        ? advanceMathematicsDiagramPointer(targetDiagramCount)
+        : (Math.abs(chosenYear) * 4) % diagramPool.length;
       for (let d = 0; d < targetDiagramCount; d++) {
         const dIdx = (diagramStartIndex + d) % diagramPool.length;
         const dItem = diagramPool[dIdx];
@@ -4245,8 +4700,6 @@ export function generateUniqueSubjectQuestions(
       }
     }
 
-    // 3. Balanced Topic Distribution: The remaining 36 questions are drawn
-    // evenly via round-robin across all 16 syllabus topic clusters
     const nonDiagramQuota = Math.max(0, targetCount - pickedDiagramItems.length);
 
     const getMathematicsTopicCluster = (item: typeof JAMBIX_MATHEMATICS_ITEMS[0]) => {
@@ -4254,71 +4707,54 @@ export function generateUniqueSubjectQuestions(
       const c = (item.chapterTitle || '').toLowerCase();
       const txt = (item.text || '').toLowerCase();
 
-      // 1. Differential Calculus
       if (t.includes('differentiat') || t.includes('derivative') || t.includes('tangent') || t.includes('calculus: diff') || c.includes('differential calculus') || txt.includes('dy/dx') || txt.includes('maximum value') || txt.includes('minimum value')) {
         return 'Differential Calculus: Derivatives, Tangents & Extremum';
       }
-      // 2. Integral Calculus
       if (t.includes('integrat') || t.includes('integral') || c.includes('integral calculus') || txt.includes('∫') || txt.includes('definite integral') || txt.includes('area under')) {
         return 'Integral Calculus: Definite Integrals & Area Under Curves';
       }
-      // 3. Vectors in Two Dimensions
       if (t.includes('vector') || c.includes('vector') || txt.includes('scalar product') || txt.includes('dot product') || txt.includes('magnitude of the vector') || txt.includes('magnitude of vector') || txt.includes('i + ') || txt.includes('i - ')) {
         return 'Vectors in Two Dimensions & Dot Products';
       }
-      // 4. Probability
       if (t.includes('probability') || txt.includes('probability') || txt.includes('die is thrown') || txt.includes('without replacement') || txt.includes('balls are selected') || txt.includes('bag contains')) {
         return 'Probability: Elementary & Compound Events';
       }
-      // 5. Permutations & Combinations
       if (t.includes('combination') || t.includes('permutation') || txt.includes('combinations') || txt.includes('permutations') || txt.includes('⁸c₃') || txt.includes('⁶c₂') || txt.includes('⁵c₃') || txt.includes('6!/')) {
         return 'Permutations & Combinations';
       }
-      // 6. Statistics: Measures of Location & Dispersion
       if (t.includes('statistic') || t.includes('mean') || t.includes('median') || t.includes('mode') || t.includes('dispersion') || t.includes('variance') || t.includes('standard deviation') || c.includes('statistic')) {
         return 'Statistics: Measures of Location & Dispersion';
       }
-      // 7. Sequences & Series: AP, GP and Sum to Infinity
       if (t.includes('sequence') || t.includes('series') || t.includes('ap') || t.includes('gp') || t.includes('progression') || c.includes('sequence') || txt.includes('first 25 terms') || txt.includes('first 20 terms') || txt.includes('7th term') || txt.includes('6th term') || txt.includes('sum to infinity')) {
         return 'Sequences & Series: AP, GP & Sum to Infinity';
       }
-      // 8. Matrices & Determinants
       if (t.includes('matri') || t.includes('determinant') || c.includes('matri') || txt.includes('determinant') || txt.includes('det(')) {
         return 'Matrices, Determinants & Linear Transformations';
       }
-      // 9. Coordinate Geometry: Straight Lines & Circles
       if (t.includes('coordinate') || t.includes('gradient') || t.includes('straight line') || t.includes('circle equation') || t.includes('midpoint') || t.includes('distance between') || c.includes('coordinate geometry') || txt.includes('gradient of the line') || txt.includes('equation of a line') || txt.includes('equation of a circle') || txt.includes('perpendicular to')) {
         return 'Coordinate Geometry: Straight Lines & Circles';
       }
-      // 10. Trigonometry: Ratios, Identities, Special Angles & Bearings
       if (t.includes('trigonomet') || t.includes('ratio') || t.includes('sin') || t.includes('cos') || t.includes('tan') || t.includes('bearing') || c.includes('trigonomet') || txt.includes('sin θ') || txt.includes('cos θ') || txt.includes('tan θ') || txt.includes('bearing of')) {
         return 'Trigonometry: Identities, Equations & Bearings';
       }
-      // 11. Geometry & Mensuration: Plane Shapes, Polygons & Solids
       if (t.includes('mensuration') || t.includes('polygon') || t.includes('angle') || t.includes('circle') || t.includes('cylinder') || t.includes('sphere') || t.includes('cone') || t.includes('cuboid') || t.includes('sector') || t.includes('area') || t.includes('volume') || txt.includes('regular polygon') || txt.includes('circumference') || txt.includes('volume of') || txt.includes('radius of a sphere')) {
         return 'Geometry & Mensuration: Plane Shapes & Solids';
       }
-      // 12. Indices, Logarithms & Surds
       if (t.includes('index') || t.includes('indices') || t.includes('logarithm') || t.includes('log') || t.includes('surd') || c.includes('indices') || txt.includes('log₂') || txt.includes('log₃') || txt.includes('log₁₀') || txt.includes('log₅') || txt.includes('5^(') || txt.includes('3^(') || txt.includes('9ˣ') || txt.includes('√')) {
         return 'Indices, Logarithms & Surds';
       }
-      // 13. Quadratic Equations & Simultaneous Systems
       if (t.includes('quadratic') || t.includes('roots') || t.includes('simultaneous') || c.includes('quadratic') || txt.includes('3x² - 11x') || txt.includes('x² - 9x') || txt.includes('roots of') || txt.includes('equal roots') || txt.includes('x + y =') || txt.includes('3x + 2y =')) {
         return 'Quadratic Equations & Simultaneous Systems';
       }
-      // 14. Inequalities, Linear Programming & Variations
       if (t.includes('inequalit') || t.includes('variation') || c.includes('inequalit') || txt.includes('varies inversely') || txt.includes('varies directly') || txt.includes('5x + 2 < 17') || txt.includes('workers')) {
         return 'Inequalities, Linear Programming & Variations';
       }
-      // 15. Polynomials, Functions & Algebraic Fractions
       if (t.includes('polynomial') || t.includes('function') || t.includes('algebra') || t.includes('remainder') || t.includes('factor') || txt.includes('f(x)') || txt.includes('f(g(') || txt.includes('inverse of f') || txt.includes('remainder when') || txt.includes('simplify (x²')) {
         return 'Polynomials, Functions & Algebraic Fractions';
       }
-      // 16. Commercial Mathematics & Practical Arithmetic
       if (t.includes('commercial') || t.includes('compound interest') || t.includes('profit') || t.includes('percentage') || t.includes('ratio') || t.includes('speed') || txt.includes('compound interest') || txt.includes('percentage profit') || txt.includes('average speed')) {
         return 'Commercial Mathematics & Practical Arithmetic';
       }
-      // 17. Number Bases, Modular Arithmetic & Sets
       if (t.includes('base') || t.includes('modular') || t.includes('set') || t.includes('fraction') || c.includes('number base') || c.includes('sets')) {
         return 'Number Bases, Fractions & Modular Arithmetic';
       }
@@ -4326,70 +4762,14 @@ export function generateUniqueSubjectQuestions(
       return item.chapterTitle || item.topic || 'General Mathematics';
     };
 
-    const byTopic: Record<string, typeof JAMBIX_MATHEMATICS_ITEMS> = {};
-    for (const item of nonDiagramPool) {
-      const topicKey = getMathematicsTopicCluster(item);
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedNonDiagramItems = pickRoundRobinBankItems(
+      nonDiagramPool,
+      nonDiagramQuota,
+      getMathematicsTopicCluster,
+      'mathematics',
+      MISSING_VISUAL_STANDARD_REGEX
+    );
 
-    // Shuffle within each cluster
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // Shuffle topic keys so tests don't always pick topics in the same sequence
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedNonDiagramItems: typeof JAMBIX_MATHEMATICS_ITEMS = [];
-
-    // Pass 1: Round-robin across all topics, prioritizing unseen questions and filtering any missing visual questions
-    let added = true;
-    while (pickedNonDiagramItems.length < nonDiagramQuota && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
-          // Cleanliness check: reject questions referencing diagrams/graphs if they lack visual assets
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            return false;
-          }
-          return true;
-        });
-
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedNonDiagramItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // Pass 2: Fallback across nonDiagramPool without session duplicates
-    if (pickedNonDiagramItems.length < nonDiagramQuota) {
-      const allShuffled = shuffleArr(nonDiagramPool);
-      for (const item of allShuffled) {
-        if (pickedNonDiagramItems.length >= nonDiagramQuota) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            continue;
-          }
-          safeSessionUsed.add(sig);
-          pickedNonDiagramItems.push(item);
-        }
-      }
-    }
-
-    // 4. Combine the 4 diagram questions and the 36 non-diagram questions,
-    // and randomly shuffle their order so diagram questions are naturally dispersed throughout the exam
     const finalOrderedMath = shuffleArr([...pickedDiagramItems, ...pickedNonDiagramItems]);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -4398,7 +4778,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 870000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -4421,9 +4801,7 @@ export function generateUniqueSubjectQuestions(
         imageCaption: item.imageCaption,
         imageAlt: item.imageAlt,
         imageUrl: item.imageUrl,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -4433,9 +4811,6 @@ export function generateUniqueSubjectQuestions(
 
   // =========================================================================
   // JAMBIX BIOLOGY QUESTION BANK (300 CHALLENGING QUESTIONS ACROSS 20+ TOPIC CLUSTERS)
-  // Balanced Topic Distribution During Tests:
-  // Round-robins evenly across all 20+ syllabus topic clusters so questions
-  // are drawn evenly from all branches of the syllabus without clustering into any single topic.
   // =========================================================================
   if (subjectKey === 'biology' && JAMBIX_BIOLOGY_ITEMS.length > 0) {
     const getBiologyTopicCluster = (item: typeof JAMBIX_BIOLOGY_ITEMS[0]) => {
@@ -4443,376 +4818,80 @@ export function generateUniqueSubjectQuestions(
       const title = (item.chapterTitle || '').toLowerCase();
       const text = (item.text || '').toLowerCase();
 
-      // 1. Cell Division & Cell Cycle
-      if (
-        topic.includes('mitosis') ||
-        topic.includes('meiosis') ||
-        topic.includes('cell cycle') ||
-        topic.includes('cell division') ||
-        topic.includes('crossing over') ||
-        topic.includes('independent assortment')
-      ) {
+      if (topic.includes('mitosis') || topic.includes('meiosis') || topic.includes('cell cycle') || topic.includes('cell division') || topic.includes('crossing over') || topic.includes('independent assortment')) {
         return 'Cell Division & Cell Cycle';
       }
-
-      // 2. Cell Biology, Organelles & Membrane Transport
-      if (
-        topic.includes('cell biology') ||
-        topic.includes('cellular physiology') ||
-        topic.includes('membrane transport') ||
-        topic.includes('microscopy') ||
-        topic.includes('plasmolysis') ||
-        topic.includes('diffusion') ||
-        topic.includes('organelle') ||
-        topic.includes('vacuole') ||
-        topic.includes('ribosome') ||
-        topic.includes('protoplast') ||
-        title.includes('cell biology')
-      ) {
+      if (topic.includes('cell biology') || topic.includes('cellular physiology') || topic.includes('membrane transport') || topic.includes('microscopy') || topic.includes('plasmolysis') || topic.includes('diffusion') || topic.includes('organelle') || topic.includes('vacuole') || topic.includes('ribosome') || topic.includes('protoplast') || title.includes('cell biology')) {
         return 'Cell Biology, Organelles & Membrane Transport';
       }
-
-      // 3. Molecular Biology, DNA & Protein Synthesis
-      if (
-        topic.includes('molecular genetics') ||
-        topic.includes('dna') ||
-        topic.includes('rna') ||
-        topic.includes('transcription') ||
-        topic.includes('translation') ||
-        topic.includes('codon') ||
-        topic.includes('protein synthesis') ||
-        topic.includes('mutation') ||
-        text.includes('dna replication') ||
-        text.includes('codon')
-      ) {
+      if (topic.includes('molecular genetics') || topic.includes('dna') || topic.includes('rna') || topic.includes('transcription') || topic.includes('translation') || topic.includes('codon') || topic.includes('protein synthesis') || topic.includes('mutation') || text.includes('dna replication') || text.includes('codon')) {
         return 'Molecular Biology, DNA & Protein Synthesis';
       }
-
-      // 4. Evolution, Natural Selection & Taxonomy
-      if (
-        topic.includes('evolution') ||
-        topic.includes('adaptation') ||
-        topic.includes('taxonomy') ||
-        topic.includes('binomial nomenclature') ||
-        topic.includes('natural selection') ||
-        topic.includes('homologous') ||
-        title.includes('evolution')
-      ) {
+      if (topic.includes('evolution') || topic.includes('adaptation') || topic.includes('taxonomy') || topic.includes('binomial nomenclature') || topic.includes('natural selection') || topic.includes('homologous') || title.includes('evolution')) {
         return 'Evolution, Natural Selection & Taxonomy';
       }
-
-      // 5. Mendelian Genetics, Heredity & Variation
-      if (
-        topic.includes('genetics') ||
-        topic.includes('heredity') ||
-        topic.includes('mendelian') ||
-        topic.includes('allele') ||
-        topic.includes('dihybrid') ||
-        topic.includes('monohybrid') ||
-        topic.includes('test cross') ||
-        topic.includes('polygenic') ||
-        topic.includes('genotype') ||
-        topic.includes('phenotype') ||
-        topic.includes('nondisjunction') ||
-        title.includes('genetics') ||
-        title.includes('heredity')
-      ) {
+      if (topic.includes('genetics') || topic.includes('heredity') || topic.includes('mendelian') || topic.includes('allele') || topic.includes('dihybrid') || topic.includes('monohybrid') || topic.includes('test cross') || topic.includes('polygenic') || topic.includes('genotype') || topic.includes('phenotype') || topic.includes('nondisjunction') || title.includes('genetics') || title.includes('heredity')) {
         return 'Mendelian Genetics, Heredity & Variation';
       }
-
-      // 6. Plant Anatomy, Water Relations & Transpiration
-      if (
-        topic.includes('plant water relations') ||
-        topic.includes('transpiration') ||
-        topic.includes('stomata') ||
-        topic.includes('guttation') ||
-        topic.includes('xylem') ||
-        topic.includes('phloem') ||
-        topic.includes('translocation') ||
-        topic.includes('casparian') ||
-        topic.includes('root hair') ||
-        topic.includes('leaf anatomy') ||
-        topic.includes('vascular bundle') ||
-        (topic.includes('transport in plants') && !topic.includes('hormone'))
-      ) {
+      if (topic.includes('plant water relations') || topic.includes('transpiration') || topic.includes('stomata') || topic.includes('guttation') || topic.includes('xylem') || topic.includes('phloem') || topic.includes('translocation') || topic.includes('casparian') || topic.includes('root hair') || topic.includes('leaf anatomy') || topic.includes('vascular bundle') || (topic.includes('transport in plants') && !topic.includes('hormone'))) {
         return 'Plant Anatomy, Water Relations & Transpiration';
       }
-
-      // 7. Plant Physiology, Photosynthesis & Mineral Nutrition
-      if (
-        topic.includes('photosynthesis') ||
-        topic.includes('chloroplast') ||
-        topic.includes('cam photosynthesis') ||
-        topic.includes('c4 pathway') ||
-        topic.includes('plant nutrition') ||
-        topic.includes('mineral requirements')
-      ) {
+      if (topic.includes('photosynthesis') || topic.includes('chloroplast') || topic.includes('cam photosynthesis') || topic.includes('c4 pathway') || topic.includes('plant nutrition') || topic.includes('mineral requirements')) {
         return 'Plant Physiology, Photosynthesis & Mineral Nutrition';
       }
-
-      // 8. Plant Hormones, Tropisms & Responses
-      if (
-        topic.includes('tropism') ||
-        topic.includes('plant hormone') ||
-        topic.includes('auxin') ||
-        topic.includes('photoperiodism') ||
-        topic.includes('abscisic') ||
-        topic.includes('geotropism') ||
-        topic.includes('phototropism') ||
-        topic.includes('apical dominance')
-      ) {
+      if (topic.includes('tropism') || topic.includes('plant hormone') || topic.includes('auxin') || topic.includes('photoperiodism') || topic.includes('abscisic') || topic.includes('geotropism') || topic.includes('phototropism') || topic.includes('apical dominance')) {
         return 'Plant Hormones, Tropisms & Responses';
       }
-
-      // 9. Plant Reproduction, Pollination & Seed Development
-      if (
-        topic.includes('plant reproduction') ||
-        topic.includes('pollination') ||
-        topic.includes('flower') ||
-        topic.includes('floral') ||
-        topic.includes('pollen') ||
-        topic.includes('stigma') ||
-        topic.includes('embryo sac') ||
-        topic.includes('fruit and seed')
-      ) {
+      if (topic.includes('plant reproduction') || topic.includes('pollination') || topic.includes('flower') || topic.includes('floral') || topic.includes('pollen') || topic.includes('stigma') || topic.includes('embryo sac') || topic.includes('fruit and seed')) {
         return 'Plant Reproduction, Pollination & Seed Development';
       }
-
-      // 10. Respiratory System & Gaseous Exchange
-      if (
-        topic.includes('respiratory') ||
-        topic.includes('gaseous exchange') ||
-        topic.includes('alveoli') ||
-        topic.includes('diaphragm') ||
-        topic.includes('gas transport') ||
-        topic.includes('bicarbonate') ||
-        topic.includes('inhalation') ||
-        text.includes('alveoli') ||
-        text.includes('diaphragm') ||
-        text.includes('inhalation')
-      ) {
+      if (topic.includes('respiratory') || topic.includes('gaseous exchange') || topic.includes('alveoli') || topic.includes('diaphragm') || topic.includes('gas transport') || topic.includes('bicarbonate') || topic.includes('inhalation') || text.includes('alveoli') || text.includes('diaphragm') || text.includes('inhalation')) {
         return 'Respiratory System & Gaseous Exchange';
       }
-
-      // 11. Circulatory System, Blood & Immunity
-      if (
-        topic.includes('circulatory') ||
-        topic.includes('blood') ||
-        topic.includes('heart') ||
-        topic.includes('valve') ||
-        topic.includes('pacemaker') ||
-        topic.includes('immune') ||
-        topic.includes('antibody') ||
-        topic.includes('phagocytosis') ||
-        topic.includes('thrombin') ||
-        topic.includes('plasma protein') ||
-        topic.includes('red blood cell') ||
-        title.includes('circulation')
-      ) {
+      if (topic.includes('circulatory') || topic.includes('blood') || topic.includes('heart') || topic.includes('valve') || topic.includes('pacemaker') || topic.includes('immune') || topic.includes('antibody') || topic.includes('phagocytosis') || topic.includes('thrombin') || topic.includes('plasma protein') || topic.includes('red blood cell') || title.includes('circulation')) {
         return 'Circulatory System, Blood & Immunity';
       }
-
-      // 12. Excretory System & Osmoregulation
-      if (
-        topic.includes('excretory') ||
-        topic.includes('renal') ||
-        topic.includes('kidney') ||
-        topic.includes('nephron') ||
-        topic.includes('ultrafiltration') ||
-        topic.includes('loop of henle') ||
-        topic.includes('deamination') ||
-        title.includes('excretion')
-      ) {
+      if (topic.includes('excretory') || topic.includes('renal') || topic.includes('kidney') || topic.includes('nephron') || topic.includes('ultrafiltration') || topic.includes('loop of henle') || topic.includes('deamination') || title.includes('excretion')) {
         return 'Excretory System & Osmoregulation';
       }
-
-      // 13. Support, Skeletal & Muscular Systems
-      if (
-        topic.includes('skeletal') ||
-        topic.includes('joint') ||
-        topic.includes('muscular') ||
-        topic.includes('muscle') ||
-        topic.includes('bone') ||
-        topic.includes('support, movement') ||
-        title.includes('support, movement')
-      ) {
+      if (topic.includes('skeletal') || topic.includes('joint') || topic.includes('muscular') || topic.includes('muscle') || topic.includes('bone') || topic.includes('support, movement') || title.includes('support, movement')) {
         return 'Support, Skeletal & Muscular Systems';
       }
-
-      // 14. Sense Organs: Eye & Ear Mechanics
-      if (
-        topic.includes('sense organ') ||
-        topic.includes('retina') ||
-        topic.includes('rod') ||
-        topic.includes('cone') ||
-        topic.includes('cochlea') ||
-        topic.includes('semicircular') ||
-        topic.includes('eye') ||
-        topic.includes('ear')
-      ) {
+      if (topic.includes('sense organ') || topic.includes('retina') || topic.includes('rod') || topic.includes('cone') || topic.includes('cochlea') || topic.includes('semicircular') || topic.includes('eye') || topic.includes('ear')) {
         return 'Sense Organs: Eye & Ear Mechanics';
       }
-
-      // 15. Nervous Coordination & Synaptic Transmission
-      if (
-        topic.includes('nervous') ||
-        topic.includes('reflex') ||
-        topic.includes('synapse') ||
-        topic.includes('neurotransmitter') ||
-        topic.includes('myelin') ||
-        topic.includes('axon') ||
-        topic.includes('saltatory')
-      ) {
+      if (topic.includes('nervous') || topic.includes('reflex') || topic.includes('synapse') || topic.includes('neurotransmitter') || topic.includes('myelin') || topic.includes('axon') || topic.includes('saltatory')) {
         return 'Nervous Coordination & Synaptic Transmission';
       }
-
-      // 16. Endocrine System & Hormonal Coordination
-      if (
-        topic.includes('endocrine') ||
-        topic.includes('hormone') ||
-        topic.includes('thyroxine') ||
-        topic.includes('metabolic rate') ||
-        topic.includes('pituitary') ||
-        topic.includes('adrenal')
-      ) {
+      if (topic.includes('endocrine') || topic.includes('hormone') || topic.includes('thyroxine') || topic.includes('metabolic rate') || topic.includes('pituitary') || topic.includes('adrenal')) {
         return 'Endocrine System & Hormonal Coordination';
       }
-
-      // 17. Animal Reproduction & Embryonic Development
-      if (
-        topic.includes('spermatogenesis') ||
-        topic.includes('seminiferous') ||
-        topic.includes('epididym') ||
-        topic.includes('ovulation') ||
-        topic.includes('corpus luteum') ||
-        topic.includes('progesterone') ||
-        topic.includes('fsh') ||
-        topic.includes('lh') ||
-        topic.includes('amniotic') ||
-        topic.includes('umbilical') ||
-        topic.includes('twins') ||
-        topic.includes('animal reproduction') ||
-        title.includes('reproduction')
-      ) {
+      if (topic.includes('spermatogenesis') || topic.includes('seminiferous') || topic.includes('epididym') || topic.includes('ovulation') || topic.includes('corpus luteum') || topic.includes('progesterone') || topic.includes('fsh') || topic.includes('lh') || topic.includes('amniotic') || topic.includes('umbilical') || topic.includes('twins') || topic.includes('animal reproduction') || title.includes('reproduction')) {
         return 'Animal Reproduction & Embryonic Development';
       }
-
-      // 18. Animal Nutrition & Digestive System
-      if (
-        topic.includes('nutrition') ||
-        topic.includes('digestive') ||
-        topic.includes('alimentary') ||
-        topic.includes('peristalsis') ||
-        topic.includes('lacteal') ||
-        topic.includes('lipase') ||
-        topic.includes('enzyme') ||
-        title.includes('nutrition')
-      ) {
+      if (topic.includes('nutrition') || topic.includes('digestive') || topic.includes('alimentary') || topic.includes('peristalsis') || topic.includes('lacteal') || topic.includes('lipase') || topic.includes('enzyme') || title.includes('nutrition')) {
         return 'Animal Nutrition & Digestive System';
       }
-
-      // 19. Microbiology, Viruses, Fungi & Biotechnology
-      if (
-        topic.includes('microbiology') ||
-        topic.includes('bacteria') ||
-        topic.includes('binary fission') ||
-        topic.includes('plasmid') ||
-        topic.includes('virology') ||
-        topic.includes('virus') ||
-        topic.includes('bacteriophage') ||
-        topic.includes('mycology') ||
-        topic.includes('fungi') ||
-        topic.includes('chitin')
-      ) {
+      if (topic.includes('microbiology') || topic.includes('bacteria') || topic.includes('binary fission') || topic.includes('plasmid') || topic.includes('virology') || topic.includes('virus') || topic.includes('bacteriophage') || topic.includes('mycology') || topic.includes('fungi') || topic.includes('chitin')) {
         return 'Microbiology, Viruses, Fungi & Biotechnology';
       }
-
-      // 20. Ecology, Energy Flow & Nutrient Cycling
-      if (
-        topic.includes('ecology') ||
-        topic.includes('ecosystem') ||
-        topic.includes('decomposer') ||
-        topic.includes('pyramid of energy') ||
-        topic.includes('trophic') ||
-        topic.includes('food chain') ||
-        topic.includes('biomagnification') ||
-        topic.includes('pollution') ||
-        topic.includes('commensalism') ||
-        topic.includes('symbiosis') ||
-        title.includes('ecology')
-      ) {
+      if (topic.includes('ecology') || topic.includes('ecosystem') || topic.includes('decomposer') || topic.includes('pyramid of energy') || topic.includes('trophic') || topic.includes('food chain') || topic.includes('biomagnification') || topic.includes('pollution') || topic.includes('commensalism') || topic.includes('symbiosis') || title.includes('ecology')) {
         return 'Ecology, Energy Flow & Nutrient Cycling';
       }
-
-      // 21. Classification & Diversity of Living Organisms
-      if (
-        topic.includes('classification') ||
-        topic.includes('diversity') ||
-        topic.includes('kingdom')
-      ) {
+      if (topic.includes('classification') || topic.includes('diversity') || topic.includes('kingdom')) {
         return 'Classification & Diversity of Living Organisms';
       }
 
       return item.chapterTitle || `Topic ${item.originalChapter}`;
     };
 
-    // 1. Group items across all Biology topic clusters
-    const byTopic: Record<string, typeof JAMBIX_BIOLOGY_ITEMS> = {};
-    for (const item of JAMBIX_BIOLOGY_ITEMS) {
-      const topicKey = getBiologyTopicCluster(item);
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedBioItems = pickRoundRobinBankItems(
+      JAMBIX_BIOLOGY_ITEMS,
+      targetCount,
+      getBiologyTopicCluster,
+      'biology'
+    );
 
-    // 2. Shuffle within each topic cluster
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // 3. Shuffle topic cluster keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedBioItems: typeof JAMBIX_BIOLOGY_ITEMS = [];
-
-    // Fair quota from JAMBIX_BIOLOGY_ITEMS (which covers 20+ major topic clusters):
-    // Round-robins evenly across every topic cluster so questions are drawn across all branches of the syllabus.
-    const biologyQuota = targetCount;
-
-    // 4. Pass 1: Round-robin across all topic clusters, prioritizing unseen questions
-    let added = true;
-    while (pickedBioItems.length < biologyQuota && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedBioItems.length >= biologyQuota) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedBioItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // 5. Pass 2: Fallback across all questions without session duplicates
-    if (pickedBioItems.length < biologyQuota) {
-      const allShuffled = shuffleArr(JAMBIX_BIOLOGY_ITEMS);
-      for (const item of allShuffled) {
-        if (pickedBioItems.length >= biologyQuota) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          safeSessionUsed.add(sig);
-          pickedBioItems.push(item);
-        }
-      }
-    }
-
-    // 6. Complete random shuffle of all selected questions so questions are diversified
     const finalOrderedBio = shuffleArr(pickedBioItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -4821,7 +4900,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 890000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -4840,9 +4919,7 @@ export function generateUniqueSubjectQuestions(
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || '300 Challenging Practice Questions Across All Topics',
         hasImage: false,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -4851,14 +4928,7 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX ECONOMICS QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
-  // =========================================================================
   // JAMBIX ECONOMICS QUESTION BANK (300 QUESTIONS ACROSS 15 TOPIC CLUSTERS)
-  // Balanced Topic Distribution During Tests:
-  // Round-robins evenly across all 15 syllabus topic clusters so questions
-  // are drawn evenly from all branches of the syllabus without clustering into any single topic.
   // =========================================================================
   if (subjectKey === 'economics' && JAMBIX_ECONOMICS_ITEMS.length > 0) {
     const getEconomicsTopicCluster = (item: typeof JAMBIX_ECONOMICS_ITEMS[0]) => {
@@ -4866,59 +4936,45 @@ export function generateUniqueSubjectQuestions(
       const c = (item.chapterTitle || '').toLowerCase();
       const txt = (item.text || '').toLowerCase();
 
-      // 1. Basic Economic Concepts & Methodology (Scarcity, Choice, Scale of Preference, Opportunity Cost, PPC)
       if (t.includes('scarcity') || t.includes('opportunity cost') || t.includes('ppc') || t.includes('possibility curve') || c.includes('basic economic') || t.includes('methodology') || t.includes('scale of preference')) {
         return 'Basic Economic Concepts, Scarcity & PPC';
       }
-      // 2. Consumer Behaviour & Utility Analysis
       if (t.includes('utility') || t.includes('consumer behaviour') || t.includes('indifference') || t.includes('budget') || c.includes('consumer behaviour')) {
         return 'Theory of Consumer Behaviour & Utility Analysis';
       }
-      // 3. Elasticity of Demand & Supply
       if (t.includes('elasticity') || txt.includes('elasticity') || txt.includes('ped') || txt.includes('pes')) {
         return 'Elasticity of Demand & Supply';
       }
-      // 4. Theory of Demand, Supply & Price Determination
       if (t.includes('demand') || t.includes('supply') || t.includes('ceiling') || t.includes('floor') || t.includes('equilibrium price') || c.includes('demand and supply')) {
         return 'Demand, Supply & Price Determination';
       }
-      // 5. Market Structures & Pricing (Perfect competition, Monopoly, Oligopoly, etc.)
       if (t.includes('market structure') || t.includes('competition') || t.includes('monopoly') || t.includes('oligopoly') || t.includes('cartel') || t.includes('kinked') || c.includes('market structure') || txt.includes('perfect competition') || txt.includes('monopolist') || txt.includes('monopolistic')) {
         return 'Market Structures, Monopoly & Oligopoly';
       }
-      // 6. Theory of Costs & Revenue
       if (t.includes('cost') || t.includes('revenue') || t.includes('shutdown') || t.includes('break-even') || txt.includes('fixed cost') || txt.includes('variable cost') || txt.includes('average cost') || txt.includes('marginal cost') || txt.includes('total revenue')) {
         return 'Cost & Revenue Theory';
       }
-      // 7. Theory of Production & Diminishing Returns
       if (t.includes('production') || t.includes('isoquant') || t.includes('mrts') || t.includes('marginal product') || t.includes('returns to scale') || c.includes('production') || t.includes('division of labour')) {
         return 'Theory of Production & Returns to Scale';
       }
-      // 8. Factor Markets & Theory of Distribution (Labour, Wages, Economic Rent, Transfer Earnings, Interest, Profit)
       if (t.includes('factor') || t.includes('labour') || t.includes('labor') || t.includes('wage') || t.includes('rent') || t.includes('interest') || t.includes('trade union') || c.includes('labour') || c.includes('unemployment') || txt.includes('derived demand')) {
         return 'Factor Markets, Wages & Distribution';
       }
-      // 9. National Income & Macroeconomic Aggregates (GDP, Multiplier, Accelerator, Circular Flow)
       if (t.includes('national income') || t.includes('gdp') || t.includes('gnp') || t.includes('multiplier') || t.includes('accelerator') || t.includes('circular flow') || t.includes('paradox of thrift') || t.includes('recession') || t.includes('stagflation') || c.includes('national income') || txt.includes('gdp deflator')) {
         return 'National Income, Multiplier & Macroeconomics';
       }
-      // 10. Money, Banking, Inflation & Monetary Policy
       if (t.includes('money') || t.includes('banking') || t.includes('inflation') || t.includes('central bank') || t.includes('commercial bank') || t.includes('liquidity') || t.includes('monetary') || t.includes('deposit multiplier') || c.includes('money') || c.includes('monetary') || txt.includes('quantity theory of money')) {
         return 'Money, Banking, Inflation & Monetary Policy';
       }
-      // 11. Public Finance, Taxation & Fiscal Policy
       if (t.includes('public finance') || t.includes('tax') || t.includes('fiscal') || t.includes('public debt') || t.includes('budget') || t.includes('subsidy') || c.includes('public finance') || txt.includes('benefit principle')) {
         return 'Public Finance, Taxation & Fiscal Policy';
       }
-      // 12. International Trade, Balance of Payments & Exchange Rates
       if (t.includes('international') || t.includes('trade') || t.includes('balance of payments') || t.includes('exchange rate') || t.includes('tariff') || t.includes('dumping') || t.includes('customs union') || t.includes('terms of trade') || c.includes('international trade') || txt.includes('comparative advantage')) {
         return 'International Trade, BOP & Exchange Rates';
       }
-      // 13. Economic Growth, Development, Population & Planning
       if (t.includes('development') || t.includes('growth') || t.includes('population') || t.includes('dependency') || t.includes('hdi') || t.includes('lewis') || t.includes('poverty') || t.includes('planning') || c.includes('development') || c.includes('population') || txt.includes('dependency ratio')) {
         return 'Economic Growth, Development & Planning';
       }
-      // 14. Agriculture, Industry, Public Enterprises & Environmental Economics
       if (t.includes('agriculture') || t.includes('industrial') || t.includes('environment') || t.includes('externality') || t.includes('public good') || t.includes('coase') || c.includes('agriculture') || c.includes('business organisation') || txt.includes('externality') || txt.includes('public good')) {
         return 'Agriculture, Industry & Environmental Economics';
       }
@@ -4926,68 +4982,14 @@ export function generateUniqueSubjectQuestions(
       return item.chapterTitle || item.topic || 'General Economics';
     };
 
-    // 1. Group items into syllabus topic clusters to guarantee balanced round-robin distribution
-    const byTopic: Record<string, typeof JAMBIX_ECONOMICS_ITEMS> = {};
-    for (const item of JAMBIX_ECONOMICS_ITEMS) {
-      const topicKey = getEconomicsTopicCluster(item);
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedEconItems = pickRoundRobinBankItems(
+      JAMBIX_ECONOMICS_ITEMS,
+      targetCount,
+      getEconomicsTopicCluster,
+      'economics',
+      MISSING_VISUAL_STANDARD_REGEX
+    );
 
-    // 2. Shuffle within each topic cluster
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // 3. Shuffle cluster keys so tests don't always pick topics in the exact same sequence
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedEconItems: typeof JAMBIX_ECONOMICS_ITEMS = [];
-
-    // 4. Pass 1: Round-robin across all topic clusters, drawing evenly from every branch of the syllabus
-    let added = true;
-    while (pickedEconItems.length < targetCount && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedEconItems.length >= targetCount) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          if (safeSessionUsed.has(sig) || safeExclude.has(sig)) return false;
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            return false;
-          }
-          return true;
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedEconItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedEconItems.length < targetCount) {
-      const allShuffled = shuffleArr(JAMBIX_ECONOMICS_ITEMS);
-      for (const item of allShuffled) {
-        if (pickedEconItems.length >= targetCount) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          const specifiesVisual = /(\bin\s+the\s+diagram|\bdiagram\s+shown|\bshown\s+in\s+the\s+diagram|\bthe\s+graph\s+shows|\bfrom\s+the\s+graph|\bas\s+shown|\bthe\s+diagram\s+shows|\bshown\s+below|\bfigure\s+shows)/i.test(item.text);
-          if (specifiesVisual && !item.hasImage && !item.imageSvg && !item.imageUrl) {
-            continue;
-          }
-          safeSessionUsed.add(sig);
-          pickedEconItems.push(item);
-        }
-      }
-    }
-
-    // 6. Complete random shuffle of all selected questions so questions are naturally diversified across the exam
     const finalOrderedEcon = shuffleArr(pickedEconItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -4996,7 +4998,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 910000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -5018,9 +5020,7 @@ export function generateUniqueSubjectQuestions(
         imageUrl: item.imageUrl,
         imageCaption: item.imageCaption,
         imageAlt: item.imageAlt,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -5029,64 +5029,16 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX COMMERCE QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX COMMERCE QUESTION BANK (100 QUESTIONS ACROSS ALL TOPICS)
   // =========================================================================
   if (subjectKey === 'commerce' && JAMBIX_COMMERCE_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
-    const byTopic: Record<string, typeof JAMBIX_COMMERCE_ITEMS> = {};
-    for (const item of JAMBIX_COMMERCE_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedCommItems = pickRoundRobinBankItems(
+      JAMBIX_COMMERCE_ITEMS,
+      targetCount,
+      (item) => item.chapterTitle || item.topic || `Topic ${item.originalChapter}`,
+      'commerce'
+    );
 
-    // 2. Shuffle within each topic
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedCommItems: typeof JAMBIX_COMMERCE_ITEMS = [];
-
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
-    let added = true;
-    while (pickedCommItems.length < targetCount && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedCommItems.length >= targetCount) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedCommItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedCommItems.length < targetCount) {
-      const allShuffled = shuffleArr(JAMBIX_COMMERCE_ITEMS);
-      for (const item of allShuffled) {
-        if (pickedCommItems.length >= targetCount) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          safeSessionUsed.add(sig);
-          pickedCommItems.push(item);
-        }
-      }
-    }
-
-    // 6. Complete random shuffle of all selected questions so questions are diversified
     const finalOrderedComm = shuffleArr(pickedCommItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -5095,7 +5047,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 920000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -5114,9 +5066,7 @@ export function generateUniqueSubjectQuestions(
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
         hasImage: false,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -5125,64 +5075,16 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX GOVERNMENT QUESTION BANK (100 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX GOVERNMENT QUESTION BANK (100 QUESTIONS ACROSS ALL TOPICS)
   // =========================================================================
   if (subjectKey === 'government' && JAMBIX_GOVERNMENT_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
-    const byTopic: Record<string, typeof JAMBIX_GOVERNMENT_ITEMS> = {};
-    for (const item of JAMBIX_GOVERNMENT_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedGovtItems = pickRoundRobinBankItems(
+      JAMBIX_GOVERNMENT_ITEMS,
+      targetCount,
+      (item) => item.chapterTitle || item.topic || `Topic ${item.originalChapter}`,
+      'government'
+    );
 
-    // 2. Shuffle within each topic
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedGovtItems: typeof JAMBIX_GOVERNMENT_ITEMS = [];
-
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
-    let added = true;
-    while (pickedGovtItems.length < targetCount && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedGovtItems.length >= targetCount) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedGovtItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedGovtItems.length < targetCount) {
-      const allShuffled = shuffleArr(JAMBIX_GOVERNMENT_ITEMS);
-      for (const item of allShuffled) {
-        if (pickedGovtItems.length >= targetCount) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          safeSessionUsed.add(sig);
-          pickedGovtItems.push(item);
-        }
-      }
-    }
-
-    // 6. Complete random shuffle of all selected questions so questions are diversified
     const finalOrderedGovt = shuffleArr(pickedGovtItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -5191,7 +5093,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 930000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -5210,9 +5112,7 @@ export function generateUniqueSubjectQuestions(
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || '100 Tough Questions Across All Topics',
         hasImage: false,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -5221,64 +5121,16 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX LITERATURE IN ENGLISH QUESTION BANK (200 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX LITERATURE IN ENGLISH QUESTION BANK (200 QUESTIONS ACROSS ALL TOPICS)
   // =========================================================================
   if (subjectKey === 'literature' && JAMBIX_LITERATURE_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
-    const byTopic: Record<string, typeof JAMBIX_LITERATURE_ITEMS> = {};
-    for (const item of JAMBIX_LITERATURE_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedLitItems = pickRoundRobinBankItems(
+      JAMBIX_LITERATURE_ITEMS,
+      targetCount,
+      (item) => item.chapterTitle || item.topic || `Topic ${item.originalChapter}`,
+      'literature'
+    );
 
-    // 2. Shuffle within each topic
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedLitItems: typeof JAMBIX_LITERATURE_ITEMS = [];
-
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
-    let added = true;
-    while (pickedLitItems.length < targetCount && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedLitItems.length >= targetCount) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedLitItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedLitItems.length < targetCount) {
-      const allShuffled = shuffleArr(JAMBIX_LITERATURE_ITEMS);
-      for (const item of allShuffled) {
-        if (pickedLitItems.length >= targetCount) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          safeSessionUsed.add(sig);
-          pickedLitItems.push(item);
-        }
-      }
-    }
-
-    // 6. Complete random shuffle of all selected questions so questions are diversified
     const finalOrderedLit = shuffleArr(pickedLitItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -5287,7 +5139,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 940000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -5306,9 +5158,7 @@ export function generateUniqueSubjectQuestions(
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || '200 Tough Questions Across All Topics',
         hasImage: false,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -5317,64 +5167,16 @@ export function generateUniqueSubjectQuestions(
   }
 
   // =========================================================================
-  // JAMBIX PRINCIPLES OF ACCOUNTS QUESTION BANK (200 TOUGH QUESTIONS ACROSS ALL TOPICS)
-  // Fairly distributes across all syllabus topic clusters via round-robin,
-  // completely shuffles the order, and preserves exact options (A-D), answers, and explanations.
+  // JAMBIX PRINCIPLES OF ACCOUNTS QUESTION BANK (200 QUESTIONS ACROSS ALL TOPICS)
   // =========================================================================
   if (subjectKey === 'accounts' && JAMBIX_ACCOUNTS_ITEMS.length > 0) {
-    // 1. Group items by topic/chapter to guarantee even, fair distribution across all topics
-    const byTopic: Record<string, typeof JAMBIX_ACCOUNTS_ITEMS> = {};
-    for (const item of JAMBIX_ACCOUNTS_ITEMS) {
-      const topicKey = item.chapterTitle || item.topic || `Topic ${item.originalChapter}`;
-      if (!byTopic[topicKey]) byTopic[topicKey] = [];
-      byTopic[topicKey].push(item);
-    }
+    const pickedAccItems = pickRoundRobinBankItems(
+      JAMBIX_ACCOUNTS_ITEMS,
+      targetCount,
+      (item) => item.chapterTitle || item.topic || `Topic ${item.originalChapter}`,
+      'accounts'
+    );
 
-    // 2. Shuffle within each topic
-    for (const tKey of Object.keys(byTopic)) {
-      byTopic[tKey] = shuffleArr(byTopic[tKey]);
-    }
-
-    // 3. Shuffle topic keys so tests don't always pick topics in the same order
-    const topicKeys = shuffleArr(Object.keys(byTopic));
-    const pickedAccItems: typeof JAMBIX_ACCOUNTS_ITEMS = [];
-
-    // 4. Pass 1: Round-robin across all topics, prioritizing unseen questions
-    let added = true;
-    while (pickedAccItems.length < targetCount && added) {
-      added = false;
-      for (const tKey of topicKeys) {
-        if (pickedAccItems.length >= targetCount) break;
-        const pool = byTopic[tKey];
-        const nextItem = pool.find((item) => {
-          const sig = getQuestionCoreSignature(item.text);
-          return !safeSessionUsed.has(sig) && !safeExclude.has(sig);
-        });
-        if (nextItem) {
-          const sig = getQuestionCoreSignature(nextItem.text);
-          safeSessionUsed.add(sig);
-          pickedAccItems.push(nextItem);
-          const idx = pool.indexOf(nextItem);
-          if (idx !== -1) pool.splice(idx, 1);
-          added = true;
-        }
-      }
-    }
-
-    // 5. Pass 2: Fallback across all topics to guarantee targetCount without session duplicates
-    if (pickedAccItems.length < targetCount) {
-      const allShuffled = shuffleArr(JAMBIX_ACCOUNTS_ITEMS);
-      for (const item of allShuffled) {
-        if (pickedAccItems.length >= targetCount) break;
-        const sig = getQuestionCoreSignature(item.text);
-        if (!safeSessionUsed.has(sig)) {
-          safeSessionUsed.add(sig);
-          pickedAccItems.push(item);
-        }
-      }
-    }
-
-    // 6. Complete random shuffle of all selected questions so questions are diversified
     const finalOrderedAcc = shuffleArr(pickedAccItems);
     const effYear = typeof year === 'number' ? year : 1978 + (Math.abs(baseSeed) % 49);
 
@@ -5383,7 +5185,7 @@ export function generateUniqueSubjectQuestions(
       const qNum = picked.length + 1;
       const qId = 950000 + ((effYear % 100) * 1000) + qNum;
 
-      const vq: VerifiedQuestion = {
+      picked.push({
         id: qId,
         year: effYear,
         questionNumber: qNum,
@@ -5402,9 +5204,7 @@ export function generateUniqueSubjectQuestions(
         author: 'JAMBIX UTME Preparatory Series',
         textbookRef: item.chapterTitle || '200 Tough Questions Across All Topics',
         hasImage: false,
-      };
-      // Exactly preserve the author's answer and explanation without scrambling
-      picked.push(vq);
+      });
     }
 
     if (picked.length >= targetCount) {
@@ -5412,223 +5212,96 @@ export function generateUniqueSubjectQuestions(
     }
   }
 
-  // Step 0: Progressive Toughness Injection: As students take more 2-hour tests (Mock 1 -> Mock 2 -> Mock 3 -> Mock 4...),
-  // the proportion of authentic, high-rigor historical UTME questions escalates systematically:
-  // - Mock 1 (Tier 0): ~15-20% tough questions (baseline syllabus rigor, 6-8 of 40)
-  // - Mock 2 (Tier 1): ~35-40% tough questions (14-16 of 40)
-  // - Mock 3 (Tier 2): ~55-60% very tough questions (22-24 of 40)
-  // - Mock 4 (Tier 3): ~75-80% advanced mastery questions (30-32 of 40)
-  // - Mock 5+ (Tier 4+): 88-100% highest-rigor historical problem sets (36-40 of 40)
-  const toughBank = TOUGH_QUESTIONS_BY_SUBJECT[subjectKey] || [];
-  if (toughBank.length > 0) {
-    const currentBaseCount = picked.length;
-    const remainingSlots = targetCount - currentBaseCount;
-    const targetToughCount = remainingSlots > 0 ? Math.min(
-      remainingSlots,
-      Math.max(
-        Math.min(remainingSlots, 4 + difficultyTier * 4),
-        Math.round(remainingSlots * Math.min(1.0, 0.15 + difficultyTier * 0.20))
-      )
-    ) : 0;
+  // =========================================================================
+  // ACCREDITED SYLLABUS & CURATED QUESTION BANKS FOR ALL OTHER UTME SUBJECTS
+  // (CRS, IRS, Geography, Agricultural Science, Computer Studies, Civic Education,
+  //  History, French, PHE, Music, Visual Arts, Home Economics, Hausa, Yoruba, Igbo, Arabic)
+  // Uses the identical round-robin topic picker + independent cycle reset.
+  // =========================================================================
+  const chapterPool = getChapterSubjectPool(subjectKey);
+  if (chapterPool.length > 0) {
+    const remainingNeeded = Math.max(0, targetCount - picked.length);
+    const pickedPoolItems = pickRoundRobinBankItems(
+      chapterPool,
+      remainingNeeded,
+      (item) => item.cluster || item.topic,
+      subjectKey
+    );
 
-    // Sort available tough questions based on candidate's current progression tier:
-    // Higher tiers prioritize 'mastery' and 'very_tough' problems from 1978-2026
-    const sortedTough = [...toughBank].sort((a, b) => {
-      const rank = (d: string) => (d === 'mastery' ? 3 : d === 'very_tough' ? 2 : 1);
-      if (difficultyTier >= 2) {
-        return rank(b.difficulty) - rank(a.difficulty);
-      } else if (difficultyTier === 1) {
-        return (b.difficulty === 'very_tough' ? 2 : 1) - (a.difficulty === 'very_tough' ? 2 : 1);
-      }
-      return rank(a.difficulty) - rank(b.difficulty);
-    });
+    const orderedPool = shuffleArr(pickedPoolItems);
+    for (let i = 0; i < orderedPool.length && picked.length < targetCount; i++) {
+      const item = orderedPool[i];
+      const qNum = picked.length + 1;
+      const effYear = item.year || chosenYear;
+      const qId = 810000 + ((Math.abs(effYear) % 100) * 1000) + qNum * 7 + (i % 13);
 
-    for (const tq of sortedTough) {
-      if (picked.length >= currentBaseCount + targetToughCount || picked.length >= targetCount) break;
-      const coreSig = getQuestionCoreSignature(tq.text);
-      if (!sessionUsedTexts.has(coreSig) && !excludeSignatures.has(coreSig)) {
-        sessionUsedTexts.add(coreSig);
-        const qNum = picked.length + 1;
-        const toughQ: VerifiedQuestion = {
-          id: 880000 + (tq.year * 100) + qNum,
-          year: tq.year,
+      const baseQ: VerifiedQuestion = {
+        id: qId,
+        year: effYear,
+        questionNumber: qNum,
+        subject: config.name,
+        topic: item.topic,
+        text: `[JAMB UTME ${effYear} Q${qNum}] ${item.text}`,
+        options: item.options,
+        answer: item.answer,
+        explanation: item.explanation,
+        bookTitle: item.bookTitle,
+        author: item.author,
+        textbookRef: item.textbookRef,
+        hasImage: Boolean(item.hasImage),
+        imageSvg: item.imageSvg,
+        imageCaption: item.imageCaption,
+        imageAlt: item.imageAlt,
+      };
+      picked.push(scatterQuestionOptions(baseQ, baseSeed + qNum * 17 + difficultyTier * 43 + i));
+    }
+
+    if (picked.length >= targetCount) {
+      const finalOrdered = shuffleArr(picked);
+      const seenSubIds = new Set<number>();
+      return finalOrdered.map((q, idx) => {
+        let qId = q.id;
+        if (!qId || seenSubIds.has(qId)) {
+          qId = 800000 + (idx + 1) * 100 + (Math.abs(baseSeed) % 97);
+        }
+        seenSubIds.add(qId);
+        const qNum = idx + 1;
+        return {
+          ...q,
+          id: qId,
           questionNumber: qNum,
-          subject: config.name,
-          topic: tq.topic,
-          text: `[JAMB UTME ${tq.year} Q${qNum}] ${tq.text}`,
-          options: tq.options,
-          answer: tq.answer,
-          explanation: `${tq.explanation} (${config.bookTitle} by ${config.author}).`,
-          bookTitle: config.bookTitle,
-          author: config.author,
-          textbookRef: `${config.bookTitle} by ${config.author}`,
+          text: q.text.replace(/^\[JAMB UTME\s+(?:Q\d+|\d{4}\s+Q\d+)\]/i, `[JAMB UTME Q${qNum}]`),
         };
-        picked.push(scatterQuestionOptions(toughQ, baseSeed + qNum * 17 + difficultyTier * 43));
-      }
+      });
     }
   }
 
-  let attempts = 0;
-  const maxAttempts = targetCount * 60;
-
-  // Randomize starting chapter and chapter visitation sequence for complete randomization across tests
-  const startChapter = numChapters > 0 ? Math.floor(nextRand() * numChapters) : 0;
-  let currentChapter = startChapter;
-  let variantOffset = Math.abs(baseSeed % 100) + Math.floor(nextRand() * 50) + difficultyTier * 7;
-
-  // Pass 1: Draw evenly across all chapters, skipping questions seen in previous tests
-  while (picked.length < targetCount && attempts < maxAttempts) {
-    attempts++;
-    const qNum = picked.length + 1;
-    const effYear = typeof year === 'number' ? year : 1978 + ((chosenYear - 1978 + attempts) % 49);
-    const effSeed = baseSeed + attempts * 19 + qNum * 7 + difficultyTier * 113;
-    const vIdx = variantOffset + Math.floor(attempts / Math.max(1, numChapters));
-
-    const candidate = generateQuestionForChapter(
-      subjectKey,
-      currentChapter,
-      effYear,
-      qNum,
-      effSeed,
-      vIdx
-    );
-
-    const coreSig = getQuestionCoreSignature(candidate.text);
-
-    // Strictly ensure not used in this test session AND not seen in candidate's previous tests
-    if (!sessionUsedTexts.has(coreSig) && !excludeSignatures.has(coreSig)) {
-      sessionUsedTexts.add(coreSig);
-      candidate.questionNumber = picked.length + 1;
-      candidate.text = `[JAMB UTME Q${picked.length + 1}] ${candidate.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`;
-      picked.push(candidate);
-      currentChapter = (currentChapter + 1) % numChapters; // Advance to next chapter for perfect diversity!
-    } else {
-      variantOffset++;
-      if (attempts % 4 === 0) {
-        currentChapter = (currentChapter + 1) % numChapters;
-      }
-    }
-  }
-
-  // Pass 2: Failsafe to reach target count while STILL STRICTLY GUARANTEEING ZERO DUPLICATES IN THIS SESSION OR PAST SESSIONS
-  while (picked.length < targetCount && attempts < maxAttempts * 2) {
-    attempts++;
-    const qNum = picked.length + 1;
-    const effYear = typeof year === 'number' ? year : 1978 + (attempts % 49);
-    const effSeed = baseSeed + attempts * 31 + qNum * 13 + difficultyTier * 79;
-    const vIdx = variantOffset + attempts;
-
-    const candidate = generateQuestionForChapter(
-      subjectKey,
-      currentChapter,
-      effYear,
-      qNum,
-      effSeed,
-      vIdx
-    );
-
-    const coreSig = getQuestionCoreSignature(candidate.text);
-    if (!sessionUsedTexts.has(coreSig) && !excludeSignatures.has(coreSig)) {
-      sessionUsedTexts.add(coreSig);
-      candidate.questionNumber = picked.length + 1;
-      candidate.text = `[JAMB UTME Q${picked.length + 1}] ${candidate.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`;
-      picked.push(candidate);
-      currentChapter = (currentChapter + 1) % numChapters;
-    }
-  }
-
-  // Pass 3: ABSOLUTE MATHEMATICAL GUARANTEE that picked.length reaches targetCount (40) with 100% unique question texts!
+  // Failsafe generator only if targetCount exceeds the finite pool size
   let failsafeAttempt = 0;
-  while (picked.length < targetCount && failsafeAttempt < 800) {
+  let currentChapter = 0;
+  while (picked.length < targetCount && failsafeAttempt < 400) {
     failsafeAttempt++;
     const qNum = picked.length + 1;
     const chIdx = (currentChapter + failsafeAttempt) % Math.max(1, numChapters);
     const effYear = typeof year === 'number' ? year : 1978 + ((chosenYear - 1978 + failsafeAttempt * 3) % 49);
-    const effSeed = baseSeed + failsafeAttempt * 43 + qNum * 17 + difficultyTier * 137;
-    const vIdx = variantOffset + failsafeAttempt + difficultyTier * 5;
-
     const candidate = generateQuestionForChapter(
       subjectKey,
       chIdx,
       effYear,
       qNum,
-      effSeed,
-      vIdx
+      baseSeed + failsafeAttempt * 43 + qNum * 17,
+      failsafeAttempt + difficultyTier * 5
     );
-
-    let coreSig = getQuestionCoreSignature(candidate.text);
-    if (sessionUsedTexts.has(coreSig) || excludeSignatures.has(coreSig)) {
-      const chapter = chapterGens[chIdx];
-      const chTitle = chapter?.chapterTitle || 'Core Concepts';
-      const prefixes = [
-        `In advanced historical UTME testing for ${config.name} (${chTitle}), which analysis correctly demonstrates that`,
-        `Under official syllabus requirements for ${config.name} (Tier ${difficultyTier + 1}), comprehensive mastery of ${chTitle} requires evaluating`,
-        `According to ${config.bookTitle}, rigorous examination of ${chTitle} in ${config.name} emphasizes that`,
-        `A key curriculum problem evaluated under ${chTitle} (${config.name}) requires determining that`,
-        `In UTME analytical problem-solving relating to ${chTitle} (${config.name}), the principle established is that`,
-        `In an in-depth examination scenario on ${chTitle} (${config.name}), examiners evaluate that`
-      ];
-      const pfx = prefixes[failsafeAttempt % prefixes.length];
-      const baseText = candidate.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '');
-      candidate.text = `[JAMB UTME Q${qNum}] ${pfx} the following: ${baseText.charAt(0).toLowerCase() + baseText.slice(1)}`;
-      coreSig = getQuestionCoreSignature(candidate.text);
-    }
-
-    if (!sessionUsedTexts.has(coreSig) && !excludeSignatures.has(coreSig)) {
-      sessionUsedTexts.add(coreSig);
-      candidate.questionNumber = picked.length + 1;
-      candidate.text = `[JAMB UTME Q${picked.length + 1}] ${candidate.text.replace(/^\[JAMB UTME[^\]]+\]\s*/i, '')}`;
+    const coreSig = getQuestionCoreSignature(candidate.text);
+    if (!safeSessionUsed.has(coreSig)) {
+      safeSessionUsed.add(coreSig);
+      candidate.questionNumber = qNum;
       picked.push(candidate);
+      currentChapter = (currentChapter + 1) % Math.max(1, numChapters);
     }
   }
 
-  // Inject authentic diagram questions for science subjects without duplicate diagrams or repeated questions
-  const imageDefs = getImageQuestionsForSubject(subjectKey);
-  if (imageDefs && imageDefs.length > 0 && picked.length >= 8) {
-    const targetDiagrams = Math.min(3, Math.min(imageDefs.length, Math.floor(picked.length / 10)));
-    const unusedDiagramDefs = imageDefs.filter((d) => {
-      const diagSig = (d.imageCaption || d.topic || d.text).trim().toLowerCase();
-      const textSig = getQuestionCoreSignature(d.text);
-      return !sessionUsedDiagrams.has(diagSig) && !sessionUsedTexts.has(textSig) && !excludeSignatures.has(textSig);
-    });
-
-    for (let k = 0; k < targetDiagrams && k < unusedDiagramDefs.length; k++) {
-      const def = unusedDiagramDefs[k];
-      const diagSig = (def.imageCaption || def.topic || def.text).trim().toLowerCase();
-      const textSig = getQuestionCoreSignature(def.text);
-      sessionUsedDiagrams.add(diagSig);
-      sessionUsedTexts.add(textSig);
-
-      const targetSlot = 5 + k * 8;
-      if (targetSlot < picked.length) {
-        const qNum = targetSlot + 1;
-        const imgQ: VerifiedQuestion = {
-          id: 980000 + ((Math.abs(baseSeed) % 100) * 100) + (k * 1000) + qNum,
-          year: chosenYear,
-          questionNumber: qNum,
-          subject: picked[targetSlot].subject,
-          topic: def.topic,
-          text: `[JAMB UTME Q${qNum}] ${def.text}`,
-          options: def.options,
-          answer: def.answer,
-          explanation: def.explanation,
-          bookTitle: def.bookTitle,
-          author: def.author,
-          textbookRef: def.textbookRef,
-          hasImage: true,
-          imageSvg: def.imageSvg,
-          imageCaption: def.imageCaption,
-          imageAlt: def.imageAlt,
-        };
-        picked[targetSlot] = scatterQuestionOptions(imgQ, chosenYear * 100 + qNum);
-      }
-    }
-  }
-
-  // Shuffle the final picked array to guarantee questions from different chapters/topics are mixed randomly!
-  // This completely eliminates questions always starting with Chapter 0 or appearing in rigid sequential order.
   const finalOrderedPicked = shuffleArr(picked);
-
   const seenSubIds = new Set<number>();
   return finalOrderedPicked.map((q, idx) => {
     let qId = q.id;

@@ -1441,6 +1441,8 @@ export {
   getSeenQuestionsCount,
   getSeenQuestionSignatures,
   recordSeenSignatures,
+  recordJambSubjectProgress,
+  getLastRunSubjectSignatures,
   clearSeenSignatures,
   getCompletedTwoHourTestsCount,
   getQuestionCoreSignature,
