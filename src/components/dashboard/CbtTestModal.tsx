@@ -22,12 +22,12 @@ import {
   Layers,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
   RotateCcw,
   CheckCircle2,
   XCircle,
   HelpCircle,
   Calculator,
-  Flame,
   FileUp,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
@@ -152,6 +152,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   const [seenCount, setSeenCount] = useState<number>(0);
   const [includeCustomPdfQuestions, setIncludeCustomPdfQuestions] = useState<boolean>(true);
   const [customQuestionsCount, setCustomQuestionsCount] = useState<number>(0);
+  const [isSubjectSelectionMenuOpen, setIsSubjectSelectionMenuOpen] = useState<boolean>(false);
 
   // Active Test State
   const [testStarted, setTestStarted] = useState(false);
@@ -185,6 +186,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
     setCurrentQuestionIndex(0);
     setSelectedAnswers({});
     setActiveQuestions([]);
+    setIsSubjectSelectionMenuOpen(false);
 
     const customList = getLocalCustomQuestions();
     setCustomQuestionsCount(customList.length);
@@ -1335,38 +1337,11 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                 </div>
               ) : (
                 <>
-                  {/* Adaptive Progressive Toughness & Zero-Repeat Banner */}
-                  {(() => {
-                    const completedCount = getCompletedTwoHourTestsCount();
-                    const tierLevel = completedCount + 1;
-                    const tierLabel =
-                      tierLevel === 1
-                        ? 'Standard Difficulty (Level 1)'
-                        : tierLevel === 2
-                        ? 'Tougher Problem Sets (Level 2)'
-                        : tierLevel === 3
-                        ? 'Advanced High Rigor (Level 3)'
-                        : `Mastery UTME Toughness (Level ${tierLevel})`;
-                    return (
-                      <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-50 to-emerald-50 dark:from-amber-950/40 dark:to-emerald-950/30 border border-amber-300 dark:border-amber-800 flex items-center justify-between text-xs gap-3">
-                        <div className="flex items-center gap-2.5 text-slate-800 dark:text-slate-200">
-                          <Flame className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                          <p className="leading-snug">
-                            <strong>Adaptive 2-Hr Test Toughness:</strong> <span className="text-amber-700 dark:text-amber-300 font-bold">{tierLabel}</span>. As you complete more 2-hour tests, each next test becomes systematically tougher with <strong>zero repeated questions</strong> ({seenCount} previously seen questions excluded).
-                          </p>
-                        </div>
-                        <span className="hidden sm:inline-flex px-2.5 py-1 rounded-full text-[10px] font-black bg-amber-200 dark:bg-amber-900 text-amber-900 dark:text-amber-200 shrink-0">
-                          {completedCount} Mock(s) Completed
-                        </span>
-                      </div>
-                    );
-                  })()}
-
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
                       1. Select Examination Mode
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3">
                       <button
                         type="button"
                         onClick={() => {
@@ -1388,29 +1363,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         </div>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
                           60 English + 40 each for 3 other subjects. Exactly 120 minutes. Graded over 400.
-                        </p>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setExamMode('single');
-                          setDuration(45);
-                        }}
-                        className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer ${
-                          examMode === 'single'
-                            ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-500 text-rose-950 dark:text-rose-200 shadow-2xs'
-                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs">Single Subject Drill</span>
-                          <span className="text-[10px] font-black px-1.5 py-0.5 bg-slate-900 dark:bg-slate-700 text-white rounded">
-                            40/60 Qs
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                          Focus on 1 specific subject. Graded over 100 &amp; 400.
                         </p>
                       </button>
                     </div>
@@ -1539,77 +1491,107 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
                         </select>
                       </div>
                     ) : (
-                      <div className="space-y-2">
+                      <div className="space-y-2.5">
                         <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                          Use the dropdown menus below to select your 4 examination subjects:
+                          Use of English is compulsory. Open the dropdown menu below to choose your other 3 examination subjects:
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          {/* Slot 1: Use of English (Compulsory) */}
-                          <div className="p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-slate-900 flex items-center justify-between shadow-2xs">
-                            <div>
-                              <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 block tracking-wider">
-                                Subject 1 · Compulsory
-                              </span>
-                              <span className="text-xs font-bold text-slate-900 dark:text-white">Use of English</span>
-                            </div>
-                            <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md">
-                              60 Qs
+
+                        {/* Slot 1: Use of English (Compulsory) */}
+                        <div className="p-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-white dark:bg-slate-900 flex items-center justify-between shadow-2xs">
+                          <div>
+                            <span className="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 block tracking-wider">
+                              Subject 1 · Compulsory
                             </span>
+                            <span className="text-xs font-bold text-slate-900 dark:text-white">Use of English</span>
                           </div>
+                          <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 rounded-md">
+                            60 Qs
+                          </span>
+                        </div>
 
-                          {/* Slot 2: Dropdown */}
-                          <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
-                            <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
-                              Subject 2 (40 Questions)
-                            </label>
-                            <select
-                              value={selectedSubjects[1] || 'Mathematics'}
-                              onChange={(e) => handleSlotSubjectChange(1, e.target.value)}
-                              className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
-                            >
-                              {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
-                                <option key={sub.name} value={sub.name}>
-                                  {sub.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
+                        {/* Dropdown Menu Toggle for Subjects 2, 3, and 4 */}
+                        <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs overflow-hidden">
+                          <button
+                            type="button"
+                            onClick={() => setIsSubjectSelectionMenuOpen((prev) => !prev)}
+                            aria-expanded={isSubjectSelectionMenuOpen}
+                            className="w-full p-3 flex items-center justify-between gap-3 text-left hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors cursor-pointer"
+                          >
+                            <div className="min-w-0">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
+                                Subjects 2, 3 &amp; 4 (40 Questions Each)
+                              </span>
+                              <span className="text-xs font-bold text-slate-900 dark:text-white block truncate mt-0.5">
+                                {selectedSubjects[1] || 'Mathematics'}, {selectedSubjects[2] || 'Physics'}, {selectedSubjects[3] || 'Chemistry'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0 text-xs font-bold text-slate-600 dark:text-slate-300">
+                              <span>{isSubjectSelectionMenuOpen ? 'Hide' : 'Select'}</span>
+                              <ChevronDown
+                                className={`w-4 h-4 transition-transform duration-200 ${
+                                  isSubjectSelectionMenuOpen ? 'rotate-180' : ''
+                                }`}
+                              />
+                            </div>
+                          </button>
 
-                          {/* Slot 3: Dropdown */}
-                          <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
-                            <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
-                              Subject 3 (40 Questions)
-                            </label>
-                            <select
-                              value={selectedSubjects[2] || 'Physics'}
-                              onChange={(e) => handleSlotSubjectChange(2, e.target.value)}
-                              className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
-                            >
-                              {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
-                                <option key={sub.name} value={sub.name}>
-                                  {sub.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
+                          {isSubjectSelectionMenuOpen && (
+                            <div className="p-3 pt-2.5 border-t border-slate-200 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/40 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                              {/* Slot 2: Dropdown */}
+                              <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                                  Subject 2 (40 Questions)
+                                </label>
+                                <select
+                                  value={selectedSubjects[1] || 'Mathematics'}
+                                  onChange={(e) => handleSlotSubjectChange(1, e.target.value)}
+                                  className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                                >
+                                  {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                                    <option key={sub.name} value={sub.name}>
+                                      {sub.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
 
-                          {/* Slot 4: Dropdown */}
-                          <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
-                            <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
-                              Subject 4 (40 Questions)
-                            </label>
-                            <select
-                              value={selectedSubjects[3] || 'Chemistry'}
-                              onChange={(e) => handleSlotSubjectChange(3, e.target.value)}
-                              className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
-                            >
-                              {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
-                                <option key={sub.name} value={sub.name}>
-                                  {sub.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
+                              {/* Slot 3: Dropdown */}
+                              <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                                  Subject 3 (40 Questions)
+                                </label>
+                                <select
+                                  value={selectedSubjects[2] || 'Physics'}
+                                  onChange={(e) => handleSlotSubjectChange(2, e.target.value)}
+                                  className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                                >
+                                  {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                                    <option key={sub.name} value={sub.name}>
+                                      {sub.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+
+                              {/* Slot 4: Dropdown */}
+                              <div className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xs">
+                                <label className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
+                                  Subject 4 (40 Questions)
+                                </label>
+                                <select
+                                  value={selectedSubjects[3] || 'Chemistry'}
+                                  onChange={(e) => handleSlotSubjectChange(3, e.target.value)}
+                                  className="w-full p-1.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs cursor-pointer focus:ring-1 focus:ring-rose-500"
+                                >
+                                  {availableSubjects.filter((s) => s.name !== 'Use of English').map((sub) => (
+                                    <option key={sub.name} value={sub.name}>
+                                      {sub.name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
