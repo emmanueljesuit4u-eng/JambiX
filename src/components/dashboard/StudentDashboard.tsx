@@ -51,6 +51,7 @@ import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
 import { ActivationPaywallModal } from './ActivationPaywallModal';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { PWAInstallButton } from '../common/PWAInstallButton';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
 import { auth } from '../../lib/firebase';
 import {
@@ -460,7 +461,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#f3f4f6] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-[#f3f4f6] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 overflow-x-hidden">
       {/* Main App Layout */}
       <div className="flex-1 flex">
         {/* Left Sidebar Navigation (Desktop & Tablet only: hidden on mobile) */}
@@ -551,6 +552,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       )}
                     </div>
                   </div>
+                  <PWAInstallButton variant="menu" />
                   <button
                     type="button"
                     onClick={() => {
@@ -1510,7 +1512,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       </div>
 
       {/* Native Mobile Bottom Navigation Bar (Visible only on mobile devices < md) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 py-1.5 flex items-center justify-around shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/90 dark:border-slate-800 px-1.5 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))] flex items-center justify-around shadow-lg">
         {[
           { id: 'Home', icon: Home, label: 'Home' },
           { id: 'Test', icon: Monitor, label: 'CBT' },

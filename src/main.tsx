@@ -36,9 +36,14 @@ if (rootEl) {
 // 2. Register PWA service worker safely in production with immediate update delivery
 if (typeof window !== 'undefined' && 'serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
-    // Listen for new service worker taking control to refresh page with updated code
+    // Only reload when replacing an existing controller (avoid reloading on first-time SW install)
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      window.location.reload();
+      if (hadController && !refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
     });
 
     import('virtual:pwa-register')

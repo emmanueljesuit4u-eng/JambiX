@@ -26,7 +26,7 @@ export default defineConfig(() => {
           theme_color: '#059669',
           background_color: '#022c22',
           display: 'standalone',
-          orientation: 'portrait',
+          orientation: 'any',
           start_url: '/',
           scope: '/',
           icons: [
@@ -57,7 +57,10 @@ export default defineConfig(() => {
           ],
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
+          maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
+          cleanupOutdatedCaches: true,
+          clientsClaim: true,
+          skipWaiting: true,
           globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
           navigateFallbackDenylist: [/^\/__/, /^\/api/, /^\/identitytoolkit/],
           runtimeCaching: [

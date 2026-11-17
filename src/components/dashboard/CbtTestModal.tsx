@@ -726,17 +726,19 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Filtered review questions
-  const filteredReviewQuestions = activeQuestions.filter((q, idx) => {
-    if (reviewSubjectFilter !== 'All' && q.subject !== reviewSubjectFilter) {
-      return false;
-    }
-    const studentAns = selectedAnswers[idx];
-    if (reviewStatusFilter === 'Correct' && studentAns !== q.answer) return false;
-    if (reviewStatusFilter === 'Incorrect' && (studentAns === q.answer || !studentAns)) return false;
-    if (reviewStatusFilter === 'Unattempted' && studentAns) return false;
-    return true;
-  });
+  // Filtered review questions preserving exact original question index
+  const filteredReviewItems = activeQuestions
+    .map((q, idx) => ({ q, actualIdx: idx }))
+    .filter(({ q, actualIdx }) => {
+      if (reviewSubjectFilter !== 'All' && q.subject !== reviewSubjectFilter) {
+        return false;
+      }
+      const studentAns = selectedAnswers[actualIdx];
+      if (reviewStatusFilter === 'Correct' && studentAns !== q.answer) return false;
+      if (reviewStatusFilter === 'Incorrect' && (studentAns === q.answer || !studentAns)) return false;
+      if (reviewStatusFilter === 'Unattempted' && studentAns) return false;
+      return true;
+    });
 
   return (
     <div
@@ -965,20 +967,19 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
                 {/* Review Questions List */}
                 <div className="space-y-3 max-h-96 overflow-y-auto pr-1">
-                  {filteredReviewQuestions.length === 0 ? (
+                  {filteredReviewItems.length === 0 ? (
                     <div className="p-6 text-center text-xs text-slate-500">
                       No questions match the current filter selection.
                     </div>
                   ) : (
-                    filteredReviewQuestions.map((q, originalIdx) => {
-                      const actualIdx = activeQuestions.findIndex((item, i) => item.id === q.id || i === originalIdx);
-                      const studentAns = selectedAnswers[actualIdx >= 0 ? actualIdx : originalIdx];
+                    filteredReviewItems.map(({ q, actualIdx }) => {
+                      const studentAns = selectedAnswers[actualIdx];
                       const isCorrect = studentAns === q.answer;
                       const isUnattempted = !studentAns;
 
                       return (
                         <div
-                          key={`cbt-rev-${q.id || 'q'}-${originalIdx}`}
+                          key={`cbt-rev-${q.id || 'q'}-${actualIdx}`}
                           className={`p-4 rounded-xl border text-xs transition-colors space-y-2.5 ${
                             isCorrect
                               ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/40'

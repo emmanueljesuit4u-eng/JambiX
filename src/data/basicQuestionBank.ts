@@ -45,6 +45,35 @@ export {
   getBasicQuestionSignature,
 };
 
+export const BASIC_LAST_RUN_STORAGE_KEY = 'jambix_basic_last_run_sigs_v1';
+
+function getBasicLastRunMap(): Record<string, string[]> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(BASIC_LAST_RUN_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function getBasicLastRunSubjectSignatures(subjectLabel: BasicSubjectName): Set<string> {
+  const map = getBasicLastRunMap();
+  const arr = map[subjectLabel];
+  return Array.isArray(arr) ? new Set(arr) : new Set();
+}
+
+function saveBasicLastRunMap(map: Record<string, string[]>): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(BASIC_LAST_RUN_STORAGE_KEY, JSON.stringify(map));
+  } catch {
+    // ignore storage errors
+  }
+}
+
 export const BASIC_SUBJECT_ORDER = [
   'Use of English',
   'Biology',
@@ -242,9 +271,34 @@ function pickBalancedFromSubject(
     rounds.push(currentRound);
   }
 
-  // 3B. Pass 2 — Fallback Seen Cluster Round-Robin (ONLY when all unseen questions are exhausted):
-  //     If the subject had fewer than `target` unseen items remaining, top up remaining slots
-  //     via round-robin across seen pools without repeating any question from the current exam.
+  const lastRunSigs = getBasicLastRunSubjectSignatures(subjectLabel);
+
+  // 3B. Pass 2 — Wrap-Around Seen Cluster Round-Robin (ONLY when all unseen questions are exhausted):
+  //     Round-robins across seen pools while skipping immediate prior test's questions (`lastRunSigs`)
+  //     so consecutive Basic exams never repeat questions back-to-back even when mixing 50-Q and 100-Q tests.
+  while (totalPicked < target) {
+    const currentRound: { item: AnyBasicItem; cluster: string }[] = [];
+    for (const cKey of clusterKeys) {
+      if (totalPicked >= target) break;
+      const pool = seenPools[cKey];
+      const nextIdx = pool.findIndex((item) => {
+        const sig = getBasicQuestionSignature(item.text, item.options);
+        return !localUsed.has(sig) && !globalSessionUsed.has(sig) && !lastRunSigs.has(sig);
+      });
+      if (nextIdx !== -1) {
+        const [pickedItem] = pool.splice(nextIdx, 1);
+        const sig = getBasicQuestionSignature(pickedItem.text, pickedItem.options);
+        localUsed.add(sig);
+        globalSessionUsed.add(sig);
+        currentRound.push({ item: pickedItem, cluster: cKey });
+        totalPicked++;
+      }
+    }
+    if (currentRound.length === 0) break;
+    rounds.push(currentRound);
+  }
+
+  // 3C. Pass 3 — Final Safety Net (only if total pool size < target + lastRunSigs)
   while (totalPicked < target) {
     const currentRound: { item: AnyBasicItem; cluster: string }[] = [];
     for (const cKey of clusterKeys) {
@@ -385,7 +439,13 @@ export function recordBasicSubjectProgress(
     subSet.add(sig);
   }
 
+  const lastRunMap = getBasicLastRunMap();
   for (const cfg of BASIC_SUBJECT_CONFIGS) {
+    const currentRunSigs = pickedBySubject.get(cfg.subject);
+    if (currentRunSigs && currentRunSigs.size > 0) {
+      lastRunMap[cfg.subject] = Array.from(currentRunSigs);
+    }
+
     const subjectSigs = cfg.items.map((item) =>
       getBasicQuestionSignature(item.text, item.options)
     );
@@ -395,7 +455,6 @@ export function recordBasicSubjectProgress(
       for (const sig of subjectSigs) {
         nextSeen.delete(sig);
       }
-      const currentRunSigs = pickedBySubject.get(cfg.subject);
       if (currentRunSigs) {
         for (const sig of currentRunSigs) {
           nextSeen.add(sig);
@@ -405,5 +464,6 @@ export function recordBasicSubjectProgress(
   }
 
   saveBasicSeenSignatures(nextSeen);
+  saveBasicLastRunMap(lastRunMap);
   return nextSeen;
 }
