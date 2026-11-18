@@ -2,18 +2,22 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  *
- * UNIPORT BASIC QUESTION BANK — PHYSICS (QUESTIONS 1–200)
+ * UNIPORT BASIC QUESTION BANK — PHYSICS (QUESTIONS 1–300)
  * Covers:
  * - Set 1 (Q1–100):   Measurements & Vectors, Motion & Newton's Laws, Circular Motion & Gravitation,
  *                     Equilibrium & Friction, Work/Energy/Machines, Heat/Waves/Light, Electricity & Modern Physics
  * - Set 2 (Q101–200): Measurements & Vectors, Motion/Projectiles/Momentum, Equilibrium/Friction/Gravitation,
  *                     Work/Energy/Power/Simple Machines, Elasticity/Pressure/Liquids, Heat/Gas Laws,
  *                     Waves & Sound, Light & Optics, Electrostatics/Electricity/Capacitors, Mixed Calculations
+ * - Set 3 (Q201–300): Advanced Gas Laws (Boyle's Law, Charles' Law, Pressure Law & Combined Gas Law,
+ *                     Ideal Gas Equation, Dalton's Law of Partial Pressures, Gas Density & Molar Mass,
+ *                     Graham's Law of Diffusion & Effusion)
  */
 
 import type { BasicBankQuestion } from './basicEnglishBank';
+import { BASIC_PHYSICS_GAS_LAWS_ITEMS } from './basicPhysicsGasLawsBank';
 
-export const BASIC_PHYSICS_ITEMS: BasicBankQuestion[] = [
+const BASIC_PHYSICS_CORE_ITEMS: BasicBankQuestion[] = [
   // Section A: Measurements, Units, Scalars and Vectors (Q1–18)
   {
     id: 'basic_phy_1',
@@ -3248,4 +3252,9 @@ export const BASIC_PHYSICS_ITEMS: BasicBankQuestion[] = [
     answer: 'C',
     explanation: 'MA = 1000 / 250 = 4, so efficiency = (4 / 5) × 100 = 80%. Effort distance = VR × load distance = 5 × 2 = 10 m. Work input = 250 × 10 = 2,500 J; work output = 1,000 × 2 = 2,000 J; energy lost = 500 J.',
   },
+];
+
+export const BASIC_PHYSICS_ITEMS: BasicBankQuestion[] = [
+  ...BASIC_PHYSICS_CORE_ITEMS,
+  ...BASIC_PHYSICS_GAS_LAWS_ITEMS,
 ];

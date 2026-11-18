@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   X,
   Play,
@@ -169,12 +169,15 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
   // Review Filter State
   const [reviewSubjectFilter, setReviewSubjectFilter] = useState<string>('All');
   const [reviewStatusFilter, setReviewStatusFilter] = useState<'All' | 'Correct' | 'Incorrect' | 'Unattempted'>('All');
+  const isSubmittingRef = useRef(false);
+  const submitExamRef = useRef<() => Promise<void>>(async () => {});
 
   // Auto-configure when opened with a specific initialSubject
   useEffect(() => {
     if (!isOpen) return;
 
     // Reset previous run state so every launch is pristine
+    isSubmittingRef.current = false;
     setTestStarted(false);
     setTestCompleted(null);
     setCurrentQuestionIndex(0);
@@ -454,7 +457,6 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       setTimeLeftSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          submitExam();
           return 0;
         }
         return prev - 1;
@@ -463,6 +465,13 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
     return () => clearInterval(interval);
   }, [testStarted, testCompleted]);
+
+  // Auto-submit cleanly once countdown reaches zero
+  useEffect(() => {
+    if (testStarted && !testCompleted && timeLeftSeconds === 0 && !isSubmittingRef.current) {
+      submitExamRef.current();
+    }
+  }, [testStarted, testCompleted, timeLeftSeconds]);
 
   // Format time:
   // In authentic JAMB CBT exams, the on-screen countdown timer reads strictly in MINUTES and SECONDS
@@ -595,7 +604,7 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
         });
       } else if (key === 'S') {
         e.preventDefault();
-        submitExam();
+        submitExamRef.current();
       }
     };
 
@@ -605,6 +614,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
 
   // Submit and grade the test
   const submitExam = async () => {
+    if (isSubmittingRef.current || testCompleted) return;
+    isSubmittingRef.current = true;
     const grade = calculateJambGrade(activeQuestions, selectedAnswers);
     const testId = `test_${Date.now()}`;
     const timeSpent = duration * 60 - timeLeftSeconds;
@@ -723,6 +734,8 @@ export const CbtTestModal: React.FC<CbtTestModalProps> = ({
       syncedToCloud: synced,
     });
   };
+
+  submitExamRef.current = submitExam;
 
   if (!isOpen) return null;
 

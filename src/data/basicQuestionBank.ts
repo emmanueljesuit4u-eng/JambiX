@@ -2,7 +2,7 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  *
- * UNIPORT BASIC QUESTION BANK (1,300 QUESTIONS ACROSS 5 SUBJECTS)
+ * UNIPORT BASIC QUESTION BANK (1,400 QUESTIONS ACROSS 5 SUBJECTS)
  * Completely isolated from the JAMB UTME bank.
  *
  * Composition:
@@ -11,7 +11,8 @@
  *                                  Grammar/Concord/Sentence Structure, Idioms & Figurative Language, Oral Forms)
  * - Biology:        400 questions (14 syllabus topic clusters across Part 1 Biological Organisation,
  *                                  Part 2 Vertebrates, and Part 3 Invertebrates)
- * - Physics:        200 questions (11 syllabus topic clusters across Set 1 Q1–100 + Set 2 Q101–200)
+ * - Physics:        300 questions (18 syllabus topic clusters across Set 1 Q1–100, Set 2 Q101–200,
+ *                                  and Set 3 Q201–300 Gas Laws)
  * - Chemistry:      200 questions (13 syllabus topic clusters across Set 1 Q1–100 + Set 2 Q101–200)
  * - Mathematics:    300 questions (6 syllabus topic clusters across Set 1 Q1–100, Set 2 Q101–200,
  *                                  and Set 3 Q201–300 Calculus: Differentiation & Integration)
@@ -69,6 +70,35 @@ function saveBasicLastRunMap(map: Record<string, string[]>): void {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.setItem(BASIC_LAST_RUN_STORAGE_KEY, JSON.stringify(map));
+  } catch {
+    // ignore storage errors
+  }
+}
+
+export const BASIC_CLUSTER_VISITS_STORAGE_KEY = 'jambix_basic_cluster_visits_v1';
+
+function getBasicClusterVisitsMap(): Record<string, Record<string, number>> {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(BASIC_CLUSTER_VISITS_STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function getBasicSubjectClusterVisits(subjectLabel: BasicSubjectName): Record<string, number> {
+  const map = getBasicClusterVisitsMap();
+  const entry = map[subjectLabel];
+  return entry && typeof entry === 'object' && !Array.isArray(entry) ? entry : {};
+}
+
+function saveBasicClusterVisitsMap(map: Record<string, Record<string, number>>): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(BASIC_CLUSTER_VISITS_STORAGE_KEY, JSON.stringify(map));
   } catch {
     // ignore storage errors
   }
@@ -150,12 +180,38 @@ export function getEffectiveTopicCluster(
  * clusters across Part 1, Part 2, and Part 3 so even a 10-question draw hits all
  * three parts evenly (3–4 per part) without bias toward any branch.
  */
+function sortClustersByRoundRobinVisits(
+  entries: {
+    key: string;
+    partGroup: string;
+    hasUnseen: boolean;
+  }[],
+  clusterVisits: Record<string, number>
+): typeof entries {
+  // Shuffle first so equal visit counts rotate unpredictably rather than strictly alphabetically,
+  // then stably bucket by visit count (least-sampled clusters go first) so every topic cluster
+  // across the subject is visited evenly across consecutive 50-Q and 100-Q tests.
+  const byVisits = new Map<number, typeof entries>();
+  for (const entry of shuffleItems(entries)) {
+    const v = clusterVisits[entry.key] || 0;
+    let list = byVisits.get(v);
+    if (!list) {
+      list = [];
+      byVisits.set(v, list);
+    }
+    list.push(entry);
+  }
+  const sortedCounts = Array.from(byVisits.keys()).sort((a, b) => a - b);
+  return sortedCounts.flatMap((c) => byVisits.get(c)!);
+}
+
 function buildRoundRobinClusterOrder(
   clusterEntries: {
     key: string;
     partGroup: string;
     hasUnseen: boolean;
-  }[]
+  }[],
+  clusterVisits: Record<string, number>
 ): string[] {
   const byPart: Record<string, typeof clusterEntries> = {};
   for (const entry of clusterEntries) {
@@ -163,11 +219,17 @@ function buildRoundRobinClusterOrder(
     byPart[entry.partGroup].push(entry);
   }
 
-  // Within each part: shuffle clusters, prioritizing clusters with unseen items first
+  // Within each part: prioritize clusters with unseen items first, ordered by fewest prior visits
   const partKeys = shuffleItems(Object.keys(byPart));
   for (const pKey of partKeys) {
-    const unseenClusters = shuffleItems(byPart[pKey].filter((e) => e.hasUnseen));
-    const seenClusters = shuffleItems(byPart[pKey].filter((e) => !e.hasUnseen));
+    const unseenClusters = sortClustersByRoundRobinVisits(
+      byPart[pKey].filter((e) => e.hasUnseen),
+      clusterVisits
+    );
+    const seenClusters = sortClustersByRoundRobinVisits(
+      byPart[pKey].filter((e) => !e.hasUnseen),
+      clusterVisits
+    );
     byPart[pKey] = [...unseenClusters, ...seenClusters];
   }
 
@@ -241,7 +303,8 @@ function pickBalancedFromSubject(
     });
   }
 
-  const clusterKeys = buildRoundRobinClusterOrder(clusterMeta);
+  const clusterVisits = getBasicSubjectClusterVisits(subjectLabel);
+  const clusterKeys = buildRoundRobinClusterOrder(clusterMeta, clusterVisits);
 
   // 3A. Pass 1 — Strict Unseen Cluster Round-Robin:
   //     Round-robins across every cluster that still has unseen questions until target is met
@@ -440,10 +503,32 @@ export function recordBasicSubjectProgress(
   }
 
   const lastRunMap = getBasicLastRunMap();
+  const clusterVisitsMap = getBasicClusterVisitsMap();
+
   for (const cfg of BASIC_SUBJECT_CONFIGS) {
+    const sigToCluster = new Map<string, string>();
+    for (const item of cfg.items) {
+      sigToCluster.set(
+        getBasicQuestionSignature(item.text, item.options),
+        getEffectiveTopicCluster(item, cfg.subject)
+      );
+    }
+
     const currentRunSigs = pickedBySubject.get(cfg.subject);
     if (currentRunSigs && currentRunSigs.size > 0) {
       lastRunMap[cfg.subject] = Array.from(currentRunSigs);
+    }
+
+    const subjectVisits: Record<string, number> = {
+      ...(clusterVisitsMap[cfg.subject] || {}),
+    };
+    if (currentRunSigs) {
+      for (const sig of currentRunSigs) {
+        const cKey = sigToCluster.get(sig);
+        if (cKey) {
+          subjectVisits[cKey] = (subjectVisits[cKey] || 0) + 1;
+        }
+      }
     }
 
     const subjectSigs = cfg.items.map((item) =>
@@ -455,15 +540,24 @@ export function recordBasicSubjectProgress(
       for (const sig of subjectSigs) {
         nextSeen.delete(sig);
       }
+      const resetVisits: Record<string, number> = {};
       if (currentRunSigs) {
         for (const sig of currentRunSigs) {
           nextSeen.add(sig);
+          const cKey = sigToCluster.get(sig);
+          if (cKey) {
+            resetVisits[cKey] = (resetVisits[cKey] || 0) + 1;
+          }
         }
       }
+      clusterVisitsMap[cfg.subject] = resetVisits;
+    } else {
+      clusterVisitsMap[cfg.subject] = subjectVisits;
     }
   }
 
   saveBasicSeenSignatures(nextSeen);
   saveBasicLastRunMap(lastRunMap);
+  saveBasicClusterVisitsMap(clusterVisitsMap);
   return nextSeen;
 }

@@ -1035,8 +1035,8 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         <div className="text-right">
                           <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Final Score</p>
                           <p className="text-xl sm:text-2xl font-black text-rose-600 dark:text-rose-400">
-                            {reviewingTest.jambScore || reviewingTest.score}
-                            <span className="text-xs font-semibold text-slate-500"> / {reviewingTest.totalQuestions > 100 ? 400 : reviewingTest.totalQuestions}</span>
+                            {reviewingTest.jambScore ?? reviewingTest.score}
+                            <span className="text-xs font-semibold text-slate-500"> / {typeof reviewingTest.jambScore === 'number' ? 400 : reviewingTest.totalQuestions}</span>
                           </p>
                         </div>
                         <div className="px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-black text-sm border border-emerald-200 dark:border-emerald-800">
@@ -1128,8 +1128,9 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         {/* Questions List */}
                         <div className="space-y-4">
                           {reviewingTest.questions
-                            .filter((q, idx) => {
-                              const studentAns = (reviewingTest.selectedAnswers || {})[idx];
+                            .map((q, origIdx) => ({ q, origIdx }))
+                            .filter(({ q, origIdx }) => {
+                              const studentAns = (reviewingTest.selectedAnswers || {})[origIdx];
                               const isCorrect = studentAns === q.answer;
                               const isUnattempted = !studentAns;
 
@@ -1140,9 +1141,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
                               return true;
                             })
-                            .map((q, filteredIdx) => {
-                              // Find original index in reviewingTest.questions
-                              const origIdx = reviewingTest.questions!.indexOf(q);
+                            .map(({ q, origIdx }) => {
                               const studentAns = (reviewingTest.selectedAnswers || {})[origIdx];
                               const isCorrect = studentAns === q.answer;
                               const isUnattempted = !studentAns;
@@ -1418,7 +1417,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                             {t.testTitle}
                           </h4>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Raw Score: {t.score} / {t.totalQuestions} ({t.percentage}%) · UTME Projected: {t.jambScore || t.score} / {t.totalQuestions > 100 ? 400 : t.totalQuestions}
+                            Raw Score: {t.score} / {t.totalQuestions} ({t.percentage}%){typeof t.jambScore === 'number' ? ` · UTME Projected: ${t.jambScore} / 400` : ''}
                           </p>
 
                           {/* Subject Breakdown Chips if available */}
@@ -1429,7 +1428,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                                   key={`sb-${t.id}-${sb.subject}-${sbIdx}`}
                                   className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700/80 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-600/80"
                                 >
-                                  {sb.subject}: <strong className="text-rose-600 dark:text-rose-400">{sb.score}</strong>/100
+                                  {sb.subject}: <strong className="text-rose-600 dark:text-rose-400">{sb.score}</strong>/{t.testType === 'basic_100' || t.testType === 'basic_50' || t.testType === 'basic_biology_100' || t.testType === 'basic_biology_50' || sb.subject === 'Basic Biology' ? sb.total : 100}
                                 </span>
                               ))}
                             </div>
@@ -1649,7 +1648,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-slate-900 dark:bg-slate-800 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 dark:border-slate-600 flex items-center justify-between gap-3 animate-in fade-in">
+        <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 max-w-sm bg-slate-900 dark:bg-slate-800 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 dark:border-slate-600 flex items-center justify-between gap-3 animate-in fade-in">
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
