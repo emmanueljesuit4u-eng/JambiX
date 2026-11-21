@@ -630,92 +630,171 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
             {/* View Render Based on Active Nav */}
             {activeNav === 'Home' && (
               <>
-                {/* Quick Simulator Navigation Cards */}
-                <div className="space-y-3">
-                  <button
-                    type="button"
-                    onClick={() => handleNavClick('Test')}
-                    className="w-full bg-white dark:bg-slate-900 hover:border-rose-400 dark:hover:border-rose-500 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4 text-left transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0">
-                        <Monitor className="w-5 h-5" />
-                      </div>
-                      <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
-                        Jamb CBT Simulator
-                      </span>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-rose-600 dark:group-hover:text-rose-400 shrink-0 transition-colors" />
-                  </button>
+                {/* Hero Banner Card */}
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#064e3b] via-[#058c52] via-75% to-[#d9f7e8] p-6 sm:p-7 min-h-[215px] sm:min-h-[230px] flex flex-col justify-between shadow-lg">
+                  {/* Subtle ambient white gradient highlight */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -top-12 -right-10 w-64 h-64 rounded-full bg-white/25 blur-3xl"
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -bottom-14 left-1/3 w-64 h-44 rounded-full bg-emerald-300/25 blur-2xl"
+                  />
 
-                  <button
-                    type="button"
-                    onClick={() => handleNavClick('Basic')}
-                    className="w-full bg-white dark:bg-slate-900 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4 text-left transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                        <Layers className="w-5 h-5" />
-                      </div>
-                      <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
-                        Basic CBT Simulator
-                      </span>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 shrink-0 transition-colors" />
-                  </button>
-                </div>
-
-                {/* Student Home WhatsApp Channel Updates Footer */}
-                <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/5 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-300/80 dark:border-emerald-800/80 rounded-2xl p-4 sm:p-5 shadow-2xs flex flex-col gap-4 transition-colors">
-                  <div className="flex items-start gap-3.5">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-[#25D366] text-white flex items-center justify-center shadow-md shadow-emerald-500/25 shrink-0">
-                      <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-current" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          Official Channel
-                        </span>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                          Join the JAMBIX WhatsApp Channel
-                        </h4>
-                      </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
-                        Stay ahead with real-time JAMB announcements, daily practice questions with textbook explanations, novel summaries, timetable alerts, and exam success tips.
-                      </p>
-                    </div>
+                  {/* Top Copy */}
+                  <div className="relative z-10 max-w-md space-y-2">
+                    <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug drop-shadow-2xs">
+                      JAMB CBT + Basic simulator
+                    </h2>
+                    <p className="text-xs sm:text-sm text-white/90 font-normal">
+                      Real JAMB &amp; Basic Exam Questions &amp; Answers
+                    </p>
                   </div>
-                  <a
-                    href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full px-4 py-2.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-99 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/30 transition-all cursor-pointer"
+
+                  {/* Bottom-left Activate Button */}
+                  <div className="relative z-10 pt-8">
+                    <button
+                      type="button"
+                      onClick={() => handleNavClick('Basic')}
+                      className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white/20 hover:bg-white/30 active:scale-99 border border-white/25 text-white text-xs sm:text-sm font-semibold backdrop-blur-xs transition-all cursor-pointer"
+                    >
+                      Activate Basic simulator
+                    </button>
+                  </div>
+
+                  {/* Bottom-right Decorative Checkmark Badge */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -bottom-10 -right-8 w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-white/60 via-emerald-200/45 to-emerald-800/45 shadow-inner flex items-center justify-center"
                   >
-                    <span>Join WhatsApp Channel</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
+                    <Check
+                      className="w-12 h-12 sm:w-14 sm:h-14 text-white/95 -translate-x-2 -translate-y-2 drop-shadow-sm"
+                      strokeWidth={3.5}
+                    />
+                  </div>
                 </div>
 
-                {/* Dashboard Footer Note */}
-                <footer className="mt-auto pt-8 pb-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
-                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
-                    <p>© {new Date().getFullYear()} JAMB UTME Prep Hub. All curriculum citations verified against official textbooks.</p>
+                {/* CBT Simulators Section */}
+                <div className="pt-3 sm:pt-4 space-y-3.5">
+                  <div className="flex items-center justify-between px-0.5">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                      CBT Simulators
+                    </h3>
+                  </div>
+
+                  <div className="space-y-3.5">
+                    <button
+                      type="button"
+                      onClick={() => handleNavClick('Test')}
+                      className="relative overflow-hidden w-full bg-[#edf8ef] dark:bg-emerald-950/25 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-2xl border border-[#cde8d3] dark:border-emerald-900/50 p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4 text-left transition-all cursor-pointer group"
+                    >
+                      {/* Subtle decorative rings */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -left-10 top-1/2 -translate-y-1/2 w-56 h-56 rounded-full border border-emerald-400/30 dark:border-emerald-700/20"
+                      />
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -left-4 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full border border-emerald-400/20 dark:border-emerald-700/15"
+                      />
+
+                      <div className="relative z-10 flex items-center gap-4 min-w-0">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#15803d] text-white flex items-center justify-center shrink-0 shadow-sm">
+                          <Monitor className="w-7 h-7 sm:w-8 sm:h-8" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-base sm:text-lg font-bold text-[#104724] dark:text-emerald-200 group-hover:text-emerald-800 dark:group-hover:text-emerald-100 transition-colors">
+                            Jamb CBT Simulator
+                          </span>
+                          <span className="block text-xs sm:text-sm text-[#355e43] dark:text-slate-300 mt-0.5 leading-snug">
+                            Practice JAMB CBT with real UTME past questions in CBT format.
+                          </span>
+                        </div>
+                      </div>
+                      <ChevronRight className="relative z-10 w-5 h-5 text-emerald-700/60 dark:text-emerald-300/70 group-hover:text-emerald-700 dark:group-hover:text-emerald-200 shrink-0 transition-colors" />
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleNavClick('Basic')}
+                      className="relative overflow-hidden w-full bg-[#edf8ef] dark:bg-emerald-950/25 hover:border-emerald-400 dark:hover:border-emerald-500 rounded-2xl border border-[#cde8d3] dark:border-emerald-900/50 p-4 sm:p-5 shadow-2xs flex items-center justify-between gap-4 text-left transition-all cursor-pointer group"
+                    >
+                      {/* Subtle decorative rings */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -left-10 top-1/2 -translate-y-1/2 w-56 h-56 rounded-full border border-emerald-400/30 dark:border-emerald-700/20"
+                      />
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -left-4 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full border border-emerald-400/20 dark:border-emerald-700/15"
+                      />
+
+                      <div className="relative z-10 flex items-center gap-4 min-w-0">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#0f6a32] text-white flex items-center justify-center shrink-0 shadow-sm">
+                          <Layers className="w-7 h-7 sm:w-8 sm:h-8" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-base sm:text-lg font-bold text-[#104724] dark:text-emerald-200 group-hover:text-emerald-800 dark:group-hover:text-emerald-100 transition-colors">
+                            Basic CBT Simulator
+                          </span>
+                          <span className="block text-xs sm:text-sm text-[#355e43] dark:text-slate-300 mt-0.5 leading-snug">
+                            Practice Basic CBT with real syllabus questions in CBT format.
+                          </span>
+                        </div>
+                      </div>
+                      <ChevronRight className="relative z-10 w-5 h-5 text-emerald-700/60 dark:text-emerald-300/70 group-hover:text-emerald-700 dark:group-hover:text-emerald-200 shrink-0 transition-colors" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bottom Section: Compact Horizontal WhatsApp Channel Card & Footer */}
+                <div className="mt-auto pt-6 space-y-5">
+                  <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/5 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-emerald-950/20 border border-emerald-300/80 dark:border-emerald-800/80 rounded-xl px-3.5 py-2.5 shadow-2xs flex items-center justify-between gap-3 transition-colors">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-lg bg-[#25D366] text-white flex items-center justify-center shadow-xs shadow-emerald-500/25 shrink-0">
+                        <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                        </svg>
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">
+                          JAMBIX WhatsApp Channel
+                        </h4>
+                        <p className="text-[11px] text-slate-600 dark:text-slate-300 truncate">
+                          Exam updates, daily drills &amp; alerts
+                        </p>
+                      </div>
+                    </div>
                     <a
                       href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-bold text-[#25D366] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                      className="shrink-0 px-3 py-1.5 bg-[#25D366] hover:bg-[#20ba59] active:scale-99 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-2xs shadow-emerald-600/25 transition-all cursor-pointer"
                     >
-                      <MessageCircle className="w-3.5 h-3.5" />
-                      <span>Join WhatsApp Channel for Updates</span>
+                      <span>Join</span>
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
-                  <span className="font-semibold text-slate-400 dark:text-slate-500">Official IBASS Curriculum Syllabus Standard</span>
-                </footer>
+
+                  {/* Dashboard Footer Note */}
+                  <footer className="pt-5 pb-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+                    <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+                      <p>© {new Date().getFullYear()} JAMB UTME Prep Hub. All curriculum citations verified against official textbooks.</p>
+                      <a
+                        href="https://whatsapp.com/channel/0029VbDWWdJ3gvWeRGLswJ06"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-bold text-[#25D366] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Join WhatsApp Channel for Updates</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                    <span className="font-semibold text-slate-400 dark:text-slate-500">Official IBASS Curriculum Syllabus Standard</span>
+                  </footer>
+                </div>
               </>
             )}
 
