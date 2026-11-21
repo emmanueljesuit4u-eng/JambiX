@@ -511,11 +511,11 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
         <div className="flex-1 flex flex-col min-w-0">
           {/* Top Bar: Clean, basic, and spacious */}
           <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between gap-4 transition-colors">
-            {/* Session Welcome Info - Spacious & Clean */}
+            {/* Welcome Info - Spacious & Clean */}
             <div className="flex items-center gap-3 min-w-0">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-              <span className="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">
-                Session: <span className="text-slate-900 dark:text-white font-bold ml-1.5 sm:ml-2">study hard, {studentFirstName}</span>
+              <span className="text-sm sm:text-base text-slate-900 dark:text-white font-bold truncate">
+                Hi, {studentFirstName}
               </span>
             </div>
 
