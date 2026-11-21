@@ -2,16 +2,18 @@
  * @license
  * SPDX-License-Identifier: Apache-2.0
  *
- * UNIPORT BASIC QUESTION BANK — MATHEMATICS (QUESTIONS 1–300)
+ * UNIPORT BASIC QUESTION BANK — MATHEMATICS (QUESTIONS 1–500)
  * Covers:
  * - Set 1 (Q1–100): Foundation & UTME Core across Number Bases, Indices/Logarithms/Sets, Algebra, Geometry/Trig, Calculus, Statistics/Probability
  * - Set 2 (Q101–200): Advanced Practice Set 2 across all 6 Mathematics syllabus clusters
  * - Set 3 (Q201–300): Calculus Intensive — Differentiation (Q201–250) & Integration (Q251–300)
+ * - Set 4 (Q301–500): MTH 010.1 — Fractions & Approximations (Q301–400) & Measurement (Q401–500)
  */
 
 import type { BasicBankQuestion } from './basicEnglishBank';
+import { BASIC_MATHEMATICS_MTH0101_ITEMS } from './basicMathematicsMth0101Bank';
 
-export const BASIC_MATHEMATICS_ITEMS: BasicBankQuestion[] = [
+const BASIC_MATHEMATICS_CORE_ITEMS: BasicBankQuestion[] = [
   // Section A: Number Bases, Fractions, Percentages and Approximations (Q1–20)
   {
     id: 'basic_math_1',
@@ -4831,4 +4833,9 @@ export const BASIC_MATHEMATICS_ITEMS: BasicBankQuestion[] = [
     answer: 'C',
     explanation: 'Integrating gives y = 2x³ − 6x² + 4x + C. Using (1, 5): 5 = 2 − 6 + 4 + C ⇒ C = 5. At x = 3: y = 2(27) − 6(9) + 4(3) + 5 = 54 − 54 + 12 + 5 = 17.',
   },
+];
+
+export const BASIC_MATHEMATICS_ITEMS: BasicBankQuestion[] = [
+  ...BASIC_MATHEMATICS_CORE_ITEMS,
+  ...BASIC_MATHEMATICS_MTH0101_ITEMS,
 ];
