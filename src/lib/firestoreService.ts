@@ -824,18 +824,39 @@ export async function submitBasicRegistration(
   const submittedAt = Date.now();
   const path = `basicRegistrations/${id}`;
 
-  const payload = {
-    id,
-    userId: auth.currentUser.uid,
-    email: cleanEmail,
-    fullName: cleanName,
-    submittedAt,
-    isActivated: false,
-    createdAt: serverTimestamp(),
-  };
+  const docRef = doc(db, 'basicRegistrations', id);
 
   try {
-    await setDoc(doc(db, 'basicRegistrations', id), payload);
+    const existingSnap = await getDoc(docRef);
+    if (existingSnap.exists()) {
+      const existingData = existingSnap.data() as BasicRegistrationData;
+      await updateDoc(docRef, {
+        email: cleanEmail,
+        fullName: cleanName,
+        submittedAt,
+        createdAt: serverTimestamp(),
+      });
+      return {
+        ...existingData,
+        id,
+        userId: auth.currentUser.uid,
+        email: cleanEmail,
+        fullName: cleanName,
+        submittedAt,
+      };
+    }
+
+    const payload = {
+      id,
+      userId: auth.currentUser.uid,
+      email: cleanEmail,
+      fullName: cleanName,
+      submittedAt,
+      isActivated: false,
+      createdAt: serverTimestamp(),
+    };
+
+    await setDoc(docRef, payload);
     return {
       id,
       userId: auth.currentUser.uid,

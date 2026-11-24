@@ -25,7 +25,6 @@ import {
   Layers,
   Award,
   Cloud,
-  Check,
   AlertTriangle,
   Bookmark,
   Share2,
@@ -279,7 +278,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   const handleNavClick = async (navId: string, specificTest?: OfflineTestResult | null) => {
     setActiveNav(navId);
     if (navId === 'Basic') {
-      let alreadySubmitted = hasSubmittedBasicForm;
+      let alreadySubmitted = hasSubmittedBasicForm || isBasicActivated;
       try {
         const uid = auth.currentUser?.uid;
         const emailKey = (user?.email || '').trim().toLowerCase();
@@ -661,17 +660,6 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     >
                       Activate Basic simulator
                     </button>
-                  </div>
-
-                  {/* Bottom-right Decorative Checkmark Badge */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -bottom-10 -right-8 w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-white/60 via-emerald-200/45 to-emerald-800/45 shadow-inner flex items-center justify-center"
-                  >
-                    <Check
-                      className="w-12 h-12 sm:w-14 sm:h-14 text-white/95 -translate-x-2 -translate-y-2 drop-shadow-sm"
-                      strokeWidth={3.5}
-                    />
                   </div>
                 </div>
 
