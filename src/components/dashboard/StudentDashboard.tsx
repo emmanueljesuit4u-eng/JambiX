@@ -644,7 +644,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                   {/* Top Copy */}
                   <div className="relative z-10 max-w-md space-y-2">
                     <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug drop-shadow-2xs">
-                      JAMB CBT + Basic simulator
+                      JAMB CBT + UNIPORT Basic simulator
                     </h2>
                     <p className="text-xs sm:text-sm text-white/90 font-normal">
                       Real JAMB &amp; Basic Exam Questions &amp; Answers
@@ -658,7 +658,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                       onClick={() => handleNavClick('Basic')}
                       className="inline-flex items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white/20 hover:bg-white/30 active:scale-99 border border-white/25 text-white text-xs sm:text-sm font-semibold backdrop-blur-xs transition-all cursor-pointer"
                     >
-                      Activate Basic simulator
+                      Activate UNIPORT Basic simulator
                     </button>
                   </div>
                 </div>
