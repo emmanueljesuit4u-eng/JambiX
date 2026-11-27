@@ -662,24 +662,48 @@ export async function adminToggleActivation(
       { merge: true }
     );
 
-    // Also synchronize any matching UNIPORT Basic tab submission(s) with this email
+    // Also synchronize any matching UNIPORT Basic tab submission(s) and collect matched userIds
+    const matchedUserIds = new Set<string>();
     try {
       const basicQ = query(collection(db, 'basicRegistrations'), where('email', '==', cleanEmail));
       const basicSnap = await getDocs(basicQ);
       await Promise.all(
-        basicSnap.docs.map((docSnap) =>
-          updateDoc(doc(db, 'basicRegistrations', docSnap.id), {
+        basicSnap.docs.map((docSnap) => {
+          const d = docSnap.data() as BasicRegistrationData;
+          if (d.userId) matchedUserIds.add(d.userId);
+          else if (docSnap.id.startsWith('basic_')) {
+            matchedUserIds.add(docSnap.id.slice('basic_'.length));
+          }
+          return updateDoc(doc(db, 'basicRegistrations', docSnap.id), {
             isActivated,
             activatedAt: isActivated ? Date.now() : 0,
-          })
-        )
+          });
+        })
       );
     } catch (syncErr) {
       console.warn('basicRegistrations email sync note:', syncErr);
     }
 
-    // Also synchronize any matching student referral record(s) for this email
-    await syncReferralBasicActivation(undefined, cleanEmail, isActivated);
+    try {
+      const userQ = query(collection(db, 'users'), where('email', '==', cleanEmail));
+      const userSnap = await getDocs(userQ);
+      userSnap.docs.forEach((docSnap) => {
+        if (docSnap.id) matchedUserIds.add(docSnap.id);
+      });
+    } catch (userLookupErr) {
+      console.warn('users email lookup note:', userLookupErr);
+    }
+
+    // Also synchronize any matching student referral record(s) for matched UIDs and email
+    if (matchedUserIds.size > 0) {
+      await Promise.all(
+        Array.from(matchedUserIds).map((uid) =>
+          syncReferralBasicActivation(uid, cleanEmail, isActivated)
+        )
+      );
+    } else {
+      await syncReferralBasicActivation(undefined, cleanEmail, isActivated);
+    }
   } catch (error) {
     if (isOfflineError(error)) {
       console.warn('adminToggleActivation offline note');
@@ -933,6 +957,19 @@ export async function adminToggleBasicActivation(
       ? registrationId.slice('basic_'.length)
       : undefined;
     await syncReferralBasicActivation(referredUserId, email, isActivated);
+    if (referredUserId) {
+      try {
+        const userSnap = await getDoc(doc(db, 'users', referredUserId));
+        const accountEmail = userSnap.exists()
+          ? String((userSnap.data() as UserProfileData).email || '').trim().toLowerCase()
+          : '';
+        if (accountEmail && accountEmail !== (email || '').trim().toLowerCase()) {
+          await syncReferralBasicActivation(referredUserId, accountEmail, isActivated);
+        }
+      } catch {
+        // ignore optional cross-email lookup failure
+      }
+    }
     if (email) {
       await adminToggleActivation(email, isActivated, 'BASIC-ADMIN-ACTIVATION');
     }
@@ -1062,7 +1099,6 @@ export async function recordStudentReferral(
   }
 
   const id = `ref_${referredUserId}`;
-  const path = `referrals/${id}`;
   const cleanName = (referredName || 'UTME Student').trim().slice(0, 120) || 'UTME Student';
   const cleanEmail = (referredEmail || auth.currentUser.email || 'student@jambix.ng')
     .trim()
@@ -1073,20 +1109,50 @@ export async function recordStudentReferral(
     const refDoc = doc(db, 'referrals', id);
     const existingSnap = await getDoc(refDoc);
     if (existingSnap.exists()) {
+      const existingData = existingSnap.data() as ReferralData;
+      if (!existingData.basicActivated) {
+        await syncMyReferralBasicActivation(referredUserId);
+      }
       clearPendingReferralCode();
       return;
     }
 
-    await setDoc(refDoc, {
+    // Check if the student is already UNIPORT Basic activated so the referral counts immediately
+    let alreadyActivated = false;
+    try {
+      const basicSnap = await getDoc(doc(db, 'basicRegistrations', `basic_${referredUserId}`));
+      if (basicSnap.exists() && Boolean((basicSnap.data() as BasicRegistrationData).isActivated)) {
+        alreadyActivated = true;
+      }
+    } catch {
+      // ignore read check failure
+    }
+    if (!alreadyActivated && cleanEmail) {
+      try {
+        const actData = await getAccountActivation(cleanEmail);
+        if (actData?.isActivated) {
+          alreadyActivated = true;
+        }
+      } catch {
+        // ignore read check failure
+      }
+    }
+
+    const payload: Record<string, unknown> = {
       id,
       referrerId: cleanReferrerId,
       referredUserId,
       referredName: cleanName,
       referredEmail: cleanEmail,
       registeredAt: Date.now(),
-      basicActivated: false,
+      basicActivated: alreadyActivated,
       createdAt: serverTimestamp(),
-    });
+    };
+    if (alreadyActivated) {
+      payload.activatedAt = Date.now();
+    }
+
+    await setDoc(refDoc, payload);
     clearPendingReferralCode();
   } catch (error) {
     if (isOfflineError(error)) {
@@ -1094,6 +1160,31 @@ export async function recordStudentReferral(
       return;
     }
     console.warn('recordStudentReferral note:', error);
+  }
+}
+
+export async function syncMyReferralBasicActivation(
+  referredUserId?: string
+): Promise<void> {
+  const uid = referredUserId || auth.currentUser?.uid;
+  if (!uid || !auth.currentUser || uid !== auth.currentUser.uid) return;
+
+  try {
+    const refId = `ref_${uid}`;
+    const refDoc = doc(db, 'referrals', refId);
+    const snap = await getDoc(refDoc);
+    if (!snap.exists()) return;
+    const data = snap.data() as ReferralData;
+    if (data.basicActivated) return;
+
+    await updateDoc(refDoc, {
+      basicActivated: true,
+      activatedAt: Date.now(),
+    });
+  } catch (error) {
+    if (!isOfflineError(error)) {
+      console.warn('syncMyReferralBasicActivation note:', error);
+    }
   }
 }
 
@@ -1139,6 +1230,31 @@ export async function syncReferralBasicActivation(
     }
   } catch (syncErr) {
     console.warn('referrals activation sync note:', syncErr);
+  }
+}
+
+export async function getMyReferrals(referrerId: string): Promise<ReferralData[]> {
+  if (!referrerId || !auth.currentUser) {
+    return [];
+  }
+  try {
+    const q = query(
+      collection(db, 'referrals'),
+      where('referrerId', '==', referrerId),
+      limit(200)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs
+      .map((d) => ({
+        ...d.data(),
+        id: d.id,
+      } as ReferralData))
+      .sort((a, b) => (b.registeredAt || 0) - (a.registeredAt || 0));
+  } catch (error) {
+    if (!isOfflineError(error)) {
+      console.warn('getMyReferrals note:', error);
+    }
+    return [];
   }
 }
 

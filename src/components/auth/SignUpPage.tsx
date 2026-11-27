@@ -213,10 +213,8 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
     (async () => {
       try {
         let userCred;
-        let isNewAccount = false;
         try {
           userCred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
-          isNewAccount = true;
         } catch (err: any) {
           if (err.code === 'auth/email-already-in-use') {
             userCred = await signInWithEmailAndPassword(auth, cleanEmail, password);
@@ -241,11 +239,9 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
           isEmailVerified: true,
         });
 
-        if (isNewAccount) {
-          const activeRef = referralCode || getPendingReferralCode();
-          if (activeRef) {
-            await recordStudentReferral(activeRef, cleanName, cleanEmail);
-          }
+        const activeRef = referralCode || getPendingReferralCode();
+        if (activeRef) {
+          await recordStudentReferral(activeRef, cleanName, cleanEmail);
         }
 
         saveActivationRecord({

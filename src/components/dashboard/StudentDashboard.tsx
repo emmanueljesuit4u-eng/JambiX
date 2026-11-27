@@ -61,6 +61,9 @@ import {
   subscribeToMyBasicRegistration,
   subscribeToAccountActivation,
   getAccountActivation,
+  getPendingReferralCode,
+  recordStudentReferral,
+  syncMyReferralBasicActivation,
 } from '../../lib/firestoreService';
 import {
   getLocalTestResults,
@@ -68,6 +71,7 @@ import {
 } from '../../lib/offlineStorage';
 import { getQuestionsForSubjects } from '../../data/verifiedTextbooks';
 import { useNetwork } from '../../context/NetworkContext';
+import { useAuth } from '../../context/AuthContext';
 
 interface StudentDashboardProps {
   user: {
@@ -82,6 +86,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
   user,
   onLogOut,
 }) => {
+  const { currentUser } = useAuth();
   const {
     isOnline,
     isSimulatedOffline,
@@ -202,7 +207,28 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
       unsubMyBasic();
       unsubLoginAct();
     };
-  }, [user?.email]);
+  }, [user?.email, currentUser?.uid]);
+
+  // Catch up any pending referral code and synchronize UNIPORT Basic activation to the referral doc
+  useEffect(() => {
+    const uid = currentUser?.uid || auth.currentUser?.uid;
+    if (!uid) return;
+
+    const pendingRef = getPendingReferralCode();
+    if (pendingRef) {
+      const displayName = user?.name || currentUser?.displayName || auth.currentUser?.displayName || 'UTME Student';
+      const studentEmail = currentUser?.email || auth.currentUser?.email || user?.email || '';
+      recordStudentReferral(pendingRef, displayName, studentEmail)
+        .then(() => {
+          if (isBasicActivated) {
+            return syncMyReferralBasicActivation(uid);
+          }
+        })
+        .catch(() => {});
+    } else if (isBasicActivated) {
+      syncMyReferralBasicActivation(uid).catch(() => {});
+    }
+  }, [currentUser?.uid, isBasicActivated, user?.name, user?.email]);
 
   // Also monitor the email submitted in the Basic tab popup if different from login email
   useEffect(() => {

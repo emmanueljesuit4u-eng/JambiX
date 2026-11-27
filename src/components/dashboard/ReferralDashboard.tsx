@@ -14,8 +14,11 @@ import {
   Users,
 } from 'lucide-react';
 import { auth } from '../../lib/firebase';
+import { useAuth } from '../../context/AuthContext';
 import {
   ReferralData,
+  getAccountActivation,
+  getMyReferrals,
   sanitizeActivationId,
   subscribeToMyReferrals,
 } from '../../lib/firestoreService';
@@ -38,34 +41,83 @@ export const ReferralDashboard: React.FC<ReferralDashboardProps> = ({
   onBack,
   showToast,
 }) => {
+  const { currentUser } = useAuth();
   const [referrals, setReferrals] = useState<ReferralData[]>([]);
+  const [verifiedActivatedIds, setVerifiedActivatedIds] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
   const [showPerformance, setShowPerformance] = useState(false);
 
+  const authUid = currentUser?.uid || auth.currentUser?.uid || '';
+
   const referrerId = useMemo(() => {
-    if (auth.currentUser?.uid) return auth.currentUser.uid;
+    if (authUid) return authUid;
     const raw = (user.email || user.identifier || user.name || 'student').trim();
     return sanitizeActivationId(raw);
-  }, [user.email, user.identifier, user.name]);
+  }, [authUid, user.email, user.identifier, user.name]);
 
   const referralLink = useMemo(() => {
     return `https://jambi-x.vercel.app/${encodeURIComponent(referrerId)}`;
   }, [referrerId]);
 
   useEffect(() => {
-    if (!auth.currentUser?.uid) {
+    if (!authUid) {
       setReferrals([]);
       return;
     }
-    const unsubscribe = subscribeToMyReferrals(auth.currentUser.uid, (items) => {
-      setReferrals(items);
+    let active = true;
+    getMyReferrals(authUid)
+      .then((items) => {
+        if (active && items.length > 0) {
+          setReferrals(items);
+        }
+      })
+      .catch(() => {});
+
+    const unsubscribe = subscribeToMyReferrals(authUid, (items) => {
+      if (active) {
+        setReferrals(items);
+      }
     });
-    return () => unsubscribe();
-  }, [referrerId]);
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [authUid]);
+
+  // Cross-check pending referrals against accountActivations so already-activated UNIPORT Basic students count immediately
+  useEffect(() => {
+    const pendingItems = referrals.filter((r) => !r.basicActivated && r.referredEmail);
+    if (pendingItems.length === 0) return;
+
+    let active = true;
+    Promise.all(
+      pendingItems.map(async (item) => {
+        const act = await getAccountActivation(item.referredEmail);
+        return { id: item.id, isActivated: Boolean(act?.isActivated) };
+      })
+    )
+      .then((results) => {
+        if (!active) return;
+        const updates: Record<string, boolean> = {};
+        results.forEach((res) => {
+          if (res.isActivated) {
+            updates[res.id] = true;
+          }
+        });
+        if (Object.keys(updates).length > 0) {
+          setVerifiedActivatedIds((prev) => ({ ...prev, ...updates }));
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      active = false;
+    };
+  }, [referrals]);
 
   const countedReferrals = useMemo(
-    () => referrals.filter((r) => Boolean(r.basicActivated)),
-    [referrals]
+    () => referrals.filter((r) => Boolean(r.basicActivated || verifiedActivatedIds[r.id])),
+    [referrals, verifiedActivatedIds]
   );
 
   const averagePerformancePct = useMemo(() => {

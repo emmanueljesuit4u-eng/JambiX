@@ -202,22 +202,50 @@ service cloud.firestore {
       allow delete: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
     }
 
-    // Student Referrals (PII Isolation: Referrer, referred student, or admin only; ONLY admin can mark UNIPORT Basic activated)
+    function isStudentBasicActivated(uid) {
+      return (
+        exists(/databases/$(database)/documents/basicRegistrations/$(('basic_' + uid))) &&
+        get(/databases/$(database)/documents/basicRegistrations/$(('basic_' + uid))).data.isActivated == true
+      ) || (
+        'email' in request.auth.token &&
+        request.auth.token.email is string &&
+        request.auth.token.email.size() > 3 &&
+        request.auth.token.email.size() <= 120 &&
+        exists(/databases/$(database)/documents/accountActivations/$(request.auth.token.email.lower().replace('[^a-zA-Z0-9_-]', '_'))) &&
+        get(/databases/$(database)/documents/accountActivations/$(request.auth.token.email.lower().replace('[^a-zA-Z0-9_-]', '_'))).data.isActivated == true
+      );
+    }
+
+    // Student Referrals (PII Isolation: Referrer, referred student, or admin only; ONLY admin or server-verified activated Basic account can mark basicActivated)
     match /referrals/{referralId} {
-      allow get: if isAdmin() || (isSignedIn() && isValidId(referralId) && (referralId == ('ref_' + request.auth.uid) || (resource != null && (existing().referrerId == request.auth.uid || existing().referredUserId == request.auth.uid))));
-      allow list: if isAdmin() || (isSignedIn() && (existing().referrerId == request.auth.uid || existing().referredUserId == request.auth.uid));
+      allow get: if isSignedIn() && isValidId(referralId) && (
+                       referralId == ('ref_' + request.auth.uid) ||
+                       (resource != null && (existing().referrerId == request.auth.uid || existing().referredUserId == request.auth.uid)) ||
+                       isAdmin()
+                     );
+      allow list: if isSignedIn() && (
+                       resource.data.referrerId == request.auth.uid ||
+                       resource.data.referredUserId == request.auth.uid ||
+                       isAdmin()
+                     );
       allow create: if isSignedIn() && isValidId(referralId) && isValidReferral(incoming()) &&
                        referralId == ('ref_' + request.auth.uid) &&
                        incoming().id == referralId &&
-                       incoming().referredUserId == request.auth.uid &&
-                       incoming().basicActivated == false;
+                       incoming().referredUserId == request.auth.uid && (
+                         incoming().basicActivated == false ||
+                         isStudentBasicActivated(request.auth.uid)
+                       );
       allow update: if isSignedIn() && isValidId(referralId) && isValidReferral(incoming()) &&
                        incoming().id == existing().id &&
                        incoming().referrerId == existing().referrerId &&
                        incoming().referredUserId == existing().referredUserId &&
                        incoming().registeredAt == existing().registeredAt &&
-                       isAdmin() &&
-                       incoming().diff(existing()).affectedKeys().hasOnly(['basicActivated', 'activatedAt']);
+                       incoming().diff(existing()).affectedKeys().hasOnly(['basicActivated', 'activatedAt']) && (
+                         isAdmin() ||
+                         (existing().referredUserId == request.auth.uid &&
+                          incoming().basicActivated == true &&
+                          isStudentBasicActivated(request.auth.uid))
+                       );
       allow delete: if isAdmin();
     }
   }

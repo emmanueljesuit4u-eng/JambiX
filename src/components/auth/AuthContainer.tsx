@@ -40,11 +40,12 @@ export const AuthContainer: React.FC = () => {
     try {
       const reservedPaths = new Set(['', 'admin', 'login', 'signup', 'forgot-password', 'index.html']);
       const segments = window.location.pathname.split('/').filter(Boolean);
+      const rawSegment = segments.length === 1 ? decodeURIComponent(segments[0]).trim() : '';
       const pathCode =
-        segments.length === 1 &&
-        !reservedPaths.has(segments[0].toLowerCase()) &&
-        /^[a-zA-Z0-9_\-]{3,128}$/.test(segments[0])
-          ? segments[0]
+        rawSegment &&
+        !reservedPaths.has(rawSegment.toLowerCase()) &&
+        /^[a-zA-Z0-9_\-]{3,128}$/.test(rawSegment)
+          ? rawSegment
           : null;
       const queryCode = new URLSearchParams(window.location.search).get('ref')?.trim() || null;
       const refCode = pathCode || queryCode;
