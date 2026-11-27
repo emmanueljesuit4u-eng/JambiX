@@ -286,6 +286,58 @@
         }
       },
       "required": ["id", "userId", "email", "fullName", "submittedAt"]
+    },
+    "Referral": {
+      "title": "Referral",
+      "description": "Student referral record that counts only when the referred student activates UNIPORT Basic",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Referral document ID matching ref_{referredUserId}",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "referrerId": {
+          "type": "string",
+          "description": "UID of the referring student",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "referredUserId": {
+          "type": "string",
+          "description": "UID of the newly registered student",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "referredName": {
+          "type": "string",
+          "description": "Full name of the referred student",
+          "maxLength": 120
+        },
+        "referredEmail": {
+          "type": "string",
+          "description": "Email address of the referred student",
+          "maxLength": 120
+        },
+        "registeredAt": {
+          "type": "number",
+          "description": "Epoch timestamp in milliseconds when the referred student registered"
+        },
+        "basicActivated": {
+          "type": "boolean",
+          "description": "True only when the referred student has activated the UNIPORT Basic test drill"
+        },
+        "activatedAt": {
+          "type": "number",
+          "description": "Epoch timestamp in milliseconds when UNIPORT Basic was activated"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server timestamp of referral creation"
+        }
+      },
+      "required": ["id", "referrerId", "referredUserId", "referredName", "referredEmail", "registeredAt", "basicActivated"]
     }
   },
   "firestore": {
@@ -308,6 +360,10 @@
     "/basicRegistrations/{registrationId}": {
       "schema": "BasicRegistration",
       "description": "Student email and full name submissions from the Basic tab popup form"
+    },
+    "/referrals/{referralId}": {
+      "schema": "Referral",
+      "description": "Student referral tracking records counted upon UNIPORT Basic activation"
     }
   }
 }

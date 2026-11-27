@@ -19,6 +19,10 @@ import { TermsModal } from './TermsModal';
 import { StudentDashboard } from '../dashboard/StudentDashboard';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
+import {
+  getPendingReferralCode,
+  savePendingReferralCode,
+} from '../../lib/firestoreService';
 
 export type ScreenType = 'signup' | 'login' | 'forgot_password';
 
@@ -32,7 +36,30 @@ export const AuthContainer: React.FC = () => {
     isExplicitlyAuthenticated,
     setIsExplicitlyAuthenticated,
   } = useAuth();
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('login');
+  const [detectedReferralCode] = useState<string>(() => {
+    try {
+      const reservedPaths = new Set(['', 'admin', 'login', 'signup', 'forgot-password', 'index.html']);
+      const segments = window.location.pathname.split('/').filter(Boolean);
+      const pathCode =
+        segments.length === 1 &&
+        !reservedPaths.has(segments[0].toLowerCase()) &&
+        /^[a-zA-Z0-9_\-]{3,128}$/.test(segments[0])
+          ? segments[0]
+          : null;
+      const queryCode = new URLSearchParams(window.location.search).get('ref')?.trim() || null;
+      const refCode = pathCode || queryCode;
+      if (refCode) {
+        savePendingReferralCode(refCode);
+        return refCode;
+      }
+    } catch {
+      // ignore URL parsing errors
+    }
+    return '';
+  });
+  const [currentScreen, setCurrentScreen] = useState<ScreenType>(() =>
+    detectedReferralCode ? 'signup' : 'login'
+  );
   const [prefilledLoginEmail, setPrefilledLoginEmail] = useState<string>('');
 
   const handleNavigateToSignUp = (emailPrefill?: string) => {
@@ -221,6 +248,7 @@ export const AuthContainer: React.FC = () => {
                   onOpenTerms={handleOpenTerms}
                   onSignUpSuccess={handleSignUpSuccess}
                   initialEmail={prefilledLoginEmail}
+                  initialReferralCode={detectedReferralCode || getPendingReferralCode() || ''}
                 />
               )}
 

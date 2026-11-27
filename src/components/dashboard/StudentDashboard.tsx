@@ -49,6 +49,7 @@ import { CbtTestModal } from './CbtTestModal';
 import { PastQuestionsVaultTab } from './PastQuestionsVaultTab';
 import { NovelsTab } from './NovelsTab';
 import { ActivationPaywallModal } from './ActivationPaywallModal';
+import { ReferralDashboard } from './ReferralDashboard';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { PWAInstallButton } from '../common/PWAInstallButton';
 import { QuestionImageDisplay } from '../common/QuestionImageDisplay';
@@ -93,6 +94,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
 
   const [activeNav, setActiveNav] = useState('Home');
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isReferralDashboardOpen, setIsReferralDashboardOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const showToast = (msg: string) => {
@@ -459,6 +461,30 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
     }
   };
 
+  if (isReferralDashboardOpen) {
+    return (
+      <>
+        <ReferralDashboard
+          user={user}
+          userTests={userTests}
+          onBack={() => setIsReferralDashboardOpen(false)}
+          showToast={showToast}
+        />
+        {toastMessage && (
+          <div className="fixed bottom-6 right-4 md:right-6 z-50 max-w-sm bg-slate-900 dark:bg-slate-800 text-white text-xs px-4 py-3 rounded-xl shadow-xl border border-slate-700 dark:border-slate-600 flex items-center justify-between gap-3 animate-in fade-in">
+            <span>{toastMessage}</span>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="text-slate-400 hover:text-white font-bold ml-2 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f3f4f6] dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 overflow-x-hidden">
       {/* Main App Layout */}
@@ -569,6 +595,20 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                         {userTests.length}
                       </span>
                     )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      loadStoredData();
+                      setIsReferralDashboardOpen(true);
+                    }}
+                    className="w-full px-3 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-2 transition-colors cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Share2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span>Referral</span>
+                    </span>
                   </button>
                   <button
                     type="button"
@@ -850,7 +890,7 @@ export const StudentDashboard: React.FC<StudentDashboardProps> = ({
                     </p>
                     <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800 space-y-2">
                       <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100">
-                        Tap the WhatsApp number below to send receipt of payment, full name and email address for verification and account activation
+                        Click on the WhatsApp number below to message the admin for activation
                       </p>
                       <a
                         href="https://wa.me/2349016679401"

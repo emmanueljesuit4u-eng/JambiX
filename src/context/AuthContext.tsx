@@ -18,6 +18,8 @@ import {
   saveUserProfile,
   UserProfileData,
   getOrCreateAccountActivation,
+  getPendingReferralCode,
+  recordStudentReferral,
 } from '../lib/firestoreService';
 
 interface AuthContextType {
@@ -105,6 +107,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         opayAccount: existingProfile?.opayAccount || cloudAct?.opayAccount,
       };
       await saveUserProfile(profile);
+      if (!existingProfile) {
+        const pendingRef = getPendingReferralCode();
+        if (pendingRef) {
+          await recordStudentReferral(pendingRef, profile.fullName, profile.email);
+        }
+      }
       setStudentProfile(profile);
       setIsExplicitlyAuthenticated(true);
     } catch (error) {

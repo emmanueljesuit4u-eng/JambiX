@@ -108,6 +108,21 @@ service cloud.firestore {
              (!('createdAt' in data) || data.createdAt is timestamp);
     }
 
+    function isValidReferral(data) {
+      return data.keys().hasAll(['id', 'referrerId', 'referredUserId', 'referredName', 'referredEmail', 'registeredAt', 'basicActivated']) &&
+             data.keys().hasOnly(['id', 'referrerId', 'referredUserId', 'referredName', 'referredEmail', 'registeredAt', 'basicActivated', 'activatedAt', 'createdAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.referrerId is string && isValidId(data.referrerId) &&
+             data.referredUserId is string && isValidId(data.referredUserId) &&
+             data.referrerId != data.referredUserId &&
+             data.referredName is string && data.referredName.size() > 0 && data.referredName.size() <= 120 &&
+             data.referredEmail is string && data.referredEmail.size() > 3 && data.referredEmail.size() <= 120 &&
+             data.registeredAt is number &&
+             data.basicActivated is bool &&
+             (!('activatedAt' in data) || (data.activatedAt is number)) &&
+             (!('createdAt' in data) || data.createdAt is timestamp);
+    }
+
     // Health check / connection test doc
     match /test/{docId} {
       allow read: if true;
@@ -185,6 +200,25 @@ service cloud.firestore {
       allow get, list: if isSignedIn();
       allow create, update: if isSignedIn() && (incoming().userId == request.auth.uid || isAdmin());
       allow delete: if isSignedIn() && (existing().userId == request.auth.uid || isAdmin());
+    }
+
+    // Student Referrals (PII Isolation: Referrer, referred student, or admin only; ONLY admin can mark UNIPORT Basic activated)
+    match /referrals/{referralId} {
+      allow get: if isAdmin() || (isSignedIn() && isValidId(referralId) && (referralId == ('ref_' + request.auth.uid) || (resource != null && (existing().referrerId == request.auth.uid || existing().referredUserId == request.auth.uid))));
+      allow list: if isAdmin() || (isSignedIn() && (existing().referrerId == request.auth.uid || existing().referredUserId == request.auth.uid));
+      allow create: if isSignedIn() && isValidId(referralId) && isValidReferral(incoming()) &&
+                       referralId == ('ref_' + request.auth.uid) &&
+                       incoming().id == referralId &&
+                       incoming().referredUserId == request.auth.uid &&
+                       incoming().basicActivated == false;
+      allow update: if isSignedIn() && isValidId(referralId) && isValidReferral(incoming()) &&
+                       incoming().id == existing().id &&
+                       incoming().referrerId == existing().referrerId &&
+                       incoming().referredUserId == existing().referredUserId &&
+                       incoming().registeredAt == existing().registeredAt &&
+                       isAdmin() &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['basicActivated', 'activatedAt']);
+      allow delete: if isAdmin();
     }
   }
 }

@@ -28,6 +28,8 @@ import { saveActivationRecord } from '../../lib/activationStorage';
 import {
   getOrCreateAccountActivation,
   saveUserProfile,
+  getPendingReferralCode,
+  recordStudentReferral,
 } from '../../lib/firestoreService';
 
 interface SignUpPageProps {
@@ -35,6 +37,7 @@ interface SignUpPageProps {
   onOpenTerms: (tab: 'terms' | 'privacy') => void;
   onSignUpSuccess: (user: { name: string; email: string }) => void;
   initialEmail?: string;
+  initialReferralCode?: string;
 }
 
 interface FormErrors {
@@ -50,6 +53,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   onOpenTerms,
   onSignUpSuccess,
   initialEmail,
+  initialReferralCode,
 }) => {
   const formId = useId();
 
@@ -59,6 +63,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const referralCode = (initialReferralCode || getPendingReferralCode() || '').trim();
 
   React.useEffect(() => {
     if (initialEmail) {
@@ -208,8 +213,10 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
     (async () => {
       try {
         let userCred;
+        let isNewAccount = false;
         try {
           userCred = await createUserWithEmailAndPassword(auth, cleanEmail, password);
+          isNewAccount = true;
         } catch (err: any) {
           if (err.code === 'auth/email-already-in-use') {
             userCred = await signInWithEmailAndPassword(auth, cleanEmail, password);
@@ -233,6 +240,13 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
           isActivated: true,
           isEmailVerified: true,
         });
+
+        if (isNewAccount) {
+          const activeRef = referralCode || getPendingReferralCode();
+          if (activeRef) {
+            await recordStudentReferral(activeRef, cleanName, cleanEmail);
+          }
+        }
 
         saveActivationRecord({
           userEmail: cleanEmail,
@@ -677,6 +691,25 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
                 <span>{errors.confirmPassword}</span>
               </p>
             )}
+          </div>
+
+          {/* Read-only Referral Code */}
+          <div>
+            <label
+              htmlFor={`${formId}-referralCode`}
+              className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
+            >
+              Referral Code
+            </label>
+            <input
+              id={`${formId}-referralCode`}
+              type="text"
+              readOnly
+              value={referralCode}
+              placeholder="Referral code"
+              aria-readonly="true"
+              className="w-full px-3.5 py-2.5 text-sm bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-700 dark:text-slate-200 font-medium cursor-not-allowed focus:outline-hidden"
+            />
           </div>
 
           {/* Primary Submit Button */}

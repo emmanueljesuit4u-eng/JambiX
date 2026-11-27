@@ -677,6 +677,9 @@ export async function adminToggleActivation(
     } catch (syncErr) {
       console.warn('basicRegistrations email sync note:', syncErr);
     }
+
+    // Also synchronize any matching student referral record(s) for this email
+    await syncReferralBasicActivation(undefined, cleanEmail, isActivated);
   } catch (error) {
     if (isOfflineError(error)) {
       console.warn('adminToggleActivation offline note');
@@ -926,6 +929,10 @@ export async function adminToggleBasicActivation(
       isActivated,
       activatedAt: isActivated ? Date.now() : 0,
     });
+    const referredUserId = registrationId.startsWith('basic_')
+      ? registrationId.slice('basic_'.length)
+      : undefined;
+    await syncReferralBasicActivation(referredUserId, email, isActivated);
     if (email) {
       await adminToggleActivation(email, isActivated, 'BASIC-ADMIN-ACTIVATION');
     }
@@ -989,3 +996,189 @@ export async function getAllBasicRegistrations(): Promise<BasicRegistrationData[
     return [];
   }
 }
+
+// ==========================================
+// 7. Student Referrals (Counted ONLY on UNIPORT Basic Activation)
+// ==========================================
+
+export const PENDING_REFERRAL_STORAGE_KEY = 'jambix_pending_referral_uid';
+
+export interface ReferralData {
+  id: string;
+  referrerId: string;
+  referredUserId: string;
+  referredName: string;
+  referredEmail: string;
+  registeredAt: number;
+  basicActivated: boolean;
+  activatedAt?: number;
+  createdAt?: unknown;
+}
+
+export function savePendingReferralCode(referrerId: string): void {
+  const clean = referrerId.trim();
+  if (!clean || !/^[a-zA-Z0-9_\-]{3,128}$/.test(clean)) return;
+  try {
+    localStorage.setItem(PENDING_REFERRAL_STORAGE_KEY, clean);
+  } catch {
+    // ignore storage errors
+  }
+}
+
+export function getPendingReferralCode(): string | null {
+  try {
+    const val = localStorage.getItem(PENDING_REFERRAL_STORAGE_KEY);
+    if (val && /^[a-zA-Z0-9_\-]{3,128}$/.test(val.trim())) {
+      return val.trim();
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearPendingReferralCode(): void {
+  try {
+    localStorage.removeItem(PENDING_REFERRAL_STORAGE_KEY);
+  } catch {
+    // ignore storage errors
+  }
+}
+
+export async function recordStudentReferral(
+  referrerId: string,
+  referredName: string,
+  referredEmail: string
+): Promise<void> {
+  if (!auth.currentUser) return;
+  const cleanReferrerId = referrerId.trim();
+  const referredUserId = auth.currentUser.uid;
+  if (
+    !cleanReferrerId ||
+    cleanReferrerId === referredUserId ||
+    !/^[a-zA-Z0-9_\-]{3,128}$/.test(cleanReferrerId)
+  ) {
+    return;
+  }
+
+  const id = `ref_${referredUserId}`;
+  const path = `referrals/${id}`;
+  const cleanName = (referredName || 'UTME Student').trim().slice(0, 120) || 'UTME Student';
+  const cleanEmail = (referredEmail || auth.currentUser.email || 'student@jambix.ng')
+    .trim()
+    .toLowerCase()
+    .slice(0, 120);
+
+  try {
+    const refDoc = doc(db, 'referrals', id);
+    const existingSnap = await getDoc(refDoc);
+    if (existingSnap.exists()) {
+      clearPendingReferralCode();
+      return;
+    }
+
+    await setDoc(refDoc, {
+      id,
+      referrerId: cleanReferrerId,
+      referredUserId,
+      referredName: cleanName,
+      referredEmail: cleanEmail,
+      registeredAt: Date.now(),
+      basicActivated: false,
+      createdAt: serverTimestamp(),
+    });
+    clearPendingReferralCode();
+  } catch (error) {
+    if (isOfflineError(error)) {
+      console.warn('recordStudentReferral offline note');
+      return;
+    }
+    console.warn('recordStudentReferral note:', error);
+  }
+}
+
+export async function syncReferralBasicActivation(
+  referredUserId?: string,
+  email?: string,
+  isActivated: boolean = true
+): Promise<void> {
+  const cleanEmail = (email || '').trim().toLowerCase();
+  const activatedAt = isActivated ? Date.now() : 0;
+  const updatedIds = new Set<string>();
+
+  try {
+    if (referredUserId && /^[a-zA-Z0-9_\-]+$/.test(referredUserId)) {
+      const refId = `ref_${referredUserId}`;
+      const refDoc = doc(db, 'referrals', refId);
+      const snap = await getDoc(refDoc);
+      if (snap.exists()) {
+        await updateDoc(refDoc, {
+          basicActivated: isActivated,
+          activatedAt,
+        });
+        updatedIds.add(refId);
+      }
+    }
+
+    if (cleanEmail) {
+      const refQ = query(
+        collection(db, 'referrals'),
+        where('referredEmail', '==', cleanEmail)
+      );
+      const refSnap = await getDocs(refQ);
+      await Promise.all(
+        refSnap.docs
+          .filter((d) => !updatedIds.has(d.id))
+          .map((d) =>
+            updateDoc(doc(db, 'referrals', d.id), {
+              basicActivated: isActivated,
+              activatedAt,
+            })
+          )
+      );
+    }
+  } catch (syncErr) {
+    console.warn('referrals activation sync note:', syncErr);
+  }
+}
+
+export function subscribeToMyReferrals(
+  referrerId: string,
+  onUpdate: (referrals: ReferralData[]) => void
+): () => void {
+  if (!referrerId || !auth.currentUser) {
+    onUpdate([]);
+    return () => {};
+  }
+  const path = 'referrals';
+  try {
+    const q = query(
+      collection(db, 'referrals'),
+      where('referrerId', '==', referrerId),
+      limit(200)
+    );
+    return onSnapshot(
+      q,
+      (snapshot) => {
+        const items = snapshot.docs
+          .map((d) => ({
+            ...d.data(),
+            id: d.id,
+          } as ReferralData))
+          .sort((a, b) => (b.registeredAt || 0) - (a.registeredAt || 0));
+        onUpdate(items);
+      },
+      (error) => {
+        if (!isOfflineError(error)) {
+          console.warn('subscribeToMyReferrals note:', error);
+        }
+      }
+    );
+  } catch (error) {
+    if (!isOfflineError(error)) {
+      handleFirestoreError(error, OperationType.LIST, path);
+    }
+    return () => {};
+  }
+}
+
